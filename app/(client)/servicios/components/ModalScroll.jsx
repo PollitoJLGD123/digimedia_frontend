@@ -80,7 +80,7 @@ export default function ModalScroll({ text, fondo, title, serviceName }) {
         <button onClick={hideModal} className="absolute top-4 right-4">
           X
         </button>
-        <div className="relative w-52 overflow-hidden flex justify-center">
+        <div className="relative w-52 overflow-hidden justify-center hidden md:flex">
           <img className="w-full object-cover" src={fondo} alt="" />
           <img
             className="absolute top-4 left-4"
