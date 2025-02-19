@@ -16,16 +16,23 @@ export default function Header2() {
 
   const closeMenu = () => setMenuOpen(false);
 
-  console.log('Ruta actual:', pathname); 
-  
+  console.log('Ruta actual:', pathname);
+
   return (
     <header className="header">
       <div className="contenidoHeader">
-        <div className="logoHeader d-flex align-items-center">
+        <div className="logoHeader flex items-center">
           <Link href="/" onClick={closeMenu}>
-            <img src="/headerFooter/logoblanco2.webp" alt="Digimedia" width="190px" height="65px" />
+            <img
+              src="/headerFooter/logoblanco2.webp"
+              alt="Digimedia"
+              width="190px"
+              height="65px"
+              className="my-auto"
+            />
           </Link>
         </div>
+
         <div className="seccionesHeader">
           <input type="checkbox" id="menucheckbox" checked={menuOpen} onChange={() => setMenuOpen(!menuOpen)} />
           <label htmlFor="menucheckbox">
