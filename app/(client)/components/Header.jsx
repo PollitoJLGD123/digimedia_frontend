@@ -22,7 +22,7 @@ export default function Header2() {
     <header className="header">
       <div className="contenidoHeader">
         <div className="logoHeader d-flex align-items-center">
-          <Link href="/">
+          <Link href="/" onClick={closeMenu}>
             <img src="/headerFooter/logoblanco2.webp" alt="Digimedia" width="190px" height="65px" />
           </Link>
         </div>
