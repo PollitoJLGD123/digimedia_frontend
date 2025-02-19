@@ -87,7 +87,7 @@ function Input({ label, type, name, value, onChange }) {
     <div className="flex gap-2 justify-between items-center">
       <label className="font-semibold shrink-0 basis-20" htmlFor={name}>{label}</label>
       <input
-        className="p-2 rounded-md h-12 grow text-black"
+        className="p-1 rounded-md grow text-black"
         id={name}
         name={name}
         type={type}
