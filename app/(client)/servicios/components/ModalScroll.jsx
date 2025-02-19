@@ -80,14 +80,14 @@ export default function ModalScroll({ text, fondo, title, serviceName }) {
         <button onClick={hideModal} className="absolute top-4 right-4">
           X
         </button>
-        <div className="relative w-64 overflow-hidden flex justify-center">
-          <img className="w-auto max-w-none max-h-[540px]" src={fondo} alt="" />
+        <div className="relative w-52 overflow-hidden justify-center hidden md:flex">
+          <img className="w-full object-cover" src={fondo} alt="" />
           <img
             className="absolute top-4 left-4"
             src="/servicios/logo-modal.webp"
             alt=""
           />
-          <p className="absolute bottom-10 right-6 text-3xl font-semibold text-right">
+          <p className="absolute bottom-10 right-6 text-2xl font-semibold text-right">
             {text}
           </p>
         </div>
@@ -138,7 +138,7 @@ function Input({ label, type, name, value, onChange }) {
         {label}
       </label>
       <input
-        className="p-2 rounded-md text-black"
+        className="p-1 rounded-md text-black"
         id={name}
         name={name}
         type={type}
