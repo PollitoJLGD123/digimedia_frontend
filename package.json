@@ -9,6 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
+<<<<<<< HEAD
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-brands-svg-icons": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "axios": "^1.7.9",
+    "cookies-next": "^5.1.0",
+    "font-awesome": "^4.7.0",
+    "framer-motion": "^11.18.0",
+    "lucide-react": "^0.474.0",
+    "next": "^15.1.4",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+=======
     "axios": "1.7.9",
     "cookies-next": "5.1.0",
     "font-awesome": "4.7.0",
@@ -17,6 +31,7 @@
     "next": "15.1.4",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+>>>>>>> 80770be094346215fd225d49786c32b220969ee1
     "react-paginate": "^8.3.0"
   },
   "devDependencies": {
