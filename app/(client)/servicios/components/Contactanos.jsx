@@ -9,8 +9,8 @@ export default function Contactanos({ text, iconLeft, iconRight }) {
         Contáctanos ahora
       </button>
 
-      <img className="absolute h-[160px] bottom-4 left-0" src={iconLeft} alt="" />
-      <img className="absolute h-[160px] bottom-4 right-0" src={iconRight} alt="" />
+      <img className="absolute h-[160px] hidden md:block bottom-4 left-0" src={iconLeft} alt="" />
+      <img className="absolute h-[160px] hidden md:block bottom-4 right-0" src={iconRight} alt="" />
     </section>
   );
 }
