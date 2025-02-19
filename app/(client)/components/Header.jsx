@@ -16,8 +16,6 @@ export default function Header2() {
 
   const closeMenu = () => setMenuOpen(false);
 
-  console.log('Ruta actual:', pathname);
-
   return (
     <header className="header">
       <div className="contenidoHeader">
