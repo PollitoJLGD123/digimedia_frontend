@@ -22,7 +22,7 @@ export default function Principal() {
                     <div className="flex flex-col justify-center items-center">
                         <h2 className="text-white tracking-[10px] text-[10px] sm:text-[15px] lg:text-[20px]">DIGIMEDIA</h2>
                         <h1 className="text-white tracking-widest text-[54px] sm:text-[100px] lg:text-[170px]">BLOG</h1>
-                        <button className="text-white text-[10px] lg:text-[20px] border-solid border-2 border-white p-4 hover:bg-black transition-all duration-500">COMIENZA YA</button>
+                    {/*<button className="text-white text-[10px] lg:text-[20px] border-solid border-2 border-white p-4 hover:bg-black transition-all duration-500">COMIENZA YA</button> */}
                     </div>
                 </div>
             </div>
