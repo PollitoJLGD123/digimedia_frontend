@@ -6,6 +6,7 @@ import Table from '../components/Table';
 import { useEffect, useState } from 'react';
 import Modal_usuario from './components/Modal_usuario';
 import user_service from './services/user.service';
+import { useRouter } from 'next/navigation';
 
 
 const headers = ['id', 'name', 'email', 'created_at'];
@@ -18,38 +19,50 @@ export default function Page() {
   const [count, setCount] = useState(0)
   const [modal, setModal] = useState(false)
   const [dataUpd, setdataUpdate] = useState(false)
+  const router = useRouter()
 
   async function setProducts(page) {
 
-    await user_service.userByPage(page)
-      .then(data => {
-        if (parseInt(data.status) == 200) {
+    await user_service.userByPage(page).then((data) => {
+      if (data.status == 500) {
+        user_service.logoutClient(router);
+      } else {
+        return data.json()
+      }
+    }).then(data => {
+      if (parseInt(data.status) == 200) {
 
-          if (data.total > 0) {
+        if (data.total > 0) {
 
-            data.data.map(data => {
+          data.data.map(data => {
 
-              const fecha = new Date(data.created_at)
+            const fecha = new Date(data.created_at)
 
-              data.created_at = fecha.toLocaleDateString('es-ES');
-            })
+            data.created_at = fecha.toLocaleDateString('es-ES');
+          })
 
-            setData(data.data)
-            setCount(data.total)
-          }
-
-        } else {
-          setError(true);
-          setLoading(false)
+          setData(data.data)
+          setCount(data.total)
         }
-      })
+
+      } else {
+        setError(true);
+        setLoading(false)
+      }
+    })
   }
 
   function onDelete(id) {
 
     if (!confirm('¿Estás seguro de que deseas eliminar este usuario?')) return
-  
-    user_service.delete(id).then(data => {
+
+    user_service.delete(id).then((data) => {
+      if (data.status == 500) {
+        user_service.logoutClient(router);
+      } else {
+        return data.json()
+      }
+    }).then(data => {
       fetchProducts()
     })
   }

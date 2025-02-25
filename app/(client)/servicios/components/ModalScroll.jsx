@@ -1,8 +1,10 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
+import './modal.css';
 
 export default function ModalScroll({ text, fondo, title, serviceName }) {
   const modalRef = useRef(null);
+  const backgroundRef = useRef(null);
   const [formData, setFormData] = useState({
     nombre: '',
     telefono: '',
@@ -10,25 +12,30 @@ export default function ModalScroll({ text, fondo, title, serviceName }) {
     servicio_id: serviceName,
   });
 
-  const hideModal = () => {
-    modalRef.current.classList.add('hidden');
-  };
-
-  let displayed = false;
-
   useEffect(() => {
-    window.addEventListener('scroll', () => {
-      if (!displayed) {
-        if (
-          window.innerHeight + window.scrollY >=
-          document.documentElement.scrollHeight
-        ) {
-          modalRef.current.classList.remove('hidden');
-          displayed = true;
-        }
+    const timer = setTimeout(() => {
+      if (backgroundRef.current && modalRef.current) {
+        backgroundRef.current.classList.remove('hidden');
+        backgroundRef.current.classList.add('fade-in');
+        modalRef.current.classList.add('modal-content');
       }
-    });
+    }, 5000);
+
+    return () => clearTimeout(timer);
   }, []);
+
+  const hideModal = () => {
+    if (backgroundRef.current && modalRef.current) {
+      backgroundRef.current.classList.add('fade-out-bg');
+      modalRef.current.classList.add('fade-out-modal');
+
+      setTimeout(() => {
+        backgroundRef.current.classList.add('hidden');
+        backgroundRef.current.classList.remove('fade-in', 'fade-out-bg');
+        modalRef.current.classList.remove('modal-content', 'fade-out-modal');
+      }, 500);
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -60,33 +67,32 @@ export default function ModalScroll({ text, fondo, title, serviceName }) {
 
   return (
     <div
-      ref={modalRef}
+      ref={backgroundRef}
       onClick={hideModal}
-      className="bg-[rgb(0,0,0,0.5)] w-screen h-screen flex items-center justify-center fixed top-0 left-0 z-50 hidden"
+      className="seccionA bg-[rgba(0,0,0,0.43)] w-screen h-screen flex items-center justify-center fixed top-0 left-0 z-[9998] hidden"
     >
       <div
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
-        className="bg-black flex relative text-white rounded-2xl overflow-hidden"
+        ref={modalRef}
+        onClick={(e) => e.stopPropagation()}
+        className="bg-black flex w-[95%] md:w-auto relative text-white rounded-2xl overflow-hidden"
       >
         <button onClick={hideModal} className="absolute top-4 right-4">
           X
         </button>
-        <div className="relative w-64 overflow-hidden flex justify-center">
-          <img className="w-auto max-w-none max-h-[540px]" src={fondo} alt="" />
+        <div className="relative w-[30%] md:w-64 overflow-hidden justify-center flex">
+          <img className="w-full object-cover" src={fondo} alt="" />
           <img
             className="absolute top-4 left-4"
             src="/servicios/logo-modal.webp"
             alt=""
           />
-          <p className="absolute bottom-10 right-6 text-3xl font-semibold text-right">
+          <p className="absolute hidden md:block bottom-10 right-6 text-2xl font-semibold text-right">
             {text}
           </p>
         </div>
-        <div className="p-8 flex flex-col justify-between w-96 gap-8 bg-gradient-to-b from-[#0095ff] to-[#ff037f]">
+        <div className="p-8 flex flex-col w-[70%] md:w-96 justify-between  gap-8 bg-gradient-to-b from-[#0095ff] to-[#ff037f]">
           <p className="text-3xl text-center font-bold">{title}</p>
-          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+          <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
             <Input
               label="Nombre"
               type="text"
@@ -108,7 +114,6 @@ export default function ModalScroll({ text, fondo, title, serviceName }) {
               value={formData.correo}
               onChange={handleChange}
             />
-            {/* Incluye el servicio como un campo oculto */}
             <input
               type="hidden"
               name="servicio_id"
@@ -127,12 +132,12 @@ export default function ModalScroll({ text, fondo, title, serviceName }) {
 
 function Input({ label, type, name, value, onChange }) {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-1">
       <label className="font-semibold" htmlFor={name}>
         {label}
       </label>
       <input
-        className="p-2 rounded-md text-black"
+        className="p-1 outline-none rounded-md text-black"
         id={name}
         name={name}
         type={type}

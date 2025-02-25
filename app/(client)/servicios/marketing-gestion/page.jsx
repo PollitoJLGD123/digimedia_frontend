@@ -62,8 +62,8 @@ export default function Page() {
 
       <Contactanos
         text="Aumenta tus ventas con marketing digital"
-        iconLeft="/servicios/marketing/icon-left.png"
-        iconRight="/servicios/marketing/icon-right.png"
+        iconLeft="/servicios/marketing/icon-left.svg"
+        iconRight="/servicios/marketing/icon-right.svg"
       />
     </>
   );

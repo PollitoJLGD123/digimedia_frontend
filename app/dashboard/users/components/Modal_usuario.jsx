@@ -2,10 +2,12 @@
 
 import { useState, useEffect } from "react";
 import user_service from "../services/user.service";
+import { useRouter } from "next/navigation";
 
 export default function Modal_usuario({ isVisible, onclose, data }) {
     if (!isVisible) return null;
 
+    const router = useRouter()
     const [formData, setFormData] = useState({ name: data == false ? "" : data.name, email: "", password: "" });
     const [error, setError] = useState({ status: undefined, message: "" });
     const [button, setButtonStatus] = useState(true);
@@ -25,7 +27,13 @@ export default function Modal_usuario({ isVisible, onclose, data }) {
             password: formData.password
         }
 
-        user_service.updatePass(form, data.id).then(data => {
+        user_service.updatePass(form, data.id).then((data) => {
+            if (data.status == 500) {
+                user_service.logoutClient(router);
+            } else {
+                return data.json()
+            }
+        }).then(data => {
             setButtonStatus(false)
 
             if (parseInt(data.status) == 200) {
@@ -54,7 +62,13 @@ export default function Modal_usuario({ isVisible, onclose, data }) {
 
         setButtonStatus(false)
 
-        user_service.create(form).then(data => {
+        user_service.create(form).then((data) => {
+            if (data.status == 500) {
+                user_service.logoutClient(router);
+            } else {
+                return data.json()
+            }
+        }).then(data => {
             if (parseInt(data.status) == 200) {
                 setError({ status: false, message: "Usuario creado" })
                 setTimeout(() => {
@@ -76,7 +90,13 @@ export default function Modal_usuario({ isVisible, onclose, data }) {
         }
         setButtonStatus(false)
 
-        user_service.update(form, data.id).then(data => {
+        user_service.update(form, data.id).then((data) => {
+            if (data.status == 500) {
+                user_service.logoutClient(router);
+            } else {
+                return data.json()
+            }
+        }).then(data => {
             if (parseInt(data.status) == 200) {
                 setError({ status: false, message: "Actualizado correctamente" })
                 setTimeout(() => {
@@ -122,7 +142,7 @@ export default function Modal_usuario({ isVisible, onclose, data }) {
                         />
                     </fieldset>
 
-                    <fieldset  className="flex flex-col gap-3">
+                    <fieldset className="flex flex-col gap-3">
                         <label hidden={data != false} className="font-medium text-md" htmlFor="email">
                             Correo
                         </label>

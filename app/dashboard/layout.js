@@ -2,16 +2,20 @@
 import '../globals.css';
 import Link from 'next/link';
 import AuthGuard from './components/AuthGuard';
-import { useRouter } from 'next/navigation';
-import { deleteCookie } from 'cookies-next';
-import Image from 'next/image';
+import user_service from './users/services/user.service';
+import { usePathname, useRouter } from "next/navigation";
 
 export default function RootLayout({ children }) {
+
   const router = useRouter();
 
-  const handleLogout = () => {
-    deleteCookie('token');
-    router.push('/login');
+ 
+  const handleLogout = async () => {
+
+    await user_service.logoutServer()
+      .then(data => {
+        user_service.logoutClient(router)
+      })
   };
   return (
     <AuthGuard>
@@ -22,15 +26,14 @@ export default function RootLayout({ children }) {
             <h1 className="text-2xl font-bold">Digimedia</h1>
           </div>
 
-          <button 
+          <button
             onClick={handleLogout}
             className="flex gap-2 bg-black text-white px-4 py-3 rounded-lg justify-center mb-5"
           >
-            <Image 
-              src="/dashboard/logout-icon.svg" 
-              alt="Logout icon" 
-              width={20} 
-              height={20}
+            <img
+              src="/dashboard/logout-icon.svg"
+              alt="Logout icon"
+              className='w-[20px] h-[20px]'
             />
             Cerrar sesión
           </button>
@@ -38,13 +41,9 @@ export default function RootLayout({ children }) {
           <nav>
             <ul className="flex flex-col gap-1">
               <TableLink title="Sección Principal" href="/dashboard/main" />
-              <TableLink
-                title="Libro de Reclamaciones"
-                href="/dashboard/reclamaciones"
-              />
+              <TableLink title="Libro de Reclamaciones" href="/dashboard/reclamaciones" />
               <TableLink title="Modales" href="/dashboard/modales" />
-              <TableLink title="Usuarios" href="/dashboard/users" />
-              <TableLink title="Servicios" href="/dashboard/servicios" />
+              {user_service.isAdmin() ? <TableLink title="Usuarios" href="/dashboard/users" /> : null }
             </ul>
           </nav>
 
@@ -61,13 +60,16 @@ export default function RootLayout({ children }) {
     </AuthGuard>
   );
 }
-
 function TableLink({ href, title }) {
+  const pathname = usePathname();
+  const isActive = pathname === href;
+
   return (
     <li>
       <Link
         href={href}
-        className="flex gap-2 items-center rounded-lg hover:bg-[#eee] px-4 py-3"
+        className={`flex gap-2 items-center rounded-lg px-4 py-3 
+          hover:bg-[#eee] ${isActive ? "bg-[#ddd] font-bold" : ""}`}
       >
         <img src="/dashboard/section-icon.svg" alt="" width={20} />
         {title}

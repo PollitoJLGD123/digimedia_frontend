@@ -30,6 +30,10 @@ export default function LoginPage() {
             maxAge: 30 * 24 * 60 * 60, // 30 días
             path: '/',
           });
+          setCookie("user", JSON.stringify(data.data), {
+            maxAge: 30 * 24 * 60 * 60,
+            path: '/'
+          })
           router.push('/dashboard/main');
         } else {
           setError(true);
@@ -37,7 +41,6 @@ export default function LoginPage() {
         }
       }).catch(error => {
 
-        console.log("sadad" +  error);
       });
   };
 
@@ -49,7 +52,6 @@ export default function LoginPage() {
     <div className="flex flex-col lg:flex-row min-h-screen bg-gray-50">
       {/* Sección izquierda con diseño mejorado */}
       <div className="lg:w-1/2 w-full bg-gradient-to-br from-violet-600 via-purple-600 to-indigo-700 flex flex-col items-center justify-center p-8 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/login/pattern.svg')] opacity-10"></div>
         <div className="relative z-10 text-center">
           <h1 className="text-4xl lg:text-5xl font-bold text-white mb-6">¡Bienvenido!</h1>
           <p className="text-white/90 text-lg mb-8 max-w-md">

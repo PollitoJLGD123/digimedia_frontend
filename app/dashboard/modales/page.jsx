@@ -4,11 +4,12 @@ import { useEffect, useState } from 'react';
 import Pagination from '../components/Pagination';
 import Table from '../components/Table';
 //import Pagination from './componentes-modales/Pagination-modales';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { getCookie } from "cookies-next";
+import user_service from '../users/services/user.service';
 
 
-const headers = ['id', 'nombre', 'telefono', 'email', 'servicio', 'acciones'];
+const headers = ['id', 'nombre', 'telefono', 'email', 'servicio', "fecha_registro" ,'acciones'];
 
 export default function Page() {
   const searchParams = useSearchParams();
@@ -16,64 +17,72 @@ export default function Page() {
   const [data, setData] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
   const [loading, setLoading] = useState(true);
+  const API_URL = "https://back.digimediamkt.com/api/modal";
+  // const API_URL = "http://127.0.0.1:8000/api/modal"
+  const router = useRouter()
 
   // Función para obtener los datos paginados
   const fetchData = async (page) => {
-    try {
-      setLoading(true);
-      const response = await fetch(`https://back.digimediamkt.com/api/modal?page=${page}`, {
-        headers: {
-          Authorization: `Bearer ${getCookie('token')}`,
-        }
-      });
 
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+    setLoading(true);
+    await fetch(`${API_URL}?page=${page}`, {
+      headers: {
+        Authorization: `Bearer ${getCookie('token')}`,
       }
-
-      const result = await response.json();
-
-      if (result.error) {
-        throw new Error(result.error);
+    }).then((data) => {
+      if (data.status == 500) {
+        user_service.logoutClient(router);
+      } else {
+        return data.json()
       }
+    }).then(data => {
+      // Mapea los datos para renombrar las claves
+      const formattedData = data.data.map(item => ({
+        ...item,
+        email: item.correo, 
+        servicio: item.servicio_nombre 
+      }));
 
-      setData(result.data);
-      setTotalItems(result.pagination.totalItems);
-    } catch (error) {
-      console.error('Error en fetchData:', error.message);
-    } finally {
-      setLoading(false);
-    }
+      setData(formattedData);
+      setTotalItems(data.pagination.totalItems);
+    }).catch(err => {
 
-
+    }).finally(() => {
+      setLoading(false)
+    })
   };
 
   // Función para eliminar un registro por ID
   const handleDelete = async (id) => {
-    try {
-      const response = await fetch(`https://back.digimediamkt.com/api/modal/${id}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${getCookie('token')}`,
-        }
-      });
 
-      if (response.ok) {
-        fetchData(currentPage);
-        console.log('Registro eliminado exitosamente');
-      } else {
-        const result = await response.json();
-        console.error('Error al eliminar el registro:', result.message);
+    if (!confirm('¿Estás seguro de que deseas eliminar este registro?')) return
+    await fetch(`${API_URL}/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${getCookie('token')}`,
       }
-    } catch (error) {
-      console.error('Error en la solicitud:', error);
-    }
+    }).then((data) => {
+      if (data.status == 500) {
+        user_service.logoutClient(router);
+      } else {
+        return data.json()
+      }
+    }).then(data => {
+
+      fetchData(currentPage);
+
+    }).catch(err => {
+      console.error('Error al eliminar el registro:', result.message);
+    }).finally(() => {
+      setLoading(false)
+    })
+
+
   };
 
   // Efecto para cargar los datos cuando cambia la página
   useEffect(() => {
     const page = isNaN(currentPage) ? 1 : parseInt(currentPage);
-    console.log('Fetching data for page:', page); // Depuración
     fetchData(page);
   }, [currentPage]);
 

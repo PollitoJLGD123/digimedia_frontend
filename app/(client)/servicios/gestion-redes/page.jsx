@@ -62,8 +62,8 @@ export default function Page() {
 
       <Contactanos
         text="Deja que tus redes estén en otro nivel"
-        iconLeft="/servicios/gestion/icon-left.png"
-        iconRight="/servicios/gestion/icon-right.png"
+        iconLeft="/servicios/gestion/icon-left.svg"
+        iconRight="/servicios/gestion/icon-right.svg"
       />
     </>
   );

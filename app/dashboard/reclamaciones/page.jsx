@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import Pagination from '../components/Pagination'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { getCookie } from 'cookies-next'
+import user_service from '../users/services/user.service'
 
 const headers = [
   'id',
@@ -40,8 +42,8 @@ const Table = ({ headers, data, renderActions }) => {
           <tr key={item.id} className="odd:bg-[#f2f2f2]">
             {headers.map((header) => (
               <td key={header} className="p-2 border-b">
-                {header === 'acciones' 
-                  ? renderActions(item) 
+                {header === 'acciones'
+                  ? renderActions(item)
                   : item[header]}
               </td>
             ))}
@@ -211,7 +213,7 @@ const EditButton = ({ data, onUpdate }) => {
                   <option value="OTROS">OTROS</option>
                 </select>
               </div>
-              
+
               <textarea
                 name="reclamoPerson"
                 value={formData.reclamoPerson}
@@ -284,6 +286,9 @@ export default function Page() {
   const [totalItems, setTotalItems] = useState(0)
   const [loading, setLoading] = useState(false)
   const itemsPerPage = 20
+  const API_URL = "https://back.digimediamkt.com/api/reclamaciones";
+  // const API_URL = "http://127.0.0.1:8000/api/reclamaciones"
+  const router = useRouter()
 
   const transformData = (apiData) => {
     return apiData.map(item => ({
@@ -312,57 +317,47 @@ export default function Page() {
   }
 
   const fetchData = async (page) => {
-    try {
-      setLoading(true)
-      const response = await fetch(`https://back.digimediamkt.com/api/reclamaciones?page=${page}`)
-      const result = await response.json()
-      
-      if (response.ok) {
-        setData(transformData(result.data))
-        setTotalItems(result.total)
+
+    setLoading(true)
+    await fetch(`${API_URL}?page=${page}`, {
+      headers: {
+        Authorization: `Bearer ${getCookie('token')}`,
       }
-    } catch (error) {
-      console.error('Error:', error)
-    } finally {
+    }).then((data) => {
+      if (data.status == 500) {
+        user_service.logoutClient(router);
+      } else {
+        return data.json()
+      }
+    }).then(data => {
+
+      setData(transformData(data.data))
+      setTotalItems(data.total)
+
+    }).catch(err => {
+      
+
+    }).finally(() => {
       setLoading(false)
-    }
+    })
+
   }
 
   const handleDelete = async (id) => {
-    try {
-      const response = await fetch(`https://back.digimediamkt.com/api/reclamaciones/${id}`, {
-        method: 'DELETE'
-      })
-      
-      if (response.ok) {
-        fetchData(currentPage)
-      }
-    } catch (error) {
-      console.error('Error eliminando:', error)
-    }
-  }
 
-  const handleUpdate = async (updatedData) => {
-    try {
-      const response = await fetch(`https://back.digimediamkt.com/api/reclamaciones/${updatedData.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...updatedData,
-          // Asegurar que los checkboxes se envíen como strings
-          checkReclamoForm: updatedData.checkReclamoForm.toString(),
-          aceptaPoliticaPrivacidad: updatedData.aceptaPoliticaPrivacidad.toString()
-        }),
-      })
-      
-      if (response.ok) {
-        fetchData(currentPage)
+    await fetch(`${API_URL}/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${getCookie('token')}`,
       }
-    } catch (error) {
-      console.error('Error actualizando:', error)
-    }
+    }).then(data => {
+
+      fetchData(currentPage)
+
+    }).catch(err => {
+      console.error('Error eliminando:', error)
+
+    })
   }
 
   useEffect(() => {
@@ -373,27 +368,23 @@ export default function Page() {
   return (
     <main className="p-4 overflow-scroll flex flex-col w-full h-[100vh] flex-1">
       <h2 className="text-4xl font-bold mb-4">Libro de Reclamaciones</h2>
-      
+
       {loading && <div className="text-center p-4">Cargando...</div>}
-      
+
       <Table
         headers={headers}
         data={data}
         renderActions={(rowData) => (
           <div className="flex gap-2">
-            <EditButton 
-              data={rowData} 
-              onUpdate={handleUpdate}
-            />
-            <DeleteButton 
-              id={rowData.id} 
+            <DeleteButton
+              id={rowData.id}
               onDelete={handleDelete}
             />
           </div>
         )}
       />
-      
-      <Pagination 
+
+      <Pagination
         count={Math.ceil(totalItems / itemsPerPage)}
         currentPage={isNaN(currentPage) ? 1 : parseInt(currentPage)}
       />

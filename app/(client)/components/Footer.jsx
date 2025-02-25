@@ -42,7 +42,7 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="#">
+                  <Link href="https://maps.app.goo.gl/T8D8KJT3mWworgCo7">
                     <img
                       src="/headerFooter/location.png"
                       alt="Ubicacion"
@@ -58,17 +58,17 @@ export default function Footer() {
               <h3>Legales</h3>
               <ul>
                 <li>
-                  <Link href="/politica-privacidad" target="_blank">
+                  <Link href="/politica-privacidad">
                     Política de privacidad
                   </Link>
                 </li>
                 <li>
-                  <Link href="/terminos-condiciones" target="_blank">
+                  <Link href="/terminos-condiciones" >
                     Términos y Condiciones
                   </Link>
                 </li>
                 <li>
-                  <Link href="/reclamaciones" target="_blank">
+                  <Link href="/reclamaciones" >
                     Libro de reclamaciones
                   </Link>
                 </li>
