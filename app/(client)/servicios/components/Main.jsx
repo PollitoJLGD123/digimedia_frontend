@@ -7,9 +7,9 @@ export default function Main({ title, subtitle, text, image }) {
         </h1>
         <h2 className="font-bold text-2xl my-2">{subtitle}</h2>
         <p>{text}</p>
-        <a className="bg-[#7b22b3] text-white font-bold p-3 inline-block rounded-full mt-8">
+        {/*<a className="bg-[#7b22b3] text-white font-bold p-3 inline-block rounded-full mt-8">
           ¿CÓMO TRABAJAMOS?
-        </a>
+        </a>*/}
       </div>
       <img className="max-w-[80%]" src={image} alt="" />
     </main>
