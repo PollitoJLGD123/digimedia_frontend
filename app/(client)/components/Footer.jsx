@@ -63,12 +63,12 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/terminos-condiciones" >
+                  <Link href="/terminos-condiciones">
                     Términos y Condiciones
                   </Link>
                 </li>
                 <li>
-                  <Link href="/reclamaciones" >
+                  <Link href="/reclamaciones">
                     Libro de reclamaciones
                   </Link>
                 </li>
@@ -160,6 +160,5 @@ export default function Footer() {
         </div>
       </footer>
     </>
-
   );
 }
