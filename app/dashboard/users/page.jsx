@@ -86,15 +86,6 @@ export default function Page() {
   return (
     <>
       <main className="p-4 overflow-scroll flex flex-col w-full h-[100vh] flex-1">
-        <button
-          className="bg-blue-600 text-white p-2 rounded-md mb-4 font-bold"
-          onClick={() => {
-            setModal(true);
-          }}
-        >
-          {' '}
-          Crear{' '}
-        </button>
         <Table
           headers={headers}
           data={data}
@@ -111,6 +102,14 @@ export default function Page() {
             fetchProducts();
           }}
         />
+        <button
+          className="bg-[#ff037f] text-white py-2 rounded-full my-4 font-bold w-fit px-10"
+          onClick={() => {
+            setModal(true);
+          }}
+        >
+          Añadir dato
+        </button>
       </main>
     </>
   );
