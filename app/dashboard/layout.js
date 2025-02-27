@@ -25,8 +25,8 @@ export default function RootLayout({ children }) {
             {pathname.slice(pathname.indexOf('/', 1) + 1, -1).toUpperCase()}
           </h1>
         </header>
-        <div className="flex bg-[#f9f9f9] w-[100vw] overflow-hidden">
-          <div className="flex flex-col shrink-0 p-2 bg-white">
+        <div className="flex w-[100vw] overflow-hidden">
+          <div className="flex flex-col shrink-0 p-2 bg-[#e8e8e8]">
             <nav>
               <ul className="flex flex-col gap-1">
                 <TableLink title="Sección Principal" href="/dashboard/main" />
