@@ -102,7 +102,6 @@ export default function Page() {
 
   return (
     <main className="p-4 overflow-scroll flex flex-col w-full h-[100vh] flex-1">
-      <h2 className="text-4xl font-bold mb-4">Sección principal</h2>
       {isLoading ? (
         <div className="text-center text-lg font-semibold">Cargando...</div>
       ) : (
