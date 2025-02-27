@@ -1,10 +1,10 @@
-"use client"
+'use client';
 
-import { useEffect, useState } from 'react'
-import Pagination from '../components/Pagination'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { getCookie } from 'cookies-next'
-import user_service from '../users/services/user.service'
+import { useEffect, useState } from 'react';
+import Pagination from '../components/Pagination';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { getCookie } from 'cookies-next';
+import user_service from '../users/services/user.service';
 
 const headers = [
   'id',
@@ -22,8 +22,8 @@ const headers = [
   'reclamo persona',
   'aceptar terminos 1',
   'aceptar terminos 2',
-  'acciones'
-]
+  'acciones',
+];
 
 const Table = ({ headers, data, renderActions }) => {
   return (
@@ -42,24 +42,22 @@ const Table = ({ headers, data, renderActions }) => {
           <tr key={item.id} className="odd:bg-[#f2f2f2]">
             {headers.map((header) => (
               <td key={header} className="p-2 border-b">
-                {header === 'acciones'
-                  ? renderActions(item)
-                  : item[header]}
+                {header === 'acciones' ? renderActions(item) : item[header]}
               </td>
             ))}
           </tr>
         ))}
       </tbody>
     </table>
-  )
-}
+  );
+};
 
 const DeleteButton = ({ id, onDelete }) => {
   const handleClick = () => {
     if (confirm('¿Estás seguro de eliminar este registro?')) {
-      onDelete(id)
+      onDelete(id);
     }
-  }
+  };
 
   return (
     <button
@@ -68,26 +66,26 @@ const DeleteButton = ({ id, onDelete }) => {
     >
       Eliminar
     </button>
-  )
-}
+  );
+};
 
 const EditButton = ({ data, onUpdate }) => {
-  const [showModal, setShowModal] = useState(false)
-  const [formData, setFormData] = useState(data)
+  const [showModal, setShowModal] = useState(false);
+  const [formData, setFormData] = useState(data);
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target
+    const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [name]: type === 'checkbox' ? checked.toString() : value
-    })
-  }
+      [name]: type === 'checkbox' ? checked.toString() : value,
+    });
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-    onUpdate(formData)
-    setShowModal(false)
-  }
+    e.preventDefault();
+    onUpdate(formData);
+    setShowModal(false);
+  };
 
   return (
     <>
@@ -229,10 +227,12 @@ const EditButton = ({ data, onUpdate }) => {
                     type="checkbox"
                     name="checkReclamoForm"
                     checked={formData.checkReclamoForm === 'true'}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      checkReclamoForm: e.target.checked.toString()
-                    })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        checkReclamoForm: e.target.checked.toString(),
+                      })
+                    }
                     className="w-4 h-4"
                     required
                   />
@@ -244,10 +244,12 @@ const EditButton = ({ data, onUpdate }) => {
                     type="checkbox"
                     name="aceptaPoliticaPrivacidad"
                     checked={formData.aceptaPoliticaPrivacidad === 'true'}
-                    onChange={(e) => setFormData({
-                      ...formData,
-                      aceptaPoliticaPrivacidad: e.target.checked.toString()
-                    })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        aceptaPoliticaPrivacidad: e.target.checked.toString(),
+                      })
+                    }
                     className="w-4 h-4"
                     required
                   />
@@ -275,23 +277,22 @@ const EditButton = ({ data, onUpdate }) => {
         </div>
       )}
     </>
-  )
-}
-
+  );
+};
 
 export default function Page() {
-  const searchParams = useSearchParams()
-  const currentPage = searchParams.get('page') || 1
-  const [data, setData] = useState([])
-  const [totalItems, setTotalItems] = useState(0)
-  const [loading, setLoading] = useState(false)
-  const itemsPerPage = 20
-  const API_URL = "https://back.digimediamkt.com/api/reclamaciones";
+  const searchParams = useSearchParams();
+  const currentPage = searchParams.get('page') || 1;
+  const [data, setData] = useState([]);
+  const [totalItems, setTotalItems] = useState(0);
+  const [loading, setLoading] = useState(false);
+  const itemsPerPage = 20;
+  const API_URL = 'https://back.digimediamkt.com/api/reclamaciones';
   // const API_URL = "http://127.0.0.1:8000/api/reclamaciones"
-  const router = useRouter()
+  const router = useRouter();
 
   const transformData = (apiData) => {
-    return apiData.map(item => ({
+    return apiData.map((item) => ({
       id: item.id,
       nombre: item.nombre,
       apellido: item.apellido,
@@ -312,63 +313,57 @@ export default function Page() {
       'servicio contratado': item.servicioContratado,
       'reclamo persona': item.reclamoPerson,
       'aceptar terminos 1': item.checkReclamoForm === 'true' ? 'Sí' : 'No',
-      'aceptar terminos 2': item.aceptaPoliticaPrivacidad === 'true' ? 'Sí' : 'No',
-    }))
-  }
+      'aceptar terminos 2':
+        item.aceptaPoliticaPrivacidad === 'true' ? 'Sí' : 'No',
+    }));
+  };
 
   const fetchData = async (page) => {
-
-    setLoading(true)
+    setLoading(true);
     await fetch(`${API_URL}?page=${page}`, {
       headers: {
         Authorization: `Bearer ${getCookie('token')}`,
-      }
-    }).then((data) => {
-      if (data.status == 500) {
-        user_service.logoutClient(router);
-      } else {
-        return data.json()
-      }
-    }).then(data => {
-
-      setData(transformData(data.data))
-      setTotalItems(data.total)
-
-    }).catch(err => {
-      
-
-    }).finally(() => {
-      setLoading(false)
+      },
     })
-
-  }
+      .then((data) => {
+        if (data.status == 500) {
+          user_service.logoutClient(router);
+        } else {
+          return data.json();
+        }
+      })
+      .then((data) => {
+        setData(transformData(data.data));
+        setTotalItems(data.total);
+      })
+      .catch((err) => {})
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   const handleDelete = async (id) => {
-
     await fetch(`${API_URL}/${id}`, {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${getCookie('token')}`,
-      }
-    }).then(data => {
-
-      fetchData(currentPage)
-
-    }).catch(err => {
-      console.error('Error eliminando:', error)
-
+      },
     })
-  }
+      .then((data) => {
+        fetchData(currentPage);
+      })
+      .catch((err) => {
+        console.error('Error eliminando:', error);
+      });
+  };
 
   useEffect(() => {
-    const page = isNaN(currentPage) ? 1 : parseInt(currentPage)
-    fetchData(page)
-  }, [currentPage])
+    const page = isNaN(currentPage) ? 1 : parseInt(currentPage);
+    fetchData(page);
+  }, [currentPage]);
 
   return (
     <main className="p-4 overflow-scroll flex flex-col w-full h-[100vh] flex-1">
-      <h2 className="text-4xl font-bold mb-4">Libro de Reclamaciones</h2>
-
       {loading && <div className="text-center p-4">Cargando...</div>}
 
       <Table
@@ -376,10 +371,7 @@ export default function Page() {
         data={data}
         renderActions={(rowData) => (
           <div className="flex gap-2">
-            <DeleteButton
-              id={rowData.id}
-              onDelete={handleDelete}
-            />
+            <DeleteButton id={rowData.id} onDelete={handleDelete} />
           </div>
         )}
       />
@@ -389,5 +381,5 @@ export default function Page() {
         currentPage={isNaN(currentPage) ? 1 : parseInt(currentPage)}
       />
     </main>
-  )
+  );
 }
