@@ -13,6 +13,9 @@ export default function Clientes() {
     { src: "/image-home/NHL.svg", alt: "NHL logo"},
     { src: "/image-home/Tami.svg", alt: "Tami logo"},
     { src: "/image-home/Yuntas.svg", alt: "Yuntas logo"},
+    { src: "/image-home/prevemedic.svg", alt: "prevemedic logo"},
+    { src: "/image-home/MJ eventos.svg", alt: "MJ eventos logo"},
+    
   ];
 
   const slides = [
@@ -132,7 +135,7 @@ export default function Clientes() {
           <span className="text-[#752E75] text-3xl">&#10095;</span>
         </button>
       </div>
-      <div className="hidden md:flex justify-center items-center border-b-[1px] max-w-max m-auto border-[#752E75] flex-wrap">
+      <div className="hidden md:flex justify-center items-center border-b-[1px] max-w-max m-auto border-[#752E75] flex-wrap ">
         {clientes.map((cliente) => (
           <a
             key={cliente.alt}
@@ -140,7 +143,9 @@ export default function Clientes() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img className="w-52" src={cliente.src} alt={cliente.alt} />
+            <img className={`w-60 ${cliente.alt === "prevemedic logo" ? "scale-150" : ""}`} 
+              src={cliente.src} 
+              alt={cliente.alt}  />
           </a>
         ))}
       </div>
