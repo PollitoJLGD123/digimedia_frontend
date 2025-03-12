@@ -27,7 +27,7 @@ export default function Footer() {
                       width="24px"
                       height="24px"
                     />
-                    936 910 425
+                    983 027 828
                   </Link>
                 </li>
                 <li>
