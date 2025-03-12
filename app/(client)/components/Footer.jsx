@@ -149,7 +149,7 @@ export default function Footer() {
           <div className="barraFooter">
             <hr />
           </div>
-          <div className="rucFooter">
+          <div className="rucFooter text-white">
             <div className="ruc">
               <p>RUC: 20605116559</p>
             </div>
