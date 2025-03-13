@@ -18,6 +18,8 @@ export default function Clientes() {
     
   ];
 
+    {/* CARRUSEL RESPONSIVE */}
+
   const slides = [
     clientes[clientes.length - 1],
     ...clientes,
@@ -77,15 +79,19 @@ export default function Clientes() {
     startAutoSlide();
   };
 
+
+  {/* SECCIÓN NUESTROS CLIENTES */}
+
   return (
     <section className="my-6 mx-12">
       <h3 className="text-2xl text-[#752E75]">NUESTROS CLIENTES</h3>
 
       <div className="relative w-full md:hidden overflow-hidden" data-carousel="slide">
-        <div
-          className={`flex ${!noTransition ? "transition-transform duration-700 ease-in-out" : ""}`}
-          style={{ transform: `translateX(-${activeIndex * 100}%)` }}
-        >
+        
+        
+        <div className={`flex ${!noTransition ? "transition-transform duration-700 ease-in-out" : ""}`}
+          style={{ transform: `translateX(-${activeIndex * 100}%)` }}>
+
           {slides.map((cliente, index) => (
             <div key={index} className="flex-shrink-0 w-full h-56">
               <a href={cliente.link} target="_blank" rel="noopener noreferrer">
