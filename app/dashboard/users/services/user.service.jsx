@@ -1,16 +1,33 @@
 "use client"
 
-const api_url = "https://back.digimediamkt.com/api/user"
-// const api_url = "http://127.0.0.1:8000/api/user"
+//const api_url = "https://back.digimediamkt.com/api/user"
+const api_url = "http://127.0.0.1:8000/api/user"
 import { deleteCookie, getCookie } from "cookies-next";
 
 
 const user_service = {
     login: async (form) => {
-        return await fetch(`${api_url}/login`, {
+        try {
+            console.log(form)
+            const response = await fetch(`${api_url}/login`, {
             method: 'POST',
-            body: form,
-        }).then((data) => data.json());
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(form),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "Error en la autenticación");
+        }
+        return data;
+        } 
+        catch (error) {
+            console.error("Error en login:", error);
+            return { error: true, message: error.message };
+        }
     },
 
     userByPage: async (page) => {
