@@ -102,6 +102,8 @@ export default function Enlaces() {
     let [datashow, setData] = useState([])
     let [searchTerm, setSearchTerm] = useState("");
     let [dataLt, setDataLt] = useState(data.length)
+    let [noResults, setNoResults] = useState(false); // Estado para manejar si no hay resultados
+
 
     useEffect(() => {
         const filteredData = searchTerm !== "" ? articlesView(page, data.filter(
@@ -111,6 +113,7 @@ export default function Enlaces() {
                 article.description.toLowerCase().includes(searchTerm.toLowerCase())
         )) : articlesView(page);
 
+        setNoResults(filteredData.length === 0); // Si no hay resultados, cambiar estado a true
         setData(filteredData);
 
     }, [searchTerm, page]);
@@ -148,7 +151,11 @@ export default function Enlaces() {
                 <div className="flex flex-col-reverse lg:flex-row gap-6 justify-between">
                     <div className="flex-[0.7] grid gap-6 grid-cols-1 md:grid-cols-2 ">
 
-                        {datashow.map(({ image, title, category, description, url }, index) => (
+                    {noResults ? (
+                            <div className="col-span-2 flex justify-center items-center text-center text-lg text-red-500 h-full">No se han encontrado resultados</div>
+                        ) : (
+
+                        datashow.map(({ image, title, category, description, url }, index) => (
                             <article key={index} className="rounded-2xl shadow-xl bg-white overflow-hidden flex flex-col">
 
                                 <img src={`/blog/${image}`} className="w-full h-[150px] object-cover" />
@@ -167,8 +174,9 @@ export default function Enlaces() {
                                     </a>
                                 </div>
                             </article>
-                        ))}
-
+                        ))
+                        )}
+                        
 
                     </div>
 
