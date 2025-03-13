@@ -22,6 +22,8 @@ const user_service = {
         if (!response.ok) {
             throw new Error(data.message || "Error en la autenticación");
         }
+
+        console.log(data)
         return data;
         } 
         catch (error) {
