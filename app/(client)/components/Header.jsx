@@ -8,13 +8,16 @@ import './Header.css';
 export default function Header2() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isServiceOpen, setIsServiceOpen] = useState(false);
+  const [isMoreOpen, setIsMoreOpen] = useState(false);
 
   const isActive = (path) => pathname === path || pathname === `${path}/`;
 
-  const isServiceActive = pathname.startsWith('/servicios');
-  const isMoreActive = pathname.startsWith('/blog') || pathname.startsWith('/preguntas') || pathname.startsWith('/contacto');
-
-  const closeMenu = () => setMenuOpen(false);
+  const closeMenu = () => {
+    setMenuOpen(false);
+    setIsServiceOpen(false);
+    setIsMoreOpen(false);
+  };
 
   return (
     <header className="header">
@@ -40,28 +43,32 @@ export default function Header2() {
             <li className={isActive('/') ? 'active' : ''} onClick={closeMenu}>
               <Link href="/">Inicio</Link>
             </li>
-            <li className={isServiceActive ? 'active' : ''}>
+            <li className={isActive('/servicios') ? 'active' : ''} onClick={() => setIsServiceOpen(!isServiceOpen)}>
               <p>Servicios &#9660;</p>
-              <ul className="menuVertical">
-                <li className={isActive('/servicios/desing-desarrollo') ? 'active-sub' : ''} onClick={closeMenu}>
-                  <Link href="/servicios/desing-desarrollo">Diseño y Desarrollo Web</Link>
-                </li>
-                <li className={isActive('/servicios/gestion-redes') ? 'active-sub' : ''} onClick={closeMenu}>
-                  <Link href="/servicios/gestion-redes">Gestión de Redes Sociales</Link>
-                </li>
-                <li className={isActive('/servicios/marketing-gestion') ? 'active-sub' : ''} onClick={closeMenu}>
-                  <Link href="/servicios/marketing-gestion">Marketing y Gestión Digital</Link>
-                </li>
-                <li className={isActive('/servicios/branding-desing') ? 'active-sub' : ''} onClick={closeMenu}>
-                  <Link href="/servicios/branding-desing">Branding y Diseño</Link>
-                </li>
-              </ul>
+              {isServiceOpen && (
+                <ul className="menuVertical">
+                  <li className={isActive('/servicios/desing-desarrollo') ? 'active-sub' : ''} onClick={closeMenu}>
+                    <Link href="/servicios/desing-desarrollo">Diseño y Desarrollo Web</Link>
+                  </li>
+                  <li className={isActive('/servicios/gestion-redes') ? 'active-sub' : ''} onClick={closeMenu}>
+                    <Link href="/servicios/gestion-redes">Gestión de Redes Sociales</Link>
+                  </li>
+                  <li className={isActive('/servicios/marketing-gestion') ? 'active-sub' : ''} onClick={closeMenu}>
+                    <Link href="/servicios/marketing-gestion">Marketing y Gestión Digital</Link>
+                  </li>
+                  <li className={isActive('/servicios/branding-desing') ? 'active-sub' : ''} onClick={closeMenu}>
+                    <Link href="/servicios/branding-desing">Branding y Diseño</Link>
+                  </li>
+                </ul>
+              )}
             </li>
             <li className={isActive('/nosotros') ? 'active' : ''} onClick={closeMenu}>
               <Link href="/nosotros">Nosotros</Link>
             </li>
-            <li className={isMoreActive ? 'active' : ''}>
+            <li className={isActive('/blog') || isActive('/preguntas') || isActive('/contactanos') ? 'active' : ''} 
+                onClick={() => setIsMoreOpen(!isMoreOpen)}>
               <p>Más &#9660;</p>
+<<<<<<< Updated upstream
               <ul className="menuVertical">
                 <li className={isActive('/blog') ? 'active-sub' : ''} onClick={closeMenu}>
                   <Link href="/blog">Blog</Link>
@@ -73,6 +80,21 @@ export default function Header2() {
                   <Link href="/contactanos">Contacto</Link>
                 </li>
               </ul>
+=======
+              {isMoreOpen && (
+                <ul className="menuVertical">
+                  <li className={isActive('/blog') ? 'active-sub' : ''} onClick={closeMenu}>
+                    <Link href="/blog">Blog</Link>
+                  </li>
+                  <li className={isActive('/preguntas') ? 'active-sub' : ''} onClick={closeMenu}>
+                    <Link href="/preguntas">FQA</Link>
+                  </li>
+                  <li className={isActive('/contactanos') ? 'active-sub' : ''} onClick={closeMenu}>
+                    <Link href="/contactanos">Contacto</Link>
+                  </li>
+                </ul>
+              )}
+>>>>>>> Stashed changes
             </li>
             <li className={isActive('/login') ? 'active' : ''} onClick={closeMenu}>
               <Link href="/login">Ingresar</Link>
