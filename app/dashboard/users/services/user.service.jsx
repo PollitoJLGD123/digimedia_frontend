@@ -75,12 +75,24 @@ const user_service = {
     },
 
     userById: async (id) => {
-        return await fetch(`${api_url}/${id}`, {
-            method: "GET",
-            headers: {
-                "authorization": `Bearer ${getCookie('token')}`
+        try {
+            const response = await fetch(`${api_url}/${id}`, {
+                method: "GET",
+                headers: {
+                    "authorization": `Bearer ${getCookie('token')}`
+                }
+            });
+    
+            if (!response.ok) {
+                return { status: response.status, error: true };
             }
-        })
+    
+            const data = await response.json();
+            return data; 
+        } catch (error) {
+            console.error("Error al obtener usuario por ID:", error);
+            return { error: true, message: error.message };
+        }
     },
 
     update: async (form, id) => {
@@ -113,18 +125,20 @@ const user_service = {
                     "authorization": `Bearer ${getCookie('token')}`
                 }
             });
-            
-            //alerta de permisos
+    
+            // errores de permisos
             if (handlePermissionError(response)) {
                 return { error: true, status: 403 };
             }
-            
-            if (response.status === 500) {
-                user_service.logoutClient(router);
-                return { error: true, status: 500 };
+    
+            // devuelve un objeto apesar de que la respuesta no sea exitosa
+            if (!response.ok) {
+                return { status: response.status, error: true };
             }
-            
-            return response;
+    
+            // objeto si es que la respuesta es exitosa
+            const data = await response.json();
+            return data; // json
         } catch (error) {
             console.error("Error al eliminar usuario:", error);
             return { error: true, message: error.message };

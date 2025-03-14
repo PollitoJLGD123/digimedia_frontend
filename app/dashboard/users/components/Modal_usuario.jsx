@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import user_service from "../services/user.service";
 import { useRouter } from "next/navigation";
-import AuthGuard from "../../components/AuthGuard";
 
 export default function Modal_usuario({ isVisible, onclose, data }) {
     if (!isVisible) return null;

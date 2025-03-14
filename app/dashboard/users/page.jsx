@@ -68,52 +68,82 @@ export default function Page() {
 
   function onDelete(id) {
     Swal.fire({
-      title: '¿Estás seguro?',
-      text: "¡No podrás revertir esto!",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#6f4be8',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
+        title: '¿Estás seguro?',
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#6f4be8',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
     }).then((result) => {
-      if (result.isConfirmed) {
-        user_service
-          .delete(id)
-          .then((response) => {
-            if (response.status === 403) {
-              Swal.fire({
-                icon: 'error',
-                title: 'Acceso denegado',
-                text: 'No tienes los permisos necesarios para realizar esta acción.',
-                confirmButtonColor: '#6f4be8'
-              });
-            } else if (response.status === 500) {
-              user_service.logoutClient(router);
-            } else {
-              return response.json();
-            }
-          })
-          .then((data) => {
-            if (data) {
-              Swal.fire({
-                icon: 'success',
-                title: 'Eliminado',
-                text: 'El usuario ha sido eliminado correctamente.',
-                confirmButtonColor: '#6f4be8'
-              });
-              fetchProducts(); 
-            }
-          })
-          .catch((error) => {
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'Hubo un error al eliminar el usuario.',
-              confirmButtonColor: '#6f4be8'
-            });
-          });
-      }
+        if (result.isConfirmed) {
+            //console.log("Intentando eliminar usuario con ID:", id); 
+            user_service
+                .delete(id)
+                .then((response) => {
+                    //console.log("Respuesta del servidor:", response); 
+                    if (response.error) {
+                        //console.error("Error al eliminar usuario:", response); 
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Hubo un error al eliminar el usuario.',
+                            confirmButtonColor: '#6f4be8'
+                        });
+                    } else if (response.status === 200) {
+                        //console.log("Verificando si el usuario con ID:", id, "ya no existe"); 
+                        user_service.userById(id)
+                            .then((userResponse) => {
+                                //console.log("Respuesta de verificación:", userResponse); 
+                                if (userResponse.status === 404) {
+                                    console.log("Usuario con ID:", id, "eliminado correctamente"); 
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Eliminado',
+                                        text: 'El usuario ha sido eliminado correctamente.',
+                                        confirmButtonColor: '#6f4be8'
+                                    });
+                                    fetchProducts(); // Actualiza la lista de usuarios
+                                } else {
+                                    //console.error("El usuario con ID:", id, "todavía existe"); 
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: 'El usuario no se eliminó correctamente.',
+                                        confirmButtonColor: '#6f4be8'
+                                    });
+                                }
+                            })
+                            .catch((error) => {
+                                //console.error("Error al verificar el usuario:", error); 
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Hubo un error al verificar la eliminación del usuario.',
+                                    confirmButtonColor: '#6f4be8'
+                                });
+                            });
+                    } else {
+                        //console.error("Respuesta no exitosa:", response); 
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Hubo un error al eliminar el usuario.',
+                            confirmButtonColor: '#6f4be8'
+                        });
+                    }
+                })
+                .catch((error) => {
+                    //console.error("Error al eliminar usuario:", error); 
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Hubo un error al eliminar el usuario.',
+                        confirmButtonColor: '#6f4be8'
+                    });
+                });
+        }
     });
   }
 
