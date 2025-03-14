@@ -17,32 +17,24 @@ export default function LoginPage() {
     setLoading(true);
     setError(false);
 
-    const form = new FormData();
-    form.append('email', formData.email);
-    form.append('password', formData.password);
+    try {
+        const data = await userService.login(formData);
 
-    userService.login(form)
-      .then((data) => {
-
-        if (parseInt(data.status) === 200) {
-          // Guardar token en cookie en lugar de localStorage
-          setCookie('token', data.token, {
-            maxAge: 30 * 24 * 60 * 60, // 30 días
-            path: '/',
-          });
-          setCookie("user", JSON.stringify(data.data), {
-            maxAge: 30 * 24 * 60 * 60,
-            path: '/'
-          })
-          router.push('/dashboard/main');
-        } else {
-          setError(true);
-          setLoading(false);
+        if (data.error) {
+            throw new Error(data.message);
         }
-      }).catch(error => {
 
-      });
-  };
+        setCookie("token", data.token, { maxAge: 30 * 24 * 60 * 60, path: "/" });
+        setCookie("user", JSON.stringify(data.user), { maxAge: 30 * 24 * 60 * 60, path: "/" });
+
+        router.push("/dashboard/main");
+    } catch (error) {
+        setError(true);
+        console.error("Error en el inicio de sesión:", error.message);
+    } finally {
+        setLoading(false);
+    }
+};
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });

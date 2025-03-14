@@ -74,12 +74,6 @@
   margin: 0; /* Elimina márgenes por defecto */
 }
 
-/* Evita cambios de color al hacer hover */
-.rucFooter:hover p,
-.derechosFooter:hover p {
-  color: white;
-}
-
 /* Responsive */
 @media screen and (max-width: 910px) {
   .footerContenido {

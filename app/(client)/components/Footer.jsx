@@ -27,7 +27,7 @@ export default function Footer() {
                       width="24px"
                       height="24px"
                     />
-                    936 910 425
+                    983 027 828
                   </Link>
                 </li>
                 <li>
@@ -72,7 +72,9 @@ export default function Footer() {
                     Libro de reclamaciones
                   </Link>
                 </li>
+                <Link href="/nosotros">
                 <li>Trabaja con nosotros</li>
+                </Link>
               </ul>
             </div>
             <div className="redesFooter listaFooter">
@@ -149,7 +151,7 @@ export default function Footer() {
           <div className="barraFooter">
             <hr />
           </div>
-          <div className="rucFooter">
+          <div className="rucFooter text-white">
             <div className="ruc">
               <p>RUC: 20605116559</p>
             </div>

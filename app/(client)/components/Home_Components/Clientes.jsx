@@ -13,7 +13,13 @@ export default function Clientes() {
     { src: "/image-home/NHL.svg", alt: "NHL logo"},
     { src: "/image-home/Tami.svg", alt: "Tami logo"},
     { src: "/image-home/Yuntas.svg", alt: "Yuntas logo"},
+    { src: "/image-home/prevemedic.svg", alt: "prevemedic logo"},
+    { src: "/image-home/MJ eventos.svg", alt: "MJ eventos logo"},
+    { src: "/image-home/Asden.svg", alt: "Asden logo"},
+    
   ];
+
+    {/* CARRUSEL RESPONSIVE */}
 
   const slides = [
     clientes[clientes.length - 1],
@@ -74,15 +80,19 @@ export default function Clientes() {
     startAutoSlide();
   };
 
+
+  {/* SECCIÓN NUESTROS CLIENTES */}
+
   return (
     <section className="my-6 mx-12">
       <h3 className="text-2xl text-[#752E75]">NUESTROS CLIENTES</h3>
 
       <div className="relative w-full md:hidden overflow-hidden" data-carousel="slide">
-        <div
-          className={`flex ${!noTransition ? "transition-transform duration-700 ease-in-out" : ""}`}
-          style={{ transform: `translateX(-${activeIndex * 100}%)` }}
-        >
+        
+        
+        <div className={`flex ${!noTransition ? "transition-transform duration-700 ease-in-out" : ""}`}
+          style={{ transform: `translateX(-${activeIndex * 100}%)` }}>
+
           {slides.map((cliente, index) => (
             <div key={index} className="flex-shrink-0 w-full h-56">
               <a href={cliente.link} target="_blank" rel="noopener noreferrer">
@@ -132,7 +142,7 @@ export default function Clientes() {
           <span className="text-[#752E75] text-3xl">&#10095;</span>
         </button>
       </div>
-      <div className="hidden md:flex justify-center items-center border-b-[1px] max-w-max m-auto border-[#752E75] flex-wrap">
+      <div className="hidden md:flex justify-center items-center border-b-[1px] max-w-max m-auto border-[#752E75] flex-wrap ">
         {clientes.map((cliente) => (
           <a
             key={cliente.alt}
@@ -140,7 +150,9 @@ export default function Clientes() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <img className="w-52" src={cliente.src} alt={cliente.alt} />
+            <img className={`w-60 ${cliente.alt === "prevemedic logo" ? "scale-150" : ""}`} 
+              src={cliente.src} 
+              alt={cliente.alt}  />
           </a>
         ))}
       </div>
