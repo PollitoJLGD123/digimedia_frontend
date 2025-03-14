@@ -68,19 +68,6 @@ export default function Header2() {
             <li className={isActive('/blog') || isActive('/preguntas') || isActive('/contactanos') ? 'active' : ''} 
                 onClick={() => setIsMoreOpen(!isMoreOpen)}>
               <p>Más &#9660;</p>
-<<<<<<< Updated upstream
-              <ul className="menuVertical">
-                <li className={isActive('/blog') ? 'active-sub' : ''} onClick={closeMenu}>
-                  <Link href="/blog">Blog</Link>
-                </li>
-                <li className={isActive('/preguntas') ? 'active-sub' : ''} onClick={closeMenu}>
-                  <Link href="/preguntas">FQA</Link>
-                </li>
-                <li className={isActive('/contactanos') ? 'active-sub' : ''} onClick={closeMenu}>
-                  <Link href="/contactanos">Contacto</Link>
-                </li>
-              </ul>
-=======
               {isMoreOpen && (
                 <ul className="menuVertical">
                   <li className={isActive('/blog') ? 'active-sub' : ''} onClick={closeMenu}>
@@ -94,7 +81,6 @@ export default function Header2() {
                   </li>
                 </ul>
               )}
->>>>>>> Stashed changes
             </li>
             <li className={isActive('/login') ? 'active' : ''} onClick={closeMenu}>
               <Link href="/login">Ingresar</Link>
