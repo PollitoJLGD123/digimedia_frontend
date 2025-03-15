@@ -57,7 +57,7 @@ export default function Web() {
 <div className="flex justify-center md:justify-start w-full">
   <Main
     title="Desarrollo Web"
-    subtitle="Mejora la experiencia de tus usuarios"
+    subtitle="Vive la Experiencia en la Web"
     image="/servicios/uxui/img-main.png"
     className="custom-web2 py-10 md:py-20 text-center md:-ml-44"
   />
@@ -67,8 +67,12 @@ export default function Web() {
   {/* Texto flotante con nueva clase */}
   <div className="floating-text2">
     <p className="font-montserrat text-black text-lg md:text-xl font-extrabold uppercase tracking-wide">
-      Ofrecemos diseño UX para usabilidad y satisfacción, y UI para una interfaz atractiva.
-      Juntos, creamos productos digitales intuitivos, agradables y efectivos.
+      Aqui se enfocan en el diseño y posicionamiento web, desarrollo de tiendas virtuales,desarrollo,optimizacion
+      y Cloud Hosting para paginas web en Peru 
+
+      . Diseño responsivo 
+      . Paquete de diseño web 
+      . Diseño web WordPress
     </p>
   </div>
 </div>
