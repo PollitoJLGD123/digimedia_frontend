@@ -37,9 +37,9 @@
   @media (min-width: 1024px) {
     .floating-text2 {
       position: absolute;
-      top: -160px; /* Subir el texto */
-      right: -40%; /* Mueve el texto hacia la derecha correctamente */
-      width: -100%; /* Reduce el ancho para que no se vea muy extendido */
+      top: 30px; /* Subir el texto */
+      right: 34%; /* Mueve el texto hacia la derecha correctamente */
+      width: -10%; /* Reduce el ancho para que no se vea muy extendido */
       text-align: right; /* Alinea el texto a la derecha */
     }
   }
