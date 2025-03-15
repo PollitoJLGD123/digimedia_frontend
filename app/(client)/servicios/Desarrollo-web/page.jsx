@@ -4,9 +4,9 @@ import Main from '../components/Main';
 import ModalScroll from '../components/ModalScroll';
 import ModalButton from '../components/ModalButton';
 import Servicios from '../components/Servicios';
-import './globals.css';
+import './globales.css';
 
-export default function UXUI() {
+export default function Web() {
 
   const servicios = [
     {
@@ -56,16 +56,16 @@ export default function UXUI() {
 
 <div className="flex justify-center md:justify-start w-full">
   <Main
-    title="DISEÑOS UX Y UI"
+    title="Desarrollo Web"
     subtitle="Mejora la experiencia de tus usuarios"
     image="/servicios/uxui/img-main.png"
-    className="custom-uxui py-10 md:py-20 text-center md:-ml-44"
+    className="custom-web2 py-10 md:py-20 text-center md:-ml-44"
   />
 </div>
 
 <div className="relative w-full h-full">
   {/* Texto flotante con nueva clase */}
-  <div className="floating-text">
+  <div className="floating-text2">
     <p className="font-montserrat text-black text-lg md:text-xl font-extrabold uppercase tracking-wide">
       Ofrecemos diseño UX para usabilidad y satisfacción, y UI para una interfaz atractiva.
       Juntos, creamos productos digitales intuitivos, agradables y efectivos.
