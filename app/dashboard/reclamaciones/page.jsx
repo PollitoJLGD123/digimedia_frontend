@@ -288,6 +288,7 @@ export default function Page() {
   const [loading, setLoading] = useState(false);
   const itemsPerPage = 20;
   const API_URL = 'https://back.digimediamkt.com/api/reclamaciones';
+  
   // const API_URL = "http://127.0.0.1:8000/api/reclamaciones"
   const router = useRouter();
 
