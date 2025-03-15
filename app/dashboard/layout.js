@@ -2,19 +2,31 @@
 import '../globals.css';
 import Link from 'next/link';
 import AuthGuard from './components/AuthGuard';
-import user_service from './users/services/user.service';
+import auth_service from './users/services/auth.service';
 import { usePathname, useRouter } from 'next/navigation';
+import { getCookie } from 'cookies-next';
 
 export default function RootLayout({ children }) {
   const router = useRouter();
-
   const pathname = usePathname();
+  
+  // info usuario y rol
+  const userRole = getCookie('rol') || 'Usuario';
+  const userData = getCookie('user') ? JSON.parse(getCookie('user')) : { name: 'Usuario' };
+  const empleadoData = getCookie('empleado') ? JSON.parse(getCookie('empleado')) : null;
+  
+  const displayName = empleadoData?.nombre || userData?.name || 'Usuario';
 
   const handleLogout = async () => {
-    await user_service.logoutServer().then((data) => {
-      user_service.logoutClient(router);
-    });
+    try {
+      await auth_service.logout();
+      auth_service.logoutClient(router);
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+      auth_service.logoutClient(router);
+    }
   };
+  
   return (
     <AuthGuard>
       <div className="flex flex-col h-screen">
@@ -29,15 +41,28 @@ export default function RootLayout({ children }) {
           <div className="flex flex-col shrink-0 p-2 bg-[#e8e8e8]">
             <nav>
               <ul className="flex flex-col gap-1">
+                {/* Enlaces publicos */}
                 <TableLink title="Sección Principal" href="/dashboard/main" />
-                <TableLink
-                  title="Libro de Reclamaciones"
-                  href="/dashboard/reclamaciones"
-                />
+                
+                {auth_service.hasRole('administrador') && (
+                  <>
+                    <TableLink title="Usuarios" href="/dashboard/users" />
+                  </>
+                )}
+                
+                {/* aun no existe */}
+                {auth_service.hasRole('marketing') && (
+                  <TableLink title="Gestión de Contenido" href="/dashboard/content" />
+                )}
+
+                {/* aun no existe */}
+                {auth_service.hasRole('ventas') && (
+                  <TableLink title="Mis Pedidos" href="/dashboard/ventas" />
+                )}
+                
+                {/* links publicos */}
+                <TableLink title="Libro de Reclamaciones" href="/dashboard/reclamaciones" />
                 <TableLink title="Modales" href="/dashboard/modales" />
-                {user_service.isAdmin() ? (
-                  <TableLink title="Usuarios" href="/dashboard/users" />
-                ) : null}
               </ul>
             </nav>
 
@@ -45,7 +70,8 @@ export default function RootLayout({ children }) {
               <img src="/dashboard/user-icon.svg" alt="" width={40} />
               <p className="font-bold">
                 Bienvenido
-                <span className="font-normal block">Administrador</span>
+                <span className="font-normal block">{displayName} ({userRole})</span>
+                { console.log(document.cookie) }
               </p>
             </div>
             <button
@@ -61,6 +87,7 @@ export default function RootLayout({ children }) {
     </AuthGuard>
   );
 }
+
 function TableLink({ href, title }) {
   const pathname = usePathname();
   const isActive = pathname === href;
