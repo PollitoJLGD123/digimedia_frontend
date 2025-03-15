@@ -1,7 +1,7 @@
 export default function Table({ headers, data, onDelete, onUpdate }) {
   const headersList = headers.map((header, index) => {
     return (
-      <th key={index} className="p-2 bg-[#8c52ff] text-white rounded-xl">
+      <th key={`header-${header}`} className="p-2 bg-[#8c52ff] text-white rounded-xl">
         {header.toUpperCase()}
       </th>
     );
@@ -9,16 +9,16 @@ export default function Table({ headers, data, onDelete, onUpdate }) {
 
   const dataList = data.map((dataRow) => {
     const row = [];
-
+  
     for (let i = 0; i < headers.length; i++) {
       row.push(
-        <td key={i} className="p-2 rounded-xl">
+        <td key={`${dataRow.id}-${headers[i]}`} className="p-2 rounded-xl">
           {dataRow[headers[i]]}
         </td>
       );
     }
     row.push(
-      <td key={50} className="rounded-xl text-center">
+      <td key={`actions-${dataRow.id}`} className="rounded-xl text-center">
         <button onClick={() => onDelete(dataRow.id)} hidden={onDelete == false}>
           <img src="/dashboard/trash-icon.svg" className="w-8" alt="" />
         </button>
@@ -27,7 +27,7 @@ export default function Table({ headers, data, onDelete, onUpdate }) {
         </button>
       </td>
     );
-
+  
     return (
       <tr
         key={dataRow.id}

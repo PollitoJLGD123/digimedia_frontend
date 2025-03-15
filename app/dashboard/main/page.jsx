@@ -113,7 +113,7 @@ export default function Page() {
             data={data
               .slice((currentPage - 1) * 20, currentPage * 20)
               .map((contact) => {
-                const [fecha, hora] = contact.fecha_hora.split(' ');
+                const [fecha, hora] = contact.fecha_hora ? contact.fecha_hora.split(' ') : ['', ''];
                 return {
                   ...contact,
                   'email mark': contact.emailMarck,
