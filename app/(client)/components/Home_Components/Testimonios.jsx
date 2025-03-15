@@ -13,7 +13,7 @@ export default function Testimonios() {
       <div className="w-full md:w-1/2">
         <img
           className="h-full object-cover"
-          src="/image-home/OPINIONES.jpeg"
+          src="/image-home/opinions.jpeg"
           alt=""
         />
       </div>
