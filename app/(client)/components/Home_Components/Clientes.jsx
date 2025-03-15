@@ -15,6 +15,7 @@ export default function Clientes() {
     { src: "/image-home/Yuntas.svg", alt: "Yuntas logo"},
     { src: "/image-home/prevemedic.svg", alt: "prevemedic logo"},
     { src: "/image-home/MJ eventos.svg", alt: "MJ eventos logo"},
+    { src: "/image-home/Asden.svg", alt: "Asden logo"},
     
   ];
 
