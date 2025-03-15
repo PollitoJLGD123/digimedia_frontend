@@ -60,7 +60,7 @@ export default function Header2() {
                     <Link href="/servicios/branding-desing">Branding y Diseño</Link>
                   </li>
                   <li className={isActive('/servicios/desarrollo-Brief') ? 'active-sub' : ''} onClick={closeMenu}>
-                    <Link href="/servicios/Desarrollo-Brief">Desarrollo de Brief </Link>
+                    <Link href="/servicios/desarrollo-Brief">Desarrollo de Brief </Link>
                   </li>
                 </ul>
               )}
