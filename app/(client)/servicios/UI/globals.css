@@ -11,8 +11,8 @@
   overflow: hidden;
   margin-left: auto; /* Centra en móvil */
   margin-right: auto; /* Centra en móvil */
-  margin-top: 100px;
-  max-width: 600px;
+  margin-top: 20px;
+  max-width: 200px;
   height: auto;
 }
 
@@ -23,51 +23,61 @@
     text-align: left;
     margin-left: 0; /* Elimina el centrado */
     margin-right: auto; /* Empuja a la izquierda */
-    transform: translateX(-400px); /* Lo mueve más a la izquierda */
+    transform: translateX(0); /* Elimina el desplazamiento */
   }
 }
+
+/* Estilos para la sección principal con imagen y texto */
+.main-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  text-align: center;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .main-section {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+  }
+}
+
+/* Texto flotante */
 .floating-text {
   width: 100%;
   text-align: center; /* Centrado en móvil */
   padding: 0 1.5rem;
-  margin-top: 1.5rem; /* Espaciado en móvil */
+  margin-top: 0rem; /* Espaciado en móvil */
 }
 
-/* En pantallas grandes (PC), lo alineamos correctamente */
+
 @media (min-width: 1024px) {
   .floating-text {
     position: absolute;
     top: -160px; /* Subir el texto */
-    right: -40%; /* Mueve el texto hacia la derecha correctamente */
-    width: -100%; /* Reduce el ancho para que no se vea muy extendido */
-    text-align: right; /* Alinea el texto a la derecha */
+    right: -20%;
+    width: 80%; /* Ajuste el ancho */
+    text-align: right;
   }
 }
 
-.custom-uxui h1 {
-  font-size: 3rem;
-  font-weight: bold;
-  color: #000;
-  margin-bottom: 1rem;
-}
-
-.custom-uxui p {
-  font-size: 1.2rem;
-  max-width: 800px;
-  color: #333;
-}
-
-/* Contenedor de las características */
+/* Estilos de las características */
 .custom-uxui .features {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   gap: 2rem;
   margin-top: 2rem;
+  width: 100%;
 }
 
 .feature-item {
   text-align: center;
-  width: 250px;
+  width: 30%;
+  margin: 0;
 }
 
 .feature-item img {
@@ -85,6 +95,17 @@
   font-size: 1.1rem;
   font-weight: bold;
   color: #222;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
+
 }
 
+/* Estilos de texto y contenedores en desktop */
+@media (min-width: 1024px) {
+  .main-section h1 {
+    font-size: 3rem;
+  }
+
+  .main-section p {
+    font-size: 1.2rem;
+  }
+}
