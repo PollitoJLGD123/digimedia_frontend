@@ -1,6 +1,6 @@
 export default function Contactanos({ text, iconLeft, iconRight }) {
   return (
-    <section className="bg-[#7b22b3] text-white font-bold text-3xl text-center p-12 relative">
+    <section className="bg-[#7b22b3] text-white font-bold text-3xl text-center p-12 relative w-screen left-1/2 -translate-x-1/2">
       <p className="mb-8 z-10 relative">{text}</p>
       <button
         id="modal-button"
