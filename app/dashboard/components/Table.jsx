@@ -1,5 +1,5 @@
 export default function Table({ headers, data, onDelete, onUpdate }) {
-  const headersList = headers.map((header, index) => {
+  const headersList = headers.map((header) => {
     return (
       <th key={`header-${header}`} className="p-2 bg-[#8c52ff] text-white rounded-xl">
         {header.toUpperCase()}
@@ -7,7 +7,7 @@ export default function Table({ headers, data, onDelete, onUpdate }) {
     );
   });
 
-  const dataList = data.map((dataRow) => {
+  const dataList = data.map((dataRow, index) => {
     const row = [];
   
     for (let i = 0; i < headers.length; i++) {
@@ -30,7 +30,7 @@ export default function Table({ headers, data, onDelete, onUpdate }) {
   
     return (
       <tr
-        key={dataRow.id}
+        key={dataRow.id || `row-${index}`}
         className="odd:bg-[#e5e5e5] even:bg-[#f6f6f6] h-[56px]"
       >
         {row}
