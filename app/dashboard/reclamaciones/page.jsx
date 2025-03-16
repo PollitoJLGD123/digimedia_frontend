@@ -293,8 +293,9 @@ export default function Page() {
   const router = useRouter();
 
   const transformData = (apiData) => {
-    return apiData.map((item) => ({
-      id: item.id,
+    return apiData.map((item, index) => ({
+      ...item,
+      id: item.id || `reclamo-${index}`,
       nombre: item.nombre,
       apellido: item.apellido,
       documento: item.documento,
