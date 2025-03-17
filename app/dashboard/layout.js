@@ -50,7 +50,7 @@ export default function RootLayout({ children }) {
             <nav>
               <ul className="flex flex-col gap-1">
                 {/* Enlaces publicos */}
-                <Link title="Sección Principal" href="/dashboard/main" />
+                <TableLink title="Sección Principal" href="/dashboard/main" />
                 
                 {auth_service.hasRole('administrador') && (
                   <>
