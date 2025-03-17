@@ -12,19 +12,13 @@ import user_service from '../users/services/user.service';
 const API_BASE_URL = "http://127.0.0.1:8000/api/contactanos"
 
 const headers = [
-  'id_contacto',
+  'id_contactanos',
   'nombre',
   'email',
-  'servicio',
   'numero',
-  'mensaje',
-  'email mark',
-  'new',
-  'production',
   'fecha',
-  'hora',
   'estado',
-  'acciones',
+  'acciones'
 ];
 
 export default function Page() {
