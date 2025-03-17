@@ -8,8 +8,8 @@ import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import user_service from '../users/services/user.service';
 
-const API_BASE_URL = 'https://back.digimediamkt.com/api/contactanos';
-//const API_BASE_URL = "http://127.0.0.1:8000/api/contactanos"
+//const API_BASE_URL = 'https://back.digimediamkt.com/api/contactanos';
+const API_BASE_URL = "http://127.0.0.1:8000/api/contactanos"
 
 const headers = [
   'id_contacto',
