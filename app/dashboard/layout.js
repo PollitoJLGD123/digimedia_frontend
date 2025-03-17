@@ -42,7 +42,7 @@ export default function RootLayout({ children }) {
             <nav>
               <ul className="flex flex-col gap-1">
                 {/* Enlaces publicos */}
-                <TableLink title="Sección Principal" href="/dashboard/main" />
+                <Link title="Sección Principal" href="/dashboard/main" />
                 
                 {auth_service.hasRole('administrador') && (
                   <>
@@ -61,6 +61,7 @@ export default function RootLayout({ children }) {
                 )}
                 
                 {/* links publicos */}
+                <TableLink title="Libro de Reclamaciones" href="/dashboard/contactanos" />
                 <TableLink title="Libro de Reclamaciones" href="/dashboard/reclamaciones" />
                 <TableLink title="Modales" href="/dashboard/modales" />
               </ul>
