@@ -1,6 +1,8 @@
 "use client"
 
-const api_url = "http://127.0.0.1:8000/api/user";
+//const api_url = "http://127.0.0.1:8000/api/user";
+const api_url = "https://back.digimediamkt.com/api/user";
+
 import { getCookie } from "cookies-next";
 import auth_service from "./auth.service";
 import Swal from 'sweetalert2';

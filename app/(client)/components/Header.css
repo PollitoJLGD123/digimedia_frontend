@@ -5,7 +5,7 @@
   background-color: #7b22b3;
   box-shadow: 0px 2px 20px #333333;
   position: relative; 
-  z-index: 10;
+  z-index: 100;
 }
 
 .logoHeader img {

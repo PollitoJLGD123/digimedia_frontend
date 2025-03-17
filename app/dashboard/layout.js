@@ -71,7 +71,6 @@ export default function RootLayout({ children }) {
               <p className="font-bold">
                 Bienvenido
                 <span className="font-normal block">{displayName} ({userRole})</span>
-                { console.log(document.cookie) }
               </p>
             </div>
             <button

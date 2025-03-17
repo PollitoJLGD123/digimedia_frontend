@@ -112,10 +112,11 @@ export default function Page() {
             onUpdate={false}
             data={data
               .slice((currentPage - 1) * 20, currentPage * 20)
-              .map((contact) => {
-                const [fecha, hora] = contact.fecha_hora.split(' ');
+              .map((contact, index) => {
+                const [fecha, hora] = contact.fecha_hora ? contact.fecha_hora.split(' ') : ['', ''];
                 return {
                   ...contact,
+                  id: contact.id || `contact-${index}`,
                   'email mark': contact.emailMarck,
                   fecha,
                   hora,
