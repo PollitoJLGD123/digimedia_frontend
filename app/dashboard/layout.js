@@ -37,49 +37,48 @@ export default function RootLayout({ children }) {
             {pathname.slice(pathname.indexOf('/', 1) + 1, -1).toUpperCase()}
           </h1>
         </header>
-        <div className="flex w-[100vw] overflow-hidden">
-          <div className="flex flex-col shrink-0 p-2 bg-[#e8e8e8]">
+        <div className="flex w-[100vw] overflow-hidden h-screen">
+          <div className="flex flex-col shrink-0 p-2 bg-[#e8e8e8] justify-between">
             <nav>
               <ul className="flex flex-col gap-1">
                 {/* Enlaces publicos */}
-                <Link title="Sección Principal" href="/dashboard/main" />
+                <TableLink title="Seccion Principal" href="/dashboard/main" />
                 
                 {auth_service.hasRole('administrador') && (
-                  <>
                     <TableLink title="Usuarios" href="/dashboard/users" />
-                  </>
                 )}
                 
-                {/* aun no existe */}
                 {auth_service.hasRole('marketing') && (
                   <TableLink title="Gestión de Contenido" href="/dashboard/content" />
                 )}
 
-                {/* aun no existe */}
                 {auth_service.hasRole('ventas') && (
                   <TableLink title="Mis Pedidos" href="/dashboard/ventas" />
                 )}
-                
-                {/* links publicos */}
-                <TableLink title="Libro de Reclamaciones" href="/dashboard/contactanos" />
+
+                <TableLink title="Contactanos" href="/dashboard/contactanos" />
                 <TableLink title="Libro de Reclamaciones" href="/dashboard/reclamaciones" />
-                <TableLink title="Modales" href="/dashboard/modales" />
+                <TableLink title="Modales" href="/dashboard/modales"/>
               </ul>
             </nav>
 
-            <div className="flex mt-auto gap-2 items-center">
-              <img src="/dashboard/user-icon.svg" alt="" width={40} />
-              <p className="font-bold">
-                Bienvenido
-                <span className="font-normal block">{displayName} ({userRole})</span>
-              </p>
+            <div>
+              <div className="flex mt-auto gap-2 items-center">
+                <img src="/dashboard/user-icon.svg" alt="" width={40} />
+                <p className="font-bold">
+                  Bienvenido
+                  <span className="font-normal block">{displayName} ({userRole})</span>
+                </p>
+              </div>
+              <div className="flex items-center justify-center">
+                <button
+                  onClick={handleLogout}
+                  className=" bg-[#ff037f] text-white px-4 py-3 rounded-full justify-center my-3"
+                >
+                  Cerrar sesión
+                </button>
+              </div>
             </div>
-            <button
-              onClick={handleLogout}
-              className="flex gap-2 bg-[#ff037f] text-white px-4 py-3 rounded-full justify-center my-3"
-            >
-              Cerrar sesión
-            </button>
           </div>
           {children}
         </div>
