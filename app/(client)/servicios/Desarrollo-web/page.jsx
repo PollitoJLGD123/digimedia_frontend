@@ -35,15 +35,22 @@ export default function Web() {
     <div className="relative min-h-screen flex flex-col items-center bg-gray-100">
       
       {/* Imagen de fondo con mejor responsividad */}
-      <div className="absolute inset-0 bg-cover bg-center opacity-30 md:opacity-40 lg:opacity-50" 
-        style={{ backgroundImage: "url('/servicios/DiseñoUI/Digimediaui.jpg')" }}>
+      <div className="absolute inset-0 w-full h-full opacity-30 md:opacity-40 lg:opacity-50"
+  style={{ 
+    backgroundImage: "url('/servicios/DiseñoUI/Digimediaui.jpg')",
+    backgroundSize: "cover", // La imagen se estira horizontalmente sin deformarse
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    width: "100%", // Se expande a todo el ancho disponible
+    height: "42%", // Asegura que ocupe el espacio del contenedor sin salir del límite
+  }}>
       </div>
 
       <div className="relative z-10 w-full max-w-screen-lg px-4">
         <ModalScroll
           text="¡MEJORA TU EXPERIENCIA DIGITAL!"
           fondo="/servicios/desarrollo/modal-scroll/fondo.webp"
-          title="DISEÑOS UX Y UI ATRACTIVOS"
+          title="Desarollo Web"
           serviceName="2"
         />
 
@@ -64,24 +71,29 @@ export default function Web() {
 </div>
 
 <div className="relative w-full h-full">
-  {/* Texto flotante con nueva clase */}
+  {/* Texto flotante 2 */}
   <div className="floating-text2">
     <p className="font-montserrat text-black text-lg md:text-xl font-extrabold uppercase tracking-wide">
-      Aqui se enfocan en el diseño y posicionamiento web, desarrollo de tiendas virtuales,desarrollo,optimizacion
-      y Cloud Hosting para paginas web en Peru 
-
-      . Diseño responsivo 
-      . Paquete de diseño web 
-      . Diseño web WordPress
+      Aquí se enfocan en el diseño y posicionamiento web, desarrollo de tiendas virtuales, desarrollo, optimización
+      y Cloud Hosting para páginas web en Perú.
     </p>
+  </div>
+
+  {/* Lista de características en viñetas (Texto flotante 3) */}
+  <div className="floating-text3">
+    <ul className="features-list font-montserrat text-black text-lg md:text-xl font-extrabold uppercase tracking-wide">
+      <li>Diseño responsivo</li>
+      <li>Paquete de diseño web</li>
+      <li>Diseño web WordPress</li>
+    </ul>
   </div>
 </div>
 
         {/* Nueva sección específica para esta página, colocada más abajo */}
-      <div className="relative z-10 mt-[520px] px 100"> 
+        <div className="relative z-10 mt-[860px] md:mt-[300px] lg:mt-[550px] px-4">
         <Description
-          title="Diseño de Experiencia de Usuario (UX) y Diseño de Interfaz (UI)"
-          text="Nos enfocamos en crear experiencias digitales centradas en los usuarios, mejorando la usabilidad y la interacción con los productos digitales."
+          title="Desarollo Web"
+          text="Impulsamos tu presencia digital con soluciones de desarrollo web innovadoras, funcionales y optimizadas para el éxito."
         />
 
 <Servicios servicios={servicios} />

@@ -35,8 +35,15 @@ export default function UXUI() {
     <div className="relative min-h-screen flex flex-col items-center bg-gray-100">
       
       {/* Imagen de fondo con mejor responsividad */}
-      <div className="absolute inset-0 bg-cover bg-center opacity-30 md:opacity-40 lg:opacity-50" 
-        style={{ backgroundImage: "url('/servicios/DiseñoUI/Digimediaui.jpg')" }}>
+      <div className="absolute inset-0 w-full h-full opacity-30 md:opacity-40 lg:opacity-50"
+  style={{ 
+    backgroundImage: "url('/servicios/DiseñoUI/Digimediaui.jpg')",
+    backgroundSize: "cover", // La imagen se estira horizontalmente sin deformarse
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    width: "100%", // Se expande a todo el ancho disponible
+    height: "42%", // Asegura que ocupe el espacio del contenedor sin salir del límite
+  }}>
       </div>
 
       <div className="relative z-10 w-full max-w-screen-lg px-4">
@@ -66,10 +73,12 @@ export default function UXUI() {
 <div className="relative w-full h-full">
   {/* Texto flotante con nueva clase */}
   <div className="floating-text">
+    
     <p className="font-montserrat text-black text-lg md:text-xl font-extrabold uppercase tracking-wide">
       Ofrecemos diseño UX para usabilidad y satisfacción, y UI para una interfaz atractiva.
       Juntos, creamos productos digitales intuitivos, agradables y efectivos.
     </p>
+    
   </div>
 </div>
 
@@ -78,25 +87,44 @@ export default function UXUI() {
 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 px-4">
   {/* Primer bloque */}
   <div className="flex flex-col items-center md:items-start md:translate-x-[-70px] md:translate-y-[30px]">
-    <p className="font-montserrat text-black text-lg md:text-xl font-extrabold uppercase tracking-wide">USABILIDAD Y SATISFACCIÓN</p>
+    <p className="font-montserrat text-black text-lg md:text-xl font-extrabold uppercase tracking-wide"
+    style={{
+      fontWeight: "bold",
+      color: "#6a0dad", // Morado vibrante
+      textShadow: "3px 3px 10px rgba(106, 13, 173, 0.8)",
+    }}
+    
+    >USABILIDAD Y SATISFACCIÓN</p>
     <img src="/servicios/DiseñoUI/servicio12.jpg" alt="Usabilidad y satisfacción" className="w-60 h-auto mt-4" />
   </div>
 
   {/* Segundo bloque */}
   <div className="flex flex-col items-center md:items-center md:translate-x-[10px] md:translate-y-[30px]">
-    <p className="font-montserrat text-black text-lg md:text-xl font-extrabold uppercase tracking-wide">CREATIVIDAD</p>
+    <p className="font-montserrat text-black text-lg md:text-xl font-extrabold uppercase tracking-wide"
+    style={{
+      fontWeight: "bold",
+      color: "#6a0dad", // Morado vibrante
+      textShadow: "3px 3px 10px rgba(106, 13, 173, 0.8)",
+    }}
+    >CREATIVIDAD</p>
     <img src="/servicios/DiseñoUI/servicios13.jpg" alt="Creatividad" className="w-60 h-auto mt-4" />
   </div>
 
   {/* Tercer bloque */}
   <div className="flex flex-col items-center md:items-end md:translate-x-[70px] md:translate-y-[30px]">
-    <p className="font-montserrat text-black text-lg md:text-xl font-extrabold uppercase tracking-wide">INTERFAZ VISUAL</p>
+    <p className="font-montserrat text-black text-lg md:text-xl font-extrabold uppercase tracking-wide"
+    style={{
+      fontWeight: "bold",
+      color: "#6a0dad", // Morado vibrante
+      textShadow: "3px 3px 10px rgba(106, 13, 173, 0.8)",
+    }}
+    >INTERFAZ VISUAL</p>
     <img src="/servicios/DiseñoUI/servicio14.jpg" alt="Interfaz visual" className="w-60 h-auto mt-4" />
   </div>
 </div>
 
         {/* Nueva sección específica para esta página, colocada más abajo */}
-      <div className="relative z-10 mt-[120px] px 100"> 
+        <div className="relative z-10 mt-[-3px] md:mt-[300px] lg:mt-[150px] px-4">
         <Description
           title="Diseño de Experiencia de Usuario (UX) y Diseño de Interfaz (UI)"
           text="Nos enfocamos en crear experiencias digitales centradas en los usuarios, mejorando la usabilidad y la interacción con los productos digitales."

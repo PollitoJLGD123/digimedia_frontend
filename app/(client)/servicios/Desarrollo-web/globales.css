@@ -26,24 +26,71 @@
       transform: translateX(-400px); /* Lo mueve más a la izquierda */
     }
   }
+  /* 🌟 Estilos para Floating Text 2 */
+.floating-text2 {
+  width: 100%;
+  text-align: center; 
+  padding: 0 1.5rem;
+  font-size: clamp(1rem, 2.5vw, 2rem);
+  font-weight: bold;
+  color: #007bff;
+  text-shadow: 3px 3px 10px rgba(0, 123, 255, 0.8);
+  transition: all 0.3s ease-in-out;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* 📱 Versión Móvil: Baja solo el texto 2 sin afectar otros */
+@media (max-width: 1023px) {
   .floating-text2 {
-    width: 100%;
-    text-align: center; /* Centrado en móvil */
-    padding: 0 1.5rem;
-    margin-top: 1.5rem; /* Espaciado en móvil */
+    top: 200px; /* Solo afecta a Floating Text 2 */
   }
-  
-  /* En pantallas grandes (PC), lo alineamos correctamente */
-  @media (min-width: 1024px) {
-    .floating-text2 {
-      position: absolute;
-      top: 30px; /* Subir el texto */
-      right: 34%; /* Mueve el texto hacia la derecha correctamente */
-      width: -10%; /* Reduce el ancho para que no se vea muy extendido */
-      text-align: right; /* Alinea el texto a la derecha */
-    }
+}
+
+/* 🖥 Versión PC */
+@media (min-width: 1024px) {
+  .floating-text2 {
+    top: 70px;
+    left: -15%;
+    max-width: 500px;
+    text-align: left;
   }
-  
+}
+
+/* 🌟 Estilos para Floating Text 3 */
+.floating-text3 {
+  width: 100%;
+  text-align: center; 
+  padding: 0 1.5rem;
+  font-size: clamp(1rem, 2.5vw, 2rem);
+  font-weight: bold;
+  color: #ff4b2b;
+  text-shadow: 3px 3px 10px rgba(255, 75, 43, 0.8);
+  transition: all 0.3s ease-in-out;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* 📱 Versión Móvil: Baja solo el texto 3 sin afectar otros */
+@media (max-width: 1023px) {
+  .floating-text3 {
+    top: 520px; /* Solo afecta a Floating Text 3 */
+  }
+}
+
+/* 🖥 Versión PC */
+@media (min-width: 1024px) {
+  .floating-text3 {
+    top: 300px;
+    left: -14%;
+    max-width: 500px;
+    text-align: left;
+  }
+}
+
+
   .custom-web2 h1 {
     font-size: 3rem;
     font-weight: bold;
