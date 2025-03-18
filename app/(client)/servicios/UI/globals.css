@@ -26,6 +26,14 @@
     transform: translateX(-400px); /* Lo mueve más a la izquierda */
   }
 }
+
+.floating-text {
+  font-weight: bold;
+  color: #ff4b2b;
+  text-shadow: 3px 3px 10px rgba(255, 75, 43, 0.8);
+  transition: all 0.3s ease-in-out;
+}
+
 .floating-text {
   width: 100%;
   text-align: center; /* Centrado en móvil */
