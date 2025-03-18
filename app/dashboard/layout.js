@@ -2,19 +2,39 @@
 import '../globals.css';
 import Link from 'next/link';
 import AuthGuard from './components/AuthGuard';
-import user_service from './users/services/user.service';
+import auth_service from './users/services/auth.service';
 import { usePathname, useRouter } from 'next/navigation';
+import { getCookie } from 'cookies-next';
+import { useState } from 'react';
 
 export default function RootLayout({ children }) {
   const router = useRouter();
-
   const pathname = usePathname();
+  
+  // info usuario y rol
+  const userRole = getCookie('rol') || 'Usuario';
+  const userData = getCookie('user') ? JSON.parse(getCookie('user')) : { name: 'Usuario' };
+  const empleadoData = getCookie('empleado') ? JSON.parse(getCookie('empleado')) : null;
+  
+  const displayName = empleadoData?.nombre || userData?.name || 'Usuario';
+
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleLogout = async () => {
-    await user_service.logoutServer().then((data) => {
-      user_service.logoutClient(router);
-    });
+    setIsLoggingOut(true);
+    try {
+      await auth_service.logout();
+      setTimeout(() => {
+        auth_service.logoutClient(router);
+      }, 350);
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+      setTimeout(() => {
+        auth_service.logoutClient(router);
+      }, 1000);
+    }
   };
+  
   return (
     <AuthGuard>
       <div className="flex flex-col h-screen">
@@ -25,35 +45,48 @@ export default function RootLayout({ children }) {
             {pathname.slice(pathname.indexOf('/', 1) + 1, -1).toUpperCase()}
           </h1>
         </header>
-        <div className="flex w-[100vw] overflow-hidden">
-          <div className="flex flex-col shrink-0 p-2 bg-[#e8e8e8]">
+        <div className="flex w-[100vw] overflow-hidden h-screen">
+          <div className="flex flex-col shrink-0 p-2 bg-[#e8e8e8] justify-between">
             <nav>
               <ul className="flex flex-col gap-1">
-                <TableLink title="Sección Principal" href="/dashboard/main" />
-                <TableLink
-                  title="Libro de Reclamaciones"
-                  href="/dashboard/reclamaciones"
-                />
-                <TableLink title="Modales" href="/dashboard/modales" />
-                {user_service.isAdmin() ? (
-                  <TableLink title="Usuarios" href="/dashboard/users" />
-                ) : null}
+                {/* Enlaces publicos */}
+                <TableLink title="Seccion Principal" href="/dashboard/main" />
+                
+                {auth_service.hasRole('administrador') && (
+                    <TableLink title="Usuarios" href="/dashboard/users" />
+                )}
+                
+                {auth_service.hasRole('marketing') && (
+                  <TableLink title="Gestión de Contenido" href="/dashboard/content" />
+                )}
+
+                {auth_service.hasRole('ventas') && (
+                  <TableLink title="Mis Pedidos" href="/dashboard/ventas" />
+                )}
+
+                <TableLink title="Contactanos" href="/dashboard/contactanos" />
+                <TableLink title="Libro de Reclamaciones" href="/dashboard/reclamaciones" />
+                <TableLink title="Modales" href="/dashboard/modales"/>
               </ul>
             </nav>
 
-            <div className="flex mt-auto gap-2 items-center">
-              <img src="/dashboard/user-icon.svg" alt="" width={40} />
-              <p className="font-bold">
-                Bienvenido
-                <span className="font-normal block">Administrador</span>
-              </p>
+            <div>
+              <div className="flex mt-auto gap-2 items-center">
+                <img src="/dashboard/user-icon.svg" alt="" width={40} />
+                <p className="font-bold">
+                  Bienvenido
+                  <span className="font-normal block">{displayName} ({userRole})</span>
+                </p>
+              </div>
+              <div className="flex items-center justify-center">
+                <button
+                  onClick={handleLogout}
+                  className=" bg-[#ff037f] text-white px-4 py-3 rounded-full justify-center my-3"
+                >
+                  Cerrar sesión
+                </button>
+              </div>
             </div>
-            <button
-              onClick={handleLogout}
-              className="flex gap-2 bg-[#ff037f] text-white px-4 py-3 rounded-full justify-center my-3"
-            >
-              Cerrar sesión
-            </button>
           </div>
           {children}
         </div>
@@ -61,6 +94,7 @@ export default function RootLayout({ children }) {
     </AuthGuard>
   );
 }
+
 function TableLink({ href, title }) {
   const pathname = usePathname();
   const isActive = pathname === href;

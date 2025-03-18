@@ -287,13 +287,15 @@ export default function Page() {
   const [totalItems, setTotalItems] = useState(0);
   const [loading, setLoading] = useState(false);
   const itemsPerPage = 20;
-  const API_URL = 'https://back.digimediamkt.com/api/reclamaciones';
-  // const API_URL = "http://127.0.0.1:8000/api/reclamaciones"
+  //const API_URL = 'https://back.digimediamkt.com/api/reclamaciones';
+  
+  const API_URL = "http://127.0.0.1:8000/api/reclamaciones"
   const router = useRouter();
 
   const transformData = (apiData) => {
-    return apiData.map((item) => ({
-      id: item.id,
+    return apiData.map((item, index) => ({
+      ...item,
+      id: item.id || `reclamo-${index}`,
       nombre: item.nombre,
       apellido: item.apellido,
       documento: item.documento,
