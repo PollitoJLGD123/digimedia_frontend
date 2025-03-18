@@ -8,14 +8,14 @@ export default function Clientes() {
   const intervalRef = useRef(null);
   const timeoutRef = useRef(null); 
   const clientes = [
-    { src: "/image-home/ContigoVoy.svg", alt: "Contigo Voy logo"},
-    { src: "/image-home/Digimedia.svg", alt: "Digimedia logo"},
-    { src: "/image-home/NHL.svg", alt: "NHL logo"},
-    { src: "/image-home/Tami.svg", alt: "Tami logo"},
-    { src: "/image-home/Yuntas.svg", alt: "Yuntas logo"},
+    { src: "/image-home/contigo_voy.svg", alt: "Contigo Voy logo"},
+    { src: "/image-home/digimedia.svg", alt: "Digimedia logo"},
+    { src: "/image-home/nhl.svg", alt: "NHL logo"},
+    { src: "/image-home/tami.svg", alt: "Tami logo"},
+    { src: "/image-home/yuntas.svg", alt: "Yuntas logo"},
     { src: "/image-home/prevemedic.svg", alt: "prevemedic logo"},
-    { src: "/image-home/MJ eventos.svg", alt: "MJ eventos logo"},
-    { src: "/image-home/Asden.svg", alt: "Asden logo"},
+    { src: "/image-home/mj_eventos.svg", alt: "MJ eventos logo"},
+    { src: "/image-home/asden.svg", alt: "Asden logo"},
     
   ];
 

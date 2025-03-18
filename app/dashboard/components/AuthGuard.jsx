@@ -43,9 +43,9 @@ export default function AuthGuard({ children, requiredRole = null }) {
         // verificar uno o varios roles
         if (requiredRole) {
           // convierte a array si es un string con formato "rol1,rol2,rol3"
-          const rolesArray = requiredRole.includes(',') 
-            ? requiredRole.split(',').map(role => role.trim())
-            : [requiredRole];
+          const rolesArray = requiredRole && requiredRole.includes(',') 
+          ? requiredRole.split(',').map(role => role.trim())
+          : requiredRole ? [requiredRole] : [];
             
           // verifica si el usuario tiene al menos uno de los roles requeridos
           const hasRequiredRole = rolesArray.some(role => 

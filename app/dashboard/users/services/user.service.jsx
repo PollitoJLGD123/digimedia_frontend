@@ -1,46 +1,26 @@
 "use client"
 
 const api_url = "http://127.0.0.1:8000/api/user";
+//const api_url = "https://back.digimediamkt.com/api/user";
+
 import { getCookie } from "cookies-next";
 import auth_service from "./auth.service";
 import Swal from 'sweetalert2';
 
 const handlePermissionError = (response) => {
     if (response.status === 403) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Acceso denegado',
-        text: 'No tienes los permisos necesarios para realizar esta acción.',
-        confirmButtonColor: '#6f4be8'
-      });
-      return true;
+        Swal.fire({
+            icon: 'error',
+            title: 'Acceso denegado',
+            text: 'No tienes los permisos necesarios para realizar esta acción.',
+            confirmButtonColor: '#6f4be8'
+        });
+        return true;
     }
     return false;
   };
 
 const user_service = {
-    login: async (form) => {
-        try {
-            const response = await fetch(`${api_url}/login`, {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(form),
-            });
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message || "Error en la autenticación");
-            }
-            return data;
-        }   
-        catch (error) {
-            console.error("Error en login:", error);
-            return { error: true, message: error.message };
-        }
-    },
 
     userByPage: async (page) => {
         return await fetch(`${api_url}?page=${page}`, {
