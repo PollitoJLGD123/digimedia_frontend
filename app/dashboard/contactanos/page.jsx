@@ -16,7 +16,6 @@ const headers = [
   'nombre',
   'email',
   'numero',
-  'fecha',
   'estado',
   'acciones'
 ];
