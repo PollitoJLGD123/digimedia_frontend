@@ -60,12 +60,14 @@ export default function Header2() {
                     <Link href="/servicios/branding-desing">Branding y Diseño</Link>
                   </li>
                   <li className={isActive('/servicios/UI') ? 'active-sub' : ''} onClick={closeMenu}>
-                    <Link href="/servicios/UI">Diseño UX/UI</Link>
-                  
+                    <Link href="/servicios/UI">Diseño UX/UI</Link> 
                   </li>
                   <li className={isActive('/servicios/Desarrollo-web') ? 'active-sub' : ''} onClick={closeMenu}>
                     <Link href="/servicios/Desarrollo-web">Diseño Web</Link>
-                    </li>
+                  </li>
+                  <li className={isActive('/servicios/Desarrollo-Brief') ? 'active-sub' : ''} onClick={closeMenu}>
+                    <Link href="/servicios/Desarrollo-Brief">Desarrollo Y Brief</Link>
+                  </li>
                 </ul>
               )}
             </li>
