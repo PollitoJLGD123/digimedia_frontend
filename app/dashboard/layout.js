@@ -5,6 +5,7 @@ import AuthGuard from './components/AuthGuard';
 import auth_service from './users/services/auth.service';
 import { usePathname, useRouter } from 'next/navigation';
 import { getCookie } from 'cookies-next';
+import { useState } from 'react';
 
 export default function RootLayout({ children }) {
   const router = useRouter();
@@ -17,13 +18,20 @@ export default function RootLayout({ children }) {
   
   const displayName = empleadoData?.nombre || userData?.name || 'Usuario';
 
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
   const handleLogout = async () => {
+    setIsLoggingOut(true);
     try {
       await auth_service.logout();
-      auth_service.logoutClient(router);
+      setTimeout(() => {
+        auth_service.logoutClient(router);
+      }, 350);
     } catch (error) {
       console.error("Error al cerrar sesión:", error);
-      auth_service.logoutClient(router);
+      setTimeout(() => {
+        auth_service.logoutClient(router);
+      }, 1000);
     }
   };
   
