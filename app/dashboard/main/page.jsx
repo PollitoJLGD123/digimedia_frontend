@@ -44,7 +44,7 @@ export default function Page() {
     const telefono = empleadoData?.telefono || 'No disponible';
 
     return (
-        <div className="w-full p-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+        <div className="w-full p-8 bg-white rounded-xl shadow-lg">
             <h1 className="text-3xl font-bold text-[#8c52ff] mb-8">Perfil del Empleado</h1>
             
             <div className="flex flex-col md:flex-row">
@@ -53,14 +53,14 @@ export default function Page() {
                         <span className="text-6xl font-bold">{nombre.charAt(0)}{apellido.charAt(0)}</span>
                     </div>
                     <h1 className="text-2xl font-bold text-[#8c52ff] mb-2">{displayName}</h1>
-                    <p className="text-gray-600 dark:text-gray-300">{userRole}</p>
+                    <p className="text-gray-600">{userRole}</p>
                 </div>
                 
                 <div className="md:w-2/3 md:pl-8">
                     <h2 className="text-xl font-semibold text-[#8c52ff] mb-4">Información Personal</h2>
                     
-                    <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-6 mb-6">
-                        <ul className="space-y-4 text-gray-700 dark:text-gray-300">
+                    <div className="bg-gray-100 rounded-lg p-6 mb-6">
+                        <ul className="space-y-4 text-gray-700">
                             <li className="flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-[#8c52ff]" viewBox="0 0 20 20" fill="currentColor">
                                     <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
@@ -74,9 +74,8 @@ export default function Page() {
                                 <span className="font-semibold mr-2">Apellido:</span> {apellido}
                             </li>
                             <li className="flex items-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-[#8c52ff]" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fillRule="evenodd" d="M4 4a2 2 0 012-2h8a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2-1a1 1 0 00-1 1v12a1 1 0 001 1h8a1 1 0 001-1V4a1 1 0 00-1-1H6z" clipRule="evenodd" />
-                                </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-[#8c52ff]" viewBox="0 0 24 24"><path fill="currentColor" d="M3 18h18V6H3zM1 5a1 1 0 0 1 1-1h20a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1zm8 5a1 1 0 1 0-2 0a1 1 0 0 0 2 0m2 0a3 3 0 1 1-6 0a3 3 0 0 1 6 0m-2.998 6c-.967 0-1.84.39-2.475 1.025l-1.414-1.414A5.5 5.5 0 0 1 8.002 14a5.5 5.5 0 0 1 3.889 1.61l-1.414 1.415A3.5 3.5 0 0 0 8.002 16M13 9v6h2V9zm4 0v6h2V9z"/>
+                            </svg>
                                 <span className="font-semibold mr-2">DNI:</span> {dni}
                             </li>
                             <li className="flex items-center">
@@ -96,7 +95,7 @@ export default function Page() {
                     </div>
                     
                     <h2 className="text-xl font-semibold text-[#8c52ff] mb-4">Acceso al Sistema</h2>
-                    <div className="bg-gray-100 dark:bg-gray-700 rounded-lg p-6">
+                    <div className="bg-gray-100 rounded-lg p-6">
                         <div className="flex items-center mb-4">
                             <div className="flex-shrink-0 h-10 w-10 rounded-full bg-[#8c52ff] flex items-center justify-center text-white">
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -104,7 +103,7 @@ export default function Page() {
                                 </svg>
                             </div>
                             <div className="ml-4">
-                                <h3 className="text-lg font-medium text-gray-800 dark:text-white">Rol de Usuario</h3>
+                                <h3 className="text-lg font-medium text-gray-800">Rol de Usuario</h3>
                                 <p className="text-[#8c52ff] font-semibold">{userRole}</p>
                             </div>
                         </div>
