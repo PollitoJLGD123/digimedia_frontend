@@ -51,7 +51,7 @@ export default function RootLayout({ children }) {
               <ul className="flex flex-col gap-1">
                 {/* Enlaces publicos */}
                 <TableLink title="Sección Principal" href="/dashboard/main" />
-                
+                <TableLink title="Empleados" href="/dashboard/empleados" />
                 {auth_service.hasRole('administrador') && (
                     <TableLink title="Usuarios" href="/dashboard/users" />
                 )}
