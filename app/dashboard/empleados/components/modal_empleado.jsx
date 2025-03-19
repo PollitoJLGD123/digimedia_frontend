@@ -54,7 +54,7 @@ export default function modal_empleado({ isVisible, onclose, data }) {
 
         setButtonStatus(false);
 
-        empleado_service.updatePass(form, data.id)
+        empleado_service.updatePass(form, data.id_empleado)
             .then((response) => {
                 if (response.status == 500) {
                     user_service.logoutClient(router);
@@ -132,30 +132,27 @@ export default function modal_empleado({ isVisible, onclose, data }) {
             telefono: formData.telefono,
             id_rol: formData.id_rol
         };
-
+    
         if (formData.password) {
             form.password = formData.password;
         }
-
+    
         setButtonStatus(false);
-
-        empleado_service.update(form, data.id)
+    
+        empleado_service.update(form, data.id_empleado)
             .then((response) => {
                 if (response.status == 500) {
                     user_service.logoutClient(router);
                 } else {
-                    return response.json();
-                }
-            })
-            .then((data) => {
-                if (parseInt(data.status) == 200) {
-                    setError({ status: false, message: "Empleado actualizado correctamente" });
-                    setTimeout(() => {
-                        onclose();
-                    }, 3000);
-                } else {
-                    setError({ status: true, message: "Hubo un error al actualizar el empleado" });
-                    setButtonStatus(true);
+                    if (parseInt(response.status) == 200) {
+                        setError({ status: false, message: "Empleado actualizado correctamente" });
+                        setTimeout(() => {
+                            onclose();
+                        }, 3000);
+                    } else {
+                        setError({ status: true, message: "Hubo un error al actualizar el empleado" });
+                        setButtonStatus(true);
+                    }
                 }
             })
             .catch((error) => {
@@ -212,14 +209,13 @@ export default function modal_empleado({ isVisible, onclose, data }) {
                     </fieldset>
 
                     <fieldset className="flex flex-col gap-3">
-                        <label hidden={data != null} className="font-medium text-md" htmlFor="email">
+                        <label className="font-medium text-md" htmlFor="email">
                             Correo
                         </label>
                         <input
                             id="email"
                             onChange={handleChange}
                             value={formData.email}
-                            hidden={data != null}
                             className="border-solid border-gray-300 border-[0.5px] py-2 px-4 outline-none"
                             type="email"
                         />
