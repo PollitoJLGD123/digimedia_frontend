@@ -18,6 +18,7 @@ export default function Table({ headers, data, onDelete, onUpdate, onShow }) {
 
       row.push(
           <td key={`actions-${dataRow.id}`} className="rounded-xl text-center align-middle">
+            
             <button onClick={() => onShow(dataRow.id)} className="mx-1">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -33,11 +34,13 @@ export default function Table({ headers, data, onDelete, onUpdate, onShow }) {
                         <path d="M2 12c1.6-4.097 5.336-7 10-7s8.4 2.903 10 7c-1.6 4.097-5.336 7-10 7s-8.4-2.903-10-7" />
                     </svg>
               </button>
-              <button onClick={() => onDelete(dataRow.id)} hidden={onDelete == false} className="mx-1">
-                  <img src="/dashboard/trash-icon.svg" className="w-8" alt="" />
-              </button>
+              
               <button onClick={() => onUpdate(dataRow.id)} hidden={onUpdate == false} className="mx-1">
                   <img src="/dashboard/edit-icon.svg" className="w-8" alt="" />
+              </button>
+
+              <button onClick={() => onDelete(dataRow.id)} hidden={onDelete == false} className="mx-1">
+                  <img src="/dashboard/trash-icon.svg" className="w-8" alt="" />
               </button>
               
           </td>

@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { getCookie } from 'cookies-next';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
 
 export default function Page() {
@@ -9,7 +9,9 @@ export default function Page() {
     const [empleadoData, setEmpleadoData] = useState(null);
     const [userRole, setUserRole] = useState('Usuario');
     const [isClient, setIsClient] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const searchParams = useSearchParams();
+    const router = useRouter();
 
     const empleadoId = searchParams.get('id_empleado');
     const api_url = "http://127.0.0.1:8000/api/empleados";
@@ -28,11 +30,12 @@ export default function Page() {
                         text: 'No tienes permiso para ver este perfil.',
                         confirmButtonColor: '#6f4be8'
                     });
+                    setIsLoading(false); // detener loader
                     return;
                 }
     
                 try {
-                    const token = getCookie('token'); // Obtén el token de las cookies
+                    const token = getCookie('token');
                     if (!token) {
                         throw new Error('No se encontró el token de autenticación');
                     }
@@ -47,7 +50,6 @@ export default function Page() {
     
                     if (!response.ok) {
                         if (response.status === 401) {
-                            // Token inválido o expirado
                             deleteCookie('token'); // Elimina el token de las cookies
                             router.push('/login'); // Redirige al usuario al login
                         }
@@ -70,6 +72,8 @@ export default function Page() {
                         text: 'Hubo un error al cargar el perfil del empleado.',
                         confirmButtonColor: '#6f4be8'
                     });
+                } finally {
+                    setIsLoading(false); // en cualquier caso, detener el loader
                 }
             } else {
                 // Solo cargar cookies si NO hay ID en la URL
@@ -80,15 +84,21 @@ export default function Page() {
                 if (empleadoCookie) setEmpleadoData(JSON.parse(empleadoCookie));
                 if (userCookie) setUserData(JSON.parse(userCookie));
                 if (rolCookie) setUserRole(rolCookie);
+                setIsLoading(false); //detener loader
             }
         };
     
         loadData();
     }, [empleadoId]);
 
-    // renderiza un placeholder en lo que se cargan los datos (si no estamos en el cliente)
-    if (!isClient) {
-        return <div className="w-full p-8">Cargando perfil...</div>;
+    // renderiza un loader en lo que cargan los datos
+    if (isLoading) {
+        return (
+            <div className="w-full p-8 flex justify-center items-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#8c52ff]"></div>
+                <p className="ml-4 text-[#8c52ff]">Cargando perfil...</p>
+            </div>
+        );
     }
 
     // user data
@@ -100,8 +110,18 @@ export default function Page() {
     const telefono = empleadoData?.telefono || 'No disponible';
 
     return (
-
+        
         <div className="w-full p-8 bg-white rounded-xl shadow-lg">
+            {empleadoId && (
+                <button
+                onClick={() => router.push('/dashboard/empleados')} 
+                className="mb-4 bg-[#8c52ff] text-white py-2 px-6 rounded-full hover:bg-[#7a45e6] transition-colors duration-300 flex items-center gap-2"
+            > 
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-5" viewBox="0 0 1024 1024"><path fill="currentColor" d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64"/><path fill="currentColor" d="m237.248 512l265.408 265.344a32 32 0 0 1-45.312 45.312l-288-288a32 32 0 0 1 0-45.312l288-288a32 32 0 1 1 45.312 45.312z"/></svg>
+                Atrás
+            </button>
+            
+            )}
             <h1 className="text-3xl font-bold text-[#8c52ff] mb-8">Perfil del Empleado</h1>
             
             <div className="flex flex-col md:flex-row">
