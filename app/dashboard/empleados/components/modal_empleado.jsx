@@ -59,18 +59,15 @@ export default function modal_empleado({ isVisible, onclose, data }) {
                 if (response.status == 500) {
                     user_service.logoutClient(router);
                 } else {
-                    return response.json();
-                }
-            })
-            .then((data) => {
-                if (parseInt(data.status) == 200) {
-                    setError({ status: false, message: "Contraseña actualizada correctamente" });
-                    setTimeout(() => {
-                        onclose();
-                    }, 3000);
-                } else {
-                    setError({ status: true, message: "Hubo un error al actualizar la contraseña" });
-                    setButtonStatus(true);
+                    if (parseInt(response.status) == 200) {
+                        setError({ status: false, message: "Contraseña actualizada correctamente" });
+                        setTimeout(() => {
+                            onclose();
+                        }, 1000);
+                    } else {
+                        setError({ status: true, message: "Hubo un error al actualizar la contraseña" });
+                        setButtonStatus(true);
+                    }
                 }
             })
             .catch((error) => {
@@ -109,7 +106,7 @@ export default function modal_empleado({ isVisible, onclose, data }) {
                         setError({ status: false, message: "Empleado creado correctamente" });
                         setTimeout(() => {
                             onclose();
-                        }, 3000);
+                        }, 1000);
                     } else {
                         setError({ status: true, message: "Hubo un error al crear el empleado" });
                         setButtonStatus(true);
@@ -148,7 +145,7 @@ export default function modal_empleado({ isVisible, onclose, data }) {
                         setError({ status: false, message: "Empleado actualizado correctamente" });
                         setTimeout(() => {
                             onclose();
-                        }, 3000);
+                        }, 1000);
                     } else {
                         setError({ status: true, message: "Hubo un error al actualizar el empleado" });
                         setButtonStatus(true);

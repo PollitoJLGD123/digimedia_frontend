@@ -46,17 +46,26 @@ const empleado_service = {
 
     empleadoById: async (id) => {
         try {
+            if (!id) {
+                return { status: 400, error: true, message: "ID no proporcionado" };
+            }
+            
             const response = await fetch(`${api_url}/${id}`, {
                 method: "GET",
                 headers: {
                     "authorization": `Bearer ${getCookie('token')}`
                 }
             });
-
+    
+            if (response.status === 500) {
+                console.error("Error del servidor al obtener empleado:", id);
+                return { status: 500, error: true, message: "Error interno del servidor" };
+            }
+    
             if (!response.ok) {
                 return { status: response.status, error: true };
             }
-
+    
             const data = await response.json();
             return data; 
         } catch (error) {
@@ -142,17 +151,19 @@ const empleado_service = {
                     "authorization": `Bearer ${getCookie('token')}`
                 }
             });
-
+    
+            // verifica permisos
             if (handlePermissionError(response)) {
                 return { error: true, status: 403 };
             }
-
+    
+            // éxito
             if (!response.ok) {
                 return { status: response.status, error: true };
             }
-
+    
             const data = await response.json();
-            return data; 
+            return data;
         } catch (error) {
             console.error("Error al eliminar empleado:", error);
             return { error: true, message: error.message };

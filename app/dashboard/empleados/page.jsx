@@ -46,9 +46,16 @@ export default function Page() {
     
             if (parseInt(response.status) === 200) {
                 if (response.total > 0) {
-                    setData(response.data);
-                    setCount(response.total);
+        
+                    const transformedData = response.data.map(item => ({
+                        ...item,
+                        id: item.id_empleado 
+                    }));
+
+                    setData(transformedData);
+                    setCount(transformedData.total);
                 }
+                
             } else {
                 setError(true);
                 setLoading(false);
@@ -76,8 +83,12 @@ export default function Page() {
             cancelButtonText: 'Cancelar'
         }).then((result) => {
             if (result.isConfirmed) {
-                empleado_service
-                    .delete(id)
+                const deleteButton = document.querySelector(`button[data-id="${id}"]`);
+                if (deleteButton) {
+                    deleteButton.disabled = true;
+                }
+    
+                empleado_service.delete(id)
                     .then((response) => {
                         if (response.error) {
                             Swal.fire({
@@ -87,34 +98,13 @@ export default function Page() {
                                 confirmButtonColor: '#6f4be8'
                             });
                         } else if (response.status === 200) {
-                            empleado_service.empleadoById(id)
-                                .then((empleadoResponse) => {
-                                    if (empleadoResponse.status === 404) {
-                                        Swal.fire({
-                                            icon: 'success',
-                                            title: 'Eliminado',
-                                            text: 'El empleado ha sido eliminado correctamente.',
-                                            confirmButtonColor: '#6f4be8'
-                                        });
-                                        fetchEmpleados(); 
-                                    } else {
-                                        Swal.fire({
-                                            icon: 'error',
-                                            title: 'Error',
-                                            text: 'El empleado no se eliminó correctamente.',
-                                            confirmButtonColor: '#6f4be8'
-                                        });
-                                    }
-                                })
-                                .catch((error) => {
-                                    console.error("Error al verificar el empleado:", error);
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Error',
-                                        text: 'Hubo un error al verificar la eliminación del empleado.',
-                                        confirmButtonColor: '#6f4be8'
-                                    });
-                                });
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Eliminado',
+                                text: 'El empleado ha sido eliminado correctamente.',
+                                confirmButtonColor: '#6f4be8'
+                            });
+                            fetchEmpleados(); 
                         } else {
                             Swal.fire({
                                 icon: 'error',
@@ -132,6 +122,11 @@ export default function Page() {
                             text: 'Hubo un error al eliminar el empleado.',
                             confirmButtonColor: '#6f4be8'
                         });
+                    })
+                    .finally(() => {
+                        if (deleteButton) {
+                            deleteButton.disabled = false;
+                        }
                     });
             }
         });
