@@ -2,17 +2,22 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import { getCookie } from 'cookies-next';
+
+
+//const API_BASE_URL = 'https://back.digimediamkt.com/api/contactanos';
+const API_BASE_URL = "http://127.0.0.1:8000/api/contactanos"
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
-    name: "",
+    nombre: "",
     email: "",
-    phone: "",
-    message: "",
+    numero: "",
+    mensaje: "",
   });
   const [loading, setLoading] = useState(false);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,40 +27,46 @@ const ContactForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setSuccessMessage("");
-    setErrorMessage("");
 
     try {
-      const response = await fetch("https://back.digimediamkt.com/api/contactanos", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          nombre: formData.name,
-          email: formData.email,
-          servicio: "Servicio de contacto",
-          numero: formData.phone,
-          mensaje: formData.message,
-        }),
-      });
+      const response = await axios.post(`${API_BASE_URL}`, formData, {
+          headers: {
+            Authorization: `Bearer ${getCookie('token')}`,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+        }
+      );
 
-      if (response.ok) {
-        const data = await response.json();
-        setSuccessMessage(data.message || "Mensaje enviado exitosamente.");
+      if (response.status === 201) {
+        Swal.fire({
+          title: "Mensaje Enviado Correctamente",
+          text: "Nos pondremos en contacto contigo lo antes posible.",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
         setFormData({
-          name: "",
+          nombre: "",
           email: "",
-          phone: "",
-          message: "",
+          numero: "",
+          mensaje: "",
         });
       } else {
-        const errorData = await response.json();
-        setErrorMessage(errorData.error || "Error al enviar el formulario.");
+        Swal.fire({
+          title: "Error",
+          text: "No se envio el contacto correctamente.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
       }
     } catch (error) {
-      setErrorMessage("Hubo un problema al conectar con el servidor.");
-      console.error(error);
+      Swal.fire({
+        title: "Error",
+        text: "Ocurrió un error inesperado.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -77,10 +88,10 @@ const ContactForm = () => {
         >
           <input
             type="text"
-            id="name"
-            name="name"
+            id="nombre"
+            name="nombre"
             placeholder="Nombre"
-            value={formData.name}
+            value={formData.nombre}
             onChange={handleChange}
             required
           />
@@ -106,11 +117,11 @@ const ContactForm = () => {
           transition={{ duration: 0.5, delay: 0.9 }}
         >
           <input
-            type="tel"
-            id="phone"
-            name="phone"
-            placeholder="Número"
-            value={formData.phone}
+            type="text"
+            id="numero"
+            name="numero"
+            placeholder="Teléfono"
+            value={formData.numero}
             onChange={handleChange}
             required
           />
@@ -121,11 +132,11 @@ const ContactForm = () => {
           transition={{ duration: 0.5, delay: 1.2 }}
         >
           <textarea
-            id="message"
-            name="message"
+            id="mensaje"
+            name="mensaje"
             placeholder="Mensaje"
             rows="10"
-            value={formData.message}
+            value={formData.mensaje}
             onChange={handleChange}
             required
           ></textarea>
@@ -139,8 +150,6 @@ const ContactForm = () => {
             {loading ? "Enviando..." : "Enviar mensaje"} <span className="icon">📩</span>
           </button>
         </motion.div>
-        {successMessage && <p className="success-message">{successMessage}</p>}
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
       </form>
     </motion.div>
   );
