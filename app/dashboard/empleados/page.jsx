@@ -10,7 +10,7 @@ import user_service from '../users/services/user.service';
 import { useRouter } from 'next/navigation';
 import Swal from 'sweetalert2';
 
-const headers = ['id_empleado', 'nombre', 'apellido', 'email', 'dni', 'telefono', 'id_rol'];
+const headers = ['id_empleado', 'nombre', 'apellido', 'email', 'dni', 'telefono', 'rol'];
 
 export default function Page() {
     const searchParams = useSearchParams();
@@ -20,6 +20,20 @@ export default function Page() {
     const [modal, setModal] = useState(false);
     const [dataUpd, setdataUpdate] = useState(null);
     const router = useRouter();
+
+    const handleShow = async (id) => {
+        try {
+            router.push(`/dashboard/main?id_empleado=${id}`);
+        } catch (error) {
+            console.error("Error al cargar el perfil del empleado:", error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Hubo un error al cargar el perfil del empleado.',
+                confirmButtonColor: '#6f4be8'
+            });
+        }
+    };
 
     async function setEmpleados(page) {
         
@@ -158,6 +172,7 @@ export default function Page() {
                     data={data}
                     onDelete={onDelete}
                     onUpdate={onUpdate}
+                    onShow={handleShow}
                 />
                 <Pagination count={count} />
                 <Modal_empleado

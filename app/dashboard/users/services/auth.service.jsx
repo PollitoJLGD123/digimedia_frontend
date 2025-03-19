@@ -3,7 +3,7 @@
 const api_url = "http://127.0.0.1:8000/api";
 //const api_url = "https://back.digimediamkt.com/api";
 
-import { deleteCookie, getCookie } from "cookies-next";
+import { deleteCookie, getCookie, setCookie } from "cookies-next";
 
 const auth_service = {
     register: async (form) => {
@@ -29,7 +29,7 @@ const auth_service = {
         }
     },
 
-    login: async (form) => {
+    ogin: async (form) => {
         try {
             const response = await fetch(`${api_url}/login`, {
                 method: 'POST',
@@ -38,12 +38,15 @@ const auth_service = {
                 },
                 body: JSON.stringify(form),
             });
-
+    
             const data = await response.json();
-
+    
             if (!response.ok) {
                 throw new Error(data.message || "Error en la autenticación");
             }
+    
+            setCookie('token', data.token, { maxAge: 60 * 60 * 24 }); // Expira en 1 día
+    
             return data;
         } 
         catch (error) {

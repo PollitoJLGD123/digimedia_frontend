@@ -1,34 +1,90 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { getCookie } from 'cookies-next';
+import { useSearchParams } from 'next/navigation';
+import Swal from 'sweetalert2';
 
 export default function Page() {
     const [userData, setUserData] = useState(null);
     const [empleadoData, setEmpleadoData] = useState(null);
     const [userRole, setUserRole] = useState('Usuario');
     const [isClient, setIsClient] = useState(false);
+    const searchParams = useSearchParams();
+
+    const empleadoId = searchParams.get('id_empleado');
+    const api_url = "http://127.0.0.1:8000/api/empleados";
 
     useEffect(() => {
-        // solo ejecuta codigo en el cliente
         setIsClient(true);
         
-        // datos de cookies
-        const userCookie = getCookie('user');
-        const empleadoCookie = getCookie('empleado');
-        const rolCookie = getCookie('rol');
-        
-        if (userCookie) {
-            setUserData(JSON.parse(userCookie));
-        }
-        
-        if (empleadoCookie) {
-            setEmpleadoData(JSON.parse(empleadoCookie));
-        }
-        
-        if (rolCookie) {
-            setUserRole(rolCookie);
-        }
-    }, []);
+        const loadData = async () => {
+            if (empleadoId) {
+                const userRole = getCookie('rol'); 
+                console.log("userRole:", userRole);
+                if (userRole !== 'administrador') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Acceso denegado',
+                        text: 'No tienes permiso para ver este perfil.',
+                        confirmButtonColor: '#6f4be8'
+                    });
+                    return;
+                }
+    
+                try {
+                    const token = getCookie('token'); // Obtén el token de las cookies
+                    if (!token) {
+                        throw new Error('No se encontró el token de autenticación');
+                    }
+    
+                    const response = await fetch(`${api_url}/${empleadoId}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                    });
+    
+                    if (!response.ok) {
+                        if (response.status === 401) {
+                            // Token inválido o expirado
+                            deleteCookie('token'); // Elimina el token de las cookies
+                            router.push('/login'); // Redirige al usuario al login
+                        }
+                        throw new Error(`Error ${response.status}: ${response.statusText}`);
+                    }
+    
+                    const data = await response.json();
+                    
+                    if (data.status === 200) {
+                        setEmpleadoData(data.data);
+                        setUserRole(data.data.rol?.nombre || 'Usuario');
+                    } else {
+                        console.error("Empleado no encontrado:", data.message);
+                    }
+                } catch (error) {
+                    console.error("Error API:", error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Hubo un error al cargar el perfil del empleado.',
+                        confirmButtonColor: '#6f4be8'
+                    });
+                }
+            } else {
+                // Solo cargar cookies si NO hay ID en la URL
+                const userCookie = getCookie('user');
+                const empleadoCookie = getCookie('empleado');
+                const rolCookie = getCookie('rol');
+                
+                if (empleadoCookie) setEmpleadoData(JSON.parse(empleadoCookie));
+                if (userCookie) setUserData(JSON.parse(userCookie));
+                if (rolCookie) setUserRole(rolCookie);
+            }
+        };
+    
+        loadData();
+    }, [empleadoId]);
 
     // renderiza un placeholder en lo que se cargan los datos (si no estamos en el cliente)
     if (!isClient) {
@@ -44,6 +100,7 @@ export default function Page() {
     const telefono = empleadoData?.telefono || 'No disponible';
 
     return (
+
         <div className="w-full p-8 bg-white rounded-xl shadow-lg">
             <h1 className="text-3xl font-bold text-[#8c52ff] mb-8">Perfil del Empleado</h1>
             

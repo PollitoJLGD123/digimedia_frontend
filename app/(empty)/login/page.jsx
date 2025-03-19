@@ -52,9 +52,9 @@ export default function LoginPage() {
       if (auth_service.isAdmin()) {
         router.push("/dashboard/main");
       } else if (auth_service.hasRole('marketing')) {
-        router.push("/dashboard/content");
+        router.push("/dashboard/main");
       } else if (auth_service.hasRole('ventas')) {
-        router.push("/dashboard/orders");
+        router.push("/dashboard/main");
       } else {
         // redirec default
         router.push("/dashboard/main");
