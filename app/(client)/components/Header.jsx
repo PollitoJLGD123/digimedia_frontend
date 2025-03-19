@@ -65,6 +65,9 @@ export default function Header2() {
                   <li className={isActive('/servicios/planificacion-cronograma') ? 'active-sub' : ''} onClick={closeMenu}>
                     <Link href="/servicios/planificacion-cronograma">Planificacion y cronograma</Link>
                   </li>
+                  <li className={isActive('/servicios/diseno-pautas') ? 'active-sub' : ''} onClick={closeMenu}>
+                    <Link href="/servicios/diseno-pautas">Diseño de Pautas</Link>
+                  </li>
                 </ul>
               )}
             </li>
