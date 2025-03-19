@@ -122,24 +122,33 @@ const empleado_service = {
 
     updatePass: async (form, id) => {
         try {
+            // Asegurar que el id esté presente en el cuerpo de la solicitud
+            const requestBody = { ...form };
+            if (!requestBody.id) {
+                requestBody.id = id;
+            }
+    
+            console.log('Enviando solicitud de cambio de contraseña:', requestBody);
+            
             const response = await fetch(`${api_url}/pass/${id}`, {
                 method: "PUT",
                 headers: {
-                    "Content-Type": "application/json",
-                    "authorization": `Bearer ${getCookie('token')}`
+                    'Content-Type': 'application/json',
+                    "Authorization": `Bearer ${getCookie('token')}`
                 },
-                body: JSON.stringify(form)
+                body: JSON.stringify(requestBody)
             });
-
-            if (!response.ok) {
-                return { status: response.status, error: true };
-            }
-
-            const data = await response.json();
-            return data; 
+    
+            console.log('Respuesta del servidor (status):', response.status);
+            
+            // Devolver la respuesta para procesar en el componente
+            return response;
         } catch (error) {
-            console.error("Error al actualizar contraseña del empleado:", error);
-            return { status: 500, error: true, message: error.message };
+            console.error("Error en la solicitud de actualización de contraseña:", error);
+            return new Response(JSON.stringify({
+                error: true,
+                message: "Error de conexión al servidor"
+            }), { status: 500 });
         }
     },
 

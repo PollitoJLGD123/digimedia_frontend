@@ -29,7 +29,7 @@ const auth_service = {
         }
     },
 
-    ogin: async (form) => {
+    login: async (form) => {
         try {
             const response = await fetch(`${api_url}/login`, {
                 method: 'POST',
@@ -45,7 +45,7 @@ const auth_service = {
                 throw new Error(data.message || "Error en la autenticación");
             }
     
-            setCookie('token', data.token, { maxAge: 60 * 60 * 24 }); // Expira en 1 día
+            setCookie('token', data.token, { maxAge: 60 * 60 * 24 }); 
     
             return data;
         } 

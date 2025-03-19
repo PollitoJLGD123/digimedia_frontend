@@ -2,6 +2,12 @@
 import { useEffect, useState } from 'react';
 import { getCookie } from 'cookies-next';
 import { useSearchParams, useRouter } from 'next/navigation';
+
+import ModalEmpleado from '../empleados/components/modal_empleado';
+import ModalUpdatePass from '../empleados/components/modal_update_password';
+
+
+
 import Swal from 'sweetalert2';
 
 export default function Page() {
@@ -10,8 +16,12 @@ export default function Page() {
     const [userRole, setUserRole] = useState('Usuario');
     const [isClient, setIsClient] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+
     const searchParams = useSearchParams();
     const router = useRouter();
+
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [showPasswordModal, setShowPasswordModal] = useState(false);
 
     const empleadoId = searchParams.get('id_empleado');
     const api_url = "http://127.0.0.1:8000/api/empleados";
@@ -76,7 +86,7 @@ export default function Page() {
                     setIsLoading(false); // en cualquier caso, detener el loader
                 }
             } else {
-                // Solo cargar cookies si NO hay ID en la URL
+                // solo cargar cookies si NO hay ID en la URL
                 const userCookie = getCookie('user');
                 const empleadoCookie = getCookie('empleado');
                 const rolCookie = getCookie('rol');
@@ -131,7 +141,37 @@ export default function Page() {
                     </div>
                     <h1 className="text-2xl font-bold text-[#8c52ff] mb-2">{displayName}</h1>
                     <p className="text-gray-600">{userRole}</p>
+                    <div className="mt-4 flex gap-2 justify-center">
+                        <button
+                            onClick={() => setShowEditModal(true)}
+                            className="bg-blue-500 text-white py-2 px-4 rounded-lg font-bold"
+                        >
+                            Editar Perfil
+                        </button>
+                        <button
+                            onClick={() => setShowPasswordModal(true)}
+                            className="bg-green-500 text-white py-2 px-4 rounded-lg font-bold"
+                        >
+                            Cambiar Contraseña
+                        </button>
+                    </div>
                 </div>
+
+                {/* Modales */}
+                {showEditModal && (
+                    <ModalEmpleado
+                        isVisible={showEditModal}
+                        onclose={() => setShowEditModal(false)}
+                        data={empleadoData}
+                    />
+                )}
+                {showPasswordModal && (
+                    <ModalUpdatePass
+                        isVisible={showPasswordModal}
+                        onClose={() => setShowPasswordModal(false)}
+                        empleadoId={empleadoData?.id_empleado}
+                    />
+                )}
                 
                 <div className="md:w-2/3 md:pl-8">
                     <h2 className="text-xl font-semibold text-[#8c52ff] mb-4">Información Personal</h2>
