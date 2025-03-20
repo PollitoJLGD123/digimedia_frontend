@@ -4,9 +4,9 @@ import Main from '../components/Main';
 import ModalScroll from '../components/ModalScroll';
 import ModalButton from '../components/ModalButton';
 import Servicios from '../components/Servicios';
-import './globales.css';
+import './globals.css';
 
-export default function Web() {
+export default function UXUI() {
 
   const servicios = [
     {
@@ -32,7 +32,7 @@ export default function Web() {
   ];
   
   return (
-    <div className="relative min-h-screen flex flex-col items-center bg-gray-100">
+    <div className="relative min-h-screen flex flex-col items-center bg-gray-100 overflow-x-hidden">
       
       {/* Imagen de fondo con mejor responsividad */}
       <div className="absolute inset-0 w-full h-full opacity-30 md:opacity-40 lg:opacity-50"
@@ -50,7 +50,7 @@ export default function Web() {
         <ModalScroll
           text="¡MEJORA TU EXPERIENCIA DIGITAL!"
           fondo="/servicios/desarrollo/modal-scroll/fondo.webp"
-          title="Desarollo Web"
+          title="DISEÑOS UX Y UI ATRACTIVOS"
           serviceName="2"
         />
 
@@ -63,37 +63,71 @@ export default function Web() {
 
 <div className="flex justify-center md:justify-start w-full">
   <Main
-    title="Desarrollo Web"
-    subtitle="Vive la Experiencia en la Web"
+    title="DISEÑOS UX Y UI"
+    subtitle="Mejora la experiencia de tus usuarios"
     image="/servicios/uxui/img-main.png"
-    className="custom-web2 py-10 md:py-20 text-center md:-ml-44"
+    className="custom-uxui py-10 md:py-20 text-center md:-ml-44"
   />
 </div>
 
 <div className="relative w-full h-full">
-  {/* Texto flotante 2 */}
-  <div className="floating-text2">
+  {/* Texto flotante con nueva clase */}
+  <div className="floating-text">
+    
     <p className="font-montserrat text-black text-lg md:text-xl font-extrabold uppercase tracking-wide">
-      Aquí se enfocan en el diseño y posicionamiento web, desarrollo de tiendas virtuales, desarrollo, optimización
-      y Cloud Hosting para páginas web en Perú.
+      Ofrecemos diseño UX para usabilidad y satisfacción, y UI para una interfaz atractiva.
+      Juntos, creamos productos digitales intuitivos, agradables y efectivos.
     </p>
+    
+  </div>
+</div>
+
+
+        {/* Sección de características con Grid */}
+<div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 px-4">
+  {/* Primer bloque */}
+  <div className="flex flex-col items-center md:items-start md:translate-x-[-70px] md:translate-y-[30px]">
+    <p className="font-montserrat text-black text-lg md:text-xl font-extrabold uppercase tracking-wide"
+    style={{
+      fontWeight: "bold",
+      color: "#6a0dad", // Morado vibrante
+      textShadow: "3px 3px 10px rgba(106, 13, 173, 0.8)",
+    }}
+    
+    >USABILIDAD Y SATISFACCIÓN</p>
+    <img src="/servicios/DiseñoUI/servicio12.jpg" alt="Usabilidad y satisfacción" className="w-60 h-auto mt-4" />
   </div>
 
-  {/* Lista de características en viñetas (Texto flotante 3) */}
-  <div className="floating-text3">
-    <ul className="features-list font-montserrat text-black text-lg md:text-xl font-extrabold uppercase tracking-wide">
-      <li>Diseño responsivo</li>
-      <li>Paquete de diseño web</li>
-      <li>Diseño web WordPress</li>
-    </ul>
+  {/* Segundo bloque */}
+  <div className="flex flex-col items-center md:items-center md:translate-x-[10px] md:translate-y-[30px]">
+    <p className="font-montserrat text-black text-lg md:text-xl font-extrabold uppercase tracking-wide"
+    style={{
+      fontWeight: "bold",
+      color: "#6a0dad", // Morado vibrante
+      textShadow: "3px 3px 10px rgba(106, 13, 173, 0.8)",
+    }}
+    >CREATIVIDAD</p>
+    <img src="/servicios/DiseñoUI/servicios13.jpg" alt="Creatividad" className="w-60 h-auto mt-4" />
+  </div>
+
+  {/* Tercer bloque */}
+  <div className="flex flex-col items-center md:items-end md:translate-x-[70px] md:translate-y-[30px]">
+    <p className="font-montserrat text-black text-lg md:text-xl font-extrabold uppercase tracking-wide"
+    style={{
+      fontWeight: "bold",
+      color: "#6a0dad", // Morado vibrante
+      textShadow: "3px 3px 10px rgba(106, 13, 173, 0.8)",
+    }}
+    >INTERFAZ VISUAL</p>
+    <img src="/servicios/DiseñoUI/servicio14.jpg" alt="Interfaz visual" className="w-60 h-auto mt-4" />
   </div>
 </div>
 
         {/* Nueva sección específica para esta página, colocada más abajo */}
-        <div className="relative z-10 mt-[860px] md:mt-[300px] lg:mt-[550px] px-4">
+        <div className="relative z-10 mt-[-3px] md:mt-[300px] lg:mt-[150px] px-4">
         <Description
-          title="Desarollo Web"
-          text="Impulsamos tu presencia digital con soluciones de desarrollo web innovadoras, funcionales y optimizadas para el éxito."
+          title="Diseño de Experiencia de Usuario (UX) y Diseño de Interfaz (UI)"
+          text="Nos enfocamos en crear experiencias digitales centradas en los usuarios, mejorando la usabilidad y la interacción con los productos digitales."
         />
 
 <Servicios servicios={servicios} />
