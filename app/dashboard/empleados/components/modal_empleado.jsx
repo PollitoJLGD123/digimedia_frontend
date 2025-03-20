@@ -5,8 +5,7 @@ import empleado_service from "../services/empleado.service";
 import user_service from '../../users/services/user.service';
 import { useRouter } from "next/navigation";
 
-export default function modal_empleado({ isVisible, onclose, data }) {
-    console.log("Modal data:", data);
+export default function ModalEmpleado({ isVisible, onclose, data }) {
     if (!isVisible) return null;
 
     const router = useRouter();

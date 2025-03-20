@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import Pagination from '../components/Pagination';
 import Table from '../components/Table';
 import { useEffect, useState } from 'react';
-import Modal_empleado from './components/modal_empleado';
+import ModalEmpleado from './components/modal_empleado';
 import empleado_service from './services/empleado.service';
 import user_service from '../users/services/user.service';
 import { useRouter } from 'next/navigation';
@@ -39,7 +39,6 @@ export default function Page() {
         
         try {
             const response = await empleado_service.empleadosByPage(page);
-            console.log(response);
 
             if (response.status === 401) {
                 Swal.fire({
@@ -55,8 +54,6 @@ export default function Page() {
                 user_service.logoutClient(router);
                 return;
             }
-    
-            console.log("Datos recibidos:", response);
     
             if (parseInt(response.status) === 200) {
                 if (response.total > 0) {
@@ -175,7 +172,7 @@ export default function Page() {
                     onShow={handleShow}
                 />
                 <Pagination count={count} />
-                <Modal_empleado
+                <ModalEmpleado
                     isVisible={modal}
                     data={dataUpd || null}
                     onclose={() => {

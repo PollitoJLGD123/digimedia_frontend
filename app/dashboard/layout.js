@@ -52,9 +52,6 @@ export default function RootLayout({ children }) {
                 {/* Enlaces publicos */}
                 <TableLink title="Sección Principal" href="/dashboard/main" />
                 <TableLink title="Empleados" href="/dashboard/empleados" />
-                {auth_service.hasRole('administrador') && (
-                    <TableLink title="Usuarios" href="/dashboard/users" />
-                )}
                 
                 {auth_service.hasRole('marketing') && (
                   <TableLink title="Gestión de Contenido" href="/dashboard/content" />
