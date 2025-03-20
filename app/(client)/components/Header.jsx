@@ -71,6 +71,15 @@ export default function Header2() {
                   <li className={isActive('/servicios/diseno-pautas') ? 'active-sub' : ''} onClick={closeMenu}>
                     <Link href="/servicios/diseno-pautas">Diseño de Pautas</Link>
                   </li>
+                  <li className={isActive('/servicios/analisis-y-benchmarking') ? 'active-sub' : ''} onClick={closeMenu}>
+                    <Link href="/servicios/analisis-y-benchmarking">Análisis de Benchmarking</Link>
+                  </li>
+                  <li className={isActive('/servicios/planificacion-estrategica') ? 'active-sub' : ''} onClick={closeMenu}>
+                    <Link href="/servicios/planificacion-estrategica">Planificación Estratégica</Link>
+                  </li>
+                  <li className={isActive('/servicios/desarrollo-Brief') ? 'active-sub' : ''} onClick={closeMenu}>
+                    <Link href="/servicios/desarrollo-Brief">Desarrollo Brief</Link>
+                  </li>
                 </ul>
               )}
             </li>
