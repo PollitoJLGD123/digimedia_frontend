@@ -6,7 +6,7 @@ export default function Main({ title, subtitle, text, image, className = "" }) {
           {title}
         </h1>
         <h2 className="font-bold text-2xl my-2">{subtitle}</h2>
-        <p>{text}</p>
+        <p className="text-justify">{text}</p>
       </div>
       <img className="max-w-[80%]" src={image} alt="" />
     </main>

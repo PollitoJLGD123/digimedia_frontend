@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { User, Lock, ArrowLeft } from 'lucide-react';
 import auth_service from '@/app/dashboard/users/services/auth.service';
 import { setCookie } from 'cookies-next';
+import Link from 'next/link';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -155,6 +156,11 @@ export default function LoginPage() {
                   required
                 />
               </div>
+            </div>
+            <div className="mt-4">
+              <Link href="./email" className="text-sm text-blue-500 hover:underline">
+                ¿Olvidaste tu contraseña?
+              </Link>
             </div>
 
             <button
