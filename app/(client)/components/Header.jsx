@@ -62,8 +62,8 @@ export default function Header2() {
                   <li className={isActive('/servicios/ui') ? 'active-sub' : ''} onClick={closeMenu}>
                     <Link href="/servicios/ui">Diseño UX/UI</Link>
                   </li>
-                  <li className={isActive('/servicios/Desarrollo-web') ? 'active-sub' : ''} onClick={closeMenu}>
-                    <Link href="/servicios/Desarrollo-web">Desarrollo Web</Link>
+                  <li className={isActive('/servicios/desarrollo-webs') ? 'active-sub' : ''} onClick={closeMenu}>
+                    <Link href="/servicios/desarrollo-webs">Desarrollo Web</Link>
                   </li>
                   <li className={isActive('/servicios/planificacion-cronograma') ? 'active-sub' : ''} onClick={closeMenu}>
                     <Link href="/servicios/planificacion-cronograma">Planificacion y cronograma</Link>
@@ -77,8 +77,8 @@ export default function Header2() {
                   <li className={isActive('/servicios/planificacion-estrategica') ? 'active-sub' : ''} onClick={closeMenu}>
                     <Link href="/servicios/planificacion-estrategica">Planificación Estratégica</Link>
                   </li>
-                  <li className={isActive('/servicios/desarrollo-Brief') ? 'active-sub' : ''} onClick={closeMenu}>
-                    <Link href="/servicios/desarrollo-Brief">Desarrollo Brief</Link>
+                  <li className={isActive('/servicios/desarrollo-briefs') ? 'active-sub' : ''} onClick={closeMenu}>
+                    <Link href="/servicios/desarrollo-briefs">Desarrollo Brief</Link>
                   </li>
                 </ul>
               )}
