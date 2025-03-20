@@ -24,17 +24,35 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        const fetchRoles = async () => {
-            const response = await empleado_service.getRoles();
-            if (response.status === 200) {
-                setRoles(response.data);
-            } else {
-                console.error("Error al cargar roles:", response);
+        async function fetchRoles() {
+            try {
+                const response = await empleado_service.getRoles(); 
+                if (response.status === 200) {
+                    setRoles(response.data); 
+                }
+            } catch (error) {
+                console.error("Error al obtener roles:", error);
             }
-        };
-
+        }
+    
         fetchRoles();
     }, []);
+
+    useEffect(() => {
+        if (data && roles.length > 0) {
+            setFormData({
+                nombre: data.nombre || "",
+                apellido: data.apellido || "",
+                email: data.email || "",
+                dni: data.dni || "",
+                telefono: data.telefono || "",
+                id_rol: data.id_rol || roles.find(rol => rol.nombre.toLowerCase() === data.rol?.toLowerCase())?.id_rol || ""
+            });
+        }
+    }, [data, roles]);
+    
+    
+
 
     function handleChange(e) {
         setFormData((prev) => ({

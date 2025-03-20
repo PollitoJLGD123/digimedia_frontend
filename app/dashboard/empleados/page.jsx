@@ -134,7 +134,15 @@ export default function Page() {
 
     function onUpdate(idUpdate) {
         const selectedData = data.find((r) => r.id == idUpdate);
-        setDataUpdate(selectedData);
+        
+        const preparedData = {
+            ...selectedData,
+            id_empleado: selectedData.id || selectedData.id_empleado,
+            id_rol: selectedData.rol?.id_rol ? String(selectedData.rol.id_rol) : ""
+        };
+        
+        console.log("Datos preparados para el modal:", preparedData);
+        setDataUpdate(preparedData);
         setModal(true);
     }
 
