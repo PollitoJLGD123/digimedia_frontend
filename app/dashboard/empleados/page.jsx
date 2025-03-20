@@ -18,7 +18,7 @@ export default function Page() {
     const [data, setData] = useState([]);
     const [count, setCount] = useState(0);
     const [modal, setModal] = useState(false);
-    const [dataUpd, setdataUpdate] = useState(null);
+    const [dataUpd, setDataUpdate] = useState(null);
     const router = useRouter();
 
     const handleShow = async (id) => {
@@ -36,11 +36,8 @@ export default function Page() {
     };
 
     async function setEmpleados(page) {
-        
         try {
             const response = await empleado_service.empleadosByPage(page);
-            console.log(response);
-
             if (response.status === 401) {
                 Swal.fire({
                     icon: 'error',
@@ -55,24 +52,17 @@ export default function Page() {
                 user_service.logoutClient(router);
                 return;
             }
-    
-            console.log("Datos recibidos:", response);
-    
+
             if (parseInt(response.status) === 200) {
                 if (response.total > 0) {
-        
                     const transformedData = response.data.map(item => ({
                         ...item,
-                        id: item.id_empleado 
+                        id: item.id_empleado,
+                        id_rol: item.rol?.id_rol || "", 
                     }));
-
                     setData(transformedData);
-                    setCount(transformedData.total);
+                    setCount(response.total);
                 }
-                
-            } else {
-                setError(true);
-                setLoading(false);
             }
         } catch (error) {
             console.error("Error al obtener los datos:", error);
@@ -98,10 +88,8 @@ export default function Page() {
         }).then((result) => {
             if (result.isConfirmed) {
                 const deleteButton = document.querySelector(`button[data-id="${id}"]`);
-                if (deleteButton) {
-                    deleteButton.disabled = true;
-                }
-    
+                if (deleteButton) deleteButton.disabled = true;
+
                 empleado_service.delete(id)
                     .then((response) => {
                         if (response.error) {
@@ -118,7 +106,7 @@ export default function Page() {
                                 text: 'El empleado ha sido eliminado correctamente.',
                                 confirmButtonColor: '#6f4be8'
                             });
-                            fetchEmpleados(); 
+                            fetchEmpleados();
                         } else {
                             Swal.fire({
                                 icon: 'error',
@@ -138,31 +126,37 @@ export default function Page() {
                         });
                     })
                     .finally(() => {
-                        if (deleteButton) {
-                            deleteButton.disabled = false;
-                        }
+                        if (deleteButton) deleteButton.disabled = false;
                     });
             }
         });
     }
 
     function onUpdate(idUpdate) {
-        setdataUpdate(data.find((r) => r.id == idUpdate));
+        const selectedData = data.find((r) => r.id == idUpdate);
+        setDataUpdate(selectedData);
         setModal(true);
     }
+
+    const handleUpdateSuccess = (updatedData) => {
+        setData((prevData) =>
+            prevData.map((item) =>
+                item.id === updatedData.id_empleado ? { ...item, ...updatedData } : item
+            )
+        );
+    };
 
     const fetchEmpleados = async () => {
         if (isNaN(currentPage)) {
             await setEmpleados(1);
             return;
         }
-
         await setEmpleados(parseInt(currentPage));
     };
 
     useEffect(() => {
         fetchEmpleados();
-    }, [currentPage]); 
+    }, [currentPage]);
 
     return (
         <>
@@ -178,16 +172,17 @@ export default function Page() {
                 <Modal_empleado
                     isVisible={modal}
                     data={dataUpd || null}
-                    onclose={() => {
+                    onClose={() => {
                         setModal(false);
-                        setdataUpdate(null);
+                        setDataUpdate(null);
                         fetchEmpleados();
                     }}
+                    onUpdateSuccess={handleUpdateSuccess}
                 />
                 <button
                     className="bg-[#ff037f] text-white py-2 rounded-full my-4 font-bold w-fit px-10"
                     onClick={() => {
-                        setdataUpdate(null); 
+                        setDataUpdate(null);
                         setModal(true);
                     }}
                 >
