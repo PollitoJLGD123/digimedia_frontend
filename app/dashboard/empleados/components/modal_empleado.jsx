@@ -1,43 +1,45 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import empleado_service from "../services/empleado.service";
-import user_service from "../../users/services/user.service";
-import { useRouter } from "next/navigation";
-import { CheckCircleIcon, XCircleIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import { useState, useEffect } from "react"
+import empleado_service from "../services/empleado.service"
+import user_service from "../../users/services/user.service"
+import { useRouter } from "next/navigation"
+import { CheckCircleIcon, XCircleIcon, XMarkIcon } from "@heroicons/react/24/solid"
 
 export default function modal_empleado({ isVisible, onClose, data, onUpdateSuccess }) {
-  console.log("Modal data:", data);
-  if (!isVisible) return null;
-
-  const router = useRouter();
+  const router = useRouter()
   const [formData, setFormData] = useState({
-    nombre: data ? data.nombre : "",
-    apellido: data ? data.apellido : "",
-    email: data ? data.email : "",
-    dni: data ? data.dni : "",
-    telefono: data ? data.telefono : "",
-    id_rol: data ? data.id_rol : "",
-  });
-  const [roles, setRoles] = useState([]);
-  const [error, setError] = useState({ status: undefined, message: "" });
-  const [button, setButtonStatus] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
+    nombre: "",
+    apellido: "", 
+    email: "",
+    dni: "",
+    telefono: "",
+    id_rol: "",
+  })
+  const [roles, setRoles] = useState([])
+  const [error, setError] = useState({ status: undefined, message: "" })
+  const [button, setButtonStatus] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
 
+  // carga de roles al montar el componente
   useEffect(() => {
     async function fetchRoles() {
       try {
-        const response = await empleado_service.getRoles();
+        const response = await empleado_service.getRoles()
         if (response.status === 200) {
-          setRoles(response.data);
+          setRoles(response.data)
         }
       } catch (error) {
-        console.error("Error al obtener roles:", error);
+        console.error("Error al obtener roles:", error)
       }
     }
-    fetchRoles();
-  }, []);
 
+    if (isVisible) {
+      fetchRoles()
+    }
+  }, [isVisible])
+
+  // actualiza formData cuando cambian data o roles
   useEffect(() => {
     if (data && roles.length > 0) {
       setFormData({
@@ -46,24 +48,30 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
         email: data.email || "",
         dni: data.dni || "",
         telefono: data.telefono || "",
-        id_rol: data.id_rol || roles.find((rol) => rol.nombre.toLowerCase() === data.rol?.toLowerCase())?.id_rol || "",
-      });
+        id_rol:
+          data.id_rol ||
+          roles.find((rol) => rol.nombre?.toLowerCase() === data.rol?.nombre?.toLowerCase())?.id_rol ||
+          "",
+      })
     }
-  }, [data, roles]);
+  }, [data, roles])
+
+  // si el modal no es visible, no renderiza nada
+  if (!isVisible) return null
 
   function handleChange(e) {
     setFormData((prev) => ({
       ...prev,
       [e.target.id]: e.target.value,
-    }));
+    }))
   }
 
   function createEmpleado() {
-    if (formData.nombre.length <= 2) return setError({ status: true, message: "Ingresar correctamente el nombre" });
-    if (formData.apellido.length <= 2) return setError({ status: true, message: "Ingresar correctamente el apellido" });
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!regex.test(formData.email)) return setError({ status: true, message: "Ingresar correctamente el email" });
-    if (formData.dni.length < 8) return setError({ status: true, message: "DNI inválido" });
+    if (formData.nombre.length <= 2) return setError({ status: true, message: "Ingresar correctamente el nombre" })
+    if (formData.apellido.length <= 2) return setError({ status: true, message: "Ingresar correctamente el apellido" })
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!regex.test(formData.email)) return setError({ status: true, message: "Ingresar correctamente el email" })
+    if (formData.dni.length < 8) return setError({ status: true, message: "DNI inválido" })
 
     const form = {
       nombre: formData.nombre,
@@ -72,33 +80,33 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
       dni: formData.dni,
       telefono: formData.telefono,
       id_rol: formData.id_rol,
-    };
+    }
 
-    setButtonStatus(false);
+    setButtonStatus(false)
 
     empleado_service
       .create(form)
       .then((response) => {
         if (response.error) {
-          setError({ status: true, message: "Hubo un error al crear el empleado" });
-          setButtonStatus(true);
+          setError({ status: true, message: "Hubo un error al crear el empleado" })
+          setButtonStatus(true)
         } else {
           if (response.status === 200) {
-            setError({ status: false, message: "Empleado creado correctamente" });
+            setError({ status: false, message: "Empleado creado correctamente" })
             setTimeout(() => {
-              if (typeof onClose === "function") onClose();
-            }, 1000);
+              if (typeof onClose === "function") onClose()
+            }, 1000)
           } else {
-            setError({ status: true, message: "Hubo un error al crear el empleado" });
-            setButtonStatus(true);
+            setError({ status: true, message: "Hubo un error al crear el empleado" })
+            setButtonStatus(true)
           }
         }
       })
       .catch((error) => {
-        console.error("Error al crear empleado:", error);
-        setError({ status: true, message: "Hubo un error al crear el empleado" });
-        setButtonStatus(true);
-      });
+        console.error("Error al crear empleado:", error)
+        setError({ status: true, message: "Hubo un error al crear el empleado" })
+        setButtonStatus(true)
+      })
   }
 
   function updateEmpleado() {
@@ -109,46 +117,46 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
       dni: formData.dni,
       telefono: formData.telefono,
       id_rol: formData.id_rol,
-    };
+    }
 
-    setButtonStatus(false);
-    setIsLoading(true);
+    setButtonStatus(false)
+    setIsLoading(true)
 
     empleado_service
       .update(form, data.id_empleado)
       .then((response) => {
         if (response.status == 500) {
-          user_service.logoutClient(router);
+          user_service.logoutClient(router)
         } else {
-          if (parseInt(response.status) == 200) {
-            setError({ status: false, message: "Empleado actualizado correctamente" });
+          if (Number.parseInt(response.status) == 200) {
+            setError({ status: false, message: "Empleado actualizado correctamente" })
             if (typeof onUpdateSuccess === "function") {
-              onUpdateSuccess({ ...data, ...form });
+              onUpdateSuccess({ ...data, ...form })
             }
             setTimeout(() => {
-              if (typeof onClose === "function") onClose();
-            }, 1000);
+              if (typeof onClose === "function") onClose()
+            }, 1000)
           } else {
-            setError({ status: true, message: "Hubo un error al actualizar el empleado" });
-            setButtonStatus(true);
+            setError({ status: true, message: "Hubo un error al actualizar el empleado" })
+            setButtonStatus(true)
           }
         }
       })
       .catch((error) => {
-        console.error("Error al actualizar empleado:", error);
-        setError({ status: true, message: "Hubo un error al actualizar el empleado" });
-        setButtonStatus(true);
+        console.error("Error al actualizar empleado:", error)
+        setError({ status: true, message: "Hubo un error al actualizar el empleado" })
+        setButtonStatus(true)
       })
       .finally(() => {
-        setIsLoading(false);
-      });
+        setIsLoading(false)
+      })
   }
 
   function guardarEmpleado() {
     if (!data) {
-      createEmpleado();
+      createEmpleado()
     } else {
-      updateEmpleado();
+      updateEmpleado()
     }
   }
 
@@ -177,9 +185,7 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
             ) : (
               <XCircleIcon className="h-5 w-5 text-red-500 mr-2" />
             )}
-            <p className={`text-sm ${error.status === false ? "text-green-700" : "text-red-700"}`}>
-              {error.message}
-            </p>
+            <p className={`text-sm ${error.status === false ? "text-green-700" : "text-red-700"}`}>{error.message}</p>
           </div>
         )}
 
@@ -289,11 +295,7 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
                 <span className="flex items-center">
                   <svg className="animate-spin h-5 w-5 mr-2 text-white" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                    />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
                   </svg>
                   Guardando...
                 </span>
@@ -312,5 +314,6 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
         </form>
       </div>
     </section>
-  );
+  )
 }
+
