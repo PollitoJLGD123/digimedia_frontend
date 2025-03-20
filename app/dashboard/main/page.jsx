@@ -123,62 +123,64 @@ export default function Page() {
 
     return (
         
-        <div className="w-full p-8 bg-white rounded-xl shadow-lg">
-            {empleadoId && (
-                <button
-                onClick={() => router.push('/dashboard/empleados')} 
-                className="mb-4 bg-[#8c52ff] text-white py-2 px-6 rounded-full hover:bg-[#7a45e6] transition-colors duration-300 flex items-center gap-2"
-            > 
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-5" viewBox="0 0 1024 1024"><path fill="currentColor" d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64"/><path fill="currentColor" d="m237.248 512l265.408 265.344a32 32 0 0 1-45.312 45.312l-288-288a32 32 0 0 1 0-45.312l288-288a32 32 0 1 1 45.312 45.312z"/></svg>
-                Atrás
-            </button>
-            
-            )}
-            <h1 className="text-3xl font-bold text-[#8c52ff] mb-8">Perfil del Empleado</h1>
-            
-            <div className="flex flex-col md:flex-row">
+        <div className="w-full p-4 md:p-8 bg-white rounded-xl shadow-lg">
+            <div className="flex flex-col md:flex-row items-start"> 
                 <div className="md:w-1/3 text-center mb-8 md:mb-0">
                     <div className="bg-[#8c52ff] text-white rounded-full w-48 h-48 mx-auto mb-4 flex items-center justify-center border-4 border-indigo-800 transition-transform duration-300 hover:scale-105">
                         <span className="text-6xl font-bold">{nombre.charAt(0)}{apellido.charAt(0)}</span>
                     </div>
                     <h1 className="text-2xl font-bold text-[#8c52ff] mb-2">{displayName}</h1>
                     <p className="text-gray-600">{userRole}</p>
-                    <div className="mt-4 flex gap-2 justify-center">
+                    {!empleadoId && (
+                        <div className="mt-4 flex gap-2 justify-center">
+                            <button
+                                onClick={() => setShowEditModal(true)}
+                                className="bg-blue-500 text-white py-2 px-4 rounded-lg font-bold"
+                            >
+                                Editar Perfil
+                            </button>
+                            <button
+                                onClick={() => setShowPasswordModal(true)}
+                                className="bg-green-500 text-white py-2 px-4 rounded-lg font-bold"
+                            >
+                                Cambiar Contraseña
+                            </button>
+                        </div>
+                    )}
+                    {empleadoId && (
                         <button
-                            onClick={() => setShowEditModal(true)}
-                            className="bg-blue-500 text-white py-2 px-4 rounded-lg font-bold"
-                        >
-                            Editar Perfil
+                            onClick={() => router.push('/dashboard/empleados')} 
+                            className="mb-4 bg-[#8c52ff] text-white py-2 px-6 rounded-full hover:bg-[#7a45e6] transition-colors duration-300 flex items-center gap-2"
+                        > 
+                            <svg xmlns="http://www.w3.org/2000/svg" className="w-5" viewBox="0 0 1024 1024"><path fill="currentColor" d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64"/><path fill="currentColor" d="m237.248 512l265.408 265.344a32 32 0 0 1-45.312 45.312l-288-288a32 32 0 0 1 0-45.312l288-288a32 32 0 1 1 45.312 45.312z"/></svg>
+                            Atrás
                         </button>
-                        <button
-                            onClick={() => setShowPasswordModal(true)}
-                            className="bg-green-500 text-white py-2 px-4 rounded-lg font-bold"
-                        >
-                            Cambiar Contraseña
-                        </button>
-                    </div>
+                    )}
                 </div>
 
-                {/* Modales */}
-                {showEditModal && (
-                    <ModalEmpleado
-                        isVisible={showEditModal}
-                        onClose={() => setShowEditModal(false)}
-                        data={empleadoData}
-                        onUpdateSuccess={handleUpdateSuccess} // Pasa la función para actualizar datos
-                    />
-                )}
-                {showPasswordModal && (
-                    <ModalUpdatePass
-                        isVisible={showPasswordModal}
-                        onClose={() => setShowPasswordModal(false)}
-                        empleadoId={empleadoData?.id_empleado}
-                    />
-                )}
-                
-                <div className="md:w-2/3 md:pl-8">
-                    <h2 className="text-xl font-semibold text-[#8c52ff] mb-4">Información Personal</h2>
+                    {/* Modales */}
+                    {showEditModal && (
+                        <ModalEmpleado
+                            isVisible={showEditModal}
+                            onClose={() => setShowEditModal(false)}
+                            data={empleadoData}
+                            onUpdateSuccess={handleUpdateSuccess} // Pasa la función para actualizar datos
+                        />
+                    )}
+                    {showPasswordModal && (
+                        <ModalUpdatePass
+                            isVisible={showPasswordModal}
+                            onClose={() => setShowPasswordModal(false)}
+                            empleadoId={empleadoData?.id_empleado}
+                        />
+                    )}
                     
+                <div className="md:w-2/3 md:pl-8">
+
+                    <h1 className="text-3xl font-bold text-[#8c52ff] mb-8">Perfil del Empleado</h1>
+
+                    <h2 className="text-xl font-semibold text-[#8c52ff] mb-4">Información Personal</h2>
+                
                     <div className="bg-gray-100 rounded-lg p-6 mb-6">
                         <ul className="space-y-4 text-gray-700">
                             <li className="flex items-center">
@@ -213,7 +215,7 @@ export default function Page() {
                             </li>
                         </ul>
                     </div>
-                    
+                
                     <h2 className="text-xl font-semibold text-[#8c52ff] mb-4">Acceso al Sistema</h2>
                     <div className="bg-gray-100 rounded-lg p-6">
                         <div className="flex items-center mb-4">
@@ -227,7 +229,7 @@ export default function Page() {
                                 <p className="text-[#8c52ff] font-semibold">{userRole}</p>
                             </div>
                         </div>
-                        
+                    
                         <div className="flex flex-wrap gap-2 mt-4">
                             {userRole === 'administrador' && (
                                 <span className="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">Acceso Total</span>
