@@ -23,7 +23,7 @@
       text-align: left;
       margin-left: 0; /* Elimina el centrado */
       margin-right: auto; /* Empuja a la izquierda */
-      transform: translateX(-400px); /* Lo mueve más a la izquierda */
+      transform: translateX(-200px); /* Lo mueve más a la izquierda */
     }
   }
   /* 🌟 Estilos para Floating Text 2 */
@@ -52,7 +52,7 @@
 @media (min-width: 1024px) {
   .floating-text2 {
     top: 70px;
-    left: -15%;
+    left: 5%;
     max-width: 500px;
     text-align: left;
   }
@@ -84,7 +84,7 @@
 @media (min-width: 1024px) {
   .floating-text3 {
     top: 300px;
-    left: -14%;
+    left: 4%;
     max-width: 500px;
     text-align: left;
   }
