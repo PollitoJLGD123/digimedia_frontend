@@ -16,13 +16,11 @@ export default function Page() {
     const [userRole, setUserRole] = useState('Usuario');
     const [isClient, setIsClient] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-
-    const searchParams = useSearchParams();
-    const router = useRouter();
-
     const [showEditModal, setShowEditModal] = useState(false);
     const [showPasswordModal, setShowPasswordModal] = useState(false);
 
+    const searchParams = useSearchParams();
+    const router = useRouter();
     const empleadoId = searchParams.get('id_empleado');
     const api_url = "http://127.0.0.1:8000/api/empleados";
 
@@ -101,6 +99,10 @@ export default function Page() {
         loadData();
     }, [empleadoId]);
 
+    const handleUpdateSuccess = (updatedData) => {
+        setEmpleadoData(updatedData); // Actualiza el estado con los nuevos datos
+    }
+
     // renderiza un loader en lo que cargan los datos
     if (isLoading) {
         return (
@@ -161,8 +163,9 @@ export default function Page() {
                 {showEditModal && (
                     <ModalEmpleado
                         isVisible={showEditModal}
-                        onclose={() => setShowEditModal(false)}
+                        onClose={() => setShowEditModal(false)}
                         data={empleadoData}
+                        onUpdateSuccess={handleUpdateSuccess} // Pasa la función para actualizar datos
                     />
                 )}
                 {showPasswordModal && (

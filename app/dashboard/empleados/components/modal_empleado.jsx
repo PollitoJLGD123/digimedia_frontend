@@ -5,7 +5,7 @@ import empleado_service from "../services/empleado.service";
 import user_service from '../../users/services/user.service';
 import { useRouter } from "next/navigation";
 
-export default function modal_empleado({ isVisible, onclose, data }) {
+export default function modal_empleado({ isVisible, onClose, data, onUpdateSuccess }) {
     console.log("Modal data:", data);
     if (!isVisible) return null;
 
@@ -17,11 +17,11 @@ export default function modal_empleado({ isVisible, onclose, data }) {
         dni: data ? data.dni : "",
         telefono: data ? data.telefono : "",
         id_rol: data ? data.id_rol : "",
-        password: ""
     });
     const [roles, setRoles] = useState([]);
     const [error, setError] = useState({ status: undefined, message: "" });
     const [button, setButtonStatus] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const fetchRoles = async () => {
@@ -43,40 +43,6 @@ export default function modal_empleado({ isVisible, onclose, data }) {
         }));
     }
 
-    function changePass() {
-        if (formData.password.length < 4) {
-            return setError({ status: true, message: "Contraseña muy pequeña" });
-        }
-
-        const form = {
-            password: formData.password
-        };
-
-        setButtonStatus(false);
-
-        empleado_service.updatePass(form, data.id_empleado)
-            .then((response) => {
-                if (response.status == 500) {
-                    user_service.logoutClient(router);
-                } else {
-                    if (parseInt(response.status) == 200) {
-                        setError({ status: false, message: "Contraseña actualizada correctamente" });
-                        setTimeout(() => {
-                            onclose();
-                        }, 1000);
-                    } else {
-                        setError({ status: true, message: "Hubo un error al actualizar la contraseña" });
-                        setButtonStatus(true);
-                    }
-                }
-            })
-            .catch((error) => {
-                console.error("Error al actualizar contraseña:", error);
-                setError({ status: true, message: "Hubo un error al actualizar la contraseña" });
-                setButtonStatus(true);
-            });
-    }
-
     function createEmpleado() {
         if (formData.nombre.length <= 2) return setError({ status: true, message: "Ingresar correctamente el nombre" });
         if (formData.apellido.length <= 2) return setError({ status: true, message: "Ingresar correctamente el apellido" });
@@ -91,7 +57,6 @@ export default function modal_empleado({ isVisible, onclose, data }) {
             dni: formData.dni,
             telefono: formData.telefono,
             id_rol: formData.id_rol,
-            password: formData.password
         };
 
         setButtonStatus(false);
@@ -105,7 +70,9 @@ export default function modal_empleado({ isVisible, onclose, data }) {
                     if (response.status === 200) {
                         setError({ status: false, message: "Empleado creado correctamente" });
                         setTimeout(() => {
-                            onclose();
+                            if (typeof onClose === "function") {
+                                onClose();
+                            }
                         }, 1000);
                     } else {
                         setError({ status: true, message: "Hubo un error al crear el empleado" });
@@ -130,11 +97,8 @@ export default function modal_empleado({ isVisible, onclose, data }) {
             id_rol: formData.id_rol
         };
     
-        if (formData.password) {
-            form.password = formData.password;
-        }
-    
         setButtonStatus(false);
+        setIsLoading(true);
     
         empleado_service.update(form, data.id_empleado)
             .then((response) => {
@@ -143,8 +107,13 @@ export default function modal_empleado({ isVisible, onclose, data }) {
                 } else {
                     if (parseInt(response.status) == 200) {
                         setError({ status: false, message: "Empleado actualizado correctamente" });
+                        if (typeof onUpdateSuccess === "function") {
+                            onUpdateSuccess({ ...data, ...form });
+                        }
                         setTimeout(() => {
-                            onclose();
+                            if (typeof onClose === "function") {
+                                onClose();
+                            }
                         }, 1000);
                     } else {
                         setError({ status: true, message: "Hubo un error al actualizar el empleado" });
@@ -156,6 +125,9 @@ export default function modal_empleado({ isVisible, onclose, data }) {
                 console.error("Error al actualizar empleado:", error);
                 setError({ status: true, message: "Hubo un error al actualizar el empleado" });
                 setButtonStatus(true);
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     }
 
@@ -265,43 +237,29 @@ export default function modal_empleado({ isVisible, onclose, data }) {
                         </select>
                     </fieldset>
 
-                    {data && (
-                        <fieldset className="flex flex-col w-full gap-3">
-                            <label className="font-medium text-md" htmlFor="password">
-                                Cambiar Contraseña
-                            </label>
-                            <div className="flex border-solid border-gray-300 w-full border-[0.5px]">
-                                <input
-                                    id="password"
-                                    onChange={handleChange}
-                                    value={formData.password || ""}
-                                    className="py-2 px-4 flex-1 outline-none"
-                                    type="password"
-                                />
-                                <button
-                                    className="border-solid border-l-gray-300 py-2 px-4 border-[0.5px]"
-                                    onClick={changePass}
-                                    type="button"
-                                    disabled={!button}
-                                >
-                                    Cambiar
-                                </button>
-                            </div>
-                        </fieldset>
-                    )}
-
                     <div className="flex justify-around gap-2 mt-2">
                         <button
                             className="bg-blue-500 text-white py-2 px-4 rounded-lg font-bold"
                             type="button"
                             onClick={guardarEmpleado}
-                            disabled={!button}
+                            disabled={!button || isLoading}
                         >
-                            Aceptar
+                            {isLoading ? (
+                                <span className="flex items-center">
+                                    <svg className="animate-spin h-5 w-5 mr-2 text-white" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                                    </svg>
+                                    Guardando...
+                                </span>
+                            ) : (
+                                "Aceptar"
+                            )}
                         </button>
                         <button
                             className="bg-red-500 text-white py-2 px-4 rounded-lg font-bold"
-                            onClick={onclose}
+                            onClick={onClose}
+                            disabled={isLoading}
                         >
                             Cancelar
                         </button>
