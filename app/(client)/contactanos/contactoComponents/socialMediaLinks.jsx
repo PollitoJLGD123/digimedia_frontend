@@ -33,7 +33,7 @@ const SocialMediaLinks = () => {
             </a>
           </div>
           <div className="red">
-            <a href="https://www.linkedin.com/in/digimedia-marketing/" target="_blank" rel="noopener noreferrer">
+            <a href="https://www.linkedin.com/company/digimedia-mkt/" target="_blank" rel="noopener noreferrer">
               <FontAwesomeIcon icon={faLinkedin} size="2x" />
             </a>
           </div>
