@@ -114,8 +114,22 @@ const ComplaintForm = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="bg-[#6f4be8] flex justify-center items-center">
-        <img src="/headerFooter/logoFooter.webp" alt="Digimedia" className="my-10 w-40 h-auto" />
+      <div className="bg-[#6f4be8] relative p-4">
+        <button
+          onClick={() => window.location.href = '/'}
+          className="lg:flex bg-pink-500 hover:bg-pink-400 text-white py-2 px-4 rounded-lg transition-all duration-300 absolute left-10 top-1/2 transform -translate-y-1/2 hidden items-center"
+        >
+          <img className="mr-2" src={'/headerFooter/arrow_left.svg'} alt="Regresar" />
+          REGRESAR
+        </button>
+
+        <div className="flex justify-center w-full">
+          <img
+            src="/headerFooter/logoFooter.webp"
+            alt="Digimedia"
+            className="w-40 h-auto my-6"
+          />
+        </div>
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-8">
