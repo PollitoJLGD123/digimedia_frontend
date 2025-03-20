@@ -23,7 +23,7 @@
     text-align: left;
     margin-left: 0; /* Elimina el centrado */
     margin-right: auto; /* Empuja a la izquierda */
-    transform: translateX(-400px); /* Lo mueve más a la izquierda */
+    transform: translateX(-200px); /* Lo mueve más a la izquierda */
   }
 }
 
@@ -45,9 +45,9 @@
 @media (min-width: 1024px) {
   .floating-text {
     position: absolute;
-    top: -160px; /* Subir el texto */
-    right: -40%; /* Mueve el texto hacia la derecha correctamente */
-    width: -100%; /* Reduce el ancho para que no se vea muy extendido */
+    top: -170px; /* Subir el texto */
+    right: -10%; /* Mueve el texto hacia la derecha correctamente */
+    width: 65%; /* Reduce el ancho para que no se vea muy extendido */
     text-align: right; /* Alinea el texto a la derecha */
   }
 }

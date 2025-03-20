@@ -32,7 +32,7 @@ export default function UXUI() {
   ];
   
   return (
-    <div className="relative min-h-screen flex flex-col items-center bg-gray-100">
+    <div className="relative min-h-screen flex flex-col items-center bg-gray-100 overflow-x-hidden">
       
       {/* Imagen de fondo con mejor responsividad */}
       <div className="absolute inset-0 w-full h-full opacity-30 md:opacity-40 lg:opacity-50"
