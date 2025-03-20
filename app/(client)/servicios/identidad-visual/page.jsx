@@ -62,7 +62,7 @@ export default function Page() {
     <div className="flex justify-center gap-10 flex-wrap p-8 ">
       {[
         { src: "/servicios/visual/identidad2.png", text: "Coherencia y Uniformidad" },
-        { src: "/servicios/brief/brief2.webp", text: "Reconocimiento Instantáneo" },
+        { src: "/servicios/visual/identidad3.jpg", text: "Reconocimiento Instantáneo" },
         { src: "/servicios/visual/identidad4.jpg", text: "Conexión emocional" },
         { src: "/servicios/visual/identidad5.webp", text: "Diferenciación y Posicionamiento" },
       ].map((item, index) => (

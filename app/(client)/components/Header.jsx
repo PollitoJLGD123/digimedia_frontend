@@ -59,13 +59,6 @@ export default function Header2() {
                   <li className={isActive('/servicios/branding-desing') ? 'active-sub' : ''} onClick={closeMenu}>
                     <Link href="/servicios/branding-desing">Branding y Diseño</Link>
                   </li>
-                  <li className={isActive('/servicios/desarrollo-brief') ? 'active-sub' : ''} onClick={closeMenu}>
-                    <Link href="/servicios/desarrollo-brief">Desarrollo de Brief </Link>
-                  </li>
-                  <li className={isActive('/servicios/identidad-visual') ? 'active-sub' : ''} onClick={closeMenu}>
-                    <Link href="/servicios/identidad-visual">Identidad visual Corporativa </Link>
-                  </li>
-                  
                 </ul>
               )}
             </li>
