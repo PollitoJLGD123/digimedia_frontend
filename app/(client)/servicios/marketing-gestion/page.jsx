@@ -12,11 +12,13 @@ export default function Page() {
       title: 'ANÁLISIS Y BENCHMARKING',
       text: 'Evaluamos tu marca frente a la competencia para identificar oportunidades de mejora y crear estrategias más efectivas.',
       icon: '/servicios/marketing/icon1.svg',
+      ruta: '/servicios/analisis-y-benchmarking/'
     },
     {
       title: 'PLANIFICACIÓN ESTRATÉGICA',
       text: 'Aquí se diseñan estrategias personalizadas con objetivos claros, segmentación precisa y tácticas eficaces para alcanzar tus metas de negocio.',
       icon: '/servicios/marketing/icon2.svg',
+      ruta: '/servicios/planificacion-estrategica/'
     },
     {
       title: 'PUBLICIDAD DIGITAL',

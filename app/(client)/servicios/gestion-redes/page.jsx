@@ -12,16 +12,18 @@ export default function Page() {
       title: 'PLANIFICACIÓN Y CRONOGRAMA',
       text: 'Creamos estrategias de redes sociales alineadas con tus objetivos para maximizar el impacto de tu marca.',
       icon: '/servicios/gestion/icon1.svg',
-    },
-    {
-      title: 'PRODUCCIÓN DE PAUTAS',
-      text: 'Desarrollamos pautas claras para el contenido y la interacción en redes sociales, alineadas con tu marca.',
-      icon: '/servicios/gestion/icon2.svg',
+      ruta: '/servicios/planificacion-cronograma/'
     },
     {
       title: 'DISEÑO DE PAUTAS',
       text: 'Creamos documentos visuales que definen la identidad, voz y tono de tu marca en redes sociales.',
       icon: '/servicios/gestion/icon3.svg',
+      ruta: '/servicios/diseno-pautas/'
+    },
+    {
+      title: 'PRODUCCIÓN DE PAUTAS',
+      text: 'Desarrollamos pautas claras para el contenido y la interacción en redes sociales, alineadas con tu marca.',
+      icon: '/servicios/gestion/icon2.svg',
     },
     {
       title: 'DISEÑO UX Y UI',
