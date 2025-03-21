@@ -37,7 +37,7 @@ export default function Web() {
       {/* Imagen de fondo con mejor responsividad */}
       <div className="absolute inset-0 w-full h-full opacity-30 md:opacity-40 lg:opacity-50"
   style={{ 
-    backgroundImage: "url('/servicios/DiseñoUI/Digimediaui.jpg')",
+    backgroundImage: "url('/servicios/DiseñoUI/desarrolloweb4.jpg')",
     backgroundSize: "cover", // La imagen se estira horizontalmente sin deformarse
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
