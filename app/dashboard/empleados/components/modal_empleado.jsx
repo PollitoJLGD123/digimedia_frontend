@@ -42,19 +42,45 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
   // actualiza formData cuando cambian data o roles
   useEffect(() => {
     if (data && roles.length > 0) {
+      // logica para determinar el id_rol
+      let rolId = "";
+      
+      // caso: ya hay un rol directo
+      if (data.id_rol) {
+        rolId = data.id_rol;
+      } 
+      // caso: el rol es un objeto y tiene id_rol
+      else if (data.rol && typeof data.rol === 'object' && data.rol.id_rol) {
+        rolId = data.rol.id_rol;
+      } 
+      // caso: el rol es un string y se busca su id_rol
+      else if (data.rol && typeof data.rol === 'string') {
+        const matchingRole = roles.find(
+          (r) => r.nombre.toLowerCase() === data.rol.toLowerCase()
+        );
+        rolId = matchingRole ? matchingRole.id_rol : "";
+      }
+  
       setFormData({
         nombre: data.nombre || "",
         apellido: data.apellido || "",
         email: data.email || "",
         dni: data.dni || "",
         telefono: data.telefono || "",
-        id_rol:
-          data.id_rol ||
-          roles.find((rol) => rol.nombre?.toLowerCase() === data.rol?.nombre?.toLowerCase())?.id_rol ||
-          "",
-      })
+        id_rol: rolId,
+      });
+    } else if (isVisible && !data) {
+      // limpiar formulario si no hay data
+      setFormData({
+        nombre: "",
+        apellido: "",
+        email: "",
+        dni: "",
+        telefono: "",
+        id_rol: "",
+      });
     }
-  }, [data, roles])
+  }, [data, roles, isVisible]);
 
   // si el modal no es visible, no renderiza nada
   if (!isVisible) return null
