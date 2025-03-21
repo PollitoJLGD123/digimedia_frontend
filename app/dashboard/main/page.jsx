@@ -143,7 +143,12 @@ export default function Page() {
         {/* Header con color morado claro */}
         <div className="bg-[#8c52ff] p-4 text-white">
           <div className="flex justify-between items-center">
-            <h1 className="text-xl md:text-2xl font-bold">Perfil del Empleado</h1>
+            {empleadoId && (
+                <h1 className="text-xl md:text-2xl font-bold">Perfil del Empleado</h1>
+            )}
+            {!empleadoId && (
+                <h1 className="text-xl md:text-2xl font-bold">Mi Perfil</h1>
+            )}
             {empleadoId && (
               <Button
                 variant="secondary"
@@ -164,14 +169,15 @@ export default function Page() {
             <div className="md:w-1/3">
               <div className="flex flex-col items-center">
                 <div className="relative">
-                  <div className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-[#8c52ff] flex items-center justify-center text-white text-3xl font-bold shadow-md transform transition-transform hover:scale-105 border-2 border-[#7a45e6]">
-                    {nombre.charAt(0)}
-                    {apellido.charAt(0)}
-                  </div>
-                  <Badge className="absolute -bottom-2 right-[0.1px] py-0.5 text-xs bg-[#4d2994] text-white">
-                    {userRole}
-                  </Badge>
+                    <div className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-[#8c52ff] flex items-center justify-center text-white text-3xl font-bold shadow-md transform transition-transform hover:scale-105 border-2 border-[#7a45e6]">
+                        {nombre.charAt(0)}
+                        {apellido.charAt(0)}
+                    </div>
+                    <Badge className="absolute -bottom-2 left-1/2 -translate-x-1/2 py-0.5 text-xs bg-[#4d2994] text-white">
+                        {userRole.charAt(0).toUpperCase() + userRole.slice(1)}
+                    </Badge>
                 </div>
+
 
                 <h2 className="mt-3 text-xl font-bold text-gray-800">{displayName}</h2>
                 <p className="text-gray-500 text-sm">{email}</p>
@@ -299,7 +305,6 @@ export default function Page() {
         <ModalUpdatePass
           isVisible={showPasswordModal}
           onClose={() => setShowPasswordModal(false)}
-          empleadoId={empleadoData?.id_empleado}
         />
       )}
     </div>

@@ -2,8 +2,15 @@
 
 import { useState, useEffect } from "react";
 import empleado_service from "../services/empleado.service";
+import { getCookie } from 'cookies-next';
 
-export default function ModalUpdatePassword({ isVisible, onClose, empleadoId }) {
+
+export default function ModalUpdatePassword({ isVisible, onClose }) {
+
+    const empleadoCookie = getCookie('empleado');
+    const empleadoAutenticado = empleadoCookie ? JSON.parse(empleadoCookie) : null;
+    const empleadoAutenticadoId = empleadoAutenticado?.id_empleado;
+
     const [formData, setFormData] = useState({
         currentPassword: "",
         newPassword: "",
@@ -60,15 +67,51 @@ export default function ModalUpdatePassword({ isVisible, onClose, empleadoId }) 
         setLoading(true);
     
         try {
-            //estructura de datos para el backend
+            const verifyData = {
+                currentPassword: currentPassword,
+                id_empleado: empleadoAutenticadoId,
+            };
+
+            const verifyResponse = await empleado_service.verifyPassword(verifyData);
+            
+            if (verifyResponse.status !== 200) {
+                let errorMessage = "La contraseña actual es incorrecta. Por favor, verifica e intenta nuevamente.";
+                
+                try {
+                    const errorData = await verifyResponse.json();
+                    if (errorData && errorData.message) {
+                        errorMessage = errorData.message;
+                    }
+                } catch (jsonError) {
+                    console.log("No se pudo leer la respuesta como JSON:", jsonError);
+                }
+                
+                setError({ 
+                    status: true, 
+                    message: errorMessage
+                });
+                setLoading(false);
+                return;
+            }
+
+            const verifyResult = await verifyResponse.json();
+            if (!verifyResult.valid) {
+                setError({ 
+                    status: true, 
+                    message: "La contraseña actual es incorrecta. Por favor, verifica e intenta nuevamente." 
+                });
+                setLoading(false);
+                return;
+            }
+            
+            
             const passwordData = {
                 currentPassword: currentPassword,
                 password: newPassword,         
-                id: empleadoId                 
             };
     
-            // solicitud
-            const response = await empleado_service.updatePass(passwordData, empleadoId);
+            // solicitud para actualizar
+            const response = await empleado_service.updatePass(passwordData, empleadoAutenticadoId);
     
             // respuesta
             const data = await response.json();
