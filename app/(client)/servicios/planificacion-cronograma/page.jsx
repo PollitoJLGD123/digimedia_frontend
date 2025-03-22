@@ -1,6 +1,7 @@
+'use client'
 import React from 'react';
-import ModalScroll from '../components/ModalScroll';
 import ModalButton from '../components/ModalButton';
+
 
 export default function PlanificacionCronograma() {
     return (
@@ -17,9 +18,13 @@ export default function PlanificacionCronograma() {
                         Se organiza y estructura el contenido <br /> con un calendario <br /> estratégico, asegurando <br /> publicaciones consistentes <br /> y alineadas con tus objetivos.
                     </p>
                     <div className='lg:block hidden'>
-                    <button className="bg-pink-500 hover:bg-pink-600 text-white text-right text-lg font-bold py-5 px-10 rounded-lg mb-3 mt-3">
-                        Asesoría Gratis
+                        
+                    <button
+                        className="bg-pink-500 hover:bg-pink-600 text-white text-right text-lg font-bold py-5 px-10 rounded-lg mb-3 mt-3"
+                        onClick={() => window.location.href = '/contactanos'}>
+                         Asesoría Gratis
                     </button>
+                       
                     </div>
                    </div>
             </div>
@@ -42,8 +47,6 @@ export default function PlanificacionCronograma() {
 
             {/* Componentes debajo del Hero */}
             <div className="py-0 px-8 md:px-16">
-                <ModalScroll />
-                <ModalButton />
             </div>
         </div>
     );
