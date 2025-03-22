@@ -8,7 +8,6 @@ import { CheckCircleIcon, XCircleIcon, XMarkIcon } from "@heroicons/react/24/sol
 import { useContext } from "react";
 import { getCookie, setCookie } from 'cookies-next';
 
-
 import { DisplayNameContext } from "../../components/DisplayNameContext"
 
 export default function modal_empleado({ isVisible, onClose, data, onUpdateSuccess, isProfileEdit = false }) {
@@ -33,6 +32,14 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
     console.log("updateDisplayName en ModalEmpleado:", typeof updateDisplayName);
   }, [updateDisplayName]);
 
+  // Resetear estados cuando el modal se cierra
+  useEffect(() => {
+    if (!isVisible) {
+      setError({ status: undefined, message: "" });
+      setButtonStatus(true);
+      setIsLoading(false);
+    }
+  }, [isVisible]);
 
   // carga de roles al montar el componente
   useEffect(() => {
@@ -105,6 +112,14 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
     }))
   }
 
+  // Función para resetear el estado y cerrar el modal
+  function handleClose() {
+    setError({ status: undefined, message: "" });
+    setButtonStatus(true);
+    setIsLoading(false);
+    if (typeof onClose === "function") onClose();
+  }
+
   function createEmpleado() {
     if (formData.nombre.length <= 2) return setError({ status: true, message: "Ingresar correctamente el nombre" })
     if (formData.apellido.length <= 2) return setError({ status: true, message: "Ingresar correctamente el apellido" })
@@ -122,6 +137,7 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
     }
 
     setButtonStatus(false)
+    setIsLoading(true)
 
     empleado_service
       .create(form)
@@ -133,7 +149,7 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
           if (response.status === 200) {
             setError({ status: false, message: "Empleado creado correctamente" })
             setTimeout(() => {
-              if (typeof onClose === "function") onClose()
+              handleClose();
             }, 1000)
           } else {
             setError({ status: true, message: "Hubo un error al crear el empleado" })
@@ -145,6 +161,9 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
         console.error("Error al crear empleado:", error)
         setError({ status: true, message: "Hubo un error al crear el empleado" })
         setButtonStatus(true)
+      })
+      .finally(() => {
+        setIsLoading(false);
       })
   }
 
@@ -196,7 +215,7 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
             }
   
             setTimeout(() => {
-              if (typeof onClose === "function") onClose();
+              handleClose();
             }, 1000);
   
             console.log("Datos actualizados:", data);
@@ -233,7 +252,7 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
       >
         <div className="flex justify-between items-center mb-4">
           <h2 className="font-bold text-lg">{isProfileEdit ? "Editar Perfil" : "Empleados"}</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+          <button onClick={handleClose} className="text-gray-500 hover:text-gray-700">
             <XMarkIcon className="h-6 w-6" />
           </button>
         </div>
@@ -312,7 +331,6 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
             </fieldset>
 
             {!isProfileEdit && (
-
             <fieldset className="flex flex-col gap-2">
               <label className="font-semibold text-sm" htmlFor="telefono">
                 Teléfono
@@ -399,7 +417,7 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
             </button>
             <button
               className="bg-red-500 text-white py-3 px-6 rounded-lg font-bold hover:bg-red-600 transition-colors"
-              onClick={onClose}
+              onClick={handleClose}
               disabled={isLoading}
             >
               Cancelar
