@@ -15,6 +15,8 @@ export default function Page()  {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
 
+    const API_BASE_URL = `${url}/api/reset_password`;
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 

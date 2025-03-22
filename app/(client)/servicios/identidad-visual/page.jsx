@@ -29,21 +29,6 @@ export default function Page() {
 
   return (
     <>
-      <ModalScroll
-        text="¡DISEÑA TU CAMINO AL ÉXITO!"
-        fondo="/servicios/branding/modal-scroll/fondo.webp"
-        title="TU PRIMERA CONSULTA ¡ES GRATIS!"
-        serviceName="4"
-      />
-
-      <ModalButton
-        title="¡DISEÑA TU CAMINO HACIA EL ÉXITO!"
-        fondo="/servicios/branding/modal-button/imagen.webp"
-        text="¡Haz tu sitio web realidad, es GRATIS!"
-        serviceName="4"
-      />
-
-  
     <div className="flex flex-col-reverse items-center justify-between max-w-6xl m-auto md:flex-row p-12 md:py-4 ">
       <div className="text-center md:text-left max-w-xl">
         <h1 className="text-[#7b22b3] font-bold text-4xl my-4 font-title">
