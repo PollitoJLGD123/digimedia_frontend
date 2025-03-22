@@ -9,9 +9,12 @@ import Swal from "sweetalert2"
 import auth_service from "../users/services/auth.service"
 import { Search, Eye, CheckCircle, Trash2, Loader2, Filter, Download, RefreshCw, AlertCircle } from "lucide-react"
 import Pagination from "../components/Pagination"
+import url from '../../../api/url';
 
-// const API_BASE_URL = 'https://back.digimediamkt.com/api/reclamaciones';
-const API_BASE_URL = "http://127.0.0.1:8000/api/reclamaciones"
+
+
+const API_BASE_URL = `${url}/api/reclamaciones`;
+
 
 export default function Page() {
   const searchParams = useSearchParams()
