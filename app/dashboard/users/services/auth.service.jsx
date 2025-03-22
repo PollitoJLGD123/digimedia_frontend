@@ -50,8 +50,9 @@ const auth_service = {
             return data;
         } 
         catch (error) {
-            console.error("Error en login:", error);
-            return { error: true, message: error.message };
+            //console.error("Error en login:", error);
+            //return { error: true, message: error.message };
+            throw error;
         }
     },
 
