@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Pagination from '../components/Pagination';
-import Table from '../components/Table';
+import Table from '../components/DataTable';
 //import Pagination from './componentes-modales/Pagination-modales';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { getCookie } from 'cookies-next';

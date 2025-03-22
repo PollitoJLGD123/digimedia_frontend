@@ -122,7 +122,6 @@ const empleado_service = {
 
     updatePass: async (form, id) => {
         try {
-            // Asegurar que el id esté presente en el cuerpo de la solicitud
             const requestBody = { ...form };
             if (!requestBody.id) {
                 requestBody.id = id;
@@ -141,10 +140,30 @@ const empleado_service = {
     
             console.log('Respuesta del servidor (status):', response.status);
             
-            // Devolver la respuesta para procesar en el componente
             return response;
         } catch (error) {
-            console.error("Error en la solicitud de actualización de contraseña:", error);
+            return new Response(JSON.stringify({
+                error: true,
+                message: "Error de conexión al servidor"
+            }), { status: 500 });
+        }
+    },
+
+    verifyPassword: async (data) => {
+        try {
+            
+            const response = await fetch(`${api_url}/verify-password`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${getCookie('token')}` 
+                },
+                body: JSON.stringify(data)
+            });
+            
+            return response;
+        } catch (error) {
+            console.error("Error al verificar contraseña:", error);
             return new Response(JSON.stringify({
                 error: true,
                 message: "Error de conexión al servidor"
