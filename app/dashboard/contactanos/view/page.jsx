@@ -36,7 +36,7 @@ export default function Page() {
     <div className="p-4 md:p-6">
       <div className="max-w-5xl mx-auto flex">
         <button
-          className="text-center h-16 bg-[#8c52ff] text-white px-4 py-2 rounded-lg hover:bg-[#7b45e0] transition-all duration-300 flex items-center shadow-sm group"
+          className="text-center h-14 w-52 bg-[#8c52ff] text-white px-4 py-2 rounded-lg hover:bg-[#7b45e0] transition-all duration-300 flex items-center shadow-sm group"
           onClick={() => router.push("/dashboard/contactanos/")}
         >
           <ArrowLeft className="w-5 h-5 mr-2 transition-transform group-hover:-translate-x-1" />
@@ -83,10 +83,17 @@ export default function Page() {
 
               <div className="bg-gray-50 rounded-xl p-5 flex flex-col items-center text-center transition-all duration-300 hover:shadow-md hover:-translate-y-1">
                 <div className="bg-[#8c52ff]/10 p-3 rounded-full mb-3">
-                  <Mail className="w-6 h-6 text-[#8c52ff]" />
+                    <Mail className="w-6 h-6 text-[#8c52ff]" />
                 </div>
                 <h3 className="text-sm font-semibold text-gray-500 mb-1">Email</h3>
-                <p className="text-lg font-medium text-gray-800 break-all">{contacto.email}</p>
+                <a 
+                  href={`mailto:${contacto.email}?subject=Respuesta%20a%20su%20contacto&body=Hola%20${contacto.nombre},%0A%0A`}
+                  className="text-lg font-medium text-[#8c52ff] hover:underline break-all flex items-center group"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {contacto.email}
+                </a>
               </div>
 
               <div className="bg-gray-50 rounded-xl p-5 flex flex-col items-center text-center transition-all duration-300 hover:shadow-md hover:-translate-y-1">
@@ -94,7 +101,18 @@ export default function Page() {
                   <Phone className="w-6 h-6 text-[#8c52ff]" />
                 </div>
                 <h3 className="text-sm font-semibold text-gray-500 mb-1">Teléfono</h3>
-                <p className="text-lg font-medium text-gray-800">{contacto.numero || "No proporcionado"}</p>
+                {contacto.numero ? (
+                  <a 
+                    href={`https://wa.me/${contacto.numero.replace(/\D/g, '')}`}
+                    className="text-lg font-medium text-[#8c52ff] hover:underline flex items-center group"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {contacto.numero}
+                  </a>
+                ) : (
+                  <p className="text-lg font-medium text-gray-800">No proporcionado</p>
+                )}
               </div>
             </div>
 

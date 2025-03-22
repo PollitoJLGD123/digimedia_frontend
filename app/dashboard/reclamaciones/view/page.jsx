@@ -120,7 +120,14 @@ export default function Page() {
                     <span className="text-sm font-medium text-gray-500">Email:</span>
                   </div>
                   <div className="flex-grow">
-                    <span className="text-sm text-gray-800">{reclamacion.email}</span>
+                    <a 
+                      href={`mailto:${reclamacion.email}?subject=Respuesta%20a%20su%20contacto&body=Hola%20${reclamacion.nombre},%0A%0A`}
+                      className="text-sm font-medium text-[#8c52ff] hover:underline break-all flex items-center group"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {reclamacion.email}
+                    </a>
                   </div>
                 </div>
 
@@ -140,7 +147,18 @@ export default function Page() {
                     <span className="text-sm font-medium text-gray-500">Teléfono:</span>
                   </div>
                   <div className="flex-grow">
-                    <span className="text-sm text-gray-800">{reclamacion.celular}</span>
+                    {reclamacion.celular ? (
+                    <a 
+                      href={`https://wa.me/${reclamacion.celular.replace(/\D/g, '')}`}
+                      className="text-sm font-medium text-[#8c52ff] hover:underline flex items-center group"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {reclamacion.celular}
+                    </a>
+                  ) : (
+                    <p className="text-sm font-medium text-gray-800">No proporcionado</p>
+                  )}
                   </div>
                 </div>
 
