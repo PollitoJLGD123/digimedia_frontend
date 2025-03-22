@@ -59,19 +59,20 @@ export default function RootLayout({ children }) {
                 <ul className="flex flex-col gap-1">
                   {/* Enlaces publicos */}
                   <TableLink title="Sección Principal" href="/dashboard/main" />
+                  {auth_service.hasRole('administrador') && (
                   <TableLink title="Empleados" href="/dashboard/empleados" />
-                  
-                  {auth_service.hasRole('marketing') && (
-                    <TableLink title="Gestión de Contenido" href="/dashboard/content" />
                   )}
 
                   {auth_service.hasRole('ventas') && (
-                    <TableLink title="Mis Pedidos" href="/dashboard/ventas" />
-                  )}
-
                   <TableLink title="Contactanos" href="/dashboard/contactanos" />
+                  )}
+                  {auth_service.hasRole('ventas') && (
                   <TableLink title="Libro de Reclamaciones" href="/dashboard/reclamaciones" />
+                  )}
+                  {auth_service.hasRole('marketing') && (
                   <TableLink title="Modales" href="/dashboard/modales"/>
+                  )}
+                  
                 </ul>
               </nav>
 

@@ -8,6 +8,8 @@ import { setCookie, getCookie } from 'cookies-next';
 import user_service from '../users/services/user.service';
 import Swal from 'sweetalert2';
 
+import auth_service from '../users/services/auth.service';
+
 //const API_BASE_URL = 'https://back.digimediamkt.com/api/contactanos';
 const API_BASE_URL = "http://127.0.0.1:8000/api/reclamaciones";
 
@@ -266,10 +268,12 @@ export default function Page() {
                 <button onClick={() => confirmarCambiarEstado(reclamacion.id_reclamacion,`${reclamacion.estadoReclamo=="PENDIENTE" ? "ATENDIDO" : "PENDIENTE"}` )} title='Cambiar Estado' className="bg-blue-500 text-white px-2 py-1 rounded-lg mr-2">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#000" fillRule="evenodd" d="M12 21a9 9 0 1 0 0-18a9 9 0 0 0 0 18m-.232-5.36l5-6l-1.536-1.28l-4.3 5.159l-2.225-2.226l-1.414 1.414l3 3l.774.774z" clipRule="evenodd"/></svg>
                 </button>
-
-                <button title="Eliminar" onClick={() => confirmarEliminacion(reclamacion.id_reclamacion)} className="bg-red-500 text-white px-2 py-1 rounded-lg">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4.687 6.213L6.8 18.976a2.5 2.5 0 0 0 2.466 2.092h3.348m6.698-14.855L17.2 18.976a2.5 2.5 0 0 1-2.466 2.092h-3.348m-1.364-9.952v5.049m3.956-5.049v5.049M2.75 6.213h18.5m-6.473 0v-1.78a1.5 1.5 0 0 0-1.5-1.5h-2.554a1.5 1.5 0 0 0-1.5 1.5v1.78z"/></svg>
-                </button>
+                {auth_service.hasRole('administrador') && (
+                  <button title="Eliminar" onClick={() => confirmarEliminacion(reclamacion.id_reclamacion)} className="bg-red-500 text-white px-2 py-1 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4.687 6.213L6.8 18.976a2.5 2.5 0 0 0 2.466 2.092h3.348m6.698-14.855L17.2 18.976a2.5 2.5 0 0 1-2.466 2.092h-3.348m-1.364-9.952v5.049m3.956-5.049v5.049M2.75 6.213h18.5m-6.473 0v-1.78a1.5 1.5 0 0 0-1.5-1.5h-2.554a1.5 1.5 0 0 0-1.5 1.5v1.78z"/></svg>
+                  </button>
+                )}
+                
               </td>
             </tr>
           ))
