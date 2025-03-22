@@ -29,8 +29,6 @@ export default function Page() {
 
   return (
     <>
-     
-  
     <div className="flex flex-col-reverse items-center justify-between max-w-6xl m-auto md:flex-row p-12 md:py-4 ">
       <div className="text-center md:text-left max-w-xl">
         <h1 className="text-[#7b22b3] font-bold text-4xl my-4 font-title">

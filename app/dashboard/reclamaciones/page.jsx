@@ -10,9 +10,11 @@ import Swal from 'sweetalert2';
 
 import auth_service from '../users/services/auth.service';
 
-//const API_BASE_URL = 'https://back.digimediamkt.com/api/contactanos';
-const API_BASE_URL = "http://127.0.0.1:8000/api/reclamaciones";
+import url from '../../../api/url';
 
+
+
+const API_BASE_URL = `${url}/api/reclamaciones`;
 
 export default function Page() {
   const searchParams = useSearchParams();
