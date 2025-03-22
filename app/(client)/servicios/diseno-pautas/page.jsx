@@ -1,7 +1,6 @@
 'use client';
 import React from 'react';
-import ModalScroll from '../components/ModalScroll';
-import ModalButton from '../components/ModalButton';
+
 import { useState } from 'react';
 import Contactanos from '../components/Contactanos';
 
@@ -31,7 +30,8 @@ export default function DisenoPauta() {
 
                     {/* Botón */}
                     <div className='flex justify-center'>
-                        <button className='bg-gradient-to-r from-pink-600 via-pink-500 to-transparent hover:from-pink-600 hover:to-pink-700 text-white text-sm font-bold py-5 px-10 rounded-3xl md:font-base flex items-center space-x-3'>
+                        <button className='bg-gradient-to-r from-pink-600 via-pink-500 to-transparent hover:from-pink-600 hover:to-pink-700 text-white text-sm font-bold py-5 px-10 rounded-3xl md:font-base flex items-center space-x-3'
+                        onClick={() => window.location.href = '/contactanos'}>
                             <span>QUIERO COMENZAR AHORA</span>
                             <img src={'/servicios/diseñoPautas/arrow_outward.svg'} className="h-5 w-5" />
                         </button>
@@ -43,23 +43,6 @@ export default function DisenoPauta() {
                 <div className='md:w-1/2 p-5 hidden md:flex'>
                     <img src="/servicios/diseñoPautas/diseño_imagen.jpg" alt="imagen1" className='w-full h-auto' />
                 </div>
-            </div>
-
-            {/* Componentes debajo del Hero */}
-            <div className="py-0 px-8 md:px-16">
-                <ModalScroll
-                text="¡DEFINE TU MARCA EN REDES!"
-                fondo="/servicios/desarrollo/modal-scroll/fondo.webp"
-                title="Diseño de Pautas"
-                serviceName="2"
-                />
-
-                <ModalButton
-                title="Haz que tu sitio sea intuitivo y visualmente atractivo"
-                fondo="/servicios/uxui/modal-button/imagen.webp"
-                text="Solicita una asesoría gratuita"
-                serviceName="2"
-                />
             </div>
         </div>
     );
