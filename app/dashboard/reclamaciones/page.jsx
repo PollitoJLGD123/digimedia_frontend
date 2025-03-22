@@ -1,81 +1,97 @@
-'use client';
+"use client"
 
-import { useEffect, useState } from 'react';
-import Pagination from '../components/Pagination';
-import { useRouter, useSearchParams } from 'next/navigation';
-import axios from 'axios';
-import { setCookie, getCookie } from 'cookies-next';
-import user_service from '../users/services/user.service';
-import Swal from 'sweetalert2';
+import { useEffect, useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+import axios from "axios"
+import { setCookie, getCookie } from "cookies-next"
+import user_service from "../users/services/user.service"
+import Swal from "sweetalert2"
+import auth_service from "../users/services/auth.service"
+import { Search, Eye, CheckCircle, Trash2, Loader2, Filter, Download, RefreshCw, AlertCircle } from "lucide-react"
+import Pagination from "../components/Pagination"
 
-import auth_service from '../users/services/auth.service';
-
-//const API_BASE_URL = 'https://back.digimediamkt.com/api/contactanos';
-const API_BASE_URL = "http://127.0.0.1:8000/api/reclamaciones";
-
+// const API_BASE_URL = 'https://back.digimediamkt.com/api/reclamaciones';
+const API_BASE_URL = "http://127.0.0.1:8000/api/reclamaciones"
 
 export default function Page() {
-  const searchParams = useSearchParams();
-  const currentPage = searchParams.get('page') || 1;
-  const [data, setData] = useState([]);
-  const [totalPages, setTotalPages] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
+  const searchParams = useSearchParams()
+  const currentPage = searchParams.get("page") || 1
+  const [data, setData] = useState([])
+  const [filteredData, setFilteredData] = useState([])
+  const [totalPages, setTotalPages] = useState(1)
+  const [isLoading, setIsLoading] = useState(true)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  const router = useRouter()
 
   async function fetchContacts() {
-    let page = 1;
-    let allData = [];
-    let hasMorePages = true;
+    setIsRefreshing(true)
+    let page = 1
+    let allData = []
+    let hasMorePages = true
 
     while (hasMorePages) {
       try {
-        const response = await axios.get(`${API_BASE_URL}?page=${page}`, { 
+        const response = await axios.get(`${API_BASE_URL}?page=${page}`, {
           headers: {
-            Authorization: `Bearer ${getCookie('token')}`,
+            Authorization: `Bearer ${getCookie("token")}`,
           },
-        });
+        })
 
         if (response.data.data.length === 0) {
-          hasMorePages = false;
-          break;
+          hasMorePages = false
+          break
         }
 
-        allData = [...allData, ...response.data.data];
-        page++;
+        allData = [...allData, ...response.data.data]
+        page++
       } catch (error) {
-        hasMorePages = false;
-        console.error('Error al obtener los datos:', error.message);
+        hasMorePages = false
+        console.error("Error al obtener los datos:", error.message)
+
+        if (error.response && error.response.status === 401) {
+          Swal.fire({
+            title: "Sesión Expirada",
+            text: "Por favor, inicia sesión nuevamente.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          }).then(() => {
+            user_service.logoutClient(router)
+          })
+        }
       }
     }
 
-    setData(allData);
-    setTotalPages(Math.ceil(allData.length / 20));
-    setIsLoading(false);
+    setData(allData)
+    setFilteredData(allData)
+    setTotalPages(Math.ceil(allData.length / 20))
+    setIsLoading(false)
+    setIsRefreshing(false)
   }
 
   async function deleteReclamacion(id) {
     try {
       const response = await axios.delete(`${API_BASE_URL}/${id}`, {
         headers: {
-          Authorization: `Bearer ${getCookie('token')}`,
+          Authorization: `Bearer ${getCookie("token")}`,
         },
-      });
-  
+      })
+
       if (response.status === 200) {
         Swal.fire({
           title: "Eliminado",
-          text: "La reclamacion ha sido eliminada exitosamente.",
+          text: "La reclamación ha sido eliminada exitosamente.",
           icon: "success",
           confirmButtonText: "OK",
-        });
-        fetchContacts(currentPage);
+        })
+        fetchContacts(currentPage)
       } else {
         Swal.fire({
           title: "Error",
           text: "No se pudo eliminar la reclamación.",
           icon: "error",
           confirmButtonText: "OK",
-        });
+        })
       }
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -85,81 +101,83 @@ export default function Page() {
           icon: "warning",
           confirmButtonText: "OK",
         }).then(() => {
-          user_service.logoutClient(router);
-        });
+          user_service.logoutClient(router)
+        })
       } else {
         Swal.fire({
           title: "Error",
           text: "Ocurrió un error inesperado.",
           icon: "error",
           confirmButtonText: "OK",
-        });
+        })
       }
     }
   }
 
   function confirmarEliminacion(id) {
     Swal.fire({
-        title: '¿Estás seguro en eliminar este registro?',
-        text: "¡No podrás revertir esto!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Sí, eliminar',
-        cancelButtonText: 'Cancelar'
+      title: "¿Estás seguro en eliminar este registro?",
+      text: "¡No podrás revertir esto!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
     }).then((result) => {
-        if (result.isConfirmed) {
-          deleteReclamacion(id);
-        }
-    });
+      if (result.isConfirmed) {
+        deleteReclamacion(id)
+      }
+    })
   }
 
   function confirmarCambiarEstado(id, nuevoEstado) {
     Swal.fire({
-        title: `¿Cambiar estado de reclamación a ${nuevoEstado}?`,
-        text: "¡Puedes cambiarlo después nuevamente!",
-        icon: 'info',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Sí, cambiar',
-        cancelButtonText: 'Cancelar'
+      title: `¿Cambiar estado de reclamación a ${nuevoEstado}?`,
+      text: "¡Puedes cambiarlo después nuevamente!",
+      icon: "info",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Sí, cambiar",
+      cancelButtonText: "Cancelar",
     }).then((result) => {
-        if (result.isConfirmed) {
-          cambiarEstado(id, nuevoEstado);
-        }
-    });
+      if (result.isConfirmed) {
+        cambiarEstado(id, nuevoEstado)
+      }
+    })
   }
 
-  async function cambiarEstado(id,nuevoEstado){
+  async function cambiarEstado(id, nuevoEstado) {
     try {
-      const response = await axios.put(`${API_BASE_URL}/${id}`,
+      const response = await axios.put(
+        `${API_BASE_URL}/${id}`,
         { estado: nuevoEstado },
         {
           headers: {
-            Authorization: `Bearer ${getCookie('token')}`,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getCookie("token")}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
           },
-        });
+        },
+      )
       if (response.status === 200) {
         Swal.fire({
           title: "Estado Cambiado",
-          text: `El estado de la reclamacion se cambio a ${nuevoEstado}`,
+          text: `El estado de la reclamación se cambió a ${nuevoEstado}`,
           icon: "success",
           confirmButtonText: "OK",
-        });
-        fetchContacts(currentPage);
+        })
+        fetchContacts(currentPage)
       } else {
         Swal.fire({
           title: "Error",
-          text: "No se pudo cambiar el estado de la reclamacion",
+          text: "No se pudo cambiar el estado de la reclamación",
           icon: "error",
           confirmButtonText: "OK",
-        });
+        })
       }
-    }catch(error){
+    } catch (error) {
       if (error.response && error.response.status === 401) {
         Swal.fire({
           title: "Sesión Expirada",
@@ -167,15 +185,15 @@ export default function Page() {
           icon: "warning",
           confirmButtonText: "OK",
         }).then(() => {
-          user_service.logoutClient(router);
-        });
+          user_service.logoutClient(router)
+        })
       } else {
         Swal.fire({
           title: "Error",
           text: "Ocurrió un error inesperado.",
           icon: "error",
           confirmButtonText: "OK",
-        });
+        })
       }
     }
   }
@@ -183,116 +201,298 @@ export default function Page() {
   async function visualizar(id) {
     try {
       const response = await axios.get(`${API_BASE_URL}/${id}`, {
-          headers: {
-              Authorization: `Bearer ${getCookie('token')}`,
-          },
-      });
+        headers: {
+          Authorization: `Bearer ${getCookie("token")}`,
+        },
+      })
       if (response.status === 200 && response.data) {
-          setCookie("reclamacion", JSON.stringify(response.data.data), {
-              maxAge: 30 * 24 * 60 * 60, path: "/"
-          });
-          router.push(`./view/`);
+        setCookie("reclamacion", JSON.stringify(response.data.data), {
+          maxAge: 30 * 24 * 60 * 60,
+          path: "/",
+        })
+        router.push(`./view/`)
       }
     } catch (error) {
-        if (error.response) {
-          if (error.response.status === 404) {
-              Swal.fire({
-                  title: "No Encontrado",
-                  text: "La reclamacion no existe",
-                  icon: "warning",
-                  confirmButtonText: "OK",
-              });
-          } else if (error.response.status === 401) {
-              Swal.fire({
-                  title: "Sesión Expirada",
-                  text: "Por favor, inicia sesión nuevamente.",
-                  icon: "warning",
-                  confirmButtonText: "OK",
-              });
-              router.push("/login");
-          } else {
-              Swal.fire({
-                  title: "Error",
-                  text: "Ocurrió un error al obtener los datos.",
-                  icon: "error",
-                  confirmButtonText: "OK",
-              });
-          }
-        } 
-        else {
-            Swal.fire({
-                title: "Error de conexión",
-                text: "No se pudo conectar con el servidor.",
-                icon: "error",
-                confirmButtonText: "OK",
-            });
+      if (error.response) {
+        if (error.response.status === 404) {
+          Swal.fire({
+            title: "No Encontrado",
+            text: "La reclamación no existe",
+            icon: "warning",
+            confirmButtonText: "OK",
+          })
+        } else if (error.response.status === 401) {
+          Swal.fire({
+            title: "Sesión Expirada",
+            text: "Por favor, inicia sesión nuevamente.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          })
+          router.push("/login")
+        } else {
+          Swal.fire({
+            title: "Error",
+            text: "Ocurrió un error al obtener los datos.",
+            icon: "error",
+            confirmButtonText: "OK",
+          })
         }
+      } else {
+        Swal.fire({
+          title: "Error de conexión",
+          text: "No se pudo conectar con el servidor.",
+          icon: "error",
+          confirmButtonText: "OK",
+        })
+      }
     }
   }
 
   useEffect(() => {
-    fetchContacts(currentPage);
-  }, [currentPage]);
+    fetchContacts(currentPage)
+  }, [currentPage])
+
+  useEffect(() => {
+    if (searchTerm.trim() === "") {
+      setFilteredData(data)
+    } else {
+      const filtered = data.filter(
+        (reclamacion) =>
+          (reclamacion.nombre && reclamacion.nombre.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          (reclamacion.apellido && reclamacion.apellido.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          (reclamacion.email && reclamacion.email.toLowerCase().includes(searchTerm.toLowerCase())) ||
+          (reclamacion.id_reclamacion && reclamacion.id_reclamacion.toString().includes(searchTerm)),
+      )
+      setFilteredData(filtered)
+    }
+  }, [searchTerm, data])
+
+  const exportToCSV = () => {
+    if (filteredData.length === 0) {
+      Swal.fire({
+        title: "Sin datos",
+        text: "No hay datos para exportar",
+        icon: "info",
+        confirmButtonText: "OK",
+      })
+      return
+    }
+
+    // Crear encabezados CSV
+    const headers = ["ID", "Nombre", "Apellido", "Correo", "Estado"]
+
+    // Convertir datos a formato CSV
+    const csvData = filteredData.map((reclamacion) => [
+      reclamacion.id_reclamacion,
+      reclamacion.nombre,
+      reclamacion.apellido,
+      reclamacion.email,
+      reclamacion.estadoReclamo,
+    ])
+
+    // Combinar encabezados y datos
+    const csvContent = [headers.join(","), ...csvData.map((row) => row.join(","))].join("\n")
+
+    // Crear blob y descargar
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement("a")
+    link.setAttribute("href", url)
+    link.setAttribute("download", "reclamaciones.csv")
+    link.style.visibility = "hidden"
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
 
   return (
-    <main className="p-4 overflow-scroll flex flex-col w-full h-[100vh] flex-1">
-      {isLoading ? (
-        <div className="text-center text-lg font-semibold">Cargando...</div>
-      ) : (
-        <>
-          <table className="min-w-full bg-white border-separate border-spacing-1 font-medium">
-      <thead>
-        <tr>
-          <th className="p-2 bg-[#8c52ff] text-white rounded-xl">ID</th>
-          <th className="p-2 bg-[#8c52ff] text-white rounded-xl">Nombres</th>
-          <th className="p-2 bg-[#8c52ff] text-white rounded-xl">Correo</th>
-          <th className="p-2 bg-[#8c52ff] text-white rounded-xl">Estado</th>
-          <th className="p-2 bg-[#8c52ff] text-white rounded-xl">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.length > 0 ? (
-          data.map((reclamacion) => (
-            <tr key={`${reclamacion.id_reclamacion}-Row`} className="border-b">
-              <td className="p-2 text-center">{reclamacion.id_reclamacion}</td>
-              <td className="p-2 text-center">{reclamacion.nombre} {reclamacion.apellido}</td>
-              <td className="p-2 text-center">{reclamacion.email}</td>
-              <td className={`p-2 text-center ${reclamacion.estadoReclamo=="ATENDIDO" ? "text-green-600" : "text-red-600"}`}>
-                {reclamacion.estadoReclamo=="PENDIENTE" ? "PENDIENTE" : "ATENDIDO"}
-              </td>
-              <td className="p-2 text-center">
-                <button onClick={() => visualizar(reclamacion.id_reclamacion)} title="Visualizar" className="bg-orange-600 text-white mr-2 px-2 py-1 rounded-lg">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#000" d="M12 9a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5a5 5 0 0 1 5-5a5 5 0 0 1 5 5a5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
-                </button>
-                
-                <button onClick={() => confirmarCambiarEstado(reclamacion.id_reclamacion,`${reclamacion.estadoReclamo=="PENDIENTE" ? "ATENDIDO" : "PENDIENTE"}` )} title='Cambiar Estado' className="bg-blue-500 text-white px-2 py-1 rounded-lg mr-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#000" fillRule="evenodd" d="M12 21a9 9 0 1 0 0-18a9 9 0 0 0 0 18m-.232-5.36l5-6l-1.536-1.28l-4.3 5.159l-2.225-2.226l-1.414 1.414l3 3l.774.774z" clipRule="evenodd"/></svg>
-                </button>
-                {auth_service.hasRole('administrador') && (
-                  <button title="Eliminar" onClick={() => confirmarEliminacion(reclamacion.id_reclamacion)} className="bg-red-500 text-white px-2 py-1 rounded-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4.687 6.213L6.8 18.976a2.5 2.5 0 0 0 2.466 2.092h3.348m6.698-14.855L17.2 18.976a2.5 2.5 0 0 1-2.466 2.092h-3.348m-1.364-9.952v5.049m3.956-5.049v5.049M2.75 6.213h18.5m-6.473 0v-1.78a1.5 1.5 0 0 0-1.5-1.5h-2.554a1.5 1.5 0 0 0-1.5 1.5v1.78z"/></svg>
-                  </button>
-                )}
-                
-              </td>
-            </tr>
-          ))
+    <main className="p-4 md:p-6 flex flex-col w-full h-[100vh] bg-gray-50">
+      <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+          <h1 className="text-2xl font-bold text-gray-800">Gestión de Reclamaciones</h1>
+
+          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+            <div className="relative flex-grow">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Buscar por nombre, correo o ID..."
+                className="pl-10 pr-4 py-2 w-full rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#8c52ff] focus:border-transparent"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+
+            <div className="flex gap-2">
+              <button
+                onClick={exportToCSV}
+                className="flex items-center gap-2 px-3 py-2 bg-green-50 text-green-600 rounded-lg border border-green-100 hover:bg-green-100 transition-colors"
+                title="Exportar a CSV"
+              >
+                <Download size={18} />
+                <span className="hidden sm:inline">Exportar</span>
+              </button>
+
+              <button
+                onClick={() => fetchContacts()}
+                disabled={isRefreshing}
+                className={`flex items-center gap-2 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg border border-blue-100 hover:bg-blue-100 transition-colors ${isRefreshing ? "opacity-70 cursor-not-allowed" : ""}`}
+                title="Actualizar datos"
+              >
+                {isRefreshing ? <Loader2 size={18} className="animate-spin" /> : <RefreshCw size={18} />}
+                <span className="hidden sm:inline">Actualizar</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center py-16">
+            <Loader2 className="h-10 w-10 text-[#8c52ff] animate-spin mb-4" />
+            <p className="text-gray-500 font-medium">Cargando reclamaciones...</p>
+          </div>
         ) : (
-          <tr>
-            <td colSpan="6" className="text-center p-4 text-gray-500">
-              No hay datos disponibles
-            </td>
-          </tr>
+          <>
+            <div className="overflow-x-auto rounded-lg border border-gray-100">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      ID
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Nombres
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Correo
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Estado
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Acciones
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {filteredData.length > 0 ? (
+                    filteredData.map((reclamacion) => (
+                      <tr key={`${reclamacion.id_reclamacion}-Row`} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          {reclamacion.id_reclamacion}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                          {reclamacion.nombre} {reclamacion.apellido}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{reclamacion.email}</td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span
+                            className={`inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                              reclamacion.estadoReclamo === "ATENDIDO"
+                                ? "bg-green-100 text-green-800"
+                                : "bg-amber-100 text-amber-800"
+                            }`}
+                          >
+                            {reclamacion.estadoReclamo === "ATENDIDO" ? (
+                              <CheckCircle size={12} />
+                            ) : (
+                              <AlertCircle size={12} />
+                            )}
+                            {reclamacion.estadoReclamo}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                          <div className="flex justify-end gap-2">
+                            <button
+                              onClick={() => visualizar(reclamacion.id_reclamacion)}
+                              title="Visualizar"
+                              className="p-1.5 bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100 transition-colors"
+                            >
+                              <Eye size={18} />
+                            </button>
+
+                            <button
+                              onClick={() =>
+                                confirmarCambiarEstado(
+                                  reclamacion.id_reclamacion,
+                                  reclamacion.estadoReclamo === "PENDIENTE" ? "ATENDIDO" : "PENDIENTE",
+                                )
+                              }
+                              title={`Cambiar a ${reclamacion.estadoReclamo === "PENDIENTE" ? "ATENDIDO" : "PENDIENTE"}`}
+                              className={`p-1.5 rounded-lg transition-colors ${
+                                reclamacion.estadoReclamo === "PENDIENTE"
+                                  ? "bg-green-50 text-green-600 hover:bg-green-100"
+                                  : "bg-amber-50 text-amber-600 hover:bg-amber-100"
+                              }`}
+                            >
+                              <CheckCircle size={18} />
+                            </button>
+
+                            {auth_service.hasRole("administrador") && (
+                              <button
+                                onClick={() => confirmarEliminacion(reclamacion.id_reclamacion)}
+                                title="Eliminar"
+                                className="p-1.5 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors"
+                              >
+                                <Trash2 size={18} />
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="5" className="px-6 py-16 text-center">
+                        <div className="flex flex-col items-center">
+                          <Filter className="h-12 w-12 text-gray-300 mb-3" />
+                          <p className="text-gray-500 font-medium mb-1">No hay reclamaciones disponibles</p>
+                          {searchTerm && (
+                            <p className="text-gray-400 text-sm">No se encontraron resultados para "{searchTerm}"</p>
+                          )}
+                          {searchTerm && (
+                            <button
+                              onClick={() => setSearchTerm("")}
+                              className="mt-3 text-[#8c52ff] text-sm font-medium hover:underline"
+                            >
+                              Limpiar búsqueda
+                            </button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            {filteredData.length > 0 && (
+              <div className="mt-6">
+                <Pagination count={filteredData.length} />
+                <p className="text-sm text-gray-500 mt-2 text-center">
+                  Mostrando {filteredData.length} de {data.length} reclamaciones
+                </p>
+              </div>
+            )}
+          </>
         )}
-      </tbody>
-    </table>
-          <Pagination count={data.length} />
-        </>
-      )}
+      </div>
     </main>
-  );
+  )
 }
-
-
-
 

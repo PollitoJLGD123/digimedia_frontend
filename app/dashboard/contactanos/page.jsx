@@ -1,80 +1,97 @@
-'use client';
+"use client"
 
-import { useEffect, useState } from 'react';
-import Pagination from '../components/Pagination';
-import { useRouter, useSearchParams } from 'next/navigation';
-import axios from 'axios';
-import { setCookie, getCookie } from 'cookies-next';
-import user_service from '../users/services/user.service';
-import Swal from 'sweetalert2';
-import auth_service from '../users/services/auth.service';
+import { useEffect, useState } from "react"
+import { useRouter, useSearchParams } from "next/navigation"
+import axios from "axios"
+import { setCookie, getCookie } from "cookies-next"
+import user_service from "../users/services/user.service"
+import Swal from "sweetalert2"
+import auth_service from "../users/services/auth.service"
+import { Search, Eye, ToggleLeft, Trash2, Loader2, Filter, Download, RefreshCw } from "lucide-react"
+import Pagination from "../components/Pagination"
 
-//const API_BASE_URL = 'https://back.digimediamkt.com/api/contactanos';
+// const API_BASE_URL = 'https://back.digimediamkt.com/api/contactanos';
 const API_BASE_URL = "http://127.0.0.1:8000/api/contactanos"
 
-
 export default function Page() {
-  const searchParams = useSearchParams();
-  const currentPage = searchParams.get('page') || 1;
-  const [data, setData] = useState([]);
-  const [totalPages, setTotalPages] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
-  const router = useRouter();
+  const searchParams = useSearchParams()
+  const currentPage = searchParams.get("page") || 1
+  const [data, setData] = useState([])
+  const [filteredData, setFilteredData] = useState([])
+  const [totalPages, setTotalPages] = useState(1)
+  const [isLoading, setIsLoading] = useState(true)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  const router = useRouter()
 
   async function fetchContacts() {
-    let page = 1;
-    let allData = [];
-    let hasMorePages = true;
+    setIsRefreshing(true)
+    let page = 1
+    let allData = []
+    let hasMorePages = true
 
     while (hasMorePages) {
       try {
-        const response = await axios.get(`${API_BASE_URL}?page=${page}`, { 
+        const response = await axios.get(`${API_BASE_URL}?page=${page}`, {
           headers: {
-            Authorization: `Bearer ${getCookie('token')}`,
+            Authorization: `Bearer ${getCookie("token")}`,
           },
-        });
+        })
 
         if (response.data.data.length === 0) {
-          hasMorePages = false;
-          break;
+          hasMorePages = false
+          break
         }
 
-        allData = [...allData, ...response.data.data];
-        page++;
+        allData = [...allData, ...response.data.data]
+        page++
       } catch (error) {
-        hasMorePages = false;
-        console.error('Error al obtener los datos:', error.message);
+        hasMorePages = false
+        console.error("Error al obtener los datos:", error.message)
+
+        if (error.response && error.response.status === 401) {
+          Swal.fire({
+            title: "Sesión Expirada",
+            text: "Por favor, inicia sesión nuevamente.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          }).then(() => {
+            user_service.logoutClient(router)
+          })
+        }
       }
     }
 
-    setData(allData);
-    setTotalPages(Math.ceil(allData.length / 20));
-    setIsLoading(false);
+    setData(allData)
+    setFilteredData(allData)
+    setTotalPages(Math.ceil(allData.length / 20))
+    setIsLoading(false)
+    setIsRefreshing(false)
   }
 
   async function deleteContact(id) {
     try {
       const response = await axios.delete(`${API_BASE_URL}/${id}`, {
         headers: {
-          Authorization: `Bearer ${getCookie('token')}`,
+          Authorization: `Bearer ${getCookie("token")}`,
         },
-      });
-  
+      })
+
       if (response.status === 200) {
         Swal.fire({
           title: "Eliminado",
           text: "El contacto ha sido eliminado exitosamente.",
           icon: "success",
           confirmButtonText: "OK",
-        });
-        fetchContacts(currentPage);
+        })
+        fetchContacts(currentPage)
       } else {
         Swal.fire({
           title: "Error",
           text: "No se pudo eliminar el contacto.",
           icon: "error",
           confirmButtonText: "OK",
-        });
+        })
       }
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -84,81 +101,83 @@ export default function Page() {
           icon: "warning",
           confirmButtonText: "OK",
         }).then(() => {
-          user_service.logoutClient(router);
-        });
+          user_service.logoutClient(router)
+        })
       } else {
         Swal.fire({
           title: "Error",
           text: "Ocurrió un error inesperado.",
           icon: "error",
           confirmButtonText: "OK",
-        });
+        })
       }
     }
   }
 
   function confirmarEliminacion(id) {
     Swal.fire({
-        title: '¿Estás seguro en eliminar este registro?',
-        text: "¡No podrás revertir esto!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Sí, eliminar',
-        cancelButtonText: 'Cancelar'
+      title: "¿Estás seguro en eliminar este registro?",
+      text: "¡No podrás revertir esto!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
     }).then((result) => {
-        if (result.isConfirmed) {
-          deleteContact(id);
-        }
-    });
+      if (result.isConfirmed) {
+        deleteContact(id)
+      }
+    })
   }
 
   function confirmarCambiarEstado(id, nuevoEstado) {
     Swal.fire({
-        title: `¿Cambiar estado de contacto a ${nuevoEstado == 0 ? "Inactivo" : "Activo"}?`,
-        text: "¡Puedes cambiarlo después nuevamente!",
-        icon: 'info',
-        showCancelButton: true,
-        confirmButtonColor: '#d33',
-        cancelButtonColor: '#3085d6',
-        confirmButtonText: 'Sí, cambiar',
-        cancelButtonText: 'Cancelar'
+      title: `¿Cambiar estado de contacto a ${nuevoEstado == 0 ? "Inactivo" : "Activo"}?`,
+      text: "¡Puedes cambiarlo después nuevamente!",
+      icon: "info",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Sí, cambiar",
+      cancelButtonText: "Cancelar",
     }).then((result) => {
-        if (result.isConfirmed) {
-          cambiarEstado(id, nuevoEstado);
-        }
-    });
+      if (result.isConfirmed) {
+        cambiarEstado(id, nuevoEstado)
+      }
+    })
   }
 
-  async function cambiarEstado(id,nuevoEstado){
+  async function cambiarEstado(id, nuevoEstado) {
     try {
-      const response = await axios.put(`${API_BASE_URL}/${id}`,
+      const response = await axios.put(
+        `${API_BASE_URL}/${id}`,
         { estado: nuevoEstado },
         {
           headers: {
-            Authorization: `Bearer ${getCookie('token')}`,
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getCookie("token")}`,
+            Accept: "application/json",
+            "Content-Type": "application/json",
           },
-        });
+        },
+      )
       if (response.status === 200) {
         Swal.fire({
           title: "Estado Cambiado",
           text: `El estado del contacto se cambio a ${nuevoEstado == 0 ? "Inactivo" : "Activo"}`,
           icon: "success",
           confirmButtonText: "OK",
-        });
-        fetchContacts(currentPage);
+        })
+        fetchContacts(currentPage)
       } else {
         Swal.fire({
           title: "Error",
           text: "No se pudo cambiar el estado del contacto.",
           icon: "error",
           confirmButtonText: "OK",
-        });
+        })
       }
-    }catch(error){
+    } catch (error) {
       if (error.response && error.response.status === 401) {
         Swal.fire({
           title: "Sesión Expirada",
@@ -166,15 +185,15 @@ export default function Page() {
           icon: "warning",
           confirmButtonText: "OK",
         }).then(() => {
-          user_service.logoutClient(router);
-        });
+          user_service.logoutClient(router)
+        })
       } else {
         Swal.fire({
           title: "Error",
           text: "Ocurrió un error inesperado.",
           icon: "error",
           confirmButtonText: "OK",
-        });
+        })
       }
     }
   }
@@ -182,116 +201,284 @@ export default function Page() {
   async function visualizar(id) {
     try {
       const response = await axios.get(`${API_BASE_URL}/${id}`, {
-          headers: {
-              Authorization: `Bearer ${getCookie('token')}`,
-          },
-      });
+        headers: {
+          Authorization: `Bearer ${getCookie("token")}`,
+        },
+      })
       if (response.status === 200 && response.data) {
-          setCookie("contacto", JSON.stringify(response.data.data), {
-              maxAge: 30 * 24 * 60 * 60, path: "/"
-          });
-          router.push(`./view/`);
+        setCookie("contacto", JSON.stringify(response.data.data), {
+          maxAge: 30 * 24 * 60 * 60,
+          path: "/",
+        })
+        router.push(`./view/`)
       }
     } catch (error) {
-        if (error.response) {
-          if (error.response.status === 404) {
-              Swal.fire({
-                  title: "No Encontrado",
-                  text: "El contacto no existe en la base de datos.",
-                  icon: "warning",
-                  confirmButtonText: "OK",
-              });
-          } else if (error.response.status === 401) {
-              Swal.fire({
-                  title: "Sesión Expirada",
-                  text: "Por favor, inicia sesión nuevamente.",
-                  icon: "warning",
-                  confirmButtonText: "OK",
-              });
-              router.push("/login");
-          } else {
-              Swal.fire({
-                  title: "Error",
-                  text: "Ocurrió un error al obtener los datos.",
-                  icon: "error",
-                  confirmButtonText: "OK",
-              });
-          }
-        } 
-        else {
-            Swal.fire({
-                title: "Error de conexión",
-                text: "No se pudo conectar con el servidor.",
-                icon: "error",
-                confirmButtonText: "OK",
-            });
+      if (error.response) {
+        if (error.response.status === 404) {
+          Swal.fire({
+            title: "No Encontrado",
+            text: "El contacto no existe en la base de datos.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          })
+        } else if (error.response.status === 401) {
+          Swal.fire({
+            title: "Sesión Expirada",
+            text: "Por favor, inicia sesión nuevamente.",
+            icon: "warning",
+            confirmButtonText: "OK",
+          })
+          router.push("/login")
+        } else {
+          Swal.fire({
+            title: "Error",
+            text: "Ocurrió un error al obtener los datos.",
+            icon: "error",
+            confirmButtonText: "OK",
+          })
         }
+      } else {
+        Swal.fire({
+          title: "Error de conexión",
+          text: "No se pudo conectar con el servidor.",
+          icon: "error",
+          confirmButtonText: "OK",
+        })
+      }
     }
   }
 
   useEffect(() => {
-    fetchContacts(currentPage);
-  }, [currentPage]);
+    fetchContacts(currentPage)
+  }, [currentPage])
+
+  useEffect(() => {
+    if (searchTerm.trim() === "") {
+      setFilteredData(data)
+    } else {
+      const filtered = data.filter(
+        (contacto) =>
+          contacto.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          contacto.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          contacto.id_contactanos.toString().includes(searchTerm),
+      )
+      setFilteredData(filtered)
+    }
+  }, [searchTerm, data])
+
+  const exportToCSV = () => {
+    if (filteredData.length === 0) {
+      Swal.fire({
+        title: "Sin datos",
+        text: "No hay datos para exportar",
+        icon: "info",
+        confirmButtonText: "OK",
+      })
+      return
+    }
+
+    // Crear encabezados CSV
+    const headers = ["ID", "Nombre", "Correo", "Estado"]
+
+    // Convertir datos a formato CSV
+    const csvData = filteredData.map((contacto) => [
+      contacto.id_contactanos,
+      contacto.nombre,
+      contacto.email,
+      contacto.estado ? "Activo" : "Inactivo",
+    ])
+
+    // Combinar encabezados y datos
+    const csvContent = [headers.join(","), ...csvData.map((row) => row.join(","))].join("\n")
+
+    // Crear blob y descargar
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement("a")
+    link.setAttribute("href", url)
+    link.setAttribute("download", "contactos.csv")
+    link.style.visibility = "hidden"
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
 
   return (
-    <main className="p-4 overflow-scroll flex flex-col w-full h-[100vh] flex-1">
-      {isLoading ? (
-        <div className="text-center text-lg font-semibold">Cargando...</div>
-      ) : (
-        <>
-          <table className="min-w-full bg-white border-separate border-spacing-1 font-medium">
-      <thead>
-        <tr>
-          <th className="p-2 bg-[#8c52ff] text-white rounded-xl">ID</th>
-          <th className="p-2 bg-[#8c52ff] text-white rounded-xl">Nombres</th>
-          <th className="p-2 bg-[#8c52ff] text-white rounded-xl">Correo</th>
-          <th className="p-2 bg-[#8c52ff] text-white rounded-xl">Estado</th>
-          <th className="p-2 bg-[#8c52ff] text-white rounded-xl">Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        {data.length > 0 ? (
-          data.map((contacto) => (
-            <tr key={`${contacto.id_contactanos}-Row`} className="border-b">
-              <td className="p-2 text-center">{contacto.id_contactanos}</td>
-              <td className="p-2 text-center">{contacto.nombre}</td>
-              <td className="p-2 text-center">{contacto.email}</td>
-              <td className={`p-2 text-center ${contacto.estado ? "text-green-600" : "text-red-600"}`}>
-                {contacto.estado ? "Activo" : "Inactivo"}
-              </td>
-              <td className="p-2 text-center">
+    <main className="p-4 md:p-6 flex flex-col w-full h-[100vh] bg-gray-50">
+      <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+          <h1 className="text-2xl font-bold text-gray-800">Gestión de Contactos</h1>
 
-                <button onClick={() => visualizar(contacto.id_contactanos)} title="Visualizar" className="bg-orange-600 text-white mr-2 px-2 py-1 rounded-lg">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#000" d="M12 9a3 3 0 0 0-3 3a3 3 0 0 0 3 3a3 3 0 0 0 3-3a3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5a5 5 0 0 1 5-5a5 5 0 0 1 5 5a5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5"/></svg>
-                </button>
-                
-                <button onClick={() => confirmarCambiarEstado(contacto.id_contactanos,`${contacto.estado ? 0 : 1}` )} title='Cambiar Estado' className="bg-blue-500 text-white px-2 py-1 rounded-lg mr-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="#000" d="m9.55 15.15l8.475-8.475q.3-.3.7-.3t.7.3t.3.713t-.3.712l-9.175 9.2q-.3.3-.7.3t-.7-.3L4.55 13q-.3-.3-.288-.712t.313-.713t.713-.3t.712.3z"/></svg>
-                </button>
-                {auth_service.hasRole('administrador') && (
-                <button title="Eliminar" onClick={() => confirmarEliminacion(contacto.id_contactanos)} className="bg-red-500 text-white px-2 py-1 rounded-lg">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="#000" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4.687 6.213L6.8 18.976a2.5 2.5 0 0 0 2.466 2.092h3.348m6.698-14.855L17.2 18.976a2.5 2.5 0 0 1-2.466 2.092h-3.348m-1.364-9.952v5.049m3.956-5.049v5.049M2.75 6.213h18.5m-6.473 0v-1.78a1.5 1.5 0 0 0-1.5-1.5h-2.554a1.5 1.5 0 0 0-1.5 1.5v1.78z"/></svg>
-                </button>
-                )}
-              </td>
-            </tr>
-          ))
+          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+            <div className="relative flex-grow">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Buscar por nombre, correo o ID..."
+                className="pl-10 pr-4 py-2 w-full rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-[#8c52ff] focus:border-transparent"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+
+            <div className="flex gap-2">
+              <button
+                onClick={exportToCSV}
+                className="flex items-center gap-2 px-3 py-2 bg-green-50 text-green-600 rounded-lg border border-green-100 hover:bg-green-100 transition-colors"
+                title="Exportar a CSV"
+              >
+                <Download size={18} />
+                <span className="hidden sm:inline">Exportar</span>
+              </button>
+
+              <button
+                onClick={() => fetchContacts()}
+                disabled={isRefreshing}
+                className={`flex items-center gap-2 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg border border-blue-100 hover:bg-blue-100 transition-colors ${isRefreshing ? "opacity-70 cursor-not-allowed" : ""}`}
+                title="Actualizar datos"
+              >
+                {isRefreshing ? <Loader2 size={18} className="animate-spin" /> : <RefreshCw size={18} />}
+                <span className="hidden sm:inline">Actualizar</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {isLoading ? (
+          <div className="flex flex-col items-center justify-center py-16">
+            <Loader2 className="h-10 w-10 text-[#8c52ff] animate-spin mb-4" />
+            <p className="text-gray-500 font-medium">Cargando contactos...</p>
+          </div>
         ) : (
-          <tr>
-            <td colSpan="6" className="text-center p-4 text-gray-500">
-              No hay datos disponibles
-            </td>
-          </tr>
+          <>
+            <div className="overflow-x-auto rounded-lg border border-gray-100">
+              <table className="min-w-full divide-y divide-gray-200">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      ID
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Nombres
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Correo
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Estado
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                      Acciones
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {filteredData.length > 0 ? (
+                    filteredData.map((contacto) => (
+                      <tr key={`${contacto.id_contactanos}-Row`} className="hover:bg-gray-50 transition-colors">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                          {contacto.id_contactanos}
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{contacto.nombre}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{contacto.email}</td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <span
+                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                              contacto.estado ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                            }`}
+                          >
+                            {contacto.estado ? "Activo" : "Inactivo"}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                          <div className="flex justify-end gap-2">
+                            <button
+                              onClick={() => visualizar(contacto.id_contactanos)}
+                              title="Visualizar"
+                              className="p-1.5 bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100 transition-colors"
+                            >
+                              <Eye size={18} />
+                            </button>
+
+                            <button
+                              onClick={() =>
+                                confirmarCambiarEstado(contacto.id_contactanos, `${contacto.estado ? 0 : 1}`)
+                              }
+                              title={`Cambiar a ${contacto.estado ? "Inactivo" : "Activo"}`}
+                              className={`p-1.5 rounded-lg transition-colors ${
+                                contacto.estado
+                                  ? "bg-blue-50 text-blue-600 hover:bg-blue-100"
+                                  : "bg-green-50 text-green-600 hover:bg-green-100"
+                              }`}
+                            >
+                              <ToggleLeft size={18} />
+                            </button>
+
+                            {auth_service.hasRole("administrador") && (
+                              <button
+                                onClick={() => confirmarEliminacion(contacto.id_contactanos)}
+                                title="Eliminar"
+                                className="p-1.5 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors"
+                              >
+                                <Trash2 size={18} />
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="5" className="px-6 py-16 text-center">
+                        <div className="flex flex-col items-center">
+                          <Filter className="h-12 w-12 text-gray-300 mb-3" />
+                          <p className="text-gray-500 font-medium mb-1">No hay datos disponibles</p>
+                          {searchTerm && (
+                            <p className="text-gray-400 text-sm">No se encontraron resultados para "{searchTerm}"</p>
+                          )}
+                          {searchTerm && (
+                            <button
+                              onClick={() => setSearchTerm("")}
+                              className="mt-3 text-[#8c52ff] text-sm font-medium hover:underline"
+                            >
+                              Limpiar búsqueda
+                            </button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+
+            {filteredData.length > 0 && (
+              <div className="mt-6">
+                <Pagination count={filteredData.length} />
+                <p className="text-sm text-gray-500 mt-2 text-center">
+                  Mostrando {filteredData.length} de {data.length} contactos
+                </p>
+              </div>
+            )}
+          </>
         )}
-      </tbody>
-    </table>
-          <Pagination count={data.length} />
-        </>
-      )}
+      </div>
     </main>
-  );
+  )
 }
-
-
-
 

@@ -60,7 +60,7 @@ export default function RootLayout({ children }) {
                   {/* Enlaces publicos */}
                   <TableLink title="Sección Principal" href="/dashboard/main" />
                   {auth_service.hasRole('administrador') && (
-                  <TableLink title="Empleados" href="/dashboard/empleados" />
+                    <TableLink title="Empleados" href="/dashboard/empleados" />
                   )}
 
                   {auth_service.hasRole('ventas') && (
@@ -72,6 +72,9 @@ export default function RootLayout({ children }) {
                   {auth_service.hasRole('marketing') && (
                   <TableLink title="Modales" href="/dashboard/modales"/>
                   )}
+
+                  <TableLink title="Contactanos" href="/dashboard/contactanos" />
+                  <TableLink title="Libro de Reclamaciones" href="/dashboard/reclamaciones" />
                   
                 </ul>
               </nav>

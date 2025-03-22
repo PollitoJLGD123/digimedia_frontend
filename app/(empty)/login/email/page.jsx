@@ -5,6 +5,9 @@ import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 
+const URL_API = "http://127.0.0.1:8000/api/reset_password"
+//const URL_API = "https://back.digimediamkt.com/api/reset_password"
+
 
 export default function Page()  {
 
@@ -22,7 +25,7 @@ export default function Page()  {
 
         setLoading(true);
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/reset_password', { email });
+            const response = await axios.post(`${URL_API}`, { email });
 
             Swal.fire({
                 title: "Éxito",
