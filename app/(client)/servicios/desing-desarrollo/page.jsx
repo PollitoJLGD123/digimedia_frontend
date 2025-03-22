@@ -12,11 +12,13 @@ export default function Page() {
       title: 'DISEÑOS UX Y UI',
       text: 'Creamos experiencias digitales atractivas, intuitivas y centradas en tus usuarios.',
       icon: '/servicios/desarrollo/icon1.svg',
+      ruta: '/servicios/ui'
     },
     {
       title: 'DESARROLLO WEB',
       text: 'Construimos sitios web funcionales, modernos y a la medida de tus necesidades.',
       icon: '/servicios/desarrollo/icon2.svg',
+      ruta: '/servicios/desarrollo-webs/'
     },
     {
       title: 'DOMINIO Y HOSTING',

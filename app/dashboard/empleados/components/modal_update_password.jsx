@@ -2,8 +2,15 @@
 
 import { useState, useEffect } from "react";
 import empleado_service from "../services/empleado.service";
+import { getCookie } from 'cookies-next';
+import { Eye, EyeOff } from 'lucide-react';
 
-export default function ModalUpdatePassword({ isVisible, onClose, empleadoId }) {
+export default function ModalUpdatePassword({ isVisible, onClose }) {
+
+    const empleadoCookie = getCookie('empleado');
+    const empleadoAutenticado = empleadoCookie ? JSON.parse(empleadoCookie) : null;
+    const empleadoAutenticadoId = empleadoAutenticado?.id_empleado;
+
     const [formData, setFormData] = useState({
         currentPassword: "",
         newPassword: "",
@@ -11,6 +18,11 @@ export default function ModalUpdatePassword({ isVisible, onClose, empleadoId }) 
     });
     const [error, setError] = useState({ status: undefined, message: "" });
     const [loading, setLoading] = useState(false);
+    const [showPasswords, setShowPasswords] = useState({
+        currentPassword: false,
+        newPassword: false,
+        confirmPassword: false
+    });
 
     // reset de form al abrirse
     useEffect(() => {
@@ -21,6 +33,11 @@ export default function ModalUpdatePassword({ isVisible, onClose, empleadoId }) 
                 confirmPassword: "",
             });
             setError({ status: undefined, message: "" });
+            setShowPasswords({
+                currentPassword: false,
+                newPassword: false,
+                confirmPassword: false
+            });
         }
     }, [isVisible]);
 
@@ -35,6 +52,13 @@ export default function ModalUpdatePassword({ isVisible, onClose, empleadoId }) 
         setFormData((prev) => ({
             ...prev,
             [e.target.id]: e.target.value,
+        }));
+    };
+
+    const togglePasswordVisibility = (field) => {
+        setShowPasswords(prev => ({
+            ...prev,
+            [field]: !prev[field]
         }));
     };
 
@@ -60,15 +84,51 @@ export default function ModalUpdatePassword({ isVisible, onClose, empleadoId }) 
         setLoading(true);
     
         try {
-            //estructura de datos para el backend
+            const verifyData = {
+                currentPassword: currentPassword,
+                id_empleado: empleadoAutenticadoId,
+            };
+
+            const verifyResponse = await empleado_service.verifyPassword(verifyData);
+            
+            if (verifyResponse.status !== 200) {
+                let errorMessage = "La contraseña actual es incorrecta. Por favor, verifica e intenta nuevamente.";
+                
+                try {
+                    const errorData = await verifyResponse.json();
+                    if (errorData && errorData.message) {
+                        errorMessage = errorData.message;
+                    }
+                } catch (jsonError) {
+                    console.log("No se pudo leer la respuesta como JSON:", jsonError);
+                }
+                
+                setError({ 
+                    status: true, 
+                    message: errorMessage
+                });
+                setLoading(false);
+                return;
+            }
+
+            const verifyResult = await verifyResponse.json();
+            if (!verifyResult.valid) {
+                setError({ 
+                    status: true, 
+                    message: "La contraseña actual es incorrecta. Por favor, verifica e intenta nuevamente." 
+                });
+                setLoading(false);
+                return;
+            }
+            
+            
             const passwordData = {
                 currentPassword: currentPassword,
                 password: newPassword,         
-                id: empleadoId                 
             };
     
-            // solicitud
-            const response = await empleado_service.updatePass(passwordData, empleadoId);
+            // solicitud para actualizar
+            const response = await empleado_service.updatePass(passwordData, empleadoAutenticadoId);
     
             // respuesta
             const data = await response.json();
@@ -119,42 +179,81 @@ export default function ModalUpdatePassword({ isVisible, onClose, empleadoId }) 
                         <label htmlFor="currentPassword" className="font-medium">
                             Contraseña Actual
                         </label>
-                        <input
-                            id="currentPassword"
-                            type="password"
-                            value={formData.currentPassword}
-                            onChange={handleChange}
-                            className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            disabled={loading}
-                        />
+                        <div className="relative">
+                            <input
+                                id="currentPassword"
+                                type={showPasswords.currentPassword ? "text" : "password"}
+                                value={formData.currentPassword}
+                                onChange={handleChange}
+                                className="border border-gray-300 rounded-lg p-2 w-full pr-10 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                disabled={loading}
+                            />
+                            <button 
+                                type="button"
+                                onClick={() => togglePasswordVisibility('currentPassword')}
+                                className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-gray-700"
+                                disabled={loading}
+                            >
+                                {showPasswords.currentPassword ? 
+                                    <EyeOff size={18} /> : 
+                                    <Eye size={18} />
+                                }
+                            </button>
+                        </div>
                     </fieldset>
                     
                     <fieldset className="flex flex-col gap-2">
                         <label htmlFor="newPassword" className="font-medium">
                             Nueva Contraseña
                         </label>
-                        <input
-                            id="newPassword"
-                            type="password"
-                            value={formData.newPassword}
-                            onChange={handleChange}
-                            className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            disabled={loading}
-                        />
+                        <div className="relative">
+                            <input
+                                id="newPassword"
+                                type={showPasswords.newPassword ? "text" : "password"}
+                                value={formData.newPassword}
+                                onChange={handleChange}
+                                className="border border-gray-300 rounded-lg p-2 w-full pr-10 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                disabled={loading}
+                            />
+                            <button 
+                                type="button"
+                                onClick={() => togglePasswordVisibility('newPassword')}
+                                className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-gray-700"
+                                disabled={loading}
+                            >
+                                {showPasswords.newPassword ? 
+                                    <EyeOff size={18} /> : 
+                                    <Eye size={18} />
+                                }
+                            </button>
+                        </div>
                     </fieldset>
                     
                     <fieldset className="flex flex-col gap-2">
                         <label htmlFor="confirmPassword" className="font-medium">
                             Confirmar Nueva Contraseña
                         </label>
-                        <input
-                            id="confirmPassword"
-                            type="password"
-                            value={formData.confirmPassword}
-                            onChange={handleChange}
-                            className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                            disabled={loading}
-                        />
+                        <div className="relative">
+                            <input
+                                id="confirmPassword"
+                                type={showPasswords.confirmPassword ? "text" : "password"}
+                                value={formData.confirmPassword}
+                                onChange={handleChange}
+                                className="border border-gray-300 rounded-lg p-2 w-full pr-10 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                disabled={loading}
+                            />
+                            <button 
+                                type="button"
+                                onClick={() => togglePasswordVisibility('confirmPassword')}
+                                className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 hover:text-gray-700"
+                                disabled={loading}
+                            >
+                                {showPasswords.confirmPassword ? 
+                                    <EyeOff size={18} /> : 
+                                    <Eye size={18} />
+                                }
+                            </button>
+                        </div>
                     </fieldset>
                     
                     <div className="flex justify-end gap-3 mt-6">

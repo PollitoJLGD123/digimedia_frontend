@@ -1,69 +1,131 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import empleado_service from "../services/empleado.service";
-import user_service from "../../users/services/user.service";
-import { useRouter } from "next/navigation";
-import { CheckCircleIcon, XCircleIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import { useState, useEffect } from "react"
+import empleado_service from "../services/empleado.service"
+import user_service from "../../users/services/user.service"
+import { useRouter } from "next/navigation"
+import { CheckCircleIcon, XCircleIcon, XMarkIcon } from "@heroicons/react/24/solid"
+import { useContext } from "react";
+import { getCookie, setCookie } from 'cookies-next';
 
-export default function modal_empleado({ isVisible, onClose, data, onUpdateSuccess }) {
-  console.log("Modal data:", data);
-  if (!isVisible) return null;
+import { DisplayNameContext } from "../../components/DisplayNameContext"
 
-  const router = useRouter();
+export default function modal_empleado({ isVisible, onClose, data, onUpdateSuccess, isProfileEdit = false }) {
+  const router = useRouter()
+
+  const { updateDisplayName } = useContext(DisplayNameContext);
+
   const [formData, setFormData] = useState({
-    nombre: data ? data.nombre : "",
-    apellido: data ? data.apellido : "",
-    email: data ? data.email : "",
-    dni: data ? data.dni : "",
-    telefono: data ? data.telefono : "",
-    id_rol: data ? data.id_rol : "",
-  });
-  const [roles, setRoles] = useState([]);
-  const [error, setError] = useState({ status: undefined, message: "" });
-  const [button, setButtonStatus] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
+    nombre: "",
+    apellido: "", 
+    email: "",
+    dni: "",
+    telefono: "",
+    id_rol: "",
+  })
+  const [roles, setRoles] = useState([])
+  const [error, setError] = useState({ status: undefined, message: "" })
+  const [button, setButtonStatus] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
 
+  useEffect(() => {
+    console.log("updateDisplayName en ModalEmpleado:", typeof updateDisplayName);
+  }, [updateDisplayName]);
+
+  // Resetear estados cuando el modal se cierra
+  useEffect(() => {
+    if (!isVisible) {
+      setError({ status: undefined, message: "" });
+      setButtonStatus(true);
+      setIsLoading(false);
+    }
+  }, [isVisible]);
+
+  // carga de roles al montar el componente
   useEffect(() => {
     async function fetchRoles() {
       try {
-        const response = await empleado_service.getRoles();
+        const response = await empleado_service.getRoles()
         if (response.status === 200) {
-          setRoles(response.data);
+          setRoles(response.data)
         }
       } catch (error) {
-        console.error("Error al obtener roles:", error);
+        console.error("Error al obtener roles:", error)
       }
     }
-    fetchRoles();
-  }, []);
 
+    if (isVisible && !isProfileEdit) {
+      fetchRoles()
+    }
+  }, [isVisible, isProfileEdit])
+
+  // actualiza formData cuando cambian data o roles
   useEffect(() => {
-    if (data && roles.length > 0) {
+    if (data && (roles.length > 0 || isProfileEdit)) {
+      // logica para determinar el id_rol
+      let rolId = "";
+      
+      // caso: ya hay un rol directo
+      if (data.id_rol) {
+        rolId = data.id_rol;
+      } 
+      // caso: el rol es un objeto y tiene id_rol
+      else if (data.rol && typeof data.rol === 'object' && data.rol.id_rol) {
+        rolId = data.rol.id_rol;
+      } 
+      // caso: el rol es un string y se busca su id_rol
+      else if (data.rol && typeof data.rol === 'string' && roles.length > 0) {
+        const matchingRole = roles.find(
+          (r) => r.nombre.toLowerCase() === data.rol.toLowerCase()
+        );
+        rolId = matchingRole ? matchingRole.id_rol : "";
+      }
+  
       setFormData({
         nombre: data.nombre || "",
         apellido: data.apellido || "",
         email: data.email || "",
         dni: data.dni || "",
         telefono: data.telefono || "",
-        id_rol: data.id_rol || roles.find((rol) => rol.nombre.toLowerCase() === data.rol?.toLowerCase())?.id_rol || "",
+        id_rol: rolId,
+      });
+    } else if (isVisible && !data) {
+      // limpiar formulario si no hay data
+      setFormData({
+        nombre: "",
+        apellido: "",
+        email: "",
+        dni: "",
+        telefono: "",
+        id_rol: "",
       });
     }
-  }, [data, roles]);
+  }, [data, roles, isVisible]);
+
+  // si el modal no es visible, no renderiza nada
+  if (!isVisible) return null
 
   function handleChange(e) {
     setFormData((prev) => ({
       ...prev,
       [e.target.id]: e.target.value,
-    }));
+    }))
+  }
+
+  // Función para resetear el estado y cerrar el modal
+  function handleClose() {
+    setError({ status: undefined, message: "" });
+    setButtonStatus(true);
+    setIsLoading(false);
+    if (typeof onClose === "function") onClose();
   }
 
   function createEmpleado() {
-    if (formData.nombre.length <= 2) return setError({ status: true, message: "Ingresar correctamente el nombre" });
-    if (formData.apellido.length <= 2) return setError({ status: true, message: "Ingresar correctamente el apellido" });
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!regex.test(formData.email)) return setError({ status: true, message: "Ingresar correctamente el email" });
-    if (formData.dni.length < 8) return setError({ status: true, message: "DNI inválido" });
+    if (formData.nombre.length <= 2) return setError({ status: true, message: "Ingresar correctamente el nombre" })
+    if (formData.apellido.length <= 2) return setError({ status: true, message: "Ingresar correctamente el apellido" })
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!regex.test(formData.email)) return setError({ status: true, message: "Ingresar correctamente el email" })
+    if (formData.dni.length < 8) return setError({ status: true, message: "DNI inválido" })
 
     const form = {
       nombre: formData.nombre,
@@ -72,33 +134,37 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
       dni: formData.dni,
       telefono: formData.telefono,
       id_rol: formData.id_rol,
-    };
+    }
 
-    setButtonStatus(false);
+    setButtonStatus(false)
+    setIsLoading(true)
 
     empleado_service
       .create(form)
       .then((response) => {
         if (response.error) {
-          setError({ status: true, message: "Hubo un error al crear el empleado" });
-          setButtonStatus(true);
+          setError({ status: true, message: "Hubo un error al crear el empleado" })
+          setButtonStatus(true)
         } else {
           if (response.status === 200) {
-            setError({ status: false, message: "Empleado creado correctamente" });
+            setError({ status: false, message: "Empleado creado correctamente" })
             setTimeout(() => {
-              if (typeof onClose === "function") onClose();
-            }, 1000);
+              handleClose();
+            }, 1000)
           } else {
-            setError({ status: true, message: "Hubo un error al crear el empleado" });
-            setButtonStatus(true);
+            setError({ status: true, message: "Hubo un error al crear el empleado" })
+            setButtonStatus(true)
           }
         }
       })
       .catch((error) => {
-        console.error("Error al crear empleado:", error);
-        setError({ status: true, message: "Hubo un error al crear el empleado" });
-        setButtonStatus(true);
-      });
+        console.error("Error al crear empleado:", error)
+        setError({ status: true, message: "Hubo un error al crear el empleado" })
+        setButtonStatus(true)
+      })
+      .finally(() => {
+        setIsLoading(false);
+      })
   }
 
   function updateEmpleado() {
@@ -108,35 +174,60 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
       email: formData.email,
       dni: formData.dni,
       telefono: formData.telefono,
-      id_rol: formData.id_rol,
     };
-
+  
+    if (!isProfileEdit) {
+      form.id_rol = formData.id_rol;
+    }
+  
     setButtonStatus(false);
     setIsLoading(true);
-
+  
     empleado_service
       .update(form, data.id_empleado)
       .then((response) => {
         if (response.status == 500) {
           user_service.logoutClient(router);
         } else {
-          if (parseInt(response.status) == 200) {
-            setError({ status: false, message: "Empleado actualizado correctamente" });
+          if (Number.parseInt(response.status) == 200) {
+            setError({ status: false, message: "Información actualizada correctamente" });
+  
+            if (isProfileEdit) {
+              const currentEmpleadoData = getCookie('empleado') ? JSON.parse(getCookie('empleado')) : null;
+  
+              if (currentEmpleadoData) {
+                const updatedEmpleadoData = {
+                  ...currentEmpleadoData,
+                  ...form,
+                };
+                setCookie('empleado', JSON.stringify(updatedEmpleadoData));
+  
+                // Actualizamos el displayName mediante el contexto
+                if (isProfileEdit && typeof updateDisplayName === 'function') {
+                  console.log("Llamando a updateDisplayName con:", `${formData.nombre} ${formData.apellido}`);
+                  updateDisplayName(`${formData.nombre}`);
+                }
+              }
+            }
+  
             if (typeof onUpdateSuccess === "function") {
               onUpdateSuccess({ ...data, ...form });
             }
+  
             setTimeout(() => {
-              if (typeof onClose === "function") onClose();
+              handleClose();
             }, 1000);
+  
+            console.log("Datos actualizados:", data);
           } else {
-            setError({ status: true, message: "Hubo un error al actualizar el empleado" });
+            setError({ status: true, message: "Hubo un error al actualizar la información" });
             setButtonStatus(true);
           }
         }
       })
       .catch((error) => {
-        console.error("Error al actualizar empleado:", error);
-        setError({ status: true, message: "Hubo un error al actualizar el empleado" });
+        console.error("Error al actualizar información:", error);
+        setError({ status: true, message: "Hubo un error al actualizar la información" });
         setButtonStatus(true);
       })
       .finally(() => {
@@ -146,9 +237,9 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
 
   function guardarEmpleado() {
     if (!data) {
-      createEmpleado();
+      createEmpleado()
     } else {
-      updateEmpleado();
+      updateEmpleado()
     }
   }
 
@@ -160,8 +251,8 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
         }`}
       >
         <div className="flex justify-between items-center mb-4">
-          <h2 className="font-bold text-lg">Empleados</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+          <h2 className="font-bold text-lg">{isProfileEdit ? "Editar Perfil" : "Empleados"}</h2>
+          <button onClick={handleClose} className="text-gray-500 hover:text-gray-700">
             <XMarkIcon className="h-6 w-6" />
           </button>
         </div>
@@ -177,9 +268,7 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
             ) : (
               <XCircleIcon className="h-5 w-5 text-red-500 mr-2" />
             )}
-            <p className={`text-sm ${error.status === false ? "text-green-700" : "text-red-700"}`}>
-              {error.message}
-            </p>
+            <p className={`text-sm ${error.status === false ? "text-green-700" : "text-red-700"}`}>{error.message}</p>
           </div>
         )}
 
@@ -241,6 +330,7 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
               />
             </fieldset>
 
+            {!isProfileEdit && (
             <fieldset className="flex flex-col gap-2">
               <label className="font-semibold text-sm" htmlFor="telefono">
                 Teléfono
@@ -254,29 +344,57 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
                 placeholder="Ingrese el teléfono"
               />
             </fieldset>
+            )}
 
-            <fieldset className="flex flex-col gap-2">
-              <label className="font-semibold text-sm" htmlFor="id_rol">
-                Rol
-              </label>
-              <select
-                id="id_rol"
-                onChange={handleChange}
-                value={formData.id_rol}
-                className="w-full border border-gray-300 py-3 px-4 outline-none rounded-md"
-              >
-                <option value="">Seleccione un rol</option>
-                {roles.map((rol) => (
-                  <option key={rol.id_rol} value={rol.id_rol}>
-                    {rol.nombre
-                      .split(" ")
-                      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-                      .join(" ")}
-                  </option>
-                ))}
-              </select>
-            </fieldset>
+            
+            {/* Solo mostramos el selector de rol cuando NO es edición de perfil */}
+            {!isProfileEdit && (
+              <fieldset className="flex flex-col gap-2">
+                <label className="font-semibold text-sm" htmlFor="id_rol">
+                  Rol
+                </label>
+                <select
+                  id="id_rol"
+                  onChange={handleChange}
+                  value={formData.id_rol}
+                  className="w-full border border-gray-300 py-3 px-4 outline-none rounded-md"
+                >
+                  <option value="">Seleccione un rol</option>
+                  {roles.map((rol) => (
+                    <option key={rol.id_rol} value={rol.id_rol}>
+                      {rol.nombre
+                        .split(" ")
+                        .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                        .join(" ")}
+                    </option>
+                  ))}
+                </select>
+              </fieldset>
+            )}
+
+
           </div>
+
+          {isProfileEdit && (
+          <div className="flex justify-center w-full mt-5">
+            <div className="w-1/3">
+              <fieldset className="flex flex-col gap-2">
+                <label className="font-semibold text-sm" htmlFor="telefono">
+                  Teléfono
+                </label>
+                <input
+                  id="telefono"
+                  onChange={handleChange}
+                  value={formData.telefono}
+                  className="w-full border border-gray-300 py-3 px-4 outline-none rounded-md"
+                  type="text"
+                  placeholder="Ingrese el teléfono"
+                />
+              </fieldset>
+            </div>
+          </div>
+        )}
+
 
           <div className="flex justify-center gap-4 mt-6">
             <button
@@ -289,11 +407,7 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
                 <span className="flex items-center">
                   <svg className="animate-spin h-5 w-5 mr-2 text-white" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-                    />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
                   </svg>
                   Guardando...
                 </span>
@@ -303,7 +417,7 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
             </button>
             <button
               className="bg-red-500 text-white py-3 px-6 rounded-lg font-bold hover:bg-red-600 transition-colors"
-              onClick={onClose}
+              onClick={handleClose}
               disabled={isLoading}
             >
               Cancelar
@@ -312,5 +426,5 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
         </form>
       </div>
     </section>
-  );
+  )
 }

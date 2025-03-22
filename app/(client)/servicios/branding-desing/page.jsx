@@ -12,11 +12,13 @@ export default function Page() {
       title: 'DESARROLLO DE BRIEF',
       text: 'El briefing nos permite entender tu empresa para crear y definir tu marca.',
       icon: '/servicios/branding/icon1.svg',
+      ruta: '/servicios/desarrollo-briefs/'
     },
     {
       title: 'IDENTIDAD VISUAL CORPORATIVA',
       text: 'Creemos identidades visuales únicas que reflejan tu esencia y destacan en el mercado.',
       icon: '/servicios/branding/icon2.svg',
+      ruta: '/servicios/identidad-visual/'
     },
     {
       title: 'NAMING, LOGO Y SLOGAN',

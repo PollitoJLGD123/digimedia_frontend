@@ -121,7 +121,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link
-                    href="https://www.linkedin.com/in/digimedia-marketing/"
+                    href="https://www.linkedin.com/company/digimedia-mkt/"
                     target="_blank"
                   >
                     <img
