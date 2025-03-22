@@ -7,10 +7,8 @@ import Table from '../components/DataTable';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { getCookie } from 'cookies-next';
 import user_service from '../users/services/user.service';
-
-
-//const API_URL = 'https://back.digimediamkt.com/api/modal';
-const API_URL = "http://127.0.0.1:8000/api/modal";
+import url from '../../../api/url';
+const API_URL = `${url}/api/modal`;
 
 const headers = [
   'id',
@@ -28,8 +26,7 @@ export default function Page() {
   const [data, setData] = useState([]);
   const [totalItems, setTotalItems] = useState(0);
   const [loading, setLoading] = useState(true);
-  //const API_URL = 'https://back.digimediamkt.com/api/modal';
-  const API_URL = "http://127.0.0.1:8000/api/modal"
+
   const router = useRouter();
 
   // Función para obtener los datos paginados

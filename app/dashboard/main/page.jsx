@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-
+import url from "@/api/url"
 export default function Page() {
   const [userData, setUserData] = useState(null)
   const [empleadoData, setEmpleadoData] = useState(null)
@@ -25,7 +25,7 @@ export default function Page() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const empleadoId = searchParams.get("id_empleado")
-  const api_url = "http://127.0.0.1:8000/api/empleados"
+  const api_url = `${url}/api/empleados`
 
   useEffect(() => {
     setIsClient(true)

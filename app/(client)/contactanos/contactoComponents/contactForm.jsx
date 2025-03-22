@@ -5,10 +5,11 @@ import { motion } from "framer-motion";
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { getCookie } from 'cookies-next';
+import url from '../../../../api/url';
 
 
-//const API_BASE_URL = 'https://back.digimediamkt.com/api/contactanos';
-const API_BASE_URL = "http://127.0.0.1:8000/api/contactanos"
+const API_BASE_URL = `${url}/api/contactanos`;
+console.log(API_BASE_URL);
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({

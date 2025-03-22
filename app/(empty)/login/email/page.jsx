@@ -4,6 +4,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
+import url from '../../../../api/url';
 
 
 export default function Page()  {
@@ -11,6 +12,8 @@ export default function Page()  {
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+
+    const API_BASE_URL = `${url}/api/reset_password`;
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -22,7 +25,7 @@ export default function Page()  {
 
         setLoading(true);
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/reset_password', { email });
+            const response = await axios.post(`${API_BASE_URL}`, { email });
 
             Swal.fire({
                 title: "Éxito",

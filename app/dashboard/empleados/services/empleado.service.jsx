@@ -1,7 +1,8 @@
 "use client";
+import url from "../../../../api/url"
 
-const api_url = "http://127.0.0.1:8000/api/empleados"; // URL base para las rutas de empleados
-const api_def = "http://127.0.0.1:8000/api"
+const api_url = `${url}/api/empleados`; // URL base para las rutas de empleados
+const api_def = `${url}/api`
 import { getCookie } from "cookies-next";
 import Swal from 'sweetalert2';
 

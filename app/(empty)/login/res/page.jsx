@@ -4,6 +4,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { useRouter, useSearchParams } from 'next/navigation';
+import url from '../../../../api/url';
 
 export default function Page () {
     
@@ -13,6 +14,8 @@ export default function Page () {
     const [token, setToken] = useState(null);
     const router = useRouter();
     const searchParams = useSearchParams();
+
+    const API_BASE_URL = `${url}/api/update_password`;
 
     useEffect(() => {
         const tokenParam = searchParams.get('token');
@@ -39,7 +42,7 @@ export default function Page () {
 
         setLoading(true);
         try {
-            const response = await axios.post('http://127.0.0.1:8000/api/update_password', {
+            const response = await axios.post(`${API_BASE_URL}`, {
                 token,
                 password,
                 password_confirmation: confirmPassword
