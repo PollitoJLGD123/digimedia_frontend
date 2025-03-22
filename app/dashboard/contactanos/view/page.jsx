@@ -103,7 +103,7 @@ export default function Page() {
                 <h3 className="text-sm font-semibold text-gray-500 mb-1">Teléfono</h3>
                 {contacto.numero ? (
                   <a 
-                    href={`https://wa.me/${contacto.numero.replace(/\D/g, '')}`}
+                    href={`https://wa.me/+51${contacto.numero.replace(/\D/g, '')}`}
                     className="text-lg font-medium text-[#8c52ff] hover:underline flex items-center group"
                     target="_blank"
                     rel="noopener noreferrer"

@@ -149,7 +149,7 @@ export default function Page() {
                   <div className="flex-grow">
                     {reclamacion.celular ? (
                     <a 
-                      href={`https://wa.me/${reclamacion.celular.replace(/\D/g, '')}`}
+                      href={`https://wa.me/+51${reclamacion.celular.replace(/\D/g, '')}`}
                       className="text-sm font-medium text-[#8c52ff] hover:underline flex items-center group"
                       target="_blank"
                       rel="noopener noreferrer"
