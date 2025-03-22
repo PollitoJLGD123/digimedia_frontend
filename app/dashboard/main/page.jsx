@@ -299,6 +299,7 @@ export default function Page() {
           onClose={() => setShowEditModal(false)}
           data={empleadoData}
           onUpdateSuccess={handleUpdateSuccess}
+          isProfileEdit={true}
         />
       )}
       {showPasswordModal && (

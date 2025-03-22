@@ -6,7 +6,7 @@ import user_service from "../../users/services/user.service"
 import { useRouter } from "next/navigation"
 import { CheckCircleIcon, XCircleIcon, XMarkIcon } from "@heroicons/react/24/solid"
 
-export default function modal_empleado({ isVisible, onClose, data, onUpdateSuccess }) {
+export default function modal_empleado({ isVisible, onClose, data, onUpdateSuccess, isProfileEdit = false }) {
   const router = useRouter()
   const [formData, setFormData] = useState({
     nombre: "",
@@ -34,14 +34,14 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
       }
     }
 
-    if (isVisible) {
+    if (isVisible && !isProfileEdit) {
       fetchRoles()
     }
-  }, [isVisible])
+  }, [isVisible, isProfileEdit])
 
   // actualiza formData cuando cambian data o roles
   useEffect(() => {
-    if (data && roles.length > 0) {
+    if (data && (roles.length > 0 || isProfileEdit)) {
       // logica para determinar el id_rol
       let rolId = "";
       
@@ -54,7 +54,7 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
         rolId = data.rol.id_rol;
       } 
       // caso: el rol es un string y se busca su id_rol
-      else if (data.rol && typeof data.rol === 'string') {
+      else if (data.rol && typeof data.rol === 'string' && roles.length > 0) {
         const matchingRole = roles.find(
           (r) => r.nombre.toLowerCase() === data.rol.toLowerCase()
         );
@@ -142,7 +142,11 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
       email: formData.email,
       dni: formData.dni,
       telefono: formData.telefono,
-      id_rol: formData.id_rol,
+    }
+    
+    // Solo incluimos el rol cuando no estamos editando el perfil personal
+    if (!isProfileEdit) {
+      form.id_rol = formData.id_rol
     }
 
     setButtonStatus(false)
@@ -155,7 +159,7 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
           user_service.logoutClient(router)
         } else {
           if (Number.parseInt(response.status) == 200) {
-            setError({ status: false, message: "Empleado actualizado correctamente" })
+            setError({ status: false, message: "Información actualizada correctamente" })
             if (typeof onUpdateSuccess === "function") {
               onUpdateSuccess({ ...data, ...form })
             }
@@ -163,14 +167,14 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
               if (typeof onClose === "function") onClose()
             }, 1000)
           } else {
-            setError({ status: true, message: "Hubo un error al actualizar el empleado" })
+            setError({ status: true, message: "Hubo un error al actualizar la información" })
             setButtonStatus(true)
           }
         }
       })
       .catch((error) => {
-        console.error("Error al actualizar empleado:", error)
-        setError({ status: true, message: "Hubo un error al actualizar el empleado" })
+        console.error("Error al actualizar información:", error)
+        setError({ status: true, message: "Hubo un error al actualizar la información" })
         setButtonStatus(true)
       })
       .finally(() => {
@@ -194,7 +198,7 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
         }`}
       >
         <div className="flex justify-between items-center mb-4">
-          <h2 className="font-bold text-lg">Empleados</h2>
+          <h2 className="font-bold text-lg">{isProfileEdit ? "Editar Perfil" : "Empleados"}</h2>
           <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
             <XMarkIcon className="h-6 w-6" />
           </button>
@@ -273,6 +277,8 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
               />
             </fieldset>
 
+            {!isProfileEdit && (
+
             <fieldset className="flex flex-col gap-2">
               <label className="font-semibold text-sm" htmlFor="telefono">
                 Teléfono
@@ -286,29 +292,57 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
                 placeholder="Ingrese el teléfono"
               />
             </fieldset>
+            )}
 
-            <fieldset className="flex flex-col gap-2">
-              <label className="font-semibold text-sm" htmlFor="id_rol">
-                Rol
-              </label>
-              <select
-                id="id_rol"
-                onChange={handleChange}
-                value={formData.id_rol}
-                className="w-full border border-gray-300 py-3 px-4 outline-none rounded-md"
-              >
-                <option value="">Seleccione un rol</option>
-                {roles.map((rol) => (
-                  <option key={rol.id_rol} value={rol.id_rol}>
-                    {rol.nombre
-                      .split(" ")
-                      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-                      .join(" ")}
-                  </option>
-                ))}
-              </select>
-            </fieldset>
+            
+            {/* Solo mostramos el selector de rol cuando NO es edición de perfil */}
+            {!isProfileEdit && (
+              <fieldset className="flex flex-col gap-2">
+                <label className="font-semibold text-sm" htmlFor="id_rol">
+                  Rol
+                </label>
+                <select
+                  id="id_rol"
+                  onChange={handleChange}
+                  value={formData.id_rol}
+                  className="w-full border border-gray-300 py-3 px-4 outline-none rounded-md"
+                >
+                  <option value="">Seleccione un rol</option>
+                  {roles.map((rol) => (
+                    <option key={rol.id_rol} value={rol.id_rol}>
+                      {rol.nombre
+                        .split(" ")
+                        .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                        .join(" ")}
+                    </option>
+                  ))}
+                </select>
+              </fieldset>
+            )}
+
+
           </div>
+
+          {isProfileEdit && (
+          <div className="flex justify-center w-full mt-5">
+            <div className="w-1/3">
+              <fieldset className="flex flex-col gap-2">
+                <label className="font-semibold text-sm" htmlFor="telefono">
+                  Teléfono
+                </label>
+                <input
+                  id="telefono"
+                  onChange={handleChange}
+                  value={formData.telefono}
+                  className="w-full border border-gray-300 py-3 px-4 outline-none rounded-md"
+                  type="text"
+                  placeholder="Ingrese el teléfono"
+                />
+              </fieldset>
+            </div>
+          </div>
+        )}
+
 
           <div className="flex justify-center gap-4 mt-6">
             <button
@@ -342,4 +376,3 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
     </section>
   )
 }
-

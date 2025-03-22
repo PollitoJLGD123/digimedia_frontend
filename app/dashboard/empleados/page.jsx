@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Swal from "sweetalert2"
-import { PlusCircle, Users, Search, RefreshCw } from "lucide-react"
+import { PlusCircle, Users, Search, RefreshCw, Filter } from "lucide-react"
 
 import Pagination from "../components/Pagination"
 import Table from "../components/DataTable"
@@ -15,6 +15,7 @@ import user_service from "../users/services/user.service"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 const headers = ["id_empleado", "nombre", "apellido", "email", "dni", "telefono", "rol"]
 
@@ -27,6 +28,8 @@ export default function Page() {
   const [dataUpd, setDataUpdate] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
+  const [roles, setRoles] = useState([])
+  const [selectedRole, setSelectedRole] = useState("all")
   const router = useRouter()
 
   const handleShow = async (id) => {
@@ -40,6 +43,18 @@ export default function Page() {
         text: "Hubo un error al cargar el perfil del empleado.",
         confirmButtonColor: "#6f4be8",
       })
+    }
+  }
+
+  // Obtener roles
+  const fetchRoles = async () => {
+    try {
+      const response = await empleado_service.getRoles()
+      if (response.status === 200) {
+        setRoles(response.data || [])
+      }
+    } catch (error) {
+      console.error("Error al obtener roles:", error)
     }
   }
 
@@ -172,18 +187,42 @@ export default function Page() {
     await setEmpleados(Number.parseInt(currentPage))
   }
 
-  // filtrar busqueda
-  const filteredData = data.filter(
-    (item) =>
+  // Filtrar por rol
+  const filteredData = data.filter((item) => {
+    // filtro de texto
+    const matchesSearch =
       item.nombre?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.apellido?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.dni?.toLowerCase().includes(searchTerm.toLowerCase()),
-  )
+      item.dni?.toLowerCase().includes(searchTerm.toLowerCase())
+  
+    // busqueda de nombre del rol en base al id
+    const selectedRoleName = selectedRole === "all" 
+      ? "all" 
+      : roles.find(r => r.id_rol === selectedRole)?.nombre?.toLowerCase() || "";
 
+    // filtro por rol usando el nombre del rol
+    const matchesRole = selectedRole === "all" || 
+      (item.rol && item.rol.toLowerCase() === selectedRoleName);
+  
+    // retornar si cumple con ambos filtros
+    return matchesSearch && matchesRole
+  })
+
+  // carga de empleados y roles
   useEffect(() => {
     fetchEmpleados()
+    fetchRoles()
   }, [currentPage])
+
+  // formatear rol
+  const formatRoleName = (name) => {
+    if (!name) return ""
+    return name
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ")
+  }
 
   return (
     <div className="container mx-auto px-4 py-6 max-w-7xl">
@@ -213,28 +252,60 @@ export default function Page() {
         </CardHeader>
 
         <CardContent className="p-6">
-          <div className="mb-6 flex flex-col sm:flex-row gap-3 justify-between items-center">
-            <div className="relative w-full sm:w-64">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <Input
-                type="text"
-                placeholder="Buscar empleado..."
-                className="pl-9 w-full"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
+          {/* Filtros y controles */}
+          <div className="mb-6 space-y-4">
+            <div className="flex flex-col sm:flex-row gap-3 justify-between items-center">
+              <div className="relative w-full sm:w-64">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <Input
+                  type="text"
+                  placeholder="Buscar empleado..."
+                  className="pl-9 w-full"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+              </div>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={fetchEmpleados}
+                disabled={isLoading}
+                className="w-full sm:w-auto"
+              >
+                <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? "animate-spin" : ""}`} />
+                {isLoading ? "Cargando..." : "Actualizar"}
+              </Button>
             </div>
 
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={fetchEmpleados}
-              disabled={isLoading}
-              className="w-full sm:w-auto"
-            >
-              <RefreshCw className={`h-4 w-4 mr-2 ${isLoading ? "animate-spin" : ""}`} />
-              {isLoading ? "Cargando..." : "Actualizar"}
-            </Button>
+            {/* Filtro por rol */}
+            <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg border border-gray-100">
+              <Filter className="h-4 w-4 text-[#8c52ff]" />
+              <div className="text-sm font-medium">Filtrar por rol:</div>
+              <Select value={selectedRole} onValueChange={setSelectedRole}>
+                <SelectTrigger className="w-[180px] bg-white">
+                  <SelectValue placeholder="Todos los roles" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Todos los roles</SelectItem>
+                  {roles.map((rol) => (
+                    <SelectItem key={rol.id_rol} value={rol.id_rol}>
+                      {formatRoleName(rol.nombre)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+
+              {selectedRole !== "all" && (
+                <Button variant="ghost" size="sm" onClick={() => setSelectedRole("all")} className="h-8 px-2 text-xs">
+                  Limpiar filtro
+                </Button>
+              )}
+
+              <div className="ml-auto text-xs text-gray-500">
+                {filteredData.length} {filteredData.length === 1 ? "empleado" : "empleados"} encontrados
+              </div>
+            </div>
           </div>
 
           {isLoading ? (
@@ -256,7 +327,9 @@ export default function Page() {
 
               {filteredData.length === 0 && (
                 <div className="text-center py-10 text-gray-500">
-                  {searchTerm ? "No se encontraron resultados para tu búsqueda" : "No hay empleados registrados"}
+                  {searchTerm || selectedRole !== "all"
+                    ? "No se encontraron resultados para tu búsqueda"
+                    : "No hay empleados registrados"}
                 </div>
               )}
 
