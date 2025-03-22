@@ -5,9 +5,17 @@ import empleado_service from "../services/empleado.service"
 import user_service from "../../users/services/user.service"
 import { useRouter } from "next/navigation"
 import { CheckCircleIcon, XCircleIcon, XMarkIcon } from "@heroicons/react/24/solid"
+import { useContext } from "react";
+import { getCookie, setCookie } from 'cookies-next';
+
+
+import { DisplayNameContext } from "../../components/DisplayNameContext"
 
 export default function modal_empleado({ isVisible, onClose, data, onUpdateSuccess, isProfileEdit = false }) {
   const router = useRouter()
+
+  const { updateDisplayName } = useContext(DisplayNameContext);
+
   const [formData, setFormData] = useState({
     nombre: "",
     apellido: "", 
@@ -20,6 +28,11 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
   const [error, setError] = useState({ status: undefined, message: "" })
   const [button, setButtonStatus] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    console.log("updateDisplayName en ModalEmpleado:", typeof updateDisplayName);
+  }, [updateDisplayName]);
+
 
   // carga de roles al montar el componente
   useEffect(() => {
@@ -142,44 +155,65 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
       email: formData.email,
       dni: formData.dni,
       telefono: formData.telefono,
-    }
-    
-    // Solo incluimos el rol cuando no estamos editando el perfil personal
+    };
+  
     if (!isProfileEdit) {
-      form.id_rol = formData.id_rol
+      form.id_rol = formData.id_rol;
     }
-
-    setButtonStatus(false)
-    setIsLoading(true)
-
+  
+    setButtonStatus(false);
+    setIsLoading(true);
+  
     empleado_service
       .update(form, data.id_empleado)
       .then((response) => {
         if (response.status == 500) {
-          user_service.logoutClient(router)
+          user_service.logoutClient(router);
         } else {
           if (Number.parseInt(response.status) == 200) {
-            setError({ status: false, message: "Información actualizada correctamente" })
-            if (typeof onUpdateSuccess === "function") {
-              onUpdateSuccess({ ...data, ...form })
+            setError({ status: false, message: "Información actualizada correctamente" });
+  
+            if (isProfileEdit) {
+              const currentEmpleadoData = getCookie('empleado') ? JSON.parse(getCookie('empleado')) : null;
+  
+              if (currentEmpleadoData) {
+                const updatedEmpleadoData = {
+                  ...currentEmpleadoData,
+                  ...form,
+                };
+                setCookie('empleado', JSON.stringify(updatedEmpleadoData));
+  
+                // Actualizamos el displayName mediante el contexto
+                if (isProfileEdit && typeof updateDisplayName === 'function') {
+                  console.log("Llamando a updateDisplayName con:", `${formData.nombre} ${formData.apellido}`);
+                  updateDisplayName(`${formData.nombre}`);
+                }
+              }
             }
+  
+            if (typeof onUpdateSuccess === "function") {
+              onUpdateSuccess({ ...data, ...form });
+            }
+  
             setTimeout(() => {
-              if (typeof onClose === "function") onClose()
-            }, 1000)
+              if (typeof onClose === "function") onClose();
+            }, 1000);
+  
+            console.log("Datos actualizados:", data);
           } else {
-            setError({ status: true, message: "Hubo un error al actualizar la información" })
-            setButtonStatus(true)
+            setError({ status: true, message: "Hubo un error al actualizar la información" });
+            setButtonStatus(true);
           }
         }
       })
       .catch((error) => {
-        console.error("Error al actualizar información:", error)
-        setError({ status: true, message: "Hubo un error al actualizar la información" })
-        setButtonStatus(true)
+        console.error("Error al actualizar información:", error);
+        setError({ status: true, message: "Hubo un error al actualizar la información" });
+        setButtonStatus(true);
       })
       .finally(() => {
-        setIsLoading(false)
-      })
+        setIsLoading(false);
+      });
   }
 
   function guardarEmpleado() {
