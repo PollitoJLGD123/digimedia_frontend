@@ -1,7 +1,9 @@
 'use client'
+'use client'
 import React from 'react';
 
 import ModalButton from '../components/ModalButton';
+
 
 
 export default function PlanificacionCronograma() {
@@ -24,7 +26,13 @@ export default function PlanificacionCronograma() {
                         className="bg-pink-500 hover:bg-pink-600 text-white text-right text-lg font-bold py-5 px-10 rounded-lg mb-3 mt-3"
                         onClick={() => window.location.href = '/contactanos'}>
                          Asesoría Gratis
+                        
+                    <button
+                        className="bg-pink-500 hover:bg-pink-600 text-white text-right text-lg font-bold py-5 px-10 rounded-lg mb-3 mt-3"
+                        onClick={() => window.location.href = '/contactanos'}>
+                         Asesoría Gratis
                     </button>
+                       
                        
                     </div>
                    </div>
