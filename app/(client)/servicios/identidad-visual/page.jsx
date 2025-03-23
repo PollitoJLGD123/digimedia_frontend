@@ -58,12 +58,6 @@ export default function Page() {
       ))}
     </div>
       <Servicios servicios={servicios} />
-
-      <Contactanos
-        text="Conecta de manera creativa e innovadora con tu audiencia"
-        iconLeft="/servicios/branding/icon-left.png"
-        iconRight="/servicios/branding/icon-right.png"
-      />
     </>
   );
 }
