@@ -12,6 +12,9 @@ const URL_API = "http://127.0.0.1:8000/api/modal"
 export default function ModalScroll({ text, fondo, title, serviceName }) {
   const modalRef = useRef(null);
   const backgroundRef = useRef(null);
+
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     nombre: '',
     telefono: '',
@@ -49,29 +52,23 @@ export default function ModalScroll({ text, fondo, title, serviceName }) {
   };
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
-    const data = { nombre, telefono, correo, id_servicio: serviceName };
     try{
-      const response = await axios.post(`${API_BASE_URL}`, data, {
+      const response = await axios.post(`${URL_API}`, formData, {
         headers: {
           Authorization: `Bearer ${getCookie('token')}`,
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
       });
-
+      hideModal();
       if (response.status === 201) {
         Swal.fire({
           title: "Modal enviado Correctamente",
           text: `Nos pondremos en contacto contigo. Servicio de ${text}.`,
           icon: "success",
           confirmButtonText: "OK",
-        });
-        setFormData({
-          nombre: '',
-          telefono: '',
-          correo: '',
-          id_servicio: serviceName,
         });
       } else {
         Swal.fire({
@@ -89,6 +86,14 @@ export default function ModalScroll({ text, fondo, title, serviceName }) {
         confirmButtonText: "OK",
       });
       console.log(error);
+    }finally{
+      setLoading(false);
+      setFormData({
+        nombre: '',
+        telefono: '',
+        correo: '',
+        id_servicio: serviceName,
+      });
     }
   };
 
@@ -147,8 +152,8 @@ export default function ModalScroll({ text, fondo, title, serviceName }) {
               value={formData.id_servicio}
               readOnly
             />
-            <button className="bg-[#0095ff] p-2 text-2xl font-bold rounded-2xl mt-4">
-              HAZLO YA
+            <button disabled={loading} className="bg-[#0095ff] p-2 text-2xl font-bold rounded-2xl mt-4">
+            {loading ? 'Enviando...' : 'HAZLO YA'}
             </button>
           </form>
         </div>

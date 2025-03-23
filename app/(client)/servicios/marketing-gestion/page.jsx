@@ -35,7 +35,7 @@ export default function Page() {
   return (
     <>
       <ModalScroll
-        text="¡INCREMENTA TUS VENTAS!"
+        text="MARKETING Y GESTIÓN DIGITAL"
         fondo="/servicios/marketing/modal-scroll/fondo.webp"
         title="HAZLO Y CUMPLE TUS SUEÑOS ¡ASESORÍA GRATIS!"
         serviceName="3"
@@ -44,7 +44,7 @@ export default function Page() {
       <ModalButton
         title="¡EXPLOTA EL CONTENIDO DE TUS REDES!"
         fondo="/servicios/marketing/modal-button/imagen.webp"
-        text="¡Haz tu sitio web realidad, es GRATIS!"
+        text="MARKETING Y GESTIÓN DIGITAL"
         serviceName="3"
       />
 

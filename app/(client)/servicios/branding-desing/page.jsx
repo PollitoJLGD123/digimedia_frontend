@@ -35,7 +35,7 @@ export default function Page() {
   return (
     <>
       <ModalScroll
-        text="¡DISEÑA TU CAMINO AL ÉXITO!"
+        text="BRANDING Y DISEÑO"
         fondo="/servicios/branding/modal-scroll/fondo.webp"
         title="TU PRIMERA CONSULTA ¡ES GRATIS!"
         serviceName="4"
@@ -44,7 +44,7 @@ export default function Page() {
       <ModalButton
         title="¡DISEÑA TU CAMINO HACIA EL ÉXITO!"
         fondo="/servicios/branding/modal-button/imagen.webp"
-        text="¡Haz tu sitio web realidad, es GRATIS!"
+        text="BRANDING Y DISEÑO"
         serviceName="4"
       />
 

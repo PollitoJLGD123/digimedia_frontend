@@ -6,8 +6,10 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import { getCookie } from 'cookies-next';
 
+
 const URL_API = "http://127.0.0.1:8000/api/modal"
 //const URL_API = "https://back.digimediamkt.com/api/reset_password"
+
 
 export default function ModalClick({ text, fondo, title, serviceName }) {
   const modalRef = useRef(null);
@@ -16,6 +18,7 @@ export default function ModalClick({ text, fondo, title, serviceName }) {
   const [nombre, setNombre] = useState('');
   const [telefono, setTelefono] = useState('');
   const [correo, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const showModal = () => {
     backgroundRef.current.classList.remove('hidden');
@@ -48,15 +51,16 @@ export default function ModalClick({ text, fondo, title, serviceName }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = { nombre, telefono, correo, id_servicio: serviceName };
+    setLoading(true);
     try{
-      const response = await axios.post(`${API_BASE_URL}`, data, {
+      const response = await axios.post(`${URL_API}`, data, {
         headers: {
           Authorization: `Bearer ${getCookie('token')}`,
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
       });
-
+      hideModal();
       if (response.status === 201) {
         Swal.fire({
           title: "Modal enviado Correctamente",
@@ -64,9 +68,6 @@ export default function ModalClick({ text, fondo, title, serviceName }) {
           icon: "success",
           confirmButtonText: "OK",
         });
-        setEmail("");
-        setNombre("");
-        setTelefono("");
       } else {
         Swal.fire({
           title: "Error",
@@ -83,6 +84,11 @@ export default function ModalClick({ text, fondo, title, serviceName }) {
         confirmButtonText: "OK",
       });
       console.log(error);
+    }finally{
+      setLoading(false);
+      setEmail("");
+      setNombre("");
+      setTelefono("");
     }
   };
 
@@ -126,11 +132,8 @@ export default function ModalClick({ text, fondo, title, serviceName }) {
               value={correo}  
               onChange={(e) => setEmail(e.target.value)}
             />
-            <button
-              className="bg-[#a121fd] font-bold p-4 rounded-lg"
-              type="submit"
-            >
-              ¡EMPIEZA YA!
+            <button disabled={loading} className="bg-[#0095ff] p-2 text-2xl font-bold rounded-2xl mt-4">
+            {loading ? 'Enviando...' : 'HAZLO YA'}
             </button>
           </form>
         </div>
