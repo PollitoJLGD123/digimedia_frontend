@@ -2,6 +2,12 @@
 
 import { useState, useEffect, useRef } from 'react';
 import './modal.css';
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import { getCookie } from 'cookies-next';
+
+const URL_API = "http://127.0.0.1:8000/api/modal"
+//const URL_API = "https://back.digimediamkt.com/api/reset_password"
 
 export default function ModalClick({ text, fondo, title, serviceName }) {
   const modalRef = useRef(null);
@@ -39,17 +45,45 @@ export default function ModalClick({ text, fondo, title, serviceName }) {
     return () => window.removeEventListener('click', handleClick);
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = { nombre, telefono, correo, servicio_id: serviceName };
-    fetch('https://back.digimediamkt.com/api/modal', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    })
-      .then((response) => response.json())
-      .then(() => hideModal())
-      .catch((error) => console.error('Error:', error));
+    const data = { nombre, telefono, correo, id_servicio: serviceName };
+    try{
+      const response = await axios.post(`${API_BASE_URL}`, data, {
+        headers: {
+          Authorization: `Bearer ${getCookie('token')}`,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 201) {
+        Swal.fire({
+          title: "Modal enviado Correctamente",
+          text: `Nos pondremos en contacto contigo. Servicio de ${text}.`,
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+        setEmail("");
+        setNombre("");
+        setTelefono("");
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: "No se envio el contacto correctamente.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      }
+    }catch(error){
+      Swal.fire({
+        title: "Error",
+        text: "Ocurrió un error inesperado.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+      console.log(error);
+    }
   };
 
   return (
@@ -89,7 +123,7 @@ export default function ModalClick({ text, fondo, title, serviceName }) {
               label="Correo"
               type="email"
               name="correo"
-              value={correo}
+              value={correo}  
               onChange={(e) => setEmail(e.target.value)}
             />
             <button
