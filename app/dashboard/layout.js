@@ -66,13 +66,14 @@ export default function RootLayout({ children }) {
                   {auth_service.hasRole('ventas') && (
                   <TableLink title="Contactanos" href="/dashboard/contactanos" />
                   )}
-                  {auth_service.hasRole('ventas') && (
-                  <TableLink title="Libro de Reclamaciones" href="/dashboard/reclamaciones" />
-                  )}
-                  {auth_service.hasRole('marketing') && (
+                  {/*auth_service.hasRole('ventas') && (
+                    <TableLink title="Libro de Reclamaciones" href="/dashboard/reclamaciones" />
+                  )*/}
+                  {/*auth_service.hasRole('marketing') && (
                   <TableLink title="Modales" href="/dashboard/modales"/>
-                  )}
+                  )*/}
 
+                  <TableLink title="Modales" href="/dashboard/modales"/>
                   <TableLink title="Contactanos" href="/dashboard/contactanos" />
                   <TableLink title="Libro de Reclamaciones" href="/dashboard/reclamaciones" />
                   

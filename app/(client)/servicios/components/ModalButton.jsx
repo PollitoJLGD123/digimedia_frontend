@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 import { getCookie } from 'cookies-next';
 
 
-const URL_API = "http://127.0.0.1:8000/api/modal"
+const URL_API = "http://127.0.0.1:8000/api/modales"
 //const URL_API = "https://back.digimediamkt.com/api/reset_password"
 
 

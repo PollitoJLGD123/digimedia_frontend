@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import axios from "axios"
-import { setCookie, getCookie } from "cookies-next"
+import { setCookie, getCookie, deleteCookie } from "cookies-next"
 import user_service from "../users/services/user.service"
 import Swal from "sweetalert2"
 import auth_service from "../users/services/auth.service"
@@ -27,7 +27,7 @@ export default function Page() {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const router = useRouter()
 
-  async function fetchContacts() {
+  async function fetchReclamacion() {
     setIsRefreshing(true)
     let page = 1
     let allData = []
@@ -59,6 +59,7 @@ export default function Page() {
             icon: "warning",
             confirmButtonText: "OK",
           }).then(() => {
+            deleteCookie("reclamacion");
             user_service.logoutClient(router)
           })
         }
@@ -87,7 +88,7 @@ export default function Page() {
           icon: "success",
           confirmButtonText: "OK",
         })
-        fetchContacts(currentPage)
+        fetchReclamacion(currentPage)
       } else {
         Swal.fire({
           title: "Error",
@@ -104,6 +105,7 @@ export default function Page() {
           icon: "warning",
           confirmButtonText: "OK",
         }).then(() => {
+          deleteCookie("reclamacion");
           user_service.logoutClient(router)
         })
       } else {
@@ -171,7 +173,7 @@ export default function Page() {
           icon: "success",
           confirmButtonText: "OK",
         })
-        fetchContacts(currentPage)
+        fetchReclamacion(currentPage)
       } else {
         Swal.fire({
           title: "Error",
@@ -188,6 +190,7 @@ export default function Page() {
           icon: "warning",
           confirmButtonText: "OK",
         }).then(() => {
+          deleteCookie("reclamacion");
           user_service.logoutClient(router)
         })
       } else {
@@ -231,6 +234,7 @@ export default function Page() {
             icon: "warning",
             confirmButtonText: "OK",
           })
+          deleteCookie("reclamacion");
           router.push("/login")
         } else {
           Swal.fire({
@@ -252,7 +256,7 @@ export default function Page() {
   }
 
   useEffect(() => {
-    fetchContacts(currentPage)
+    fetchReclamacion(currentPage)
   }, [currentPage])
 
   useEffect(() => {
@@ -337,7 +341,7 @@ export default function Page() {
               </button>
 
               <button
-                onClick={() => fetchContacts()}
+                onClick={() => fetchReclamacion()}
                 disabled={isRefreshing}
                 className={`flex items-center gap-2 px-3 py-2 bg-blue-50 text-blue-600 rounded-lg border border-blue-100 hover:bg-blue-100 transition-colors ${isRefreshing ? "opacity-70 cursor-not-allowed" : ""}`}
                 title="Actualizar datos"

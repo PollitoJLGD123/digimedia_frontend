@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import axios from "axios"
-import { setCookie, getCookie } from "cookies-next"
+import { setCookie, getCookie, deleteCookie } from "cookies-next"
 import user_service from "../users/services/user.service"
 import Swal from "sweetalert2"
 import auth_service from "../users/services/auth.service"
@@ -57,6 +57,7 @@ export default function Page() {
             icon: "warning",
             confirmButtonText: "OK",
           }).then(() => {
+            deleteCookie("contacto")
             user_service.logoutClient(router)
           })
         }
@@ -102,6 +103,7 @@ export default function Page() {
           icon: "warning",
           confirmButtonText: "OK",
         }).then(() => {
+          deleteCookie("contacto");
           user_service.logoutClient(router)
         })
       } else {
@@ -186,6 +188,7 @@ export default function Page() {
           icon: "warning",
           confirmButtonText: "OK",
         }).then(() => {
+          deleteCookie("contacto");
           user_service.logoutClient(router)
         })
       } else {
@@ -229,6 +232,7 @@ export default function Page() {
             icon: "warning",
             confirmButtonText: "OK",
           })
+          deleteCookie("contacto");
           router.push("/login")
         } else {
           Swal.fire({
@@ -277,11 +281,8 @@ export default function Page() {
       })
       return
     }
-
-    // Crear encabezados CSV
     const headers = ["ID", "Nombre", "Correo", "Estado"]
 
-    // Convertir datos a formato CSV
     const csvData = filteredData.map((contacto) => [
       contacto.id_contactanos,
       contacto.nombre,
@@ -289,10 +290,8 @@ export default function Page() {
       contacto.estado ? "Activo" : "Inactivo",
     ])
 
-    // Combinar encabezados y datos
     const csvContent = [headers.join(","), ...csvData.map((row) => row.join(","))].join("\n")
 
-    // Crear blob y descargar
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" })
     const url = URL.createObjectURL(blob)
     const link = document.createElement("a")
