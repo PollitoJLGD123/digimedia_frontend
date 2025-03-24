@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import Swal from 'sweetalert2';
+
 import url from '../../../api/url';
 
 const API_BASE_URL = `${url}/api/reclamaciones`;
@@ -34,7 +35,7 @@ const ComplaintForm = () => {
     distrito: '',
     ciudad: '',
     tipoReclamo: '',
-    servicioContratado: '',
+    id_servicio: '',
     reclamoPerson: '',
     fechaIncidente: '',
     checkReclamoForm: false, 
@@ -83,7 +84,7 @@ const ComplaintForm = () => {
           distrito: '',
           ciudad: '',
           tipoReclamo: '',
-          servicioContratado: '',
+          id_servicio: '',
           reclamoPerson: '',
           fechaIncidente: '',
           checkReclamoForm: false,
@@ -260,15 +261,17 @@ const ComplaintForm = () => {
                   <option value="RECLAMO">RECLAMO</option>
                 </select>
                 <select
-                  name="servicioContratado"
-                  value={formData.servicioContratado}
+                  name="id_servicio"
+                  value={formData.id_servicio}
                   onChange={handleChange}
                   className="w-full p-2 border rounded"
                   required
                 >
                   <option value="">Servicio contratado</option>
-                  <option value="TECHNOLOGY">TECHNOLOGY</option>
-                  <option value="OTROS">OTROS</option>
+                  <option value={1}>Diseño y Desarrollo Web</option>
+                  <option value={2}>Gestión de Redes Sociales</option>
+                  <option value={3}>Marketing y Gestión Digital</option>
+                  <option value={4}>Branding y Diseño</option>
                 </select>
 
                 <div className="ml-1">

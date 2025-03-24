@@ -5,10 +5,10 @@ import './modal.css';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import { getCookie } from 'cookies-next';
+import url from '../../../../api/url';
 
-
-const URL_API = "http://127.0.0.1:8000/api/modales"
-//const URL_API = "https://back.digimediamkt.com/api/reset_password"
+//const URL_API = "http://127.0.0.1:8000/api/modales"
+const URL_API = `${url}/api/modales`
 
 
 export default function ModalClick({ text, fondo, title, serviceName }) {

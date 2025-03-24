@@ -9,6 +9,7 @@ import Swal from "sweetalert2"
 import auth_service from "../users/services/auth.service"
 import { Search, Eye, CheckCircle, Trash2, Loader2, Filter, Download, RefreshCw, AlertCircle } from "lucide-react"
 import Pagination from "../components/Pagination"
+
 import url from '../../../api/url';
 
 
@@ -68,7 +69,7 @@ export default function Page() {
 
     setData(allData)
     setFilteredData(allData)
-    setTotalPages(Math.ceil(allData.length / 20))
+    setTotalPages(Math.ceil(allData.length / 4))
     setIsLoading(false)
     setIsRefreshing(false)
   }
