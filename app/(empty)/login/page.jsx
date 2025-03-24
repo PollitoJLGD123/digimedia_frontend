@@ -14,11 +14,23 @@ export default function LoginPage() {
   const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
 
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(false);
     setErrorMessage('');
+
+    if (!validateEmail(formData.email)) {
+      setError(true);
+      setErrorMessage('Por favor, ingresa un email válido.');
+      setLoading(false);
+      return;
+    }
 
     try {
       // auth service
@@ -62,8 +74,7 @@ export default function LoginPage() {
       }
     } catch (error) {
       setError(true);
-      setErrorMessage(error.message || 'Usuario o contraseña incorrectos');
-      console.error("Error en el inicio de sesión:", error.message);
+      setErrorMessage(error.message || 'Email o contraseña incorrectos.');
     } finally {
       setLoading(false);
     }
