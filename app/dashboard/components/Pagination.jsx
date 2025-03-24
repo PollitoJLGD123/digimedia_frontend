@@ -4,15 +4,17 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 
 export default function Pagination({ count }) {
-  const itemsPerPage = 20
+  const itemsPerPage = 5 // Cambiado de 20 a 5
   const pageCount = Math.max(1, Math.ceil(count / itemsPerPage))
   const router = useRouter()
   const searchParams = useSearchParams()
   const currentPage = Number.parseInt(searchParams.get("page") || "1", 10)
 
   const onPageChange = ({ selected }) => {
-    router.push(`?page=${selected + 1}`)
-  }
+    const newPage = selected + 1
+    const params = new URLSearchParams(searchParams.toString())
+    params.set("page", newPage)
+    router.push(`?${params.toString()}`)  }
 
   return (
     <div className="flex justify-center mt-6 mb-4">
@@ -38,4 +40,3 @@ export default function Pagination({ count }) {
     </div>
   )
 }
-
