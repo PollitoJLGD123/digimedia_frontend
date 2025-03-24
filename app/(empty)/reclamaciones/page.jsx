@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { getCookie } from 'cookies-next';
 import Swal from 'sweetalert2';
+
 import url from '../../../api/url';
 
 const API_BASE_URL = `${url}/api/reclamaciones`;
