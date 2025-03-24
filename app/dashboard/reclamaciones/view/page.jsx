@@ -214,7 +214,7 @@ export default function Page() {
                     <span className="text-sm font-medium text-gray-500">Servicio:</span>
                   </div>
                   <div className="flex-grow">
-                    <span className="text-sm text-gray-800">{reclamacion.servicioContratado}</span>
+                    <span className="text-sm text-gray-800">{reclamacion.id_servicio}</span>
                   </div>
                 </div>
               </div>
