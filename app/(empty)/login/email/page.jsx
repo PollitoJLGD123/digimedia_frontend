@@ -4,10 +4,11 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
+import url from '../../../../api/url';
 
-const URL_API = "http://127.0.0.1:8000/api/reset_password"
+//const URL_API = "http://127.0.0.1:8000/api/reset_password"
 //const URL_API = "https://back.digimediamkt.com/api/reset_password"
-
+const URL_API = `${url}/api/reset_password`;
 
 export default function Page()  {
 
