@@ -69,7 +69,7 @@ export default function Page() {
 
     setData(allData)
     setFilteredData(allData)
-    setTotalPages(Math.ceil(allData.length / 20))
+    setTotalPages(Math.ceil(allData.length / 4))
     setIsLoading(false)
     setIsRefreshing(false)
   }
