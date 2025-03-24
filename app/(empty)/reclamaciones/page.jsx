@@ -8,7 +8,7 @@ import Swal from 'sweetalert2';
 
 import url from '../../../api/url';
 
-const API_BASE_URL = `${url}/api/reclamaciones`;
+const URL_API = `${url}/api/reclamaciones`;
 
 const ComplaintForm = () => {
 
@@ -58,7 +58,7 @@ const ComplaintForm = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await axios.post(`${API_BASE_URL}`, formData, {
+      const response = await axios.post(`${URL_API}`, formData, {
         headers: {
           Authorization: `Bearer ${getCookie('token')}`,
           'Accept': 'application/json',

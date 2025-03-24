@@ -6,6 +6,8 @@ import Swal from 'sweetalert2';
 import { useRouter, useSearchParams } from 'next/navigation';
 import url from '../../../../api/url';
 
+const URL_API = `${url}/api/update_password`;
+
 export default function Page () {
     
     const [password, setPassword] = useState("");
@@ -15,7 +17,6 @@ export default function Page () {
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const API_BASE_URL = `${url}/api/update_password`;
 
     useEffect(() => {
         const tokenParam = searchParams.get('token');
@@ -42,7 +43,7 @@ export default function Page () {
 
         setLoading(true);
         try {
-            const response = await axios.post(`${API_BASE_URL}`, {
+            const response = await axios.post(`${URL_API}`, {
                 token,
                 password,
                 password_confirmation: confirmPassword
