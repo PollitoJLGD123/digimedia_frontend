@@ -8,8 +8,8 @@ import { getCookie } from 'cookies-next';
 import url from '../../../../api/url';
 
 
-const API_BASE_URL = `${url}/api/contactanos`;
-console.log(API_BASE_URL);
+const URL_API = `${url}/api/contactanos`;
+//console.log(API_BASE_URL);
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -30,7 +30,7 @@ const ContactForm = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post(`${API_BASE_URL}`, formData, {
+      const response = await axios.post(`${URL_API}`, formData, {
           headers: {
             Authorization: `Bearer ${getCookie('token')}`,
             'Accept': 'application/json',
