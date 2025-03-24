@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Pagination from '../components/Pagination';
+import Pagination1 from '../components/Pagination1';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { setCookie, getCookie, deleteCookie } from 'cookies-next';
 import user_service from '../users/services/user.service';
@@ -397,7 +397,9 @@ export default function Page() {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {filteredData.length > 0 ? (
-                    filteredData.map((modal) => (
+                    filteredData
+                    .slice((Number(currentPage) - 1) * 4, Number(currentPage) * 4)
+                    .map((modal)=> (
                       <tr key={`${modal.id_modalservicio}-Row`} className="hover:bg-gray-50 transition-colors">
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                           {modal.id_modalservicio}
@@ -476,14 +478,11 @@ export default function Page() {
               </table>
             </div>
 
-            {filteredData.length > 0 && (
-              <div className="mt-6">
-                <Pagination count={filteredData.length} />
-                <p className="text-sm text-gray-500 mt-2 text-center">
-                  Mostrando {filteredData.length} de {data.length} modales
-                </p>
-              </div>
-            )}
+            <Pagination1
+              filteredData = {filteredData}
+              currentPage = {currentPage}
+              totalPages = {totalPages}
+            />
           </>
         )}
       </div>

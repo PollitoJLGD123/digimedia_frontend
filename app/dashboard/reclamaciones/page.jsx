@@ -8,7 +8,7 @@ import user_service from "../users/services/user.service"
 import Swal from "sweetalert2"
 import auth_service from "../users/services/auth.service"
 import { Search, Eye, CheckCircle, Trash2, Loader2, Filter, Download, RefreshCw, AlertCircle } from "lucide-react"
-import Pagination from "../components/Pagination"
+import Pagination1 from '../components/Pagination1';
 
 import url from '../../../api/url';
 
@@ -399,7 +399,9 @@ export default function Page() {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {filteredData.length > 0 ? (
-                    filteredData.map((reclamacion) => (
+                    filteredData
+                    .slice((Number(currentPage) - 1) * 4, Number(currentPage) * 4)
+                    .map((reclamacion)=> (
                       <tr key={`${reclamacion.id_reclamacion}-Row`} className="hover:bg-gray-50 transition-colors">
                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                           {reclamacion.id_reclamacion}
@@ -489,14 +491,11 @@ export default function Page() {
               </table>
             </div>
 
-            {filteredData.length > 0 && (
-              <div className="mt-6">
-                <Pagination count={filteredData.length} />
-                <p className="text-sm text-gray-500 mt-2 text-center">
-                  Mostrando {filteredData.length} de {data.length} reclamaciones
-                </p>
-              </div>
-            )}
+            <Pagination1
+              filteredData = {filteredData}
+              currentPage = {currentPage}
+              totalPages = {totalPages}
+            />
           </>
         )}
       </div>
