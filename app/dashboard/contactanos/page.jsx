@@ -13,7 +13,7 @@ import Pagination1 from '../components/Pagination1';
 import url from '../../../api/url';
 
 
-const API_BASE_URL = `${url}/api/contactanos`;
+const URL_API = `${url}/api/contactanos`;
 
 export default function Page() {
   const searchParams = useSearchParams()
@@ -34,7 +34,7 @@ export default function Page() {
 
     while (hasMorePages) {
       try {
-        const response = await axios.get(`${API_BASE_URL}?page=${page}`, {
+        const response = await axios.get(`${URL_API}?page=${page}`, {
           headers: {
             Authorization: `Bearer ${getCookie("token")}`,
           },
@@ -74,7 +74,7 @@ export default function Page() {
 
   async function deleteContact(id) {
     try {
-      const response = await axios.delete(`${API_BASE_URL}/${id}`, {
+      const response = await axios.delete(`${URL_API}/${id}`, {
         headers: {
           Authorization: `Bearer ${getCookie("token")}`,
         },
@@ -155,7 +155,7 @@ export default function Page() {
   async function cambiarEstado(id, nuevoEstado) {
     try {
       const response = await axios.put(
-        `${API_BASE_URL}/${id}`,
+        `${URL_API}/${id}`,
         { estado: nuevoEstado },
         {
           headers: {
@@ -205,7 +205,7 @@ export default function Page() {
 
   async function visualizar(id) {
     try {
-      const response = await axios.get(`${API_BASE_URL}/${id}`, {
+      const response = await axios.get(`${URL_API}/${id}`, {
         headers: {
           Authorization: `Bearer ${getCookie("token")}`,
         },
