@@ -20,10 +20,10 @@ const handlePermissionError = (response) => {
 };
 
 const empleado_service = {
-    empleadosByPage: async (page) => {
+    empleadosByPage: async (page, limit=5) => {
         try {
             console.log("Solicitando empleados, página:", page); // Log para depuración
-            const response = await fetch(`${api_url}?page=${page}`, {
+            const response = await fetch(`${api_url}?page=${page}&limit=${limit}`, {
                 method: "GET",
                 headers: {
                     "authorization": `Bearer ${getCookie('token')}`
