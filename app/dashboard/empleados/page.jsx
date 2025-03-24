@@ -61,7 +61,7 @@ export default function Page() {
   async function setEmpleados(page) {
     setIsLoading(true)
     try {
-      const response = await empleado_service.empleadosByPage(page)
+      const response = await empleado_service.empleadosByPage(page, 5)
       if (response.status === 401) {
         Swal.fire({
           icon: "error",
