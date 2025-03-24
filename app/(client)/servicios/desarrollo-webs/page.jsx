@@ -81,8 +81,7 @@ export default function Web() {
             title="Desarollo Web"
             text="Impulsamos tu presencia digital con soluciones de desarrollo web innovadoras, funcionales y optimizadas para el éxito."
           />
-
-          <Servicios servicios={servicios} />
+           <Servicios servicios={servicios} />
         </div>
       </div>
     </div>

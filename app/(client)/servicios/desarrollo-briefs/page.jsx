@@ -1,5 +1,5 @@
-import Servicios from "../components/Servicios";
-import Contactanos from "../components/Contactanos";
+
+
 
 export default function Page() {
   const servicios = [
@@ -80,7 +80,7 @@ export default function Page() {
           </div>
         ))}
       </div>
-      <Servicios servicios={servicios} />
+      
     </>
   );
 }

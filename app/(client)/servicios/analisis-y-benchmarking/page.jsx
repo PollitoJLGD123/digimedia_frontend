@@ -75,10 +75,11 @@ const Page = () => {
           </div>
         
         
-        
       </main>
     </div>
+    
   );
+  
 };
 
 export default Page;
