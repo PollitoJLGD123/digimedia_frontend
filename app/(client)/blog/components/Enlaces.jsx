@@ -7,96 +7,39 @@ export default function Enlaces() {
 
     const data = [
         {
-            image: "/../public/blog/fondo_blog.png",
+            image: "/blog-1.jpg",
             title: "¿Listo para conquistar el mercado digital?",
             category: "DESARROLLO WEB",
             description: "Desbloquea el potencial oculto, descubre cómo una página bien diseñada puede atraer más clientes e impulsar tu crecimiento",
-            url: "@/app/(client)/blog/plantilas/plantilla1/"
+            url: "./plantillas/plantilla1"
         },
         {
             image: "/blog-2.jpg",
             title: "Beneficio de las redes sociales para nuevos emprendedores",
             category: "GESTIÓN DE LAS REDES SOCIALES",
             description: "Impulsa tu marca con nuestra gestión profesional de redes sociales. Conecta, interactúa y destaca en el mundo digital. ¡Descubre cómo podemos potenciar tu presencia hoy mismo!",
-            url: "https://943060409.blogspot.com/2024/07/gestion-de-redes-sociales.html"
+            url: "./plantillas/plantilla1"
         },
         {
             image: "/blog-3.jpg",
             title: '“El Arte del Branding: Cómo construir una marca que resuene”',
             category: "BRANDING Y DISEÑO",
             description: "Atrévete a explorar el potencial ilimitado que tiene una estrategia de branding bien ejecutada y conquista el corazón y la mente de tus clientes.",
-            url: "https://943060409.blogspot.com/2024/07/descubre-el-poder-del-branding-para.html"
+            url: "./plantillas/plantilla1"
         },
         {
             image: "/blog-4.jpg",
             title: "Las herramientas esenciales para crear una página web profesional",
             category: "DESARROLLO WEB",
             description: "Descubre las mejores herramientas para diseñar una página web que destaque en el mundo digital actual. Desde plataformas intuitivas hasta programas avanzados para profesionales, cada herramienta cuenta. ¡No te quedes atrás!",
-            url: "https://943060409.blogspot.com/2024/07/los-mejores-programas-para-diseno-de.html"
+            url: "./plantillas/plantilla1"
         },
         {
             image: "/blog-5.jpg",
             title: "Transforma tu Marca: El Poder del Storytelling para Conectar con tu Audiencia",
             category: "GESTIÓN DE LAS REDES SOCIALES",
             description: "¿Sabías que una buena historia puede hacer más por tu marca que cualquier campaña publicitaria? El storytelling no solo captura la atención de tu audiencia, sino que también crea conexiones emocionales profundas y duraderas.",
-            url: "https://943060409.blogspot.com/2024/07/como-utilizar-el-storytelling-para.html"
-        },
-        {
-            image: "/blog-6.jpg",
-            title: "¿Cómo crear Contenido Atractivo para Redes Sociales?",
-            category: "GESTIÓN DE LAS REDES SOCIALES",
-            description: "¡Destaca con contenido que atrapa! En un mundo saturado de información, captar la atención de tu audiencia es clave. Fortalece la identidad de tu marca, construye una comunidad leal y haz que tu página destaque. ",
-            url: "https://943060409.blogspot.com/2024/07/como-estructurar-y-definir-tu.html"
-        },
-        {
-            image: "/blog-7.jpg",
-            title: "Herramientas de diseñador",
-            category: "BRANDING Y DISEÑO",
-            description: "El mundo del diseño está en constante evolución, y mantenerse al día con las últimas herramientas puede marcar una gran diferencia en tus proyectos.",
-            url: "https://943060409.blogspot.com/2024/07/las-mejores-herramientas-de-diseno-que.html"
-        },
-        {
-            image: "/blog-8.jpg",
-            title: "Marketing de Influencers",
-            category: "DISEÑO Y DESARROLLO WEB",
-            description: "El marketing de influencers consiste en asociarse con personas influyentes para promover productos o servicios, utilizando su credibilidad y amplio alcance para conectar con audiencias específicas y potenciar la visibilidad y autenticidad de la marca.",
-            url: "https://943060409.blogspot.com/2024/07/impulsa-tu-marca-con-marketing-de.html"
-        },
-        {
-            image: "/blog-9.jpg",
-            title: "¿Cómo los Influencers pueden amplificar tu mensaje de marca?",
-            category: "GESTIÓN DE LAS REDES SOCIALES",
-            description: "Haz que tu mensaje resuene más allá de los límites tradicionales. ¡Deja que los influencers te ayuden a amplificar tu voz y a conquistar nuevas audiencias! ",
-            url: "https://943060409.blogspot.com/2024/08/potencia-tu-marca-con-el-impacto-de-los.html"
-        },
-        {
-            image: "/blog-10.jpg",
-            //id_plantilla name_ruta: /templates/template{id_plantilla}
-            title: "¿Cómo Diseñar un Logotipo Impactante?",
-            category: "BRANDING Y DISEÑO",
-            description: "Un logotipo bien diseñado es crucial para captar la atención y transmitir la esencia de tu marca en un solo vistazo. Representa la identidad y valores de tu negocio, diferenciándote en un mercado competitivo.",
-            url: "https://943060409.blogspot.com/2024/08/la-esencia-de-un-logotipo-impactante-tu.html"
-        },
-        {
-            image: "/blog-1.jpg",
-            title: "¿Tu página web está fallando? ¡Detecta y soluciona errores críticos ahora!",
-            category: "DISEÑO Y DESARROLLO WEB",
-            description: "Una página web con errores críticos no solo frustra a tus visitantes, sino que también perjudica tu reputación online. Descubre cómo identificar y resolver estos problemas para garantizar una experiencia de usuario óptima y mejorar tu posicionamiento en los motores de búsqueda.",
-            url: "https://943060409.blogspot.com/2024/08/tu-pagina-web-esta-fallando-detecta-y.html"
-        },
-        {
-            image: "/blog-2.jpg",
-            title: "Marketing de Influencers",
-            category: "MARKETING Y GESTIÓN DIGITAL",
-            description: "Una estrategia SEO optimiza contenido y estructura web, utilizando palabras clave y enlaces para mejorar la visibilidad y atraer tráfico orgánico.",
-            url: "https://943060409.blogspot.com/2024/08/como-optimizar-tu-sitio-web-tecnicas.html"
-        },
-        {
-            image: "/blog-3.jpg",
-            title: "¿Tu marca necesita un cambio? Señales de que es Tiempo de un Rebranding",
-            category: "BRANDING Y DISEÑO",
-            description: "¡Una manera refrescante de adaptarte a un nuevo público! Pero, ¿cómo saber cuándo es el momento?, aquí te lo explicamos.",
-            url: "https://943060409.blogspot.com/2024/08/vuelve-ganar-el-interes-de-tu-publico.html"
+            url: "./plantillas/plantilla1"
         },
     ]
     let [page, setPage] = useState(1)
