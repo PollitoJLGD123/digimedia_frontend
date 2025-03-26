@@ -11,7 +11,7 @@ export default function Enlaces() {
             title: "¿Listo para conquistar el mercado digital?",
             category: "DESARROLLO WEB",
             description: "Desbloquea el potencial oculto, descubre cómo una página bien diseñada puede atraer más clientes e impulsar tu crecimiento",
-            url: "https://943060409.blogspot.com/2024/07/por-que-tu-negocio-necesita-una-pagina.html"
+            url: "@/app/(client)/blog/plantilas/plantilla1/"
         },
         {
             image: "/blog-2.jpg",
