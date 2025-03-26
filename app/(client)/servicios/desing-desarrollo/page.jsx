@@ -12,11 +12,13 @@ export default function Page() {
       title: 'DISEÑOS UX Y UI',
       text: 'Creamos experiencias digitales atractivas, intuitivas y centradas en tus usuarios.',
       icon: '/servicios/desarrollo/icon1.svg',
+      ruta: '/servicios/ui'
     },
     {
       title: 'DESARROLLO WEB',
       text: 'Construimos sitios web funcionales, modernos y a la medida de tus necesidades.',
       icon: '/servicios/desarrollo/icon2.svg',
+      ruta: '/servicios/desarrollo-webs/'
     },
     {
       title: 'DOMINIO Y HOSTING',
@@ -33,7 +35,7 @@ export default function Page() {
   return (
     <>
       <ModalScroll
-        text="¡DESTACA TU NEGOCIO!"
+        text="DISEÑO Y DESARROLLO WEB"
         fondo="/servicios/desarrollo/modal-scroll/fondo.webp"
         title="OBTÉN UNA ASESORÍA ¡GRATIS!"
         serviceName="1"
@@ -42,7 +44,7 @@ export default function Page() {
       <ModalButton
         title="Lleva tu negocio al siguiente nivel online"
         fondo="/servicios/desarrollo/modal-button/imagen.webp"
-        text="¡Haz tu sitio web realidad, es GRATIS!"
+        text="DISEÑO Y DESARROLLO WEB"
         serviceName="1"
       />
 

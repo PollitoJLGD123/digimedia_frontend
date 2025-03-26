@@ -7,6 +7,7 @@ export default function Servicios({ servicios }) {
         title={servicio.title}
         text={servicio.text}
         icon={servicio.icon}
+        ruta={servicio.ruta}
         key={index}
       />
     );
@@ -28,27 +29,34 @@ export default function Servicios({ servicios }) {
   );
 }
 
-function Servicio({ title, text, icon }) {
+function Servicio({ title, text, icon, ruta }) {
+  const rutaValida = ruta ? `${ruta}` : "/";
   return (
     <div className="relative bg-gradient-to-br from-[#973cd1] to-[#7B22B3] text-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 flex flex-col items-center justify-between gap-6 basis-64 flex-1 shrink-0 min-[832px]:max-[1118px]:basis-96 group overflow-hidden">
-      {/* Efecto de brillo */}
-      <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-[#FF037F]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
+      <Link href={rutaValida} >
+        {/* Efecto de brillo */}
+        <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-[#FF037F]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
 
-      {/* Ícono con animación de rebote */}
-      <img
-        className="max-w-36 w-24 h-24 object-contain animate-bounce-slow"
-        src={icon}
-        alt={title}
-      />
+        {/* Ícono con animación de rebote */}
+        <figure className='flex justify-center align-middle'>
+          <img
+            className="max-w-36 w-24 h-24 object-contain animate-bounce-slow"
+            src={icon}
+            alt={title}
+          />
 
-      {/* Título */}
-      <h4 className="font-bold text-2xl text-center font-title relative z-10">
-        {title}
-        <span className="block w-12 h-1 bg-[#FF037F] mt-2 mx-auto rounded-full"></span>
-      </h4>
+        </figure>
+        
 
-      {/* Descripción */}
-      <p className="text-sm text-center leading-relaxed relative z-10">{text}</p>
+        {/* Título */}
+        <h4 className="font-bold text-2xl text-center font-title relative z-10">
+          {title}
+          <span className="block w-12 h-1 bg-[#FF037F] mt-2 mx-auto rounded-full"></span>
+        </h4>
+
+        {/* Descripción */}
+        <p className="text-sm text-center leading-relaxed relative z-10">{text}</p>
+        </Link>
     </div>
   );
 }

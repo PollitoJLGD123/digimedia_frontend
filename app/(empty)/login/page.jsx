@@ -3,38 +3,82 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { User, Lock, ArrowLeft } from 'lucide-react';
-import userService from '@/app/dashboard/users/services/user.service';
+import auth_service from '@/app/dashboard/users/services/auth.service';
 import { setCookie } from 'cookies-next';
+import Link from 'next/link';
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
+
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(false);
+    setErrorMessage('');
+
+    if (!validateEmail(formData.email)) {
+      setError(true);
+      setErrorMessage('Por favor, ingresa un email válido.');
+      setLoading(false);
+      return;
+    }
 
     try {
-        const data = await userService.login(formData);
+      // auth service
+      const data = await auth_service.login(formData);
 
-        if (data.error) {
-            throw new Error(data.message);
-        }
+      if (data.error) {
+        throw new Error(data.message);
+      }
 
-        setCookie("token", data.token, { maxAge: 30 * 24 * 60 * 60, path: "/" });
-        setCookie("user", JSON.stringify(data.user), { maxAge: 30 * 24 * 60 * 60, path: "/" });
+      // guardar token 
+      setCookie("token", data.token, { maxAge: 30 * 24 * 60 * 60, path: "/" });
+      
+      // obtener info del user con su rol
+      const userData = await auth_service.me();
+      
+      if (userData.error) {
+        throw new Error('Error al obtener información del usuario');
+      }
+      
+      // guardar info en cookies
+      setCookie("user", JSON.stringify(userData.user), { maxAge: 30 * 24 * 60 * 60, path: "/" });
+      
+      if (userData.empleado) {
+        setCookie("empleado", JSON.stringify(userData.empleado), { maxAge: 30 * 24 * 60 * 60, path: "/" });
+      }
+      
+      if (userData.rol) {
+        setCookie("rol", userData.rol, { maxAge: 30 * 24 * 60 * 60, path: "/" });
+      }
 
+      // redirección segun rol
+      if (auth_service.isAdmin()) {
         router.push("/dashboard/main");
+      } else if (auth_service.hasRole('marketing')) {
+        router.push("/dashboard/main");
+      } else if (auth_service.hasRole('ventas')) {
+        router.push("/dashboard/main");
+      } else {
+        // redirec default
+        router.push("/dashboard/main");
+      }
     } catch (error) {
-        setError(true);
-        console.error("Error en el inicio de sesión:", error.message);
+      setError(true);
+      setErrorMessage(error.message || 'Email o contraseña incorrectos.');
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-};
+  };
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -65,7 +109,6 @@ export default function LoginPage() {
             <ArrowLeft className="w-4 h-4" />
             Regresar
           </button>
-
         </a>
 
         {/* Formulario con diseño mejorado */}
@@ -80,14 +123,14 @@ export default function LoginPage() {
           {error && (
             <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-r">
               <p className="text-red-700 text-sm">
-                Usuario o contraseña incorrectos. Por favor, intenta nuevamente.
+                {errorMessage || 'Usuario o contraseña incorrectos. Por favor, intenta nuevamente.'}
               </p>
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <label htmlFor="usuario" className="block text-sm font-medium text-gray-700">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Usuario
               </label>
               <div className="relative">
@@ -125,6 +168,11 @@ export default function LoginPage() {
                 />
               </div>
             </div>
+            <div className="mt-4">
+              <Link href="./email" className="text-sm text-blue-500 hover:underline">
+                ¿Olvidaste tu contraseña?
+              </Link>
+            </div>
 
             <button
               disabled={loading}
@@ -155,7 +203,6 @@ export default function LoginPage() {
                 'Iniciar Sesión'
               )}
             </button>
-
           </form>
         </div>
       </div>

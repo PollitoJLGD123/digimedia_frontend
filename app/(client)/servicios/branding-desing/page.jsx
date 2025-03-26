@@ -12,11 +12,13 @@ export default function Page() {
       title: 'DESARROLLO DE BRIEF',
       text: 'El briefing nos permite entender tu empresa para crear y definir tu marca.',
       icon: '/servicios/branding/icon1.svg',
+      ruta: '/servicios/desarrollo-briefs/'
     },
     {
       title: 'IDENTIDAD VISUAL CORPORATIVA',
       text: 'Creemos identidades visuales únicas que reflejan tu esencia y destacan en el mercado.',
       icon: '/servicios/branding/icon2.svg',
+      ruta: '/servicios/identidad-visual/'
     },
     {
       title: 'NAMING, LOGO Y SLOGAN',
@@ -33,7 +35,7 @@ export default function Page() {
   return (
     <>
       <ModalScroll
-        text="¡DISEÑA TU CAMINO AL ÉXITO!"
+        text="BRANDING Y DISEÑO"
         fondo="/servicios/branding/modal-scroll/fondo.webp"
         title="TU PRIMERA CONSULTA ¡ES GRATIS!"
         serviceName="4"
@@ -42,7 +44,7 @@ export default function Page() {
       <ModalButton
         title="¡DISEÑA TU CAMINO HACIA EL ÉXITO!"
         fondo="/servicios/branding/modal-button/imagen.webp"
-        text="¡Haz tu sitio web realidad, es GRATIS!"
+        text="BRANDING Y DISEÑO"
         serviceName="4"
       />
 

@@ -12,11 +12,13 @@ export default function Page() {
       title: 'ANÁLISIS Y BENCHMARKING',
       text: 'Evaluamos tu marca frente a la competencia para identificar oportunidades de mejora y crear estrategias más efectivas.',
       icon: '/servicios/marketing/icon1.svg',
+      ruta: '/servicios/analisis-y-benchmarking/'
     },
     {
       title: 'PLANIFICACIÓN ESTRATÉGICA',
       text: 'Aquí se diseñan estrategias personalizadas con objetivos claros, segmentación precisa y tácticas eficaces para alcanzar tus metas de negocio.',
       icon: '/servicios/marketing/icon2.svg',
+      ruta: '/servicios/planificacion-estrategica/'
     },
     {
       title: 'PUBLICIDAD DIGITAL',
@@ -33,7 +35,7 @@ export default function Page() {
   return (
     <>
       <ModalScroll
-        text="¡INCREMENTA TUS VENTAS!"
+        text="MARKETING Y GESTIÓN DIGITAL"
         fondo="/servicios/marketing/modal-scroll/fondo.webp"
         title="HAZLO Y CUMPLE TUS SUEÑOS ¡ASESORÍA GRATIS!"
         serviceName="3"
@@ -42,7 +44,7 @@ export default function Page() {
       <ModalButton
         title="¡EXPLOTA EL CONTENIDO DE TUS REDES!"
         fondo="/servicios/marketing/modal-button/imagen.webp"
-        text="¡Haz tu sitio web realidad, es GRATIS!"
+        text="MARKETING Y GESTIÓN DIGITAL"
         serviceName="3"
       />
 

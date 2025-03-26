@@ -1,15 +1,28 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 import './modal.css';
+import axios from "axios";
+import Swal from "sweetalert2";
+import { getCookie } from "cookies-next";
+import url from '../../../../api/url';
+
+
+//const URL_API = "http://127.0.0.1:8000/api/modales"
+//const URL_API = "https://back.digimediamkt.com/api/reset_password"
+const URL_API = `${url}/api/modales`;
+
 
 export default function ModalScroll({ text, fondo, title, serviceName }) {
   const modalRef = useRef(null);
   const backgroundRef = useRef(null);
+
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     nombre: '',
     telefono: '',
     correo: '',
-    servicio_id: serviceName,
+    id_servicio: serviceName,
   });
 
   useEffect(() => {
@@ -42,26 +55,48 @@ export default function ModalScroll({ text, fondo, title, serviceName }) {
   };
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
-
-    try {
-      const response = await fetch('https://back.digimediamkt.com/api/modal', {
-        method: 'POST',
+    try{
+      const response = await axios.post(`${URL_API}`, formData, {
         headers: {
+          Authorization: `Bearer ${getCookie('token')}`,
+          'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
       });
-
-      if (response.ok) {
-        alert('Formulario enviado correctamente');
-        hideModal();
+      hideModal();
+      if (response.status === 201) {
+        Swal.fire({
+          title: "Modal enviado Correctamente",
+          text: `Nos pondremos en contacto contigo. Servicio de ${text}.`,
+          icon: "success",
+          confirmButtonText: "OK",
+        });
       } else {
-        alert('Hubo un problema al enviar el formulario');
+        Swal.fire({
+          title: "Error",
+          text: "No se envio el contacto correctamente.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
       }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Error al enviar el formulario');
+    }catch(error){
+      Swal.fire({
+        title: "Error",
+        text: "Ocurrió un error inesperado.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+      console.log(error);
+    }finally{
+      setLoading(false);
+      setFormData({
+        nombre: '',
+        telefono: '',
+        correo: '',
+        id_servicio: serviceName,
+      });
     }
   };
 
@@ -116,12 +151,12 @@ export default function ModalScroll({ text, fondo, title, serviceName }) {
             />
             <input
               type="hidden"
-              name="servicio_id"
-              value={formData.servicio_id}
+              name="id_servicio"
+              value={formData.id_servicio}
               readOnly
             />
-            <button className="bg-[#0095ff] p-2 text-2xl font-bold rounded-2xl mt-4">
-              HAZLO YA
+            <button disabled={loading} className="bg-[#0095ff] p-2 text-2xl font-bold rounded-2xl mt-4">
+            {loading ? 'Enviando...' : 'HAZLO YA'}
             </button>
           </form>
         </div>
