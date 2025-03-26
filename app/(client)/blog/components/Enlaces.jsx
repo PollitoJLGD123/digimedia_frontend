@@ -71,6 +71,7 @@ export default function Enlaces() {
         },
         {
             image: "/blog-10.jpg",
+            //id_plantilla name_ruta: /templates/template{id_plantilla}
             title: "¿Cómo Diseñar un Logotipo Impactante?",
             category: "BRANDING Y DISEÑO",
             description: "Un logotipo bien diseñado es crucial para captar la atención y transmitir la esencia de tu marca en un solo vistazo. Representa la identidad y valores de tu negocio, diferenciándote en un mercado competitivo.",
