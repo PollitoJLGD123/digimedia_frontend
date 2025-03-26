@@ -7,7 +7,7 @@ export default function Enlaces() {
 
     const data = [
         {
-            image: "/blog-1.jpg",
+            image: "/../public/blog/fondo_blog.png",
             title: "¿Listo para conquistar el mercado digital?",
             category: "DESARROLLO WEB",
             description: "Desbloquea el potencial oculto, descubre cómo una página bien diseñada puede atraer más clientes e impulsar tu crecimiento",
