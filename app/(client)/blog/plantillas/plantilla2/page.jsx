@@ -38,22 +38,23 @@ const Page = () => {
       
       <div className="relative lg:mx-48 p-6 bg-black/5 text-black rounded-lg shadow-[0px_10px_25px_rgba(0,0,0,0.25)]">
         {/* Contenido principal */}
-        <div className="flex flex-col xl:flex-row lg:gap-6">
-          <div className="w-full xl:w-1/2">
+        <div className="flex flex-col xl:flex-col lg:gap-6">
+          <div className="w-full">
             <div className="mb-6 mt-5">
-              <h2 className="text-5xl font-extrabold text-red-500">Tu Bar, en la Mira</h2>
-                <p className="text-lg text-gray-400 mt-2">6 de marzo de 2023</p>
+              <h2 className="text-5xl text-center font-extrabold text-red-500">Tu Bar, en la Mira</h2>
+                <p className="text-lg text-center text-gray-400 mt-2">6 de marzo de 2023</p>
             </div>
-                <p className="text-lg leading-relaxed">
+                <p className="text-lg leading-relaxed md:px-8 text-center">
                   Las luces neón LED se han convertido en un elemento diferenciador en el mundo de la hospitalidad. No solo son visualmente atractivos, sino que también refuerzan la identidad de tu negocio. En este artículo, exploraremos cómo las letras luminosas pueden marcar la diferencia en la experiencia de tus clientes.
                 </p>
           </div>
-          <figure className='flex justify-center w-full xl:w-1/2'>
-            <img src="/blog/blog4/letra_neon.png" alt="Letrero de neón en un bar" className="w-80 xl:w-96 rounded-3xl shadow-lg border-2 border-red-500" />
+          <figure className='flex justify-center w-full mt-4 md:mt-4'>
+            <img src="/blog/blog-4.jpg" alt="Letrero de neón en un bar" className="w-80 xl:w-96 object-contain rounded-3xl shadow-lg border-2 border-red-500" />
           </figure>
         </div>
 
-        <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 mt-16'>
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 w-full mx-auto mt-16'>
+        <div className="grid grid-cols-1 gap-8">
           {[{
             title: "El Factor Sorpresa y Distinción",
             text: "Las letras de neón LED permiten personalizar la imagen de tu local, haciendo que el nombre de tu bar sea visible desde lejos. Un diseño llamativo puede convertirse en un sello distintivo y en un punto de referencia para los clientes."
@@ -74,30 +75,36 @@ const Page = () => {
           ))}
         </div>
 
-        <div className="mt-16 p-6 bg-gray-900  rounded-lg shadow-[0px_10px_25px_rgba(0,0,0,0.25)] text-center text-gray-100">
-          <h3 className="text-2xl font-bold mb-3 text-green-400">
+        <div className="flex flex-col justify-center p-6 bg-gray-900  rounded-lg shadow-[0px_10px_25px_rgba(0,0,0,0.25)] text-center text-gray-100">
+          <h3 className="text-4xl font-bold mb-3 text-green-400">
             Consejos para Elegir el Letrero Perfecto
           </h3>
-          <ul className="list-none text-black-600 space-y-2">
+
+          <ul className="text-2xl align-middle list-none text-black-600 space-y-2">
+
             <li className="flex items-center justify-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24">
+              <svg xmlns="http://www.w3.org/2000/svg" width={48} height={48} viewBox="0 0 24 24">
                 <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 6L9 17l-5-5"></path>
               </svg>
               <span>Opta por colores que reflejen la personalidad de tu bar.</span>
             </li>
-            <li className="flex items-center justify-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24">
-                <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 6L9 17l-5-5"></path>
-              </svg>
-              <span>Elige un diseño legible y atractivo.</span>
-            </li>
-            <li className="flex items-center justify-center gap-2">
-              <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24">
+
+            <li className="flex items-top justify-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width={48} height={48} viewBox="0 0 24 24">
                 <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 6L9 17l-5-5"></path>
               </svg>
               <span>Considera el lugar de instalación para maximizar su impacto.</span>
             </li>
+
+            <li className="flex items-center justify-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width={48} height={48} viewBox="0 0 24 24">
+                <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 6L9 17l-5-5"></path>
+              </svg>
+              <span>Considera el lugar de instalación para maximizar su impacto.</span>
+            </li>
+
           </ul>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-10">
@@ -109,7 +116,7 @@ const Page = () => {
           </div>
 
         <div className="mt-10 p-6 bg-gray-900 rounded-lg shadow-lg">
-          <h3 className="text-2xl font-bold mb-3 text-yellow-400">Conclusión</h3>
+          <h3 className="text-2xl text-center font-bold mb-3 text-yellow-400">Conclusión</h3>
           <p className="text-gray-100">
             Invertir en luces neón LED no solo mejora la estética de tu bar, sino que también influye en la percepción de los clientes y fortalece tu marca. ¡Haz que tu bar brille con luz propia!
           </p>
