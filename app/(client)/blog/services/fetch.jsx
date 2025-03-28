@@ -80,6 +80,21 @@ const Fetch = {
             console.log(error);
             return error;
         }
+    },
+
+    fetchBlogBodyById: async function fetchBlogBodyById(id){
+        try{
+            const response = await axios.get(`${url}/api/blog_body/${id}`);
+            if(response.status === 200){
+                return response.data.data;
+            }
+            else{
+                return null;
+            }
+        }catch(error){
+            console.log(error);
+            return error;
+        }
     }
 }
 
