@@ -244,9 +244,9 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
   }
 
   return (
-    <section className="fixed inset-0 bg-black bg-opacity-45 backdrop-blur-md flex justify-center items-center px-4">
+    <section className="fixed inset-0 bg-black bg-opacity-45 backdrop-blur-md flex justify-center items-center px-4 dark:text-white  ">
       <div
-        className={`w-full max-w-2xl bg-white rounded-xl shadow-lg p-6 transform transition-all duration-300 ${
+        className={`w-full max-w-2xl bg-white rounded-xl shadow-lg p-6 transform transition-all duration-300 dark:bg-gray-900 ${
           isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
         }`}
       >
@@ -272,7 +272,7 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
           </div>
         )}
 
-        <form>
+        <form className="dark:text-white ">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
             <fieldset className="flex flex-col gap-2">
               <label className="font-semibold text-sm" htmlFor="nombre">
@@ -282,13 +282,13 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
                 id="nombre"
                 onChange={handleChange}
                 value={formData.nombre}
-                className="w-full border border-gray-300 py-3 px-4 outline-none rounded-md"
+                className="dark:text-black w-full border border-gray-300 py-3 px-4 outline-none rounded-md"
                 type="text"
                 placeholder="Ingrese el nombre"
               />
             </fieldset>
 
-            <fieldset className="flex flex-col gap-2">
+            <fieldset className="flex flex-col gap-2 ">
               <label className="font-semibold text-sm" htmlFor="apellido">
                 Apellido
               </label>
@@ -296,7 +296,7 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
                 id="apellido"
                 onChange={handleChange}
                 value={formData.apellido}
-                className="w-full border border-gray-300 py-3 px-4 outline-none rounded-md"
+                className="dark:text-black w-full border border-gray-300 py-3 px-4 outline-none rounded-md"
                 type="text"
                 placeholder="Ingrese el apellido"
               />
@@ -310,7 +310,7 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
                 id="email"
                 onChange={handleChange}
                 value={formData.email}
-                className="w-full border border-gray-300 py-3 px-4 outline-none rounded-md"
+                className="dark:text-black w-full border border-gray-300 py-3 px-4 outline-none rounded-md"
                 type="email"
                 placeholder="Ingrese el correo"
               />
@@ -324,7 +324,7 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
                 id="dni"
                 onChange={handleChange}
                 value={formData.dni}
-                className="w-full border border-gray-300 py-3 px-4 outline-none rounded-md"
+                className="dark:text-black w-full border border-gray-300 py-3 px-4 outline-none rounded-md"
                 type="text"
                 placeholder="Ingrese el DNI"
               />
@@ -339,7 +339,7 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
                 id="telefono"
                 onChange={handleChange}
                 value={formData.telefono}
-                className="w-full border border-gray-300 py-3 px-4 outline-none rounded-md"
+                className="dark:text-black w-full border border-gray-300 py-3 px-4 outline-none rounded-md"
                 type="text"
                 placeholder="Ingrese el teléfono"
               />
@@ -357,7 +357,7 @@ export default function modal_empleado({ isVisible, onClose, data, onUpdateSucce
                   id="id_rol"
                   onChange={handleChange}
                   value={formData.id_rol}
-                  className="w-full border border-gray-300 py-3 px-4 outline-none rounded-md"
+                  className="dark:text-black w-full border border-gray-300 py-3 px-4 outline-none rounded-md"
                 >
                   <option value="">Seleccione un rol</option>
                   {roles.map((rol) => (

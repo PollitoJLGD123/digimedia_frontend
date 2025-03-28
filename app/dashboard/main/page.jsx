@@ -207,7 +207,7 @@ export default function Page() {
                 <CardHeader className="py-3 px-4">
                   <CardTitle className="text-base text-[#8c52ff]">Información Personal</CardTitle>
                 </CardHeader>
-                <CardContent className="py-3 px-4 space-y-3">
+                <CardContent className="py-1 px-4">
                   <div className="flex items-center">
                     <User className="h-4 w-4 text-[#8c52ff] mr-2.5" />
                     <div>
@@ -246,8 +246,8 @@ export default function Page() {
                 <CardHeader className="py-3 px-4">
                   <CardTitle className="text-base text-[#8c52ff]">Acceso al Sistema</CardTitle>
                 </CardHeader>
-                <CardContent className="py-3 px-4">
-                  <div className="flex items-center mb-3">
+                <CardContent className="py-1 px-2">
+                  <div className="flex items-center">
                     <div className="h-8 w-8 rounded-full bg-[#f0ebff] flex items-center justify-center">
                       <Shield className="h-4 w-4 text-[#8c52ff]" />
                     </div>

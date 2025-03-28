@@ -30,7 +30,7 @@ export default function Page() {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="flex flex-col items-center">
-          <div className="w-10 h-10 border-4 border-t-[#8c52ff] border-gray-200 rounded-full animate-spin"></div>
+          <div className="w-10 h-10 border-4 border-t-[#8c52ff] dark:border-gray-600 border-gray-200 rounded-full animate-spin"></div>
           <p className="mt-3 text-gray-600 font-medium">Cargando datos...</p>
         </div>
       </div>
