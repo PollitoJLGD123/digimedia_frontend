@@ -9,8 +9,6 @@ import Footer from "../components/Footer"
 import Fetch from "../../services/fetch"
 import { Loader2 } from "lucide-react"
 
-
-
 const Page = () => {
 
   const [data, setDataResponse] = useState(null)
