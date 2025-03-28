@@ -1,9 +1,6 @@
 "use client"
 import url from '../../../../api/url';
 
-//const api_url = "http://127.0.0.1:8000/api/user";
-//const api_url = "https://back.digimediamkt.com/api/user";
-
 const api_url = `${url}/api`;
 
 import { getCookie } from "cookies-next";
