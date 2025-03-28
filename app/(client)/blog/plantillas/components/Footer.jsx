@@ -38,7 +38,6 @@ export default function Footer({ id_blog_footer }) {
         return (
             <div className="mt-12 max-w-[1000px] mx-auto bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-lg shadow-[0px_8px_20px_rgba(0,0,0,0.3)] overflow-hidden">
                 <div className="relative">
-                    {/* Animated gradient border */}
                     <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-red-500 via-yellow-400 to-blue-500 animate-gradient-x"></div>
 
                     <div className="p-6 md:p-8">
@@ -142,10 +141,8 @@ export default function Footer({ id_blog_footer }) {
     return (
         <div className="mt-12 max-w-[1000px] mx-auto bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-lg shadow-[0px_8px_20px_rgba(0,0,0,0.3)] overflow-hidden">
             <div className="relative">
-                {/* Animated gradient border */}
                 <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-red-500 via-yellow-400 to-blue-500"></div>
 
-                {/* Subtle corner accents */}
                 <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-yellow-400/20 rounded-tl-lg"></div>
                 <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-blue-500/20 rounded-tr-lg"></div>
 
