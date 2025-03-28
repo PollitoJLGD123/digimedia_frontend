@@ -6,8 +6,10 @@ import auth_service from './users/services/auth.service';
 import { usePathname, useRouter } from 'next/navigation';
 import { getCookie } from 'cookies-next';
 import { useState, useEffect } from 'react';
+import PersonIcon from '@mui/icons-material/Person';
 
 import { DisplayNameContext } from './components/DisplayNameContext';
+import AddIcon from '@mui/icons-material/Add';
 
 export default function RootLayout({ children }) {
   const router = useRouter();
@@ -49,7 +51,7 @@ export default function RootLayout({ children }) {
     <DisplayNameContext.Provider value={{ displayName, updateDisplayName: setDisplayName }}>
       <AuthGuard>
         <div className="flex flex-col h-screen dark:bg-gray-900 dark:text-white">
-          <header className="bg-[#8c52ff] dark:bg-[#6b3acb] h-24 flex items-center justify-between px-10 py-2">
+          <header className="bg-[#8c52ff] dark:bg-[#6b3acb] h-16 flex items-center justify-between px-10 py-2">
             <img src="/dashboard/logo.png" className="h-full" alt="Logo" />
             <h1 className="text-3xl text-white font-semibold">
               SECCIÓN: {pathname.slice(pathname.indexOf('/', 1) + 1, -1).toUpperCase()}
@@ -58,8 +60,9 @@ export default function RootLayout({ children }) {
 
           <div className="flex w-full overflow-hidden h-screen">
             <div className="flex flex-col shrink-0 p-2 bg-[#e8e8e8] dark:bg-gray-800 text-black dark:text-white justify-between">
-              <nav>
+              <nav className='mt-3'>
                 <ul className="flex flex-col gap-1">
+                  
                   <TableLink title="Sección Principal" href="/dashboard/main" />
                   {auth_service.hasRole('administrador') && (
                     <TableLink title="Empleados" href="/dashboard/empleados" />
@@ -85,7 +88,7 @@ export default function RootLayout({ children }) {
 
               <div>
                 <div className="flex mt-auto gap-2 items-center">
-                  <img src="/dashboard/user-icon.svg" alt="Usuario" width={40} />
+                  <PersonIcon className="text-[#8c52ff] dark:text-[#6b3acb] w-[50px]" />
                   <p className="font-bold">
                     Bienvenido
                     <span className="font-normal block">{displayName} ({userRole})</span>
@@ -146,7 +149,7 @@ function TableLink({ href, title }) {
           hover:bg-gray-300 dark:hover:bg-gray-700 
           ${isActive ? 'bg-gray-400 dark:bg-gray-600 font-bold' : ''}`}
       >
-        <img src="/dashboard/section-icon.svg" alt="Icono" width={20} />
+        <AddIcon className="text-[#8c52ff] dark:text-[#6b3acb] w-[50px]" />
         {title}
       </Link>
     </li>

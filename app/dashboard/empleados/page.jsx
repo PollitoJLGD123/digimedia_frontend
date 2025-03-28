@@ -225,7 +225,7 @@ export default function Page() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-7xl">
+    <div className="container mx-auto px-4 py-6 max-w-7xl ">
       <Card className="border-none shadow-md">
         <CardHeader className="bg-gradient-to-r from-[#8c52ff] to-[#7a45e6] text-white rounded-t-lg pb-6">
           <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
@@ -251,7 +251,7 @@ export default function Page() {
           </div>
         </CardHeader>
 
-        <CardContent className="p-6">
+        <CardContent className="p-6 dark:bg-gray-800">
           {/* Filtros y controles */}
           <div className="mb-6 space-y-4">
             <div className="flex flex-col sm:flex-row gap-3 justify-between items-center">
@@ -302,7 +302,7 @@ export default function Page() {
                 </Button>
               )}
 
-              <div className="ml-auto text-xs text-gray-500">
+              <div className="ml-auto text-xs text-gray-500 dark:text-gray-200">
                 {filteredData.length} {filteredData.length === 1 ? "empleado" : "empleados"} encontrados
               </div>
             </div>
