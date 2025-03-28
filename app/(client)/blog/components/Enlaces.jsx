@@ -1,16 +1,14 @@
 "use client"
-import { useEffect, useState } from "react"
-import axios from "axios"
+import { useEffect, useState, Suspense } from "react"
 import Swal from "sweetalert2"
-import url from "../../../../api/url"
-import { getCookie } from "cookies-next"
 import { Search, ArrowRight, Loader2, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
+import Fetch from "../services/fetch"
 
-const URL_API = `${url}/api/cards`
 const ITEMS_PER_PAGE = 4
 
-export default function Enlaces() {
+function EnlacesForm() {
+
     const router = useRouter()
     const searchParams = useSearchParams()
     const currentPage = Number(searchParams.get("page") || 1)
@@ -21,30 +19,20 @@ export default function Enlaces() {
     const [filteredData, setFilteredData] = useState([])
     const [totalPages, setTotalPages] = useState(1)
 
-    async function fetchData() {
-        try {
-            setIsLoading(true)
-            const response = await axios.get(`${URL_API}`, {
-                headers: {
-                    Authorization: `Bearer ${getCookie("token")}`,
-                },
-            })
-
-            if (response.status === 200) {
-                setDataResponse(response.data)
-                setFilteredData(response.data)
-                setTotalPages(Math.ceil(response.data.length / ITEMS_PER_PAGE))
-            }
-        } catch (error) {
+    async function fetchData(){
+        try{
+            setIsLoading(true);
+            const response = await Fetch.fetchCards();
+            setDataResponse(response);
+        }catch(error){
             console.log(error)
-            Swal.fire({
-                title: "Error",
-                text: "Ocurrió un error inesperado.",
-                icon: "error",
-                confirmButtonText: "OK",
+            Swal.fire({title: "Error", 
+                text: "Ocurrió un error inesperado.", 
+                icon: "error", 
+                confirmButtonText: "OK"
             })
-        } finally {
-            setIsLoading(false)
+        }finally{
+            setIsLoading(false);
         }
     }
 
@@ -138,7 +126,7 @@ export default function Enlaces() {
                                                 <p className="text-gray-600 text-sm mb-4 line-clamp-3 flex-grow">{card.descripcion}</p>
 
                                                 <a
-                                                    href={`./plantillas/plantilla${card.id_plantilla}`}
+                                                    href={`./plantillas/plantilla${card.id_plantilla}?id_blog=${card.id_blog}`}
                                                     target="_blank"
                                                     className="group flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors duration-300 mt-auto"
                                                     rel="noreferrer"
@@ -246,5 +234,13 @@ export default function Enlaces() {
             </div>
         </section>
     )
+}
+
+export default function Page(){
+    return (
+        <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Cargando...</div>}>
+            <EnlacesForm />
+        </Suspense>
+    );
 }
 

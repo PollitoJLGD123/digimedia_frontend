@@ -67,8 +67,12 @@ export default function RootLayout({ children }) {
                   {auth_service.hasRole('ventas') && (
                     <TableLink title="Contactanos" href="/dashboard/contactanos" />
                   )}
-                  <TableLink title="Modales" href="/dashboard/modales" />
+                  <TableLink title="Modales" href="/dashboard/modales"/>
+                  <TableLink title="Contactanos" href="/dashboard/contactanos" />
                   <TableLink title="Libro de Reclamaciones" href="/dashboard/reclamaciones" />
+                  <TableLink title="Creación de Blogs" href="/dashboard/blogs"/>
+                  
+
                 </ul>
               </nav>
 
