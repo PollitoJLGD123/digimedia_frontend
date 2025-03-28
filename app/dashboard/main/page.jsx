@@ -181,29 +181,29 @@ export default function Page() {
             {/* Profile sidebar */}
             <div className="md:w-1/3">
               <div className="flex flex-col items-center">
-                <div className="relative">
+              <div className="relative">
                 {empleadoData?.imagen_perfil ? (
-                    <div className="w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-[#7a45e6] shadow-md">
-                      <CldImage
-                        width={280}
-                        height={280}
-                        src={empleadoData.imagen_perfil} 
-                        alt={`${nombre} ${apellido}`}
-                        className="w-full h-full object-cover"
-                        priority
-                        crop="fill"
-                        gravity="faces"
-                        quality="auto"
-                        fetchPriority="high"
-                        sizes="(max-width: 768px) 100vw, 280px"
-                      />
-                    </div>
-                  ) : (
-                    <div className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-[#8c52ff] flex items-center justify-center text-white text-3xl font-bold shadow-md border-2 border-[#7a45e6]">
-                      {nombre.charAt(0)}
-                      {apellido.charAt(0)}
-                    </div>
-                  )}
+                  <div className="w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-[#7a45e6] shadow-md">
+                    <CldImage
+                      width={280}
+                      height={280}
+                      src={empleadoData.imagen_perfil} 
+                      alt={`${nombre} ${apellido}`}
+                      className="w-full h-full object-cover"
+                      priority
+                      crop="fill"
+                      gravity="faces"
+                      quality="auto"
+                      fetchPriority="high"
+                      sizes="(max-width: 768px) 100vw, 280px"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-[#8c52ff] flex items-center justify-center text-white text-3xl font-bold shadow-md border-2 border-[#7a45e6]">
+                    {nombre.charAt(0)}
+                    {apellido.charAt(0)}
+                  </div>
+                )}
                     <Badge className="absolute -bottom-2 left-1/2 -translate-x-1/2 py-0.5 text-xs bg-[#4d2994] text-white">
                         {userRole.charAt(0).toUpperCase() + userRole.slice(1)}
                     </Badge>
