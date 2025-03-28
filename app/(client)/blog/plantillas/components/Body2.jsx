@@ -224,10 +224,7 @@ export default function Body2({ id_blog_body, fecha }) {
                         </div>
                     )}
                 </div>
-
-                
             </div>
-
             <div className="bg-gradient-to-r from-teal-600 to-teal-800 text-white p-6 text-center">
                 <p className="text-sm">© {new Date().getFullYear()} - Todos los derechos reservados</p>
             </div>
