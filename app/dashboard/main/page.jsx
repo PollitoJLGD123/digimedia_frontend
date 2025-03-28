@@ -13,6 +13,9 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
+import { CldImage  } from "next-cloudinary";
+
+
 import url from "@/api/url"
 export default function Page() {
   const [userData, setUserData] = useState(null)
@@ -179,24 +182,28 @@ export default function Page() {
             <div className="md:w-1/3">
               <div className="flex flex-col items-center">
                 <div className="relative">
-                    {imageUrl ? (
-                      <div className="w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-[#7a45e6] shadow-md">
-                        <img 
-                          src={imageUrl} 
-                          alt={`${nombre} ${apellido}`}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            e.target.onerror = null
-                            e.target.src = 'https://via.placeholder.com/150' // Fallback image
-                          }}
-                        />
-                      </div>
-                    ) : (
-                      <div className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-[#8c52ff] flex items-center justify-center text-white text-3xl font-bold shadow-md border-2 border-[#7a45e6]">
-                        {nombre.charAt(0)}
-                        {apellido.charAt(0)}  
-                      </div>
-                    )}
+                {empleadoData?.imagen_perfil ? (
+                    <div className="w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-[#7a45e6] shadow-md">
+                      <CldImage
+                        width={280}
+                        height={280}
+                        src={empleadoData.imagen_perfil} 
+                        alt={`${nombre} ${apellido}`}
+                        className="w-full h-full object-cover"
+                        priority
+                        crop="fill"
+                        gravity="faces"
+                        quality="auto"
+                        fetchPriority="high"
+                        sizes="(max-width: 768px) 100vw, 280px"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-[#8c52ff] flex items-center justify-center text-white text-3xl font-bold shadow-md border-2 border-[#7a45e6]">
+                      {nombre.charAt(0)}
+                      {apellido.charAt(0)}
+                    </div>
+                  )}
                     <Badge className="absolute -bottom-2 left-1/2 -translate-x-1/2 py-0.5 text-xs bg-[#4d2994] text-white">
                         {userRole.charAt(0).toUpperCase() + userRole.slice(1)}
                     </Badge>
@@ -205,7 +212,14 @@ export default function Page() {
                       <div className="mt-2">
                         <ProfileImageUpload 
                           empleadoId={empleadoData?.id_empleado}
-                          onImageUpload={(url) => setImageUrl(url)}
+                          onImageUpload={(url, publicId) => {
+                            setImageUrl(url);
+                            setEmpleadoData(prev => ({
+                              ...prev,
+                              imagen_perfil: publicId,
+                              imagen_perfil_url: url
+                            }));
+                          }}
                         />
                       </div>
                     )}
