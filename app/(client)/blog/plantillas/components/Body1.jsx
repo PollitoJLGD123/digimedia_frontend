@@ -1,11 +1,11 @@
+"use client"
 
-import React, { useEffect, useState } from 'react'
-import Swal from 'sweetalert2'
-import { Loader2, CheckCircle } from 'lucide-react'
-import Fetch from '../../services/fetch'
+import { useEffect, useState } from "react"
+import Swal from "sweetalert2"
+import { Loader2, CheckCircle, ArrowRight } from "lucide-react"
+import Fetch from "../../services/fetch"
 
 export default function Body1({ id_blog_body, fecha }) {
-
     const [data, setDataResponse] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState(null)
@@ -24,7 +24,7 @@ export default function Body1({ id_blog_body, fecha }) {
                     title: "Error",
                     text: "Ocurrió un error inesperado.",
                     icon: "error",
-                    confirmButtonText: "OK"
+                    confirmButtonText: "OK",
                 })
             } finally {
                 setIsLoading(false)
@@ -97,72 +97,108 @@ export default function Body1({ id_blog_body, fecha }) {
     }
 
     return (
-        <>
-            <div className="relative lg:mx-48 p-6 bg-black/5 text-black rounded-lg shadow-[0px_10px_25px_rgba(0,0,0,0.25)]">
-                <div className="flex flex-col xl:flex-row lg:gap-6">
-                    <div className="w-full xl:w-1/2">
-                        <div className="mb-6 mt-5">
-                            <h2 className="text-5xl font-extrabold text-red-500">{data.titulo}</h2>
-                            <p className="text-lg text-gray-400 mt-2">{fecha}</p>
-                        </div>
-                        <p className="text-lg leading-relaxed">
-                            {data.descripcion}
-                        </p>
+        <div className="relative lg:mx-48 p-0 text-black rounded-lg shadow-[0px_10px_25px_rgba(0,0,0,0.25)] overflow-hidden">
+            <div className="relative h-[400px] overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/40 z-10"></div>
+                <img
+                    src={
+                        data.url_image
+                            ? data.url_image.startsWith("http")
+                                ? data.url_image
+                                : `/blog/${data.url_image}`
+                            : "/blog/blog-4.jpg"
+                    }
+                    alt={data.titulo || "Imagen principal"}
+                    className="absolute inset-0 w-full h-full object-cover"
+                />
+                <div className="relative z-20 h-full flex flex-col justify-end p-8">
+                    <p className="text-red-300 mb-2">{fecha}</p>
+                    <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4 drop-shadow-lg">{data.titulo}</h2>
+                </div>
+            </div>
+
+            <div className="bg-black/5 p-8">
+                <div className="relative mb-16 bg-white p-6 rounded-lg shadow-md -mt-12">
+                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-red-500 via-purple-500 to-blue-500"></div>
+                    <p className="text-lg leading-relaxed text-gray-700">{data.descripcion}</p>
+                </div>
+
+                <div className="mb-16 p-6 bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg shadow-[0px_10px_25px_rgba(0,0,0,0.25)] text-center text-gray-100">
+                    <div className="flex items-center justify-center mb-4">
+                        <div className="h-0.5 w-12 bg-green-400 mr-4"></div>
+                        <h3 className="text-2xl font-bold text-green-400">{data.commend_tarjeta?.titulo || "Consejos"}</h3>
+                        <div className="h-0.5 w-12 bg-green-400 ml-4"></div>
                     </div>
 
-                    <figure className='flex justify-center w-full xl:w-1/2 cover'>
-                        <img src={data.url_image ? (data.url_image.startsWith('http') ? data.url_image : `/blog/${data.url_image}`) : "/blog/blog-4.jpg"} alt="Letrero de neón en un bar" className="w-[22rem] h-[22rem] rounded-3xl shadow-lg border-2 border-red-500 object-cover" />
-                    </figure>
-                </div>
-
-                <div className='grid grid-cols-1 lg:grid-cols-2 gap-8 mt-16'>
-                    {data.tarjetas && data.tarjetas.map((section, index) => (
-                        <div key={`tarjeta-${index}`} className="p-4 bg-gray-900 rounded-lg shadow-lg">
-                            <h3 className="text-2xl font-bold mb-2 text-blue-400">{section.titulo}</h3>
-                            <p className="text-gray-100">{section.descripcion}</p>
-                        </div>
-                    ))}
-                </div>
-
-                <div className="mt-16 p-6 bg-gray-900  rounded-lg shadow-[0px_10px_25px_rgba(0,0,0,0.25)] text-center text-gray-100">
-                    <h3 className="text-2xl font-bold mb-3 text-green-400">
-                        {data.commend_tarjeta?.titulo || "Consejos"}
-                    </h3>
-                    <ul className="list-none text-black-600 space-y-2">
+                    <ul className="list-none text-black-600 space-y-3 max-w-2xl mx-auto">
                         {data.commend_tarjeta &&
                             [
                                 data.commend_tarjeta.texto1,
                                 data.commend_tarjeta.texto2,
                                 data.commend_tarjeta.texto3,
                                 data.commend_tarjeta.texto4,
-                                data.commend_tarjeta.texto5
+                                data.commend_tarjeta.texto5,
                             ]
-                                .filter(text => text)
+                                .filter((text) => text)
                                 .map((text, index) => (
-                                    <li key={`commend-${index}`} className="flex items-center justify-center gap-2">
-                                        <CheckCircle className="w-8 h-8 text-green-400 flex-shrink-0" />
-                                        <span>{text}</span>
+                                    <li key={`commend-${index}`} className="flex items-center gap-3 bg-gray-800/50 p-3 rounded-lg">
+                                        <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0" />
+                                        <span className="text-left">{text}</span>
                                     </li>
-                                ))
-                        }
+                                ))}
                     </ul>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-10">
-                    {[
-                        data.url_image1 || "/blog/blog-10.jpg",
-                        data.url_image2 || "/blog/blog-1.jpg"
-                    ].map((src, index) => (
-                        <div key={index} className="w-full h-64 overflow-hidden rounded-3xl shadow-xl border-2 border-purple-400">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-16">
+                    {[data.url_image1 || "/blog/blog-10.jpg", data.url_image2 || "/blog/blog-1.jpg"].map((src, index) => (
+                        <div key={index} className="group relative overflow-hidden rounded-xl shadow-xl">
+                            <div className="absolute inset-0 bg-gradient-to-t from-purple-900/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
                             <img
-                                src={src.startsWith('http') ? src : `/blog/${src}`}
+                                src={src.startsWith("http") ? src : `/blog/${src}`}
                                 alt={`Imagen ${index + 1} del artículo`}
-                                className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                                className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
                             />
+                            <div className="absolute bottom-0 left-0 right-0 p-4 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-20">
+                                <div className="flex items-center justify-center">
+                                    <span className="text-sm font-medium">Ver detalle</span>
+                                    <ArrowRight className="w-4 h-4 ml-2" />
+                                </div>
+                            </div>
                         </div>
                     ))}
                 </div>
+
+                <div className="relative">
+                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 text-center">
+                        <div className="inline-block px-4 py-1 bg-blue-500 text-white text-sm font-medium rounded-full">
+                            Información Importante
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-8">
+                        {data.tarjetas &&
+                            data.tarjetas.map((section, index) => {
+                                const styles = [
+                                    "bg-gradient-to-br from-gray-900 to-gray-800 border-l-4 border-blue-400",
+                                    "bg-gradient-to-br from-gray-800 to-gray-900 border-r-4 border-red-400",
+                                    "bg-gradient-to-br from-gray-900 to-gray-800 border-l-4 border-green-400",
+                                    "bg-gradient-to-br from-gray-800 to-gray-900 border-r-4 border-purple-400",
+                                ]
+
+                                return (
+                                    <div
+                                        key={`tarjeta-${index}`}
+                                        className={`p-5 rounded-lg shadow-lg transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${styles[index % styles.length]}`}
+                                    >
+                                        <h3 className="text-xl font-bold mb-3 text-blue-400">{section.titulo}</h3>
+                                        <p className="text-gray-100">{section.descripcion}</p>
+                                    </div>
+                                )
+                            })}
+                    </div>
+                </div>
             </div>
-        </>
+        </div>
     )
 }
+
