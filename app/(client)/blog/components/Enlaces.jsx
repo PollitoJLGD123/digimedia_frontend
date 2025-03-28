@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 import Swal from "sweetalert2"
 import { Search, ArrowRight, Loader2, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
@@ -7,7 +7,7 @@ import Fetch from "../services/fetch"
 
 const ITEMS_PER_PAGE = 4
 
-export default function Enlaces() {
+function EnlacesForm() {
 
     const router = useRouter()
     const searchParams = useSearchParams()
@@ -234,5 +234,13 @@ export default function Enlaces() {
             </div>
         </section>
     )
+}
+
+export default function Page(){
+    return (
+        <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Cargando...</div>}>
+            <EnlacesForm />
+        </Suspense>
+    );
 }
 
