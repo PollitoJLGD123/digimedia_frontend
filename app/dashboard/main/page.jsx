@@ -182,8 +182,8 @@ export default function Page() {
             <div className="md:w-1/3">
               <div className="flex flex-col items-center">
               <div className="relative">
-                {console.log("empleadoData:", empleadoData)}
-                {empleadoData?.imagen_perfil_url ? (
+              {console.log("empleadoData zz1:", empleadoData)}
+                  {empleadoData?.imagen_perfil_url && empleadoData?.imagen_perfil ? (
                     <div className="w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-[#7a45e6] shadow-md">
                       <CldImage
                         width={280}
@@ -208,9 +208,11 @@ export default function Page() {
                     <Badge className="absolute -bottom-2 left-1/2 -translate-x-1/2 py-0.5 text-xs bg-[#4d2994] text-white">
                         {userRole.charAt(0).toUpperCase() + userRole.slice(1)}
                     </Badge>
-
+                    
                     {!empleadoId && (
+                      
                       <div className="mt-2">
+                        {console.log("empleadoData zz2:", empleadoData)}
                         <ProfileImageUpload 
                           empleadoId={empleadoData?.id_empleado}
                           onImageUpload={(url, publicId) => {

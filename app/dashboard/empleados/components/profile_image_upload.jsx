@@ -12,23 +12,56 @@ export default function ProfileImageUpload({ empleadoId, onImageUpload }) {
   const [uploading, setUploading] = useState(false);
 
   const handleUploadSuccess = async (result) => {
-    console.log("Resultado de la carga:", result);
+    if (!empleadoId) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se encontró el ID del empleado",
+        confirmButtonColor: "#8c52ff",
+      });
+      return;
+    }
+    
+    if (!result?.info?.public_id || !result?.info?.secure_url) {
+      console.error("Información de carga incompleta:", result);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se recibió la información completa de la imagen",
+        confirmButtonColor: "#8c52ff",
+      });
+      return;
+    }
+    
     try {
       setUploading(true);
       
-      const response = await fetch(`${url}/api/empleados/${empleadoId}/image`, {
+      const apiUrl = `${url}/api/empleados/${empleadoId}/image`;
+      console.log("Enviando solicitud a:", apiUrl);
+      
+      const requestData = {
+        public_id: result.info.public_id,
+        secure_url: result.info.secure_url,
+        version: Date.now()
+      };
+      console.log("Datos enviados:", requestData);
+      
+      const response = await fetch(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${getCookie("token")}`
         },
-        body: JSON.stringify({
-          public_id: result.info.public_id,
-          secure_url: result.info.secure_url,
-          version: Date.now() 
-        })
+        body: JSON.stringify(requestData)
       });
 
+
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("text/html")) {
+        console.error("El servidor respondió con HTML en lugar de JSON. Código:", response.status);
+        throw new Error(`Error del servidor: ${response.status}. Contacte al administrador.`);
+      }
+      
       const data = await response.json();
       console.log('Respuesta del servidor Upload Profile:', data);
       
@@ -45,11 +78,11 @@ export default function ProfileImageUpload({ empleadoId, onImageUpload }) {
         confirmButtonColor: "#8c52ff",
       });
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error completo:", error);
       Swal.fire({
         icon: "error",
-        title: "Error",
-        text: error.message || "Ocurrió un error al actualizar la imagen",
+        title: "Error al actualizar la imagen",
+        text: error.message || "Ocurrió un error inesperado. Por favor, inténtelo de nuevo.",
         confirmButtonColor: "#8c52ff",
       });
     } finally {
@@ -97,7 +130,7 @@ export default function ProfileImageUpload({ empleadoId, onImageUpload }) {
         Swal.fire({
           icon: "error",
           title: "Error",
-          text: "Ocurrió un error al subir la imagen",
+          text: "Ocurrió un error al subir la imagen a Cloudinary",
           confirmButtonColor: "#8c52ff",
         });
       }}
