@@ -41,7 +41,7 @@ export default function Web() {
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
           width: "100%", // Se expande a todo el ancho disponible
-          height: "42%", // Asegura que ocupe el espacio del contenedor sin salir del límite
+          height: "100%", // Asegura que ocupe el espacio del contenedor sin salir del límite
         }}
       ></div>
 
@@ -73,15 +73,6 @@ export default function Web() {
               <li>Diseño web WordPress</li>
             </ul>
           </div>
-        </div>
-
-        {/* Nueva sección específica para esta página, colocada más abajo */}
-        <div className="relative z-10 mt-[860px] md:mt-[300px] lg:mt-[550px] px-4">
-          <Description
-            title="Desarollo Web"
-            text="Impulsamos tu presencia digital con soluciones de desarrollo web innovadoras, funcionales y optimizadas para el éxito."
-          />
-           <Servicios servicios={servicios} />
         </div>
       </div>
     </div>

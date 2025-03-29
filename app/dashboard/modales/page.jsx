@@ -306,10 +306,10 @@ export default function Page() {
   }
 
   return (
-    <main className="p-4 md:p-6 flex flex-col w-full h-[100vh] bg-gray-50">
-      <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
+    <main className="p-4 md:p-6 flex flex-col w-full h-[100vh] bg-gray-50 dark:bg-gray-900 overflow-y-auto">
+      <div className="bg-white rounded-xl shadow-sm p-6 mb-6 dark:bg-gray-800 dark:text-white">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Gestión de Modales</h1>
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Gestión de Modales</h1>
 
           <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
             <div className="relative flex-grow">
@@ -355,7 +355,7 @@ export default function Page() {
           <>
             <div className="overflow-x-auto rounded-lg border border-gray-100">
               <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+                <thead className="bg-gray-50 dark:bg-gray-800">
                   <tr>
                     <th
                       scope="col"
@@ -395,18 +395,18 @@ export default function Page() {
                     </th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-white divide-y divide-gray-200 dark:bg-gray-900">
                   {filteredData.length > 0 ? (
                     filteredData
                     .slice((Number(currentPage) - 1) * 4, Number(currentPage) * 4)
                     .map((modal)=> (
-                      <tr key={`${modal.id_modalservicio}-Row`} className="hover:bg-gray-50 transition-colors">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                      <tr key={`${modal.id_modalservicio}-Row`} className="hover:bg-gray-50 transition-colors dark:hover:bg-gray-800 dark:text-white"> 
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
                           {modal.id_modalservicio}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{modal.nombre}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{modal.correo}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{modal.servicio.nombre}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-white">{modal.nombre}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-white">{modal.correo}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-white">{modal.servicio.nombre}</td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span
                             className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${

@@ -169,7 +169,7 @@ export default function LoginPage() {
               </div>
             </div>
             <div className="mt-4">
-              <Link href="./email" className="text-sm text-blue-500 hover:underline">
+              <Link href="./email/" className="text-sm text-blue-500 hover:underline">
                 ¿Olvidaste tu contraseña?
               </Link>
             </div>
