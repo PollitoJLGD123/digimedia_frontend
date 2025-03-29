@@ -37,14 +37,12 @@ export default function ProfileImageUpload({ empleadoId, onImageUpload }) {
       setUploading(true);
       
       const apiUrl = `${url}/api/empleados/${empleadoId}/image`;
-      console.log("Enviando solicitud a:", apiUrl);
       
       const requestData = {
         public_id: result.info.public_id,
         secure_url: result.info.secure_url,
         version: Date.now()
       };
-      console.log("Datos enviados:", requestData);
       
       const response = await fetch(apiUrl, {
         method: "POST",
@@ -63,7 +61,6 @@ export default function ProfileImageUpload({ empleadoId, onImageUpload }) {
       }
       
       const data = await response.json();
-      console.log('Respuesta del servidor Upload Profile:', data);
       
       if (!response.ok) {
         throw new Error(data.message || "Error al actualizar la imagen");
@@ -97,7 +94,7 @@ export default function ProfileImageUpload({ empleadoId, onImageUpload }) {
         folder: `empleados/perfiles/${empleadoId}`,
         resourceType: "image",
         clientAllowedFormats: ["jpg", "png", "webp"],
-        maxFileSize: 5 * 1024 * 1024, // 5MB en bytes
+        maxFileSize: 5 * 1024 * 1024, 
         cropping: true,
         croppingAspectRatio: 1,
         croppingDefaultSelectionRatio: 1,

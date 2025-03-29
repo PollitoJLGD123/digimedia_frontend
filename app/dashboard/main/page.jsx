@@ -39,7 +39,6 @@ export default function Page() {
     const loadData = async () => {
       if (empleadoId) {
         const userRole = getCookie("rol")
-        console.log("userRole:", userRole)
         if (userRole !== "administrador") {
           Swal.fire({
             icon: "error",
@@ -134,7 +133,6 @@ export default function Page() {
   const email = empleadoData?.email || userData?.email || "No disponible"
   const telefono = empleadoData?.telefono || "No disponible"
 
-  // Determine permissions based on role
   const getRolePermissions = (role) => {
     switch (role.toLowerCase()) {
       case "administrador":
@@ -153,7 +151,6 @@ export default function Page() {
   return (
     <div className="container mx-auto py-6 px-4 max-w-5xl">
       <Card className="overflow-hidden border-none shadow-md dark:bg-gray-800">
-        {/* Header con color morado claro */}
         <div className="bg-[#8c52ff] p-4 text-white">
           <div className="flex justify-between items-center">
             {empleadoId && (
@@ -182,7 +179,6 @@ export default function Page() {
             <div className="md:w-1/3">
               <div className="flex flex-col items-center">
               <div className="relative">
-              {console.log("empleadoData zz1:", empleadoData)}
                   {empleadoData?.imagen_perfil_url && empleadoData?.imagen_perfil ? (
                     <div className="w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-[#7a45e6] shadow-md">
                       <CldImage
@@ -212,7 +208,6 @@ export default function Page() {
                     {!empleadoId && (
                       
                       <div className="mt-2">
-                        {console.log("empleadoData zz2:", empleadoData)}
                         <ProfileImageUpload 
                           empleadoId={empleadoData?.id_empleado}
                           onImageUpload={(url, publicId) => {
