@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import './Header.css';
 
 export default function Header() {
   const closeMenu = () => {
@@ -28,7 +29,7 @@ export default function Header() {
 
       {/* "Regresar" Button */}
       <div>
-        <Link href="/dashboard/blogs" className="bg-black text-white py-2 px-4 rounded-md hover:bg-gray-800">
+        <Link href="/dashboard/blogs" className="bg-[#D32F2F] text-white py-2 px-4 rounded-md hover:bg-gray-800">
           Regresar
         </Link>
       </div>
