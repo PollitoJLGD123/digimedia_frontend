@@ -6,19 +6,19 @@ const templates = [
     {
         src: "/dashboard/blogs/plantilla1.png",
         viewLink: "/blog/plantillas/plantilla1/?id_blog=1",
-        editLink: "./edit/plantilla1",
+        editLink: "/edition/plantillas/plantilla1",
         name: "Plantilla Moderna",
     },
     {
         src: "/dashboard/blogs/plantilla2.png",
         viewLink: "/blog/plantillas/plantilla2/?id_blog=2",
-        editLink: "#",
+        editLink: "/edition/plantillas/plantilla2",
         name: "Plantilla Elegante",
     },
     {
         src: "/dashboard/blogs/plantilla3.png",
         viewLink: "/blog/plantillas/plantilla3/?id_blog=3",
-        editLink: "#",
+        editLink: "/edition/plantillas/plantilla3",
         name: "Plantilla Minimalista",
     },
 ]
