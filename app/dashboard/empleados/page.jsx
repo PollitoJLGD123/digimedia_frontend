@@ -225,7 +225,7 @@ export default function Page() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6 max-w-7xl">
+    <div className="container mx-auto px-4 py-6 max-w-7xl ">
       <Card className="border-none shadow-md">
         <CardHeader className="bg-gradient-to-r from-[#8c52ff] to-[#7a45e6] text-white rounded-t-lg pb-6">
           <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
@@ -251,7 +251,7 @@ export default function Page() {
           </div>
         </CardHeader>
 
-        <CardContent className="p-6">
+        <CardContent className="p-6 dark:bg-gray-800">
           {/* Filtros y controles */}
           <div className="mb-6 space-y-4">
             <div className="flex flex-col sm:flex-row gap-3 justify-between items-center">
@@ -279,17 +279,17 @@ export default function Page() {
             </div>
 
             {/* Filtro por rol */}
-            <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg border border-gray-100">
+            <div className="flex items-center gap-3 bg-gray-50 p-3 rounded-lg border border-gray-100 dark:border-gray-800 dark:bg-[#6b3acb]">
               <Filter className="h-4 w-4 text-[#8c52ff]" />
               <div className="text-sm font-medium">Filtrar por rol:</div>
-              <Select value={selectedRole} onValueChange={setSelectedRole}>
-                <SelectTrigger className="w-[180px] bg-white">
+              <Select value={selectedRole} onValueChange={setSelectedRole} className="w-[180px] bg-white dark:bg-gray-800">
+                <SelectTrigger className="w-[180px] bg-white dark:bg-gray-800">
                   <SelectValue placeholder="Todos los roles" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Todos los roles</SelectItem>
                   {roles.map((rol) => (
-                    <SelectItem key={rol.id_rol} value={rol.id_rol}>
+                    <SelectItem key={rol.id_rol} value={rol.id_rol} > 
                       {formatRoleName(rol.nombre)}
                     </SelectItem>
                   ))}
@@ -302,7 +302,7 @@ export default function Page() {
                 </Button>
               )}
 
-              <div className="ml-auto text-xs text-gray-500">
+              <div className="ml-auto text-xs text-gray-500 dark:text-gray-200">
                 {filteredData.length} {filteredData.length === 1 ? "empleado" : "empleados"} encontrados
               </div>
             </div>
@@ -316,7 +316,7 @@ export default function Page() {
           ) : (
             <>
               <div className="rounded-lg border overflow-hidden">
-                <Table
+                <Table 
                   headers={headers}
                   data={filteredData}
                   onDelete={onDelete}

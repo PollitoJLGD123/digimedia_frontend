@@ -42,7 +42,11 @@ export default function UXUI() {
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
     width: "100%", // Se expande a todo el ancho disponible
+<<<<<<< HEAD
     height: "42%", // Asegura que ocupe el espacio del contenedor sin salir del límite
+=======
+    height: "100%", // Asegura que ocupe el espacio del contenedor sin salir del límite
+>>>>>>> origin/master
   }}>
       </div>
 
@@ -123,6 +127,7 @@ export default function UXUI() {
   </div>
 </div>
 
+<<<<<<< HEAD
         {/* Nueva sección específica para esta página, colocada más abajo */}
         <div className="relative z-10 mt-[-3px] md:mt-[300px] lg:mt-[150px] px-4">
         <Description
@@ -138,6 +143,8 @@ export default function UXUI() {
           iconRight="/servicios/uxui/icon-right.svg"
           />
         </div>
+=======
+>>>>>>> origin/master
       </div>
     </div>
   );

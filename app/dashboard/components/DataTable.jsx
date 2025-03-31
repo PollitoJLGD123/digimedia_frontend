@@ -24,20 +24,20 @@ export default function DataTable({ headers, data, onDelete, onUpdate, onShow })
   // Renderizado para vista móvil (tarjetas)
   const renderMobileView = () => {
     return (
-      <div className="grid gap-4 md:hidden">
+      <div className="grid gap-4 md:hidden ">
         {data.map((dataRow, index) => {
           const isEmpleadoAutenticado = empleadoAutenticadoId && dataRow.id_empleado === empleadoAutenticadoId
 
           return (
             <Card
               key={dataRow.id || `card-${index}`}
-              className={`overflow-hidden ${isEmpleadoAutenticado ? "border-[#8c52ff] border-2" : "border-gray-200"}`}
+              className={`overflow-hidden ${isEmpleadoAutenticado ? "border-[#8c52ff] border-2 dark:bg-gray-900" : "border-gray-200"}`}
             >
-              <div className={`p-3 ${isEmpleadoAutenticado ? "bg-[#f0ebff]" : "bg-white"}`}>
+              <div className={`p-3 ${isEmpleadoAutenticado ? "bg-[#f0ebff] dark:bg-gray-900" : "bg-white"}`}>
                 {headers.slice(0, 2).map((header) => (
                   <div key={`mobile-${dataRow.id}-${header}`} className="mb-1">
-                    <span className="font-semibold text-xs text-gray-500">{header.toUpperCase()}: </span>
-                    <span className="font-medium">{dataRow[header]}</span>
+                    <span className="font-semibold text-xs text-gray-500 dark:bg-gray-900">{header.toUpperCase()}: </span>
+                    <span className="font-medium dark:bg-gray-900">{dataRow[header]}</span>
                   </div>
                 ))}
 
@@ -141,7 +141,7 @@ export default function DataTable({ headers, data, onDelete, onUpdate, onShow })
                   className={`${
                     isEmpleadoAutenticado 
                       ? "bg-[#caeafe]" 
-                      : index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                      : index % 2 === 0 ? "bg-white dark:bg-gray-900" : "bg-gray-50 dark:bg-gray-700"
                   } hover:bg-neutral-200 transition-colors`}
                 >
                   {headers.map((header) => (

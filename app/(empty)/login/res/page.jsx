@@ -1,22 +1,20 @@
-'use client'
+'use client';
 
 import axios from 'axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Swal from 'sweetalert2';
 import { useRouter, useSearchParams } from 'next/navigation';
 import url from '../../../../api/url';
 
 const URL_API = `${url}/api/update_password`;
 
-export default function Page () {
-    
+function ResetPasswordForm() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [token, setToken] = useState(null);
     const router = useRouter();
     const searchParams = useSearchParams();
-
 
     useEffect(() => {
         const tokenParam = searchParams.get('token');
@@ -108,5 +106,13 @@ export default function Page () {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function Page() {
+    return (
+        <Suspense fallback={<div className="flex items-center justify-center min-h-screen">Cargando...</div>}>
+            <ResetPasswordForm />
+        </Suspense>
     );
 }

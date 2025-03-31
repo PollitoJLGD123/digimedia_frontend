@@ -29,6 +29,7 @@ export default function Page() {
       title: 'DISEÑO UX Y UI',
       text: 'Diseñamos experiencias digitales centradas en el usuario, combinando estrategias de UX  con interfaces visualmente atractivas y funcionales (UI).',
       icon: '/servicios/gestion/icon4.svg',
+      ruta: '/servicios/ui/'
     },
   ];
 
