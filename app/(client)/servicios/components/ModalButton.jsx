@@ -7,9 +7,7 @@ import Swal from 'sweetalert2';
 import { getCookie } from 'cookies-next';
 import url from '../../../../api/url';
 
-//const URL_API = "http://127.0.0.1:8000/api/modales"
 const URL_API = `${url}/api/modales`
-
 
 export default function ModalClick({ text, fondo, title, serviceName }) {
   const modalRef = useRef(null);

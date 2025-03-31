@@ -6,9 +6,6 @@ import Swal from 'sweetalert2';
 import { useRouter } from 'next/navigation';
 import url from '../../../../api/url';
 
-//const URL_API = "http://127.0.0.1:8000/api/reset_password"
-//const URL_API = "https://back.digimediamkt.com/api/reset_password"
-
 const URL_API = `${url}/api/reset_password`;
 
 export default function Page()  {
@@ -30,7 +27,7 @@ export default function Page()  {
             const response = await axios.post(`${URL_API}`, { email });
 
             Swal.fire({
-                title: "Éxito",
+                title: "Éxito , Revisa tu Spam",
                 text: response.data.message,
                 icon: "success",
                 timer: 3000,
@@ -65,7 +62,7 @@ export default function Page()  {
                     />
                     <button 
                         type="submit"
-                        className="w-full bg-green-600 text-white py-3 rounded-md hover:bg-green-700 transition flex justify-center items-center"
+                        className="w-full bg-pink-600 text-white py-3 rounded-md hover:bg-pink-700 transition flex justify-center items-center"
                         disabled={loading}
                     >
                         {loading ? (
