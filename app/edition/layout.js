@@ -7,7 +7,7 @@ export default function EditionLayout({ children }) {
         <div>
             <Header />
             <div className="edition-container">
-                {children}  {/* Aquí se renderiza el contenido de la página de edición */}
+                {children}
             </div>
             <Footer />
         </div>
