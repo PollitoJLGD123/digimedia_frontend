@@ -6,7 +6,7 @@ const templates = [
     {
         src: "/dashboard/blogs/plantilla1.png",
         viewLink: "/blog/plantillas/plantilla1/?id_blog=1",
-        editLink: "./edit/plantilla1",
+        editLink: "/edition/plantillas/plantilla1",
         name: "Plantilla Moderna",
     },
     {
