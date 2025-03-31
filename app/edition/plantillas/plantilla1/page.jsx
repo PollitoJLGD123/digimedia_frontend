@@ -7,7 +7,7 @@ const PageContent = () => {
       <div
         className="w-full h-auto min-h-[40vh] mx-auto py-4 relative flex items-center justify-center text-center px-6 sm:px-12 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: `url(http/blog/imagen-estatico`,
+          backgroundImage: `url(/blog/blog-1.jpg)`,
         }}
       >
         <div className="absolute inset-0 bg-black/60"></div>
@@ -67,8 +67,8 @@ const PageContent = () => {
                   <div className="absolute -inset-0.5 bg-gradient-to-r from-yellow-400 to-blue-500 rounded-lg opacity-0 group-hover:opacity-30 blur-sm transition-opacity duration-300"></div>
 
                   <img
-                    src={"/blog/blog-2-estatico.jpg"}
-                    alt={`Imagen1-estatico`}
+                    src={"/blog/blog-1.jpg"}
+                    alt={`Imagen1`}
                     className="w-full h-full object-cover rounded-lg border border-white/10 group-hover:border-sky-400/50 transition-all duration-300 shadow-md absolute z-10"
                     loading="lazy"
                   />
@@ -81,8 +81,8 @@ const PageContent = () => {
                   <div className="absolute -inset-0.5 bg-gradient-to-r from-yellow-400 to-blue-500 rounded-lg opacity-0 group-hover:opacity-30 blur-sm transition-opacity duration-300"></div>
 
                   <img
-                    src={"/blog/blog-2-estatico.jpg"}
-                    alt={`Imagen1-estatico`}
+                    src={"/blog/blog-2.jpg"}
+                    alt={`Imagen2`}
                     className="w-full h-full object-cover rounded-lg border border-white/10 group-hover:border-sky-400/50 transition-all duration-300 shadow-md absolute z-10"
                     loading="lazy"
                   />
@@ -95,8 +95,8 @@ const PageContent = () => {
                   <div className="absolute -inset-0.5 bg-gradient-to-r from-yellow-400 to-blue-500 rounded-lg opacity-0 group-hover:opacity-30 blur-sm transition-opacity duration-300"></div>
 
                   <img
-                    src={"/blog/blog-2-estatico.jpg"}
-                    alt={`Imagen1-estatico`}
+                    src={"/blog/blog-3.jpg"}
+                    alt={`Imagen3`}
                     className="w-full h-full object-cover rounded-lg border border-white/10 group-hover:border-sky-400/50 transition-all duration-300 shadow-md absolute z-10"
                     loading="lazy"
                   />
