@@ -6,7 +6,7 @@ export default function FormHeader({dataHeader}) {
   return (
     <div
         className="w-full h-screen md:h-[80vh] relative flex items-center justify-center text-center px-6 sm:px-12 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${dataHeader.url_image.startsWith('http') ? dataHeader.url_image : "/blog/fondo_blog_extend"})` 
+        style={{ backgroundImage: `url(${dataHeader.url_image.startsWith('http') ? dataHeader.url_image : "/blog/fondo_blog_extend.png"})` 
         }}
     >
         <div className="absolute inset-0 bg-black/60"></div>

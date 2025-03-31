@@ -22,9 +22,8 @@ const PageContent = () => {
 
   return (
     <>
-      <FormFooter formFooter={formFooter} />
-
       <FormHeader dataHeader={dataHeader} />
+      <FormFooter formFooter={formFooter} />
     </>
   );
 };
