@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Swal from "sweetalert2"
-import { Loader2, CheckCircle, Clock, ChevronRight, Bookmark, Share2, Eye } from "lucide-react"
+import { Loader2, CheckCircle, Clock, Bookmark, Share2, Eye } from "lucide-react"
 import Fetch from "../../services/fetch"
 
 export default function Body2({ id_blog_body, fecha }) {
