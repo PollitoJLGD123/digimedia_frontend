@@ -21,7 +21,7 @@ const PageContent = () => {
       "Frase secundaria y llamativa",
     url_image: "/blog/fondo_blog_extend.png",
   });
-  
+
   const [formEncabezadoBody, setFormEncabezadoBody] = useState({
     titulo: "Tu título impactante aquí",
     descripcion:
@@ -30,16 +30,24 @@ const PageContent = () => {
     url_image1: "/blog/fondo_blog_extend.png",
   });
 
-  const [formInfoBody, setFormInfoBody] = useState({
+  const [formInfoBody, setFormInfoBody] = useState([
+  {
     titulo: "El Factor Sorpresa y Distinción",
     descripcion:"Las letras de neón LED permiten personalizar la imagen de tu local, haciendo que el nombre de tu bar sea visible desde lejos. Un diseño llamativo puede convertirse en un sello distintivo y en un punto de referencia para los clientes.",
-    titulo1: "Ambiente y Experiencia Visual",
-    descripcion1:"La iluminación juega un papel crucial en la atmósfera de un bar. Los colores vibrantes y cálidos del neón LED pueden transformar un espacio ordinario en un entorno acogedor e instagrameable.",
-    titulo2: "Eficiencia Energética y Durabilidad",
-    descripcion2:"A diferencia del neón tradicional, las luces LED son más eficientes, consumen menos energía y tienen una vida útil más prolongada.",
-    titulo3: "Marketing y Atracción de Clientes",
-    descripcion3:"Un letrero de neón LED bien diseñado es una herramienta de marketing poderosa, capaz de captar la atención y aumentar la visibilidad de tu local.",
-  });
+  },
+  {
+    titulo: "Ambiente y Experiencia Visual",
+    descripcion:"La iluminación juega un papel crucial en la atmósfera de un bar. Los colores vibrantes y cálidos del neón LED pueden transformar un espacio ordinario en un entorno acogedor e instagrameable.",
+  },
+  {
+    titulo: "Eficiencia Energética y Durabilidad",
+    descripcion:"A diferencia del neón tradicional, las luces LED son más eficientes, consumen menos energía y tienen una vida útil más prolongada.",
+  },
+  {
+    titulo: "Marketing y Atracción de Clientes",
+    descripcion:"Un letrero de neón LED bien diseñado es una herramienta de marketing poderosa, capaz de captar la atención y aumentar la visibilidad de tu local.",
+  }
+]);
 
   const [formCommendBody, setFormCommendBody] = useState({
     titulo: "Consejos para Elegir el Letrero Perfecto",
@@ -63,7 +71,7 @@ const PageContent = () => {
         setFormData={setDataHeader}
       />
 
-      <FormBody1
+    <FormBody1
         formCommendBody = {formCommendBody}
         setFormCommendBody = {setFormCommendBody}
         
@@ -76,6 +84,7 @@ const PageContent = () => {
         formEncabezadoBody = {formEncabezadoBody}
         setFormEncabezadoBody = {setFormEncabezadoBody}
       />
+
 
       <FormFooter
         formFooter={formFooter}
