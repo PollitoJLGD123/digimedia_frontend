@@ -2,13 +2,12 @@
 import FormFooter from '../components/FormFooter'
 import FormHeader from '../components/FormHeader'
 import { useState } from 'react';
-import Formulario from '../components/Formulario';
 
 const PageContent = () => {
 
   const [formFooter, setFormFooter] = useState({
-    titulo: "Titulo Footer",
-    descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, voluptate.",
+    titulo: "Titulo Final del Blog",
+    descripcion: "Reseña final del blog, incluye cosas acerca de la conclusión del proyecto y diferencias con el resto de blogs.",
     url_image1: "blog-10.jpg",
     url_image2: "blog-1.jpg",
     url_image3: "blog-2.jpg",
@@ -24,10 +23,15 @@ const PageContent = () => {
 
   return (
     <>
-      <FormHeader dataHeader={dataHeader}>
-        <Formulario formData={dataHeader} setFormData={setDataHeader}/>
-      </FormHeader> 
-      <FormFooter formFooter={formFooter} />
+      <FormHeader 
+        dataHeader={dataHeader} 
+        setFormData={setDataHeader}
+      />
+
+      <FormFooter
+        formFooter={formFooter}
+        setFormData={setFormFooter}
+      />
     </>
   );
 };
