@@ -24,9 +24,7 @@ export default function RootLayout({ children }) {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   // Estado y lógica del Dark Mode
-  const [darkMode, setDarkMode] = useState(
-    typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches
-  );
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     if (darkMode) {
