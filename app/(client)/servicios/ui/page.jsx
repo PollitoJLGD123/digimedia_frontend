@@ -1,9 +1,7 @@
-import Contactanos from '../components/Contactanos';
-import Description from '../components/Description';
+
 import Main from '../components/Main';
 import ModalScroll from '../components/ModalScroll';
 import ModalButton from '../components/ModalButton';
-import Servicios from '../components/Servicios';
 import './globals.css';
 
 export default function UXUI() {
@@ -127,4 +125,3 @@ export default function UXUI() {
     </div>
   );
 }
-  
