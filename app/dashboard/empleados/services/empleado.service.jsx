@@ -1,7 +1,7 @@
 "use client";
 import url from "../../../../api/url"
 
-const api_url = `${url}/api/empleados`; // URL base para las rutas de empleados
+const api_url = `${url}/api/empleados`; 
 const api_def = `${url}/api`
 import { getCookie } from "cookies-next";
 import Swal from 'sweetalert2';
@@ -22,7 +22,6 @@ const handlePermissionError = (response) => {
 const empleado_service = {
     empleadosByPage: async (page, limit=5) => {
         try {
-            console.log("Solicitando empleados, página:", page); // Log para depuración
             const response = await fetch(`${api_url}?page=${page}&limit=${limit}`, {
                 method: "GET",
                 headers: {
@@ -30,14 +29,12 @@ const empleado_service = {
                 }
             });
     
-            console.log("Respuesta del servidor:", response); // Log para depuración
     
             if (!response.ok) {
                 return { status: response.status, error: true };
             }
     
             const data = await response.json();
-            console.log("Datos recibidos:", data); // Log para depuración
             return data;
         } catch (error) {
             console.error("Error al obtener empleados:", error);

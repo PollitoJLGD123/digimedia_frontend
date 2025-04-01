@@ -24,17 +24,22 @@ export default function RootLayout({ children }) {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   // Estado y lógica del Dark Mode
-  const [darkMode, setDarkMode] = useState(
-    typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches
-  );
-
+  const [darkMode, setDarkMode] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("darkMode") === "true";
+    }
+    return false; 
+  });
+  
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add("dark");
     } else {
       document.documentElement.classList.remove("dark");
     }
+    localStorage.setItem("darkMode", darkMode);
   }, [darkMode]);
+  
 
   const handleLogout = async () => {
     setIsLoggingOut(true);

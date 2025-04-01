@@ -6,12 +6,16 @@ import { User, Mail, Phone, BadgeIcon, Shield, ArrowLeft, Edit, KeyRound, Loader
 
 import ModalEmpleado from "../empleados/components/modal_empleado"
 import ModalUpdatePass from "../empleados/components/modal_update_password"
+import ProfileImageUpload from "../empleados/components/profile_image_upload"
 
 import Swal from "sweetalert2"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
+import { CldImage  } from "next-cloudinary";
+
+
 import url from "@/api/url"
 export default function Page() {
   const [userData, setUserData] = useState(null)
@@ -21,6 +25,8 @@ export default function Page() {
   const [isLoading, setIsLoading] = useState(true)
   const [showEditModal, setShowEditModal] = useState(false)
   const [showPasswordModal, setShowPasswordModal] = useState(false)
+
+  const [imageUrl, setImageUrl] = useState(null)
 
   const searchParams = useSearchParams()
   const router = useRouter()
@@ -33,7 +39,6 @@ export default function Page() {
     const loadData = async () => {
       if (empleadoId) {
         const userRole = getCookie("rol")
-        console.log("userRole:", userRole)
         if (userRole !== "administrador") {
           Swal.fire({
             icon: "error",
@@ -72,6 +77,7 @@ export default function Page() {
           if (data.status === 200) {
             setEmpleadoData(data.data)
             setUserRole(data.data.rol?.nombre || "Usuario")
+            setImageUrl(data.data.imagen_perfil_url || "https://images.rawpixel.com/image_png_social_square/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png")
           } else {
             console.error("Empleado no encontrado:", data.message)
           }
@@ -91,7 +97,12 @@ export default function Page() {
         const empleadoCookie = getCookie("empleado")
         const rolCookie = getCookie("rol")
 
-        if (empleadoCookie) setEmpleadoData(JSON.parse(empleadoCookie))
+        if (empleadoCookie) {
+          const empleado = JSON.parse(empleadoCookie)
+          setEmpleadoData(empleado)
+          setImageUrl(empleado.imagen_perfil_url) 
+        }
+
         if (userCookie) setUserData(JSON.parse(userCookie))
         if (rolCookie) setUserRole(rolCookie)
         setIsLoading(false)
@@ -103,6 +114,7 @@ export default function Page() {
 
   const handleUpdateSuccess = (updatedData) => {
     setEmpleadoData(updatedData)
+    setImageUrl(updatedData.imagen_perfil_url)
   }
 
   if (isLoading) {
@@ -121,7 +133,6 @@ export default function Page() {
   const email = empleadoData?.email || userData?.email || "No disponible"
   const telefono = empleadoData?.telefono || "No disponible"
 
-  // Determine permissions based on role
   const getRolePermissions = (role) => {
     switch (role.toLowerCase()) {
       case "administrador":
@@ -140,7 +151,6 @@ export default function Page() {
   return (
     <div className="container mx-auto py-6 px-4 max-w-5xl">
       <Card className="overflow-hidden border-none shadow-md dark:bg-gray-800">
-        {/* Header con color morado claro */}
         <div className="bg-[#8c52ff] p-4 text-white">
           <div className="flex justify-between items-center">
             {empleadoId && (
@@ -168,14 +178,49 @@ export default function Page() {
             {/* Profile sidebar */}
             <div className="md:w-1/3">
               <div className="flex flex-col items-center">
-                <div className="relative">
-                    <div className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-[#8c52ff] flex items-center justify-center text-white text-3xl font-bold shadow-md transform transition-transform hover:scale-105 border-2 border-[#7a45e6]">
-                        {nombre.charAt(0)}
-                        {apellido.charAt(0)}
+              <div className="relative">
+                  {empleadoData?.imagen_perfil_url && empleadoData?.imagen_perfil ? (
+                    <div className="w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-[#7a45e6] shadow-md">
+                      <CldImage
+                        width={280}
+                        height={280}
+                        src={empleadoData.imagen_perfil}
+                        alt={`${nombre} ${apellido}`}
+                        className="w-full h-full object-cover"
+                        priority
+                        crop="fill"
+                        gravity="faces"
+                        quality="auto"
+                        fetchPriority="high"
+                        sizes="(max-width: 768px) 100vw, 280px"
+                      />
                     </div>
+                  ) : (
+                    <div className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-[#8c52ff] flex items-center justify-center text-white text-3xl font-bold shadow-md border-2 border-[#7a45e6]">
+                      {nombre.charAt(0)}
+                      {apellido.charAt(0)}
+                    </div>
+                  )}
                     <Badge className="absolute -bottom-2 left-1/2 -translate-x-1/2 py-0.5 text-xs bg-[#4d2994] text-white">
                         {userRole.charAt(0).toUpperCase() + userRole.slice(1)}
                     </Badge>
+                    
+                    {!empleadoId && (
+                      
+                      <div className="mt-2">
+                        <ProfileImageUpload 
+                          empleadoId={empleadoData?.id_empleado}
+                          onImageUpload={(url, publicId) => {
+                            setImageUrl(url);
+                            setEmpleadoData(prev => ({
+                              ...prev,
+                              imagen_perfil: publicId,
+                              imagen_perfil_url: url
+                            }));
+                          }}
+                        />
+                      </div>
+                    )}
                 </div>
 
 

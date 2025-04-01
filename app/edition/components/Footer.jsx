@@ -34,4 +34,8 @@ export default function Footer() {
       </footer>
     </>
   );
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/master
