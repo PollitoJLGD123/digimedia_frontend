@@ -28,18 +28,10 @@ export default function Header() {
 
       {/* "Regresar" Button */}
       <div>
-<<<<<<< HEAD
-        <Link href="/dashboard/blogs" className="bg-black text-white py-2 px-4 rounded-md hover:bg-gray-800">
-=======
         <Link href="/dashboard/blogs" className="bg-[#D32F2F] text-white py-2 px-4 rounded-md hover:bg-gray-800">
->>>>>>> origin/master
           Regresar
         </Link>
       </div>
     </header>
   );
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> origin/master
