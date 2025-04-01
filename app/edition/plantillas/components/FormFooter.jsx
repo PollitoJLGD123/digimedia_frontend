@@ -1,7 +1,7 @@
 "use client"
-import { Image, Type, AlignLeft, Save, Loader2 } from "lucide-react"
+import { Image, Type, AlignLeft} from "lucide-react"
 
-export default function FormFooter({ formFooter, setFormData, isLoading = false, isSaved = false, onSave = () => { } }) {
+export default function FormFooter({ formFooter, setFormData }) {
     const handleChange = (e) => {
         const { name, value } = e.target
         setFormData((prev) => ({
