@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <>
       <footer>
-        <div className="mainFooter">
+        <div className="mainFooter ml-44">
           <div className="footerContenido">
 
 
