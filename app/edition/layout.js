@@ -9,7 +9,7 @@ import { Save, Layout, Type, FootprintsIcon as FooterIcon, House, BookTemplate, 
 import "../globals.css"
 
 export default function EditionLayout({ children }) {
-  const [selectedSection, setSelectedSection] = useState("")
+  const [selectedSection, setSelectedSection] = useState("header")
 
   const handleSectionClick = (id) => {
     setSelectedSection(id)
