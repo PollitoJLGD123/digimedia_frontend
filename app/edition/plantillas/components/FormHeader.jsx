@@ -21,7 +21,7 @@ export default function FormHeader({ dataHeader, setFormData }) {
     >
       <div className="absolute inset-0 bg-black/60"></div>
 
-      <div className="relative z-10 max-w-7xl text-white flex flex-col md:flex-row items-center justify-between gap-6">
+      <div className="relative max-w-7xl text-white flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="text-center max-w-xl">
           <h1 className="text-5xl md:text-6xl font-extrabold mb-4 neon-textov4">
             {dataHeader.titulo}
@@ -36,8 +36,11 @@ export default function FormHeader({ dataHeader, setFormData }) {
 
         <div className="w-full md:w-auto flex justify-center md:justify-end">
 
-          <div className="bg-black/5 backdrop-blur-md rounded-2xl p-8 shadow-lg w-full max-w-lg overflow-auto">
+          <div className="bg-black/5 backdrop-blur-md ml-8 rounded-2xl p-8 shadow-lg w-[450px] max-w-lg overflow-auto">
             <form className="space-y-6">
+              <h3 className="text-lg font-semibold text-white mb-4">
+                Editar Encabezado
+              </h3>
               <div>
                 <label className="flex items-center text-white text-sm font-medium mb-2">
                   <Type className="w-5 h-5 mr-2 text-purple-400" /> Título
@@ -83,7 +86,7 @@ export default function FormHeader({ dataHeader, setFormData }) {
                   <Quote className="w-5 h-5 mr-2 text-purple-400" /> Imagen
                 </label>
                 <input
-                  type="image"
+                  type="text"
                   name="url_image"
                   value={dataHeader.url_image}
                   onChange={handleChange}

@@ -1,37 +1,24 @@
-'use client';
-import Link from 'next/link';
+"use client"
+
+import Link from "next/link"
+import { ArrowLeft } from "lucide-react"
+import { Button } from "@/components/ui/button"
 
 export default function Header() {
-  const closeMenu = () => {
-    setMenuOpen(false);
-    setIsServiceOpen(false);
-    setIsMoreOpen(false);
-  };
-
   return (
-    <header className="flex items-center justify-between bg-purple-800 text-white p-4">
-      {/* Text "Modo Edición" */}
-      <div className="text-lg font-semibold">MODO EDICIÓN</div>
-
-      {/* Logo */}
-      <div className="flex items-center">
-        <Link href="/" onClick={closeMenu}>
-          <img
-            src="/headerFooter/logoblanco2.webp"
-            alt="Digimedia"
-            width="190px"
-            height="65px"
-            className="my-auto"
-          />
+    <header className="flex items-center justify-between bg-slate-800 text-white px-6 py-3 h-16 fixed w-full z-10">
+      <div className="flex items-center ml-56">
+        <Link href="/">
+          <img src="/headerFooter/logoblanco2.webp" alt="Digimedia" width="150" height="50" className="h-auto" />
         </Link>
       </div>
 
-      {/* "Regresar" Button */}
-      <div>
-        <Link href="/dashboard/blogs" className="bg-[#D32F2F] text-white py-2 px-4 rounded-md hover:bg-gray-800">
+      <Button variant="destructive" size="sm" asChild className="bg-red-600 hover:bg-red-700">
+        <Link href="/dashboard/blogs" className="flex items-center">
+          <ArrowLeft className="mr-2 h-4 w-4" />
           Regresar
         </Link>
-      </div>
+      </Button>
     </header>
-  );
+  )
 }

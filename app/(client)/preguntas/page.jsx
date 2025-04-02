@@ -1,8 +1,10 @@
-import Principal from "./components/Principal";
-import Pregunta from "./components/Pregunta";
+'use client'
+
+import { useState } from "react"
+import Principal from "./components/Principal"
+import Pregunta from "./components/Pregunta"
 
 export default function Page() {
-
   const data = [
     {
       question: "¿Cómo me ayuda una agencia de marketing digital a vender más?",
@@ -50,15 +52,61 @@ export default function Page() {
     }
   ]
 
+  // Group questions into categories for better organization
+  const categories = [
+    { name: "Marketing Digital", items: [0, 1, 8, 10] },
+    { name: "Diseño y Desarrollo", items: [2] },
+    { name: "Branding", items: [4, 5, 6] },
+    { name: "Estrategia", items: [3, 7, 9] }
+  ]
+
+  const [activeCategory, setActiveCategory] = useState(0)
 
   return (
-    <>
-      <Principal></Principal>
-      <section className="p-4 py-8 grid grid-cols-1 lg:grid-cols-2 lg:max-w-[1500px] lg:gap-12 mx-auto gap-6">
-        {data.map(({ question, answer }, index) => (
-          <Pregunta question={question} answer={answer} key={index}/>
-        ))}
+    <div className="bg-gradient-to-b from-slate-50 to-white min-h-screen">
+      <Principal />
+    
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div className="flex overflow-x-auto py-4 scrollbar-hide gap-3 justify-center">
+          {categories.map((category, index) => (
+            <button
+              key={index}
+              onClick={() => setActiveCategory(index)}
+              className={`px-6 py-3 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-300 ${
+                activeCategory === index
+                  ? "bg-teal-500 text-white shadow-lg shadow-teal-200"
+                  : "bg-white text-slate-600 hover:bg-slate-100"
+              }`}
+            >
+              {category.name}
+            </button>
+          ))}
+        </div>
+      </div>
+      
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid grid-cols-1 gap-8">
+          {categories[activeCategory].items.map((itemIndex) => (
+            <Pregunta 
+              key={itemIndex}
+              question={data[itemIndex].question} 
+              answer={data[itemIndex].answer}
+            />
+          ))}
+        </div>
       </section>
-    </>
-  );
+      
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="bg-gradient-to-r from-teal-500 to-emerald-600 rounded-2xl p-8 sm:p-12 shadow-xl text-center">
+          <h2 className="text-white text-2xl sm:text-3xl font-medium mb-4">¿No encuentras la respuesta que buscas?</h2>
+          <p className="text-teal-50 mb-8 max-w-2xl mx-auto">
+            Estamos aquí para ayudarte. Contáctanos directamente y un especialista responderá todas tus dudas.
+          </p>
+          <button className="bg-white text-teal-600 px-8 py-3 rounded-full font-medium hover:bg-teal-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+            Contáctanos
+          </button>
+        </div>
+      </div>
+    </div>
+  )
 }
