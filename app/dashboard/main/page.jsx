@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import { getCookie, deleteCookie } from "cookies-next"
 import { useSearchParams, useRouter } from "next/navigation"
-import { User, Mail, Phone, BadgeIcon, Shield, ArrowLeft, Edit, KeyRound, Loader2 } from "lucide-react"
+import { User, Mail, Phone, BadgeIcon, Shield, ArrowLeft, Edit, KeyRound, Loader2, Trash2 } from "lucide-react"
 
 import ModalEmpleado from "../empleados/components/modal_empleado"
 import ModalUpdatePass from "../empleados/components/modal_update_password"
@@ -13,8 +13,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { CldImage  } from "next-cloudinary";
-
+import { CldImage } from "next-cloudinary"
 
 import url from "@/api/url"
 export default function Page() {
@@ -77,7 +76,10 @@ export default function Page() {
           if (data.status === 200) {
             setEmpleadoData(data.data)
             setUserRole(data.data.rol?.nombre || "Usuario")
-            setImageUrl(data.data.imagen_perfil_url || "https://images.rawpixel.com/image_png_social_square/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png")
+            setImageUrl(
+              data.data.imagen_perfil_url ||
+                "https://images.rawpixel.com/image_png_social_square/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png",
+            )
           } else {
             console.error("Empleado no encontrado:", data.message)
           }
@@ -100,7 +102,7 @@ export default function Page() {
         if (empleadoCookie) {
           const empleado = JSON.parse(empleadoCookie)
           setEmpleadoData(empleado)
-          setImageUrl(empleado.imagen_perfil_url) 
+          setImageUrl(empleado.imagen_perfil_url)
         }
 
         if (userCookie) setUserData(JSON.parse(userCookie))
@@ -116,6 +118,59 @@ export default function Page() {
     setEmpleadoData(updatedData)
     setImageUrl(updatedData.imagen_perfil_url)
   }
+
+  const handleDeleteProfileImage = async () => {
+    try {
+      const confirmResult = await Swal.fire({
+        title: '¿Eliminar foto de perfil?',
+        text: "Esta acción no se puede deshacer",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#8c52ff',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+      });
+  
+      if (!confirmResult.isConfirmed) return;
+  
+      const token = getCookie("token");
+      const empleadoIdToUpdate = empleadoId || empleadoData?.id_empleado;
+      
+      const response = await fetch(`${api_url}/${empleadoIdToUpdate}/image`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        }
+      });
+
+      if (!response.ok) throw new Error(`Error ${response.status}`);
+  
+      setImageUrl("https://images.rawpixel.com/image_png_social_square/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png");
+      setEmpleadoData(prev => ({
+        ...prev,
+        imagen_perfil: null,
+        imagen_perfil_url: null
+      }));
+  
+      Swal.fire({
+        icon: "success",
+        title: "Foto eliminada",
+        text: "La foto de perfil se ha eliminado correctamente",
+        confirmButtonColor: "#8c52ff",
+      });
+  
+    } catch (error) {
+      console.error("Error al eliminar:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo eliminar la foto de perfil",
+        confirmButtonColor: "#8c52ff",
+      });
+    }
+  };
 
   if (isLoading) {
     return (
@@ -153,12 +208,8 @@ export default function Page() {
       <Card className="overflow-hidden border-none shadow-md dark:bg-gray-800">
         <div className="bg-[#8c52ff] p-4 text-white">
           <div className="flex justify-between items-center">
-            {empleadoId && (
-                <h1 className="text-xl md:text-2xl font-bold">Perfil del Empleado</h1>
-            )}
-            {!empleadoId && (
-                <h1 className="text-xl md:text-2xl font-bold">Mi Perfil</h1>
-            )}
+            {empleadoId && <h1 className="text-xl md:text-2xl font-bold">Perfil del Empleado</h1>}
+            {!empleadoId && <h1 className="text-xl md:text-2xl font-bold">Mi Perfil</h1>}
             {empleadoId && (
               <Button
                 variant="secondary"
@@ -178,7 +229,7 @@ export default function Page() {
             {/* Profile sidebar */}
             <div className="md:w-1/3">
               <div className="flex flex-col items-center">
-              <div className="relative">
+                <div className="relative">
                   {empleadoData?.imagen_perfil_url && empleadoData?.imagen_perfil ? (
                     <div className="w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-2 border-[#7a45e6] shadow-md">
                       <CldImage
@@ -201,38 +252,48 @@ export default function Page() {
                       {apellido.charAt(0)}
                     </div>
                   )}
-                    <Badge className="absolute -bottom-2 left-1/2 -translate-x-1/2 py-0.5 text-xs bg-[#4d2994] text-white">
-                        {userRole.charAt(0).toUpperCase() + userRole.slice(1)}
-                    </Badge>
-                    
-                    {!empleadoId && (
-                      
-                      <div className="mt-2">
-                        <ProfileImageUpload 
-                          empleadoId={empleadoData?.id_empleado}
-                          onImageUpload={(url, publicId) => {
-                            setImageUrl(url);
-                            setEmpleadoData(prev => ({
-                              ...prev,
-                              imagen_perfil: publicId,
-                              imagen_perfil_url: url
-                            }));
-                          }}
-                        />
-                      </div>
-                    )}
-                </div>
+                  <Badge className="absolute -bottom-2 left-1/2 -translate-x-1/2 py-0.5 text-xs bg-[#4d2994] text-white">
+                    {userRole.charAt(0).toUpperCase() + userRole.slice(1)}
+                  </Badge>
 
+                  {!empleadoId && (
+                    <div className="mt-2">
+                      <ProfileImageUpload
+                        empleadoId={empleadoData?.id_empleado}
+                        onImageUpload={(url, publicId) => {
+                          setImageUrl(url)
+                          setEmpleadoData((prev) => ({
+                            ...prev,
+                            imagen_perfil: publicId,
+                            imagen_perfil_url: url,
+                          }))
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
 
                 <h2 className="mt-3 text-xl font-bold text-gray-800 dark:text-white">{displayName}</h2>
                 <p className="text-gray-500 text-sm dark:text-white">{email}</p>
 
                 {!empleadoId && (
                   <div className="mt-4 w-full space-y-2">
-                    <Button className="w-full text-sm" variant="outline" onClick={() => setShowEditModal(true)}>
-                      <Edit className="mr-1.5 h-3.5 w-3.5" />
-                      Editar Perfil
-                    </Button>
+                    <div className="flex w-full gap-2">
+                      <Button className="flex-1 text-sm" variant="outline" onClick={() => setShowEditModal(true)}>
+                        <Edit className="mr-1.5 h-3.5 w-3.5" />
+                        Editar Perfil
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        className="h-9 w-9"
+                        onClick={handleDeleteProfileImage}
+                        title="Eliminar foto de perfil"
+                        disabled={!empleadoData?.imagen_perfil}
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><defs><mask id="ipTPeopleDeleteOne0"><g fill="none" stroke="#fff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4"><path fill="#555555" d="M19 20a7 7 0 1 0 0-14a7 7 0 0 0 0 14"/><path d="m42 15l-8 8m0-8l8 8"/><path fill="#555555" d="M4 40.8V42h30v-1.2c0-4.48 0-6.72-.872-8.432a8 8 0 0 0-3.496-3.496C27.92 28 25.68 28 21.2 28h-4.4c-4.48 0-6.72 0-8.432.872a8 8 0 0 0-3.496 3.496C4 34.08 4 36.32 4 40.8"/></g></mask></defs><path fill="#9054fc" d="M0 0h48v48H0z" mask="url(#ipTPeopleDeleteOne0)"/></svg>
+                      </Button>
+                    </div>
                     <Button
                       className="w-full text-sm bg-[#f0ebff] text-[#8c52ff] hover:bg-[#e4d9ff] border-[#8c52ff] border"
                       variant="secondary"
@@ -348,10 +409,7 @@ export default function Page() {
         />
       )}
       {showPasswordModal && (
-        <ModalUpdatePass
-          isVisible={showPasswordModal}
-          onClose={() => setShowPasswordModal(false)}
-        />
+        <ModalUpdatePass isVisible={showPasswordModal} onClose={() => setShowPasswordModal(false)} />
       )}
     </div>
   )
