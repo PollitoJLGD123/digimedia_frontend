@@ -4,6 +4,7 @@ import FormFooter from '../components/FormFooter'
 import FormHeader from '../components/FormHeader'
 import { useState, useEffect } from 'react';
 import Service from "../../services/Service"
+import { Save } from "lucide-react"
 import Swal from 'sweetalert2';
 
 const PageContent = () => {
@@ -321,6 +322,13 @@ const PageContent = () => {
           formFooter={formFooter}
           setFormData={setFormFooter}
         />
+      </div>
+
+      <div className="bottom-0 left-0 fixed p-6 border-t border-slate-700/50 bg-slate-900/50 backdrop-blur-sm">
+        <button className="text-white rounded-xl flex items-center justify-center w-full bg-emerald-600 hover:bg-emerald-500 transition-all duration-300 px-5 py-3 shadow-lg shadow-emerald-900/20">
+          <Save className="mr-2 h-4 w-4 text-blue-950" />
+          Guardar Cambios
+        </button>
       </div>
     </>
   );
