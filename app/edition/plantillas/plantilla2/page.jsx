@@ -1,7 +1,7 @@
 "use client";
 import FormFooter from '../components/FormFooter'
 import FormHeader from '../components/FormHeader'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import FormBody2 from '../components/FormBody2';
 
 const PageContent = () => {
@@ -68,16 +68,26 @@ const PageContent = () => {
     url_image3: "/blog/blog-2.jpg"
   });
 
+  useEffect(() => {
+      const sections = document.querySelectorAll("#header, #body, #footer");
+      sections.forEach(section => {
+        section.style.scrollMargin = "50px";
+        if (section.id === "body" && section.clientHeight < 300) {
+          section.style.minHeight = "300px";
+        }
+      });
+  }, []);
+
   return (
     <>
-      <div id="header">
+      <div id="header" className="section-container mb-8">
         <FormHeader
           dataHeader={dataHeader}
           setFormData={setDataHeader}
         />
       </div>
 
-      <div id="body" className="container px-4 py-8  bg-gradient-to-r text-black  w-full">
+      <div id="body" className="section-container my-8 bg-gradient-to-r text-black  w-full">
         <FormBody2
           formCommendBody={formCommendBody}
           setFormCommendBody={setFormCommendBody}
@@ -93,7 +103,7 @@ const PageContent = () => {
         />
       </div>
 
-      <div id="footer">
+      <div id="footer" className='section-container mt-8'>
         <FormFooter
           formFooter={formFooter}
           setFormData={setFormFooter}
