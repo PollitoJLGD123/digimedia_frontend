@@ -72,10 +72,10 @@ export default function FormBody2(props) {
           <div className="relative h-[300px] md:h-[400px] overflow-hidden">
             <img
               src={
-                formEncabezadoBody.url_image1
-                  ? formEncabezadoBody.url_image1.startsWith("http")
-                    ? formEncabezadoBody.url_image1
-                    : `/blog/${formEncabezadoBody.url_image1}`
+                formEncabezadoBody.public_image1
+                  ? formEncabezadoBody.public_image1.startsWith("http")
+                    ? formEncabezadoBody.public_image1
+                    : `/blog/${formEncabezadoBody.public_image1}`
                   : "/blog/blog-4.jpg"
               }
               alt={formEncabezadoBody.titulo || "Imagen principal"}
@@ -141,8 +141,8 @@ export default function FormBody2(props) {
                   <div className="mb-2">
                     <input
                       type="text"
-                      name="url_image1"
-                      value={formEncabezadoBody.url_image1 || "/blog/blog-2.jpg"}
+                      name="public_image1"
+                      value={formEncabezadoBody.public_image1 || "/blog/blog-2.jpg"}
                       onChange={handleEncabezadoBodyChange}
                       className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg p-2 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
                       placeholder="URL de la imagen"
@@ -322,8 +322,8 @@ export default function FormBody2(props) {
 
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 {[
-                  { id: 2, url: formGaleryBody.url_image2 || "/blog/blog-10.jpg", title: "Imagen destacada 1" },
-                  { id: 3, url: formGaleryBody.url_image3 || "/blog/blog-1.jpg", title: "Imagen destacada 2" },
+                  { id: 2, url: formGaleryBody.public_image2 || "/blog/blog-10.jpg", title: "Imagen destacada 1" },
+                  { id: 3, url: formGaleryBody.public_image3 || "/blog/blog-1.jpg", title: "Imagen destacada 2" },
                 ].map((image) => (
                   <div key={image.id} className="bg-white rounded-lg shadow-sm overflow-hidden">
                     <div className="relative h-64 bg-slate-100">
@@ -347,8 +347,8 @@ export default function FormBody2(props) {
                       <div className="relative">
                         <input
                           type="text"
-                          name={`url_image${image.id}`}
-                          value={image.id === 2 ? formGaleryBody.url_image2 : formGaleryBody.url_image3}
+                          name={`public_image${image.id}`}
+                          value={image.id === 2 ? formGaleryBody.public_image2 : formGaleryBody.public_image3}
                           onChange={handleGaleryBodyChange}
                           className="w-full bg-slate-50 border border-slate-200 rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200"
                           placeholder="URL de la imagen"

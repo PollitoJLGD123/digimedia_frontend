@@ -95,7 +95,7 @@ export default function Header({ id_blog_head }) {
     return (
         <div
             className="w-full h-screen md:h-[80vh] relative flex items-center justify-center text-center px-6 sm:px-12 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${data.url_image.startsWith('http') ? data.url_image : `/blog/${data.url_image}`})` 
+            style={{ backgroundImage: `url(${data.public_image.startsWith('http') ? data.public_image : `/blog/${data.public_image}`})` 
             }}
         >
             <div className="absolute inset-0 bg-black/60"></div>

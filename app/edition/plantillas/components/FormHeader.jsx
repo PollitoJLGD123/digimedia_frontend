@@ -16,7 +16,7 @@ export default function FormHeader({ dataHeader, setFormData }) {
     <div
       className="w-full h-screen md:h-[80vh] relative flex items-center justify-center text-center px-6 sm:px-12 bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: `url(${dataHeader.url_image.startsWith('http') ? dataHeader.url_image : "/blog/fondo_blog_extend.png"})`,
+        backgroundImage: `url(${dataHeader.public_image.startsWith('http') ? dataHeader.public_image : "/blog/fondo_blog_extend.png"})`,
       }}
     >
       <div className="absolute inset-0 bg-black/60"></div>
@@ -87,8 +87,8 @@ export default function FormHeader({ dataHeader, setFormData }) {
                 </label>
                 <input
                   type="text"
-                  name="url_image"
-                  value={dataHeader.url_image}
+                  name="public_image"
+                  value={dataHeader.public_image}
                   onChange={handleChange}
                   className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                   placeholder="Frase destacada"

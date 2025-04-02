@@ -19,15 +19,15 @@ const PageContent = () => {
     titulo: "Titulo Header",
     texto_frase: "Texto atractivo y llamativo para el cliente",
     texto_descripcion: "Texto destacado y secundario para el titulo",
-    url_image: "/blog/fondo_blog_extend.jpg",
+    public_image: "/blog/fondo_blog_extend.jpg",
   })
 
   const [footerData, setFooterData] = useState({
     titulo: "Titulo Footer",
     descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, voluptate.",
-    url_image1: "blog-10.jpg",
-    url_image2: "blog-1.jpg",
-    url_image3: "blog-2.jpg",
+    public_image1: "blog-10.jpg",
+    public_image2: "blog-1.jpg",
+    public_image3: "blog-2.jpg",
   })
 
   const [bodyHeaderData, setBodyHeaderData] = useState({
@@ -35,7 +35,7 @@ const PageContent = () => {
     descripcion:
       "Las luces neón LED se han convertido en un elemento diferenciador en el mundo de la hospitalidad. No solo son visualmente atractivos, sino que también refuerzan la identidad de tu negocio. En este artículo, exploraremos cómo las letras luminosas pueden marcar la diferencia en la experiencia de tus clientes.",
     fecha: "2025-03-31",
-    url_image1: "blog-4.jpg",
+    public_image1: "blog-4.jpg",
   })
 
   const [bodySections, setBodySections] = useState([
@@ -71,8 +71,8 @@ const PageContent = () => {
   })
 
   const [galleryData, setGalleryData] = useState({
-    url_image2: "/blog/blog-2.jpg",
-    url_image3: "/blog/blog-2.jpg",
+    public_image2: "/blog/blog-2.jpg",
+    public_image3: "/blog/blog-2.jpg",
   })
 
   useEffect(() => {
@@ -120,8 +120,8 @@ const PageContent = () => {
       const bodyData = {
         ...bodyHeaderData,
         id_commend_tarjeta: savedIds.id_commend_tarjeta,
-        url_image2: galleryData.url_image2,
-        url_image3: galleryData.url_image3,
+        public_image2: galleryData.public_image2,
+        public_image3: galleryData.public_image3,
       }
 
       const bodySuccess = await saveData(Service.saveBody, bodyData, "id_blog_body", "No se pudo guardar el contenido")
@@ -170,7 +170,7 @@ const PageContent = () => {
         id_blog: savedIds.id_blog,
         titulo: headerData.titulo,
         descripcion: bodyHeaderData.descripcion,
-        url_image: headerData.url_image,
+        public_image: headerData.public_image,
         id_plantilla: 1,
       }
 

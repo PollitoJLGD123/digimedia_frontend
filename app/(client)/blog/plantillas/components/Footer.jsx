@@ -156,9 +156,9 @@ export default function Footer({ id_blog_footer }) {
                         {data.descripcion}
                     </p>
 
-                    {(data.url_image1 || data.url_image2 || data.url_image3) && (
+                    {(data.public_image1 || data.public_image2 || data.public_image3) && (
                         <div className="flex flex-wrap justify-center gap-3 mt-6">
-                            {[data.url_image1, data.url_image2, data.url_image3].map((image, index) => {
+                            {[data.public_image1, data.public_image2, data.public_image3].map((image, index) => {
                                 const imageUrl = image ? (image.startsWith("http") ? image : `/blog/${image}`) : "/blog/blog-2.jpg"
 
                                 return (
