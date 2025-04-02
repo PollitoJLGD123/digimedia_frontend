@@ -41,7 +41,7 @@ export default function FormBody3(props) {
     });
   };
   return (
-    <div className="relative p-0 text-black rounded-lg shadow-[0px_10px_25px_rgba(0,0,0,0.25)] overflow-hidden flex flex-row my-5">
+    <div className="relative p-0 text-black rounded-lg shadow-[0px_10px_25px_rgba(0,0,0,0.25)] overflow-hidden flex flex-row my-5 justify-center">
       <div className="w-[700px]">
         <div className="bg-gradient-to-r from-indigo-900 to-purple-900 py-3 px-6 flex justify-between items-center">
           <div className="flex items-center text-white">
@@ -62,7 +62,7 @@ export default function FormBody3(props) {
 
         <div className="relative">
           <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-indigo-100 to-transparent"></div>
-          <div className="relative z-10 p-8 md:p-12 flex flex-col md:flex-row items-center">
+          <div className="relative p-8 md:p-12 flex flex-col md:flex-row items-center">
             <div className="md:w-1/2 mb-8 md:mb-0 md:pr-8">
               <h1 className="text-4xl md:text-5xl font-black text-indigo-900 leading-tight mb-6">
                 {formEncabezadoBody.titulo}
@@ -71,13 +71,6 @@ export default function FormBody3(props) {
               <p className="text-lg text-gray-700 leading-relaxed">
                 {formEncabezadoBody.descripcion}
               </p>
-              <button
-                onClick={() => scrollToSection("content-details")}
-                className="mt-6 inline-flex items-center text-indigo-600 font-medium hover:text-indigo-800 transition-colors"
-              >
-                <span>Continuar leyendo</span>
-                <ArrowDownCircle className="ml-2 w-5 h-5" />
-              </button>
             </div>
             <div className="md:w-1/2 flex justify-center">
               <div className="relative">
@@ -92,10 +85,9 @@ export default function FormBody3(props) {
                         : "/blog/blog-4.jpg"
                     }
                     alt={formEncabezadoBody.titulo || "Imagen principal"}
-                    className="w-[22rem] h-[22rem] rounded-2xl shadow-lg object-cover relative z-10"
+                    className="w-[22rem] h-[22rem] rounded-2xl shadow-lg object-cover relative "
                   />
                 </div>
-                <div className="absolute -bottom-3 -right-3 w-24 h-24 bg-indigo-100 rounded-full z-0"></div>
                 <div className="absolute -top-3 -left-3 w-16 h-16 bg-purple-100 rounded-full z-0"></div>
               </div>
             </div>
@@ -126,7 +118,7 @@ export default function FormBody3(props) {
                 >
                   <div className="absolute inset-0 bg-gradient-to-t from-indigo-900/80 via-indigo-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   <img
-                    src={src.startsWith("http") ? src : `/blog/${src}`}
+                    src={src.startsWith("http") ? src : `${src}`}
                     alt={`Imagen ${index + 1} del artículo`}
                     className="w-full h-64 object-cover transition-transform duration-700 group-hover:scale-110"
                   />
@@ -188,7 +180,7 @@ export default function FormBody3(props) {
               <div className="absolute -top-4 -left-4 w-16 h-16 bg-blue-100 rounded-full opacity-70"></div>
               <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-indigo-100 rounded-full opacity-70"></div>
 
-              <div className="relative z-10">
+              <div className="relative">
                 {formInfoBody &&
                   formInfoBody.map((section, index) => {
                     const isEven = index % 2 === 0;
@@ -222,7 +214,7 @@ export default function FormBody3(props) {
       </div>
 
       <div className="w-[420px] flex flex-col justify-center gap-5 p-5">
-        <div className="bg-black/5 backdrop-blur-md rounded-2xl p-8 shadow-lg w-full max-w-lg overflow-auto bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+        <div className="bg-black/5 backdrop-blur-md rounded-2xl p-8 shadow-lg w-full max-w-lg overflow-auto bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 mt-24">
           <form className="space-y-6">
             <div>
               <label className="flex items-center text-white text-sm font-medium mb-2">
@@ -283,7 +275,7 @@ export default function FormBody3(props) {
         </div>
 
 
-        <div className="my-20 bg-black/5 backdrop-blur-md rounded-2xl p-8 shadow-lg w-full max-w-lg overflow-auto bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+        <div className="my-20 bg-black/5 backdrop-blur-md rounded-2xl p-8 shadow-lg w-full max-w-lg overflow-auto bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 mt-28">
           <form className="space-y-6">
             <div>
               <label className="flex items-center text-white text-sm font-medium mb-2">

@@ -1,62 +1,149 @@
 "use client"
-import Header from './components/Header';
-import Footer from './components/Footer';
-import React, { useState } from "react";
+
+import { useState, useEffect } from "react"
+import Link from "next/link"
+import Header from "./components/Header"
+import Footer from "./components/Footer"
+import { Button } from "@/components/ui/button"
+import { Save, Layout, Type, FootprintsIcon as FooterIcon, House, BookTemplate, Pencil } from "lucide-react"
 import "../globals.css"
 
 export default function EditionLayout({ children }) {
-  const [selectedSection, setSelectedSection] = useState(null);
+  const [selectedSection, setSelectedSection] = useState("")
+
+  const handleSectionClick = (id) => {
+    setSelectedSection(id)
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  useEffect(() => {
+      const sections = document.querySelectorAll("#header, #body, #footer")
+      console.log(sections)
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setSelectedSection(entry.target.id);
+              console.log(entry.target.id);
+            }
+          });
+        },
+        { threshold: 0.5 }
+      );
   
-  const handleSectionClick = (section) => {
-    setSelectedSection(section);
-  };
+      sections.forEach((section) => observer.observe(section));
+  
+      return () => sections.forEach((section) => observer.unobserve(section));
+    }, []);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col min-h-screen">
       <Header />
-  
+
       <div className="flex flex-1">
+        <div className="w-64 bg-gradient-to-b from-slate-800 to-slate-900 text-white fixed top-0 left-0 h-full pt-20 shadow-xl">
+          <div className="px-6 py-4 border-b border-slate-700/50">
+            <div className="flex items-center justify-center space-x-2">
+              <div className="h-2 w-2 rounded-full bg-emerald-500"></div>
+              <h1 className="text-lg tracking-wide font-extrabold">MODO EDICIÓN</h1>
+              <Pencil className="mb-1 h-4 w-4" />
+            </div>
+          </div>
 
-      
+          <div className="p-6">
+            <h2 className="text-xs font-medium uppercase tracking-wider text-slate-400 mb-4 flex items-center">
+              <span className="h-px flex-grow bg-slate-700 mr-2"></span>
+              Estructura
+              <span className="h-px flex-grow bg-slate-700 ml-2"></span>
+            </h2>
 
-        <div className="w-44 bg-purple-800 text-white p-4 flex flex-col justify-center items-center fixed top-0 left-0 h-full space-y-6">
+            <div className="space-y-3 w-full mb-auto">
+              <button
+                className={`section group w-full py-3 px-4 rounded-lg text-sm font-medium transition-all duration-300 flex items-center
+                  ${selectedSection === "header"
+                    ? "bg-gradient-to-r from-slate-700 to-slate-800 text-white shadow-lg border-l-4 border-emerald-500"
+                    : "bg-slate-800/30 hover:bg-slate-700/50 hover:translate-x-1"
+                  }`}
+                onClick={() => handleSectionClick("header")}
+              >
+                <Layout
+                  className={`mr-3 h-4 w-4 ${selectedSection === "header" ? "text-emerald-400" : "text-slate-400 group-hover:text-white"}`}
+                />
+                Header
+              </button>
 
-        <div className="text-2xl font-semibold text-center">MODO EDICIÓN</div>
-          <h2 className="text-lg text-center">Estructura</h2>
-          <div className="space-y-3 w-full">
+              <button
+                className={`section group w-full py-3 px-4 rounded-lg text-sm font-medium transition-all duration-300 flex items-center
+                  ${selectedSection === "body"
+                    ? "bg-gradient-to-r from-slate-700 to-slate-800 text-white shadow-lg border-l-4 border-emerald-500"
+                    : "bg-slate-800/30 hover:bg-slate-700/50 hover:translate-x-1"
+                  }`}
+                onClick={() => handleSectionClick("body")}
+              >
+                <Layout
+                  className={`mr-3 h-4 w-4 ${selectedSection === "body" ? "text-emerald-400" : "text-slate-400 group-hover:text-white"}`}
+                />
+                Body
+              </button>
+
+              <button
+                className={`section group w-full py-3 px-4 rounded-lg text-sm font-medium transition-all duration-300 flex items-center
+                  ${selectedSection === "footer"
+                    ? "bg-gradient-to-r from-slate-700 to-slate-800 text-white shadow-lg border-l-4 border-emerald-500"
+                    : "bg-slate-800/30 hover:bg-slate-700/50 hover:translate-x-1"
+                  }`}
+                onClick={() => handleSectionClick("footer")}
+              >
+                <FooterIcon
+                  className={`mr-3 h-4 w-4 ${selectedSection === "footer" ? "text-emerald-400" : "text-slate-400 group-hover:text-white"}`}
+                />
+                Footer
+              </button>
+            </div>
+
+            <h2 className="text-xs mt-3 font-medium uppercase tracking-wider text-slate-400 mb-4 flex items-center">
+              <span className="h-px flex-grow bg-slate-700 mr-2"></span>
+              OPCIONES
+              <span className="h-px flex-grow bg-slate-700 ml-2"></span>
+            </h2>
+
             <button
-              className={`w-full py-2 rounded-md text-center ${selectedSection === 'header' ? 'bg-black' : 'bg-purple-700'} 
-                hover:bg-yellow hover:scale-105 hover:shadow-lg transition-all duration-200`}
-              onClick={() => handleSectionClick('header')}
+              className="group w-full py-3 px-4 rounded-lg text-sm font-medium transition-all duration-300 flex items-center bg-slate-800/30 hover:bg-slate-700/50 hover:translate-x-1"
             >
-              Header
+              <Link href="/dashboard/main" className="flex items-center">
+                <House
+                  className="mr-3 h-4 w-4 text-slate-400 group-hover:text-white"
+                />
+                Inicio
+              </Link>
             </button>
+
             <button
-              className={`w-full py-2 rounded-md text-center ${selectedSection === 'body' ? 'bg-black' : 'bg-purple-700'} 
-                hover:bg-purple-800 hover:scale-105 hover:shadow-lg transition-all duration-200`}
-              onClick={() => handleSectionClick('body')}
+              className="group w-full py-3 px-4 rounded-lg text-sm font-medium transition-all duration-300 flex items-center bg-slate-800/30 hover:bg-slate-700/50 hover:translate-x-1"
             >
-              Body
-            </button>
-            <button
-              className={`w-full py-2 rounded-md text-center ${selectedSection === 'footer' ? 'bg-black' : 'bg-purple-700'} 
-                hover:bg-purple-800 hover:scale-105 hover:shadow-lg transition-all duration-200`}
-              onClick={() => handleSectionClick('footer')}
-            >
-              Footer
+              <Link href="/dashboard/blogs" className="flex items-center">
+                <BookTemplate
+                  className="mr-3 h-4 w-4 text-slate-400 group-hover:text-white"
+                />
+                Plantillas
+              </Link>
             </button>
           </div>
-          <button className="w-full py-2 mt-4 bg-[#4CAF50] hover:bg-[#3cf743] text-white rounded-md">
-            Guardar
-          </button>
-        </div>
 
-        <div className="flex-1 p-4 ml-44 bg-white overflow-auto">
-          {children} 
+          <div className="absolute bottom-0 left-0 w-full p-6 border-t border-slate-700/50 bg-slate-900/50 backdrop-blur-sm">
+            <Button className="w-full bg-emerald-600 hover:bg-emerald-500 transition-all duration-300 py-5 shadow-lg shadow-emerald-900/20">
+              <Save className="mr-2 h-4 w-4" />
+              Guardar Cambios
+            </Button>
+          </div>
         </div>
+        <div className="flex-1 p-6 ml-64 bg-slate-50 overflow-auto">{children}</div>
       </div>
 
-      <Footer className ="mt-auto" />
+      <div>
+        <Footer />
+      </div>
     </div>
-  );
+  )
 }
+

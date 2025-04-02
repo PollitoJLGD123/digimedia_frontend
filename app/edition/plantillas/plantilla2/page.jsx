@@ -16,16 +16,16 @@ const PageContent = () => {
 
   const [dataHeader, setDataHeader] = useState({
     titulo: "Titulo Header",
-    texto_frase: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, voluptate.",
-    texto_descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, voluptate.",
-    url_image: "/blog/fondo_blog_extend",
+    texto_frase: "Texto atractivo y llamativo para el cliente",
+    texto_descripcion: "Texto destacado y secundario para el titulo",
+    url_image: "/blog/fondo_blog_extend.jpg",
   });
 
   const [formEncabezadoBody, setFormEncabezadoBody] = useState({
     titulo: "Titulo del Blog",
     descripcion:
       "Las luces neón LED se han convertido en un elemento diferenciador en el mundo de la hospitalidad. No solo son visualmente atractivos, sino que también refuerzan la identidad de tu negocio. En este artículo, exploraremos cómo las letras luminosas pueden marcar la diferencia en la experiencia de tus clientes.",
-    fecha: '2025-03-31 12:00:57',
+    fecha: '2025-03-31',
     url_image1: "blog-4.jpg",
   });
 
@@ -58,9 +58,9 @@ const PageContent = () => {
     texto3:
       "Considera el lugar de instalación para maximizar su impacto.",
     texto4:
-      "Llenar texto de ejemplo",
+      "",
     texto5:
-      "Llenar texto de ejemplo",
+      "",
   });
 
   const [formGaleryBody, setFormGaleryBody] = useState({
@@ -70,12 +70,14 @@ const PageContent = () => {
 
   return (
     <>
-      <FormHeader
-        dataHeader={dataHeader}
-        setFormData={setDataHeader}
-      />
+      <div id="header">
+        <FormHeader
+          dataHeader={dataHeader}
+          setFormData={setDataHeader}
+        />
+      </div>
 
-      <div className="container px-4 py-8  bg-gradient-to-r text-black  w-full">
+      <div id="body" className="container px-4 py-8  bg-gradient-to-r text-black  w-full">
         <FormBody2
           formCommendBody={formCommendBody}
           setFormCommendBody={setFormCommendBody}
@@ -91,10 +93,12 @@ const PageContent = () => {
         />
       </div>
 
-      <FormFooter
-        formFooter={formFooter}
-        setFormData={setFormFooter}
-      />
+      <div id="footer">
+        <FormFooter
+          formFooter={formFooter}
+          setFormData={setFormFooter}
+        />
+      </div>
     </>
   );
 };

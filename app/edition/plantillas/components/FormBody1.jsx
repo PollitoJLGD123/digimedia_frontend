@@ -31,10 +31,10 @@ export default function FormBody1(props) {
   };
 
   return (
-    <div className="relative p-0 text-black rounded-lg shadow-[0px_10px_25px_rgba(0,0,0,0.25)] overflow-hidden flex flex-row my-5">
+    <div className="relative p-0 text-black rounded-lg shadow-[0px_10px_25px_rgba(0,0,0,0.25)] overflow-hidden flex flex-row my-5 justify-center">
         <div className="w-[700px]">
             <div className="relative h-[400px] overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/40 z-10"></div>
+                <div className="absolute bg-black/70"></div>
                     <img
                         src={
                             formEncabezadoBody.url_image
@@ -44,10 +44,10 @@ export default function FormBody1(props) {
                                 : "/blog/blog-4.jpg"
                         }
                         alt={formEncabezadoBody.titulo || "Imagen principal"}
-                        className="absolute inset-0 w-full h-full object-cover"
+                        className="absolute w-full h-full object-cover"
                     />
-                <div className="relative z-20 h-full flex flex-col justify-end p-8">
-                    <p className="text-red-300 mb-2">{formEncabezadoBody.fecha}</p>
+                <div className="relative h-full flex flex-col justify-end p-8 bg-black/70 backdrop-blur-sm">
+                    <p className="text-gray-400 mb-2 font-bold">{formEncabezadoBody.fecha}</p>
                     <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4 drop-shadow-lg">{formEncabezadoBody.titulo}</h2>
                 </div>
             </div>
@@ -87,7 +87,7 @@ export default function FormBody1(props) {
                         <div key={index} className="group relative overflow-hidden rounded-xl shadow-xl">
                             <div className="absolute inset-0 bg-gradient-to-t from-purple-900/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
                             <img
-                                src={src.startsWith("http") ? src : `/blog/${src}`}
+                                src={src.startsWith("http") ? src : `${src}`}
                                 alt={`Imagen ${index + 1} del artículo`}
                                 className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
                             />
@@ -155,7 +155,7 @@ export default function FormBody1(props) {
                   <Quote className="w-5 h-5 mr-2 text-purple-400" /> Fecha
                 </label>
                 <input
-                  type="text"
+                  type="date"
                   name="fecha"
                   value={formEncabezadoBody.fecha}
                   onChange={handleChange(setFormEncabezadoBody)}
@@ -180,7 +180,7 @@ export default function FormBody1(props) {
 
               <div>
                 <label className="flex items-center text-white text-sm font-medium mb-2">
-                  <AlignLeft className="w-5 h-5 mr-2 text-purple-400" /> Frase Secundaria
+                  <AlignLeft className="w-5 h-5 mr-2 text-purple-400" /> Descripcion
                 </label>
                 <input
                   name="descripcion"
