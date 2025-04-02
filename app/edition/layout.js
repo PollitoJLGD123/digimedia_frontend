@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
 import Header from "./components/Header"
 import Footer from "./components/Footer"
@@ -10,31 +10,89 @@ import "../globals.css"
 
 export default function EditionLayout({ children }) {
   const [selectedSection, setSelectedSection] = useState("header")
-
+  const observerRef = useRef(null)
+  const isNavigatingRef = useRef(false)
+  const sectionsRef = useRef(null)
+  
   const handleSectionClick = (id) => {
     setSelectedSection(id)
-    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    
+    if (observerRef.current) {
+      observerRef.current.disconnect()
+    }
+    
+    isNavigatingRef.current = true
+    
+    const targetElement = document.getElementById(id)
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+    
+    setTimeout(() => {
+      if (document.getElementById(id)) {
+        setupObserver()
+        isNavigatingRef.current = false
+      }
+    }, 1000)
   }
-
-  useEffect(() => {
-      const sections = document.querySelectorAll("#header, #body, #footer")
-      console.log(sections)
-      const observer = new IntersectionObserver(
-        (entries) => {
+  
+  const setupObserver = () => {
+    if (observerRef.current) {
+      observerRef.current.disconnect()
+    }
+    
+    if (!sectionsRef.current) {
+      sectionsRef.current = document.querySelectorAll("#header, #body, #footer")
+    }
+    
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        if (!isNavigatingRef.current) {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              setSelectedSection(entry.target.id);
-              console.log(entry.target.id);
+              setSelectedSection(entry.target.id)
             }
-          });
-        },
-        { threshold: 0.5 }
-      );
+          })
+        }
+      },
+      { 
+        threshold: [0.2],
+        rootMargin: "-10% 0px"
+      }
+    )
+    
+    if (sectionsRef.current) {
+      sectionsRef.current.forEach(section => {
+        observerRef.current.observe(section)
+      })
+    }
+  }
   
-      sections.forEach((section) => observer.observe(section));
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      sectionsRef.current = document.querySelectorAll("#header, #body, #footer")
+      setupObserver()
+    }, 500)
+    
+    return () => {
+      clearTimeout(timer)
+      if (observerRef.current) {
+        observerRef.current.disconnect()
+      }
+    }
+  }, [])
   
-      return () => sections.forEach((section) => observer.unobserve(section));
-    }, []);
+  useEffect(() => {
+    const handleScroll = () => {
+      if (isNavigatingRef.current) return
+    }
+    
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -146,4 +204,3 @@ export default function EditionLayout({ children }) {
     </div>
   )
 }
-
