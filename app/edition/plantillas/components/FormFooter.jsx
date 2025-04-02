@@ -82,16 +82,21 @@ export default function FormFooter({ formFooter, setFormData }) {
                                 <Image className="w-4 h-4 mr-1.5 text-yellow-400" /> Imágenes
                             </label>
                             {["url_image1", "url_image2", "url_image3"].map((imgField, index) => (
-                                <div key={index} className="mb-2">
+                                <div key={index}  className="relative w-full mb-2">
                                     <input
-                                        type="text"
-                                        name={imgField}
-                                        value={formFooter[imgField] || ""}
-                                        onChange={handleChange}
-                                        className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg p-2 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
-                                        placeholder={`URL de la imagen ${index + 1}`}
+                                    accept="image/*"
+                                    type="file"
+                                    name={imgField}
+                                    onChange={handleChange}
+                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                                     />
+                                    <div className="flex items-center justify-center w-full p-3 border-2 border-dashed border-gray-700 rounded-lg bg-gray-900 text-white transition-all hover:border-purple-500 hover:bg-gray-800">
+                                    <Image className="w-5 h-5 mr-2 text-yellow-400" />
+                                    <span className="text-sm">Selecciona una imagen</span>
                                 </div>
+                            </div>
+
+                                
                             ))}
                         </div>
                     </form>

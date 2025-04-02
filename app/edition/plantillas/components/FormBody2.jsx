@@ -138,17 +138,21 @@ export default function FormBody2(props) {
                   <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
                     <Image className="w-4 h-4 mr-1.5 text-blue-400" /> Imagen de Fondo
                   </label>
-                  <div className="mb-2">
+                  <div  className="relative w-full">
                     <input
-                      type="text"
-                      name="url_image1"
-                      value={formEncabezadoBody.url_image1 || "/blog/blog-2.jpg"}
-                      onChange={handleEncabezadoBodyChange}
-                      className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg p-2 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
-                      placeholder="URL de la imagen"
+                    accept="image/*"
+                    type="file"
+                    name="url_image1"
+                    value={formEncabezadoBody.url_image1 || "/blog/blog-2.jpg"}
+                    onChange={handleEncabezadoBodyChange}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                     />
+                    <div className="flex items-center justify-center w-full p-3 border-2 border-dashed border-gray-700 rounded-lg bg-gray-900 text-white transition-all hover:border-purple-500 hover:bg-gray-800">
+                    <Image className="w-5 h-5 mr-2 text-blue-400" />
+                        <span className="text-sm">Selecciona una imagen</span>
+                    </div>
                   </div>
-                </div>
+                  </div>
               </form>
             </div>
           </div>
