@@ -326,23 +326,18 @@ export default function FormBody2(props) {
                   { id: 3, url: formGaleryBody.url_image3 || "/blog/blog-1.jpg", title: "Imagen destacada 2" },
                 ].map((image) => (
                   <div key={image.id} className="bg-white rounded-lg shadow-sm overflow-hidden">
-                    {/* Image preview with standardized size */}
                     <div className="relative h-64 bg-slate-100">
                       <img
                         src={image.url.startsWith("http") ? image.url : `${image.url}`}
                         alt={`${image.title}`}
                         className="w-full h-64 object-cover"
                       />
-
-                      {/* Overlay with view button */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-end justify-end p-3">
                         <button className="bg-white/90 p-2 rounded-full shadow-lg">
                           <Eye className="w-4 h-4 text-slate-700" />
                         </button>
                       </div>
                     </div>
-
-                    {/* Edit form */}
                     <div className="p-4">
                       <h4 className="text-sm font-medium text-slate-700 mb-3 flex items-center">
                         <Type className="w-4 h-4 mr-1.5 text-slate-400" />
