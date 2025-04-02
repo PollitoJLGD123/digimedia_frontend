@@ -300,7 +300,7 @@ const PageContent = () => {
         />
       </div>
 
-      <div id="body" className="section-container my-8">
+      <div id="body" className="section-container my-8 bg-gradient-to-r text-black  w-full">
         <FormBody2
           formCommendBody={formCommendBody}
           setFormCommendBody={setFormCommendBody}
