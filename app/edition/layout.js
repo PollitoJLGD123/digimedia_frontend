@@ -187,17 +187,9 @@ export default function EditionLayout({ children }) {
               </Link>
             </button>
           </div>
-
-          <div className="absolute bottom-0 left-0 w-full p-6 border-t border-slate-700/50 bg-slate-900/50 backdrop-blur-sm">
-            <Button className="w-full bg-emerald-600 hover:bg-emerald-500 transition-all duration-300 py-5 shadow-lg shadow-emerald-900/20">
-              <Save className="mr-2 h-4 w-4" />
-              Guardar Cambios
-            </Button>
-          </div>
         </div>
         <div className="flex-1 p-6 ml-64 bg-slate-50 overflow-auto">{children}</div>
       </div>
-
       <div>
         <Footer />
       </div>

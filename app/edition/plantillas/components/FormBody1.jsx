@@ -165,14 +165,19 @@ export default function FormBody1(props) {
               <label className="flex items-center text-white text-sm font-medium mb-2">
                 <Image className="w-5 h-5 mr-2 text-purple-400" /> Imagen
               </label>
-              <input
-                type="text"
+              <div  className="relative w-full">
+                <input
+                accept="image/*"
+                type="file"
                 name="public_image1"
-                value={formEncabezadoBody.public_image1}
-                onChange={handleChange(setFormEncabezadoBody)}
-                className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                placeholder="URL de la imagen"
-              />
+                onChange={handleChange}
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                />
+                <div className="flex items-center justify-center w-full p-3 border-2 border-dashed border-gray-700 rounded-lg bg-gray-900 text-white transition-all hover:border-purple-500 hover:bg-gray-800">
+                <Image className="w-5 h-5 mr-2 text-purple-400" />
+                    <span className="text-sm">Selecciona una imagen</span>
+                </div>
+              </div>
             </div>
             <div>
               <label className="flex items-center text-white text-sm font-medium mb-2">
@@ -255,28 +260,39 @@ export default function FormBody1(props) {
               <label className="flex items-center text-white text-sm font-medium mb-2">
                 <Image className="w-5 h-5 mr-2 text-purple-400" /> Imagen 1
               </label>
-              <input
-                type="text"
-                name="public_image2"
-                value={formGaleryBody.public_image2}
-                onChange={handleChange(setFormGaleryBody)}
-                className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                placeholder="URL de la imagen"
-              />
+              <div className="relative w-full">
+                <input
+                  accept="image/*"
+                  type="file"
+                  name="public_image2"
+                  onChange={handleChange(setFormGaleryBody)}
+                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                />
+                <div className="flex items-center justify-center w-full p-3 border-2 border-dashed border-gray-700 rounded-lg bg-gray-900 text-white transition-all hover:border-purple-500 hover:bg-gray-800">
+                  <Image className="w-5 h-5 mr-2 text-purple-400" />
+                  <span className="text-sm">Selecciona una imagen</span>
+                </div>
+              </div>
             </div>
 
             <div>
               <label className="flex items-center text-white text-sm font-medium mb-2">
                 <Image className="w-5 h-5 mr-2 text-purple-400" /> Imagen 2
               </label>
+              
+              <div className="relative w-full">
               <input
-                type="text"
+                type="file"
+                accept="image/*"
                 name="public_image3"
-                value={formGaleryBody.public_image3}
                 onChange={handleChange(setFormGaleryBody)}
-                className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                placeholder="URL de la imagen"
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
               />
+              <div className="flex items-center justify-center w-full p-3 border-2 border-dashed border-gray-700 rounded-lg bg-gray-900 text-white transition-all hover:border-purple-500 hover:bg-gray-800">
+                <Image className="w-5 h-5 mr-2 text-purple-400" />
+                <span className="text-sm">Selecciona una imagen</span>
+              </div>
+            </div>
             </div>
           </form>
         </div>

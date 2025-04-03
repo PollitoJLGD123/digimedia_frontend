@@ -1,5 +1,6 @@
 "use client"
 import { Type, AlignLeft, Quote } from "lucide-react";
+import {Image} from "lucide-react";
 
 export default function FormHeader({ dataHeader, setFormData }) {
 
@@ -85,14 +86,20 @@ export default function FormHeader({ dataHeader, setFormData }) {
                 <label className="flex items-center text-white text-sm font-medium mb-2">
                   <Quote className="w-5 h-5 mr-2 text-purple-400" /> Imagen
                 </label>
-                <input
-                  type="text"
-                  name="public_image"
-                  value={dataHeader.public_image}
-                  onChange={handleChange}
-                  className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                  placeholder="Frase destacada"
-                />
+                <div  className="relative w-full">
+                    <input
+                    accept="image/*"
+                    type="file"
+                    name="public_image"
+                    onChange={handleChange}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    />
+                    <div className="flex items-center justify-center w-full p-3 border-2 border-dashed border-gray-700 rounded-lg bg-gray-900 text-white transition-all hover:border-purple-500 hover:bg-gray-800">
+                    <Image className="w-5 h-5 mr-2 text-purple-400" />
+                    <span className="text-sm">Selecciona una imagen</span>
+                </div>
+                </div>
+                
               </div>
             </form>
           </div>
