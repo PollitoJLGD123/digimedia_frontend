@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
-import { getCookie, deleteCookie } from "cookies-next"
+import { getCookie, deleteCookie, setCookie } from "cookies-next"
 import { useSearchParams, useRouter } from "next/navigation"
 import { User, Mail, Phone, BadgeIcon, Shield, ArrowLeft, Edit, KeyRound, Loader2, Trash2 } from "lucide-react"
 
@@ -34,7 +34,7 @@ export default function Page() {
 
   useEffect(() => {
     setIsClient(true)
-
+  
     const loadData = async () => {
       if (empleadoId) {
         const userRole = getCookie("rol")
@@ -48,13 +48,13 @@ export default function Page() {
           setIsLoading(false)
           return
         }
-
+  
         try {
           const token = getCookie("token")
           if (!token) {
             throw new Error("No se encontró el token de autenticación")
           }
-
+  
           const response = await fetch(`${api_url}/${empleadoId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -62,7 +62,7 @@ export default function Page() {
               "Content-Type": "application/json",
             },
           })
-
+  
           if (!response.ok) {
             if (response.status === 401) {
               deleteCookie("token")
@@ -70,9 +70,9 @@ export default function Page() {
             }
             throw new Error(`Error ${response.status}: ${response.statusText}`)
           }
-
+  
           const data = await response.json()
-
+  
           if (data.status === 200) {
             setEmpleadoData(data.data)
             setUserRole(data.data.rol?.nombre || "Usuario")
@@ -95,22 +95,80 @@ export default function Page() {
           setIsLoading(false)
         }
       } else {
-        const userCookie = getCookie("user")
-        const empleadoCookie = getCookie("empleado")
-        const rolCookie = getCookie("rol")
-
-        if (empleadoCookie) {
-          const empleado = JSON.parse(empleadoCookie)
-          setEmpleadoData(empleado)
-          setImageUrl(empleado.imagen_perfil_url)
+        try {
+          const token = getCookie("token")
+          if (!token) {
+            throw new Error("No se encontró el token de autenticación")
+          }
+          
+          const empleadoCookie = getCookie("empleado")
+          
+          if (empleadoCookie) {
+            const empleado = JSON.parse(empleadoCookie)
+            const idEmpleado = empleado.id_empleado
+            
+            if (idEmpleado) {
+              const response = await fetch(`${api_url}/${idEmpleado}`, {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  Accept: "application/json",
+                  "Content-Type": "application/json",
+                },
+              })
+              
+              if (!response.ok) {
+                if (response.status === 401) {
+                  deleteCookie("token")
+                  router.push("/login")
+                }
+                throw new Error(`Error ${response.status}: ${response.statusText}`)
+              }
+              
+              const data = await response.json()
+              
+              if (data.status === 200) {
+                setEmpleadoData(data.data)
+                setUserRole(data.data.rol?.nombre || "Usuario")
+                setImageUrl(
+                  data.data.imagen_perfil_url ||
+                    "https://images.rawpixel.com/image_png_social_square/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png",
+                )
+                
+                setCookie("empleado", JSON.stringify(data.data))
+              } else {
+                console.error("Error al obtener datos del empleado:", data.message)
+                setEmpleadoData(empleado)
+                setImageUrl(empleado.imagen_perfil_url)
+              }
+            }
+          }
+          
+          const userCookie = getCookie("user")
+          const rolCookie = getCookie("rol")
+          
+          if (userCookie) setUserData(JSON.parse(userCookie))
+          if (rolCookie && !userRole) setUserRole(rolCookie)
+        } catch (error) {
+          console.error("Error al cargar datos del usuario:", error)
+          
+          const userCookie = getCookie("user")
+          const empleadoCookie = getCookie("empleado")
+          const rolCookie = getCookie("rol")
+  
+          if (empleadoCookie) {
+            const empleado = JSON.parse(empleadoCookie)
+            setEmpleadoData(empleado)
+            setImageUrl(empleado.imagen_perfil_url)
+          }
+  
+          if (userCookie) setUserData(JSON.parse(userCookie))
+          if (rolCookie) setUserRole(rolCookie)
+        } finally {
+          setIsLoading(false)
         }
-
-        if (userCookie) setUserData(JSON.parse(userCookie))
-        if (rolCookie) setUserRole(rolCookie)
-        setIsLoading(false)
       }
     }
-
+  
     loadData()
   }, [empleadoId, router])
 
