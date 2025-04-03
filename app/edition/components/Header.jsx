@@ -15,7 +15,7 @@ export default function Header() {
 
       <Button variant="destructive" size="sm" asChild className="bg-red-600 hover:bg-red-700">
         <Link href="/dashboard/blogs" className="flex items-center">
-          <ArrowLeft className="mr-2 h-4 w-4" />
+          <ArrowLeft className="mr-0 h-4 w-4" />
           Regresar
         </Link>
       </Button>
