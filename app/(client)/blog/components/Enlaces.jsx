@@ -114,7 +114,7 @@ function EnlacesForm() {
                                         >
                                             <div className="relative overflow-hidden">
                                                 <img
-                                                    src={card.url_image.startsWith("http") ? card.url_image : `/blog/${card.url_image}`}
+                                                    src={card.public_image.startsWith("http") ? card.public_image : `/blog/${card.public_image}`}
                                                     alt={card.titulo}
                                                     className="w-full h-48 object-cover transition-transform duration-500 hover:scale-105"
                                                 />

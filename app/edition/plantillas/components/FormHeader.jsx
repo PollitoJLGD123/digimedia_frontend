@@ -17,7 +17,7 @@ export default function FormHeader({ dataHeader, setFormData }) {
     <div
       className="w-full h-screen md:h-[80vh] relative flex items-center justify-center text-center px-6 sm:px-12 bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: `url(${dataHeader.url_image.startsWith('http') ? dataHeader.url_image : "/blog/fondo_blog_extend.png"})`,
+        backgroundImage: `url(${dataHeader.public_image.startsWith('http') ? dataHeader.public_image : "/blog/fondo_blog_extend.png"})`,
       }}
     >
       <div className="absolute inset-0 bg-black/60"></div>
@@ -90,7 +90,7 @@ export default function FormHeader({ dataHeader, setFormData }) {
                     <input
                     accept="image/*"
                     type="file"
-                    name="url_image"
+                    name="public_image"
                     onChange={handleChange}
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                     />
