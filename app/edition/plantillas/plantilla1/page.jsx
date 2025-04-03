@@ -21,16 +21,16 @@ const PageContent = () => {
   const [formFooter, setFormFooter] = useState({
     titulo: "Titulo Footer",
     descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, voluptate.",
-    url_image1: "blog-10.jpg",
-    url_image2: "blog-1.jpg",
-    url_image3: "blog-2.jpg",
+    public_image1: "blog-10.jpg",
+    public_image2: "blog-1.jpg",
+    public_image3: "blog-2.jpg",
   });
 
   const [dataHeader, setDataHeader] = useState({
     titulo: "Titulo Header",
     texto_frase: "Texto atractivo y llamativo para el cliente",
     texto_descripcion: "Texto destacado y secundario para el titulo",
-    url_image: "/blog/fondo_blog_extend.jpg",
+    public_image: "/blog/fondo_blog_extend.jpg",
   });
 
   const [formEncabezadoBody, setFormEncabezadoBody] = useState({
@@ -38,7 +38,7 @@ const PageContent = () => {
     descripcion:
       "Las luces neón LED se han convertido en un elemento diferenciador en el mundo de la hospitalidad. No solo son visualmente atractivos, sino que también refuerzan la identidad de tu negocio. En este artículo, exploraremos cómo las letras luminosas pueden marcar la diferencia en la experiencia de tus clientes.",
     fecha: '2025-03-31',
-    url_image1: "blog-4.jpg",
+    public_image1: "blog-4.jpg",
   });
 
   const [formInfoBody, setFormInfoBody] = useState([
@@ -76,8 +76,8 @@ const PageContent = () => {
   });
 
   const [formGaleryBody, setFormGaleryBody] = useState({
-    url_image2: "/blog/blog-2.jpg",
-    url_image3: "/blog/blog-2.jpg"
+    public_image2: "/blog/blog-2.jpg",
+    public_image3: "/blog/blog-2.jpg"
   });
 
   useEffect(() => {
@@ -137,9 +137,9 @@ const PageContent = () => {
       descripcion: formEncabezadoBody.descripcion,
       fecha: formEncabezadoBody.fecha,
       id_commend_tarjeta: formSave.id_commend_tarjeta,
-      url_image1: formEncabezadoBody.url_image1,
-      url_image2: formGaleryBody.url_image2,
-      url_image3: formGaleryBody.url_image3,
+      public_image1: formEncabezadoBody.public_image1,
+      public_image2: formGaleryBody.public_image2,
+      public_image3: formGaleryBody.public_image3,
     }
 
     const id = await Service.saveBody(formBody);
@@ -211,7 +211,7 @@ const PageContent = () => {
       id_blog: formSave.id_blog,
       titulo: dataHeader.titulo,
       descripcion: formEncabezadoBody.descripcion,
-      url_image: dataHeader.url_image,
+      public_image: dataHeader.public_image,
       id_plantilla: 1,
     }
     const id = await Service.saveCard(formCard);

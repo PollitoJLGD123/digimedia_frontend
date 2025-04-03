@@ -78,10 +78,10 @@ export default function FormBody3(props) {
                 <div className="relative">
                   <img
                     src={
-                      formEncabezadoBody.url_image1
-                        ? formEncabezadoBody.url_image1.startsWith("http")
-                          ? formEncabezadoBody.url_image1
-                          : `/blog/${formEncabezadoBody.url_image1}`
+                      formEncabezadoBody.public_image1
+                        ? formEncabezadoBody.public_image1.startsWith("http")
+                          ? formEncabezadoBody.public_image1
+                          : `/blog/${formEncabezadoBody.public_image1}`
                         : "/blog/blog-4.jpg"
                     }
                     alt={formEncabezadoBody.titulo || "Imagen principal"}
@@ -109,8 +109,8 @@ export default function FormBody3(props) {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {[
-                formGaleryBody.url_image2 || "/blog/blog-10.jpg",
-                formGaleryBody.url_image3 || "/blog/blog-1.jpg",
+                formGaleryBody.public_image2 || "/blog/blog-10.jpg",
+                formGaleryBody.public_image3 || "/blog/blog-1.jpg",
               ].map((src, index) => (
                 <div
                   key={index}
@@ -252,7 +252,7 @@ export default function FormBody3(props) {
                 <input
                 accept="image/*"
                 type="file"
-                name="url_image1"
+                name="public_image1"
                 onChange={handleChange(setFormEncabezadoBody)}
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 />
@@ -291,7 +291,7 @@ export default function FormBody3(props) {
                   <input
                   accept="image/*"
                   type="file"
-                  name="url_image2"
+                  name="public_image2"
                   onChange={handleChange(setFormGaleryBody)}
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                   />
@@ -310,7 +310,7 @@ export default function FormBody3(props) {
                   <input
                   accept="image/*"
                   type="file"
-                  name="url_image3"
+                  name="public_image3"
                   onChange={handleChange(setFormGaleryBody)}
                   className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                   />

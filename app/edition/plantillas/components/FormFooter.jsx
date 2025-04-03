@@ -20,9 +20,9 @@ export default function FormFooter({ formFooter, setFormData }) {
                     {formFooter.descripcion}
                 </p>
 
-                {(formFooter.url_image1 || formFooter.url_image2 || formFooter.url_image3) && (
+                {(formFooter.public_image1 || formFooter.public_image2 || formFooter.public_image3) && (
                     <div className="flex flex-wrap justify-center gap-3 mt-6">
-                        {[formFooter.url_image1, formFooter.url_image2, formFooter.url_image3].map((image, index) => {
+                        {[formFooter.public_image1, formFooter.public_image2, formFooter.public_image3].map((image, index) => {
                             const imageUrl = image ? (image.startsWith("http") ? image : `/blog/${image}`) : "/blog/blog-2.jpg"
 
                             return (
@@ -81,7 +81,7 @@ export default function FormFooter({ formFooter, setFormData }) {
                             <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
                                 <Image className="w-4 h-4 mr-1.5 text-yellow-400" /> Imágenes
                             </label>
-                            {["url_image1", "url_image2", "url_image3"].map((imgField, index) => (
+                            {["public_image1", "public_image2", "public_image3"].map((imgField, index) => (
                                 <div key={index}  className="relative w-full mb-2">
                                     <input
                                     accept="image/*"
