@@ -26,7 +26,13 @@ export default function DataTable({ headers, data, onDelete, onUpdate, onShow })
   }
 
   const verificarEditDelete = (dataRow) => {
+    // si el usuario es privilegiado, permitir editar cualquier registro
     if (isPrivilegedUser) return true
+    
+    // permitir que el usuario edite su propio perfil
+    if (empleadoAutenticadoId && dataRow.id_empleado === empleadoAutenticadoId) return true
+    
+    // en cualquier otro caso, se debe verificar si es un email restringido
     return !restrictedEmails.includes(dataRow.email)
   }
 
