@@ -88,11 +88,6 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
 
     return (
         <div className="relative w-full text-white">
-            {public_id && (
-                <div className="mb-2 p-2 bg-gray-800 rounded text-xs">
-                    <p className="text-gray-300">Imagen actual: <span className="text-purple-400">{public_id}</span></p>
-                </div>
-            )}
             
             <CldUploadWidget
                 uploadPreset={uploadPreset}
@@ -168,7 +163,6 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
                 )}
             </CldUploadWidget>
 
-            {/* Botón opcional para eliminar imagen */}
             {public_id && (
                 <button
                     type="button"
