@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import { useRouter, useSearchParams } from 'next/navigation';
 import url from '../../../../api/url';
 
-const URL_API = `${url}/api/update_password`;
+const URL_API = `${url}/api/update_password`; 
 
 function ResetPasswordForm() {
     const [password, setPassword] = useState("");
@@ -22,7 +22,7 @@ function ResetPasswordForm() {
             Swal.fire("Error", "Token inválido o expirado", "error");
             router.push('/login');
         } else {
-            setToken(tokenParam);
+            setToken(decodeURIComponent(tokenParam));
         }
     }, [searchParams, router]);
 
@@ -39,13 +39,28 @@ function ResetPasswordForm() {
             return;
         }
 
+        if (!token) {
+            Swal.fire("Error", "Token no disponible", "error");
+            return;
+        }
+
         setLoading(true);
         try {
-            const response = await axios.post(`${URL_API}`, {
-                token,
-                password,
+            console.log("Enviando solicitud a:", URL_API);
+            console.log("Datos enviados:", { token, password, password_confirmation: confirmPassword });
+            
+            const response = await axios.post(URL_API, {
+                token: token,
+                password: password,
                 password_confirmation: confirmPassword
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
             });
+
+            console.log('Respuesta del servidor:', response.data);
 
             Swal.fire({
                 title: "Éxito",
@@ -59,8 +74,9 @@ function ResetPasswordForm() {
                 router.push('/login');
             }, 2000);
         } catch (error) {
-            Swal.fire("Error","Hubo un problema, intenta de nuevo", "error");
-            console.log(error.response?.data?.message);
+            console.error('Error completo:', error);
+            const errorMessage = error.response?.data?.message || "Hubo un problema, intenta de nuevo";
+            Swal.fire("Error", errorMessage, "error");
         }
         setLoading(false);
     };
