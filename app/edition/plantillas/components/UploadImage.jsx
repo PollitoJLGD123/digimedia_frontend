@@ -1,39 +1,42 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { CldUploadWidget } from "next-cloudinary";
 import { Image as IconImage, Loader2 } from "lucide-react";
 import Cloud from "../../services/Cloud";
+import { useState, useEffect, useRef } from "react";
 import Swal from "sweetalert2";
 
 function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image, name_public, name_url }) {
     const [uploading, setUploading] = useState(false);
-    const [actualPublicId, setActualPublicId] = useState(public_id || "");
+    const publicIdRef = useRef(public_id);
 
     useEffect(() => {
-        setActualPublicId(public_id || "");
+        publicIdRef.current = public_id;
     }, [public_id]);
 
     async function eliminarImagenAnterior(id_public) {
-        if (!id_public) return;
-
+        console.log("Attempting to delete image with public_id:", id_public);
+        
+        if (!id_public) {
+            console.log("No public_id to delete");
+            return;
+        }
+    
         try {
             const response = await Cloud.deleteImage(id_public);
-            if (response) {
-                setFormData((prev) => ({
-                    ...prev,
-                    [name_public]: "",
-                    [name_url]: "",
-                }));
-                setActualPublicId("");
-            } else {
-                console.error("No se pudo eliminar la imagen anterior");
-            }
+            console.log("Respuesta de eliminación:", response);
+            return response; 
         } catch (error) {
             console.error("Error al eliminar imagen:", error);
+            throw error; 
         }
     }
 
     function handleUploadSuccess(result) {
+        console.log("===== UPLOAD SUCCESS =====");
+        console.log("Resultado de la carga:", result);
+        
         if (!result?.info?.public_id || !result?.info?.secure_url) {
+            console.error("Información de carga incompleta:", result);
             Swal.fire({
                 icon: "error",
                 title: "Error",
@@ -45,42 +48,52 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
         }
         
         const info = result.info;
-        const idToDelete = actualPublicId || public_id;
+        console.log("Info de imagen subida:", info);
+        console.log("Estado actual - public_id prop:", public_id);
+        
+        const idToDelete = publicIdRef.current;
         
         if (idToDelete && idToDelete.trim() !== "") {
+            console.log("Se procede a eliminar la imagen anterior:", idToDelete);
+            
             eliminarImagenAnterior(idToDelete)
                 .then(() => {
+                    console.log("Imagen anterior eliminada, actualizando estado...");
                     setFormData((prev) => ({
                         ...prev,
                         [name_public]: info.secure_url,
                         [name_url]: info.public_id,
                     }));
-                    setActualPublicId(info.public_id);
                     setUploading(false);
                 })
-                .catch(error => {
+                .catch((error) => {
                     console.error("Error durante la eliminación de imagen:", error);
                     setFormData((prev) => ({
                         ...prev,
                         [name_public]: info.secure_url,
                         [name_url]: info.public_id,
                     }));
-                    setActualPublicId(info.public_id);
                     setUploading(false);
                 });
         } else {
+            console.log("No hay imagen anterior, se procede a guardar la nueva imagen");
             setFormData((prev) => ({
                 ...prev,
                 [name_public]: info.secure_url,
                 [name_url]: info.public_id,
             }));
-            setActualPublicId(info.public_id);
             setUploading(false);
         }
     }
 
     return (
         <div className="relative w-full text-white">
+            {public_id && (
+                <div className="mb-2 p-2 bg-gray-800 rounded text-xs">
+                    <p className="text-gray-300">Imagen actual: <span className="text-purple-400">{public_id}</span></p>
+                </div>
+            )}
+            
             <CldUploadWidget
                 uploadPreset={uploadPreset}
                 options={{
@@ -112,8 +125,14 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
                         }
                     }
                 }}
-                onUploadAdded={() => setUploading(true)}
-                onSuccess={handleUploadSuccess}
+                onUploadAdded={() => {
+                    console.log("Iniciando carga de imagen...");
+                    setUploading(true);
+                }}
+                onSuccess={(result) => {
+                    console.log("Éxito en la carga - llamando al manejador");
+                    handleUploadSuccess(result);
+                }}
                 onError={(error) => {
                     console.error("Error al subir imagen:", error);
                     setUploading(false);
@@ -127,7 +146,10 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
             >
                 {({ open }) => (
                     <button
-                        onClick={() => open()}
+                        onClick={() => {
+                            console.log("Botón de carga clickeado - public_id actual:", public_id);
+                            open();
+                        }}
                         type="button"
                         disabled={uploading}
                         className="flex items-center justify-center w-full p-3 border-2 border-dashed border-gray-700 rounded-lg bg-gray-900 text-white transition-all hover:border-purple-500 hover:bg-gray-800"
@@ -138,7 +160,7 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
                             <>
                                 <IconImage className="w-5 h-5 mr-2 text-purple-400" />
                                 <span className="text-sm">
-                                    {actualPublicId ? "Cambiar imagen" : "Selecciona una imagen"}
+                                    {public_id ? "Cambiar imagen" : "Selecciona una imagen"}
                                 </span>
                             </>
                         )}
@@ -146,10 +168,28 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
                 )}
             </CldUploadWidget>
 
-            {actualPublicId && (
+            {/* Botón opcional para eliminar imagen */}
+            {public_id && (
                 <button
                     type="button"
-                    onClick={() => eliminarImagenAnterior(actualPublicId)}
+                    onClick={() => {
+                        eliminarImagenAnterior(public_id)
+                            .then(() => {
+                                setFormData((prev) => ({
+                                    ...prev,
+                                    [name_public]: "",
+                                    [name_url]: "",
+                                }));
+                            })
+                            .catch((error) => {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Error",
+                                    text: "No se pudo eliminar la imagen",
+                                    confirmButtonColor: "#8c52ff",
+                                });
+                            });
+                    }}
                     className="mt-2 text-xs flex items-center justify-center w-full p-2 border border-red-700 rounded-lg bg-gray-900 text-red-400 hover:bg-red-900/30 transition-all"
                 >
                     Eliminar imagen actual

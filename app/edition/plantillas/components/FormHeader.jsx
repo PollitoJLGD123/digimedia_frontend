@@ -5,6 +5,8 @@ import UploadImage from '../components/UploadImage'
 
 export default function FormHeader({ dataHeader, setFormData }) {
 
+  console.log("FormHeader - dataHeader.url_image:", dataHeader.url_image);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -12,7 +14,6 @@ export default function FormHeader({ dataHeader, setFormData }) {
       [name]: value,
     }));
   };
-
 
   return (
     <div
@@ -93,7 +94,7 @@ export default function FormHeader({ dataHeader, setFormData }) {
                   name_public="public_image"
                   name_url="url_image"
                   size_image={1.5 * 1024 * 1024}
-                  public_id={dataHeader.url_image || ""}
+                  public_id={dataHeader.url_image}
                   setFormData={setFormData}
                 />
               </div>
