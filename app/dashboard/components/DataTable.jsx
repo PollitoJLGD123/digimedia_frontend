@@ -155,7 +155,7 @@ export default function DataTable({ headers, data, onDelete, onUpdate, onShow })
                   key={dataRow.id || `row-${index}`}
                   className={`${
                     isEmpleadoAutenticado 
-                      ? "bg-[#caeafe]" 
+                      ? "bg-[#caeafe] text-black" 
                       : index % 2 === 0 ? "bg-white dark:bg-gray-900" : "bg-gray-50 dark:bg-gray-700"
                   } hover:bg-neutral-200 transition-colors`}
                 >
