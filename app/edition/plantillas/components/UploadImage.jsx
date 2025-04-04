@@ -33,7 +33,7 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
         }
     }
 
-    function handleUploadSuccess(result) {
+    async function handleUploadSuccess(result) {
         if (!result?.info?.public_id || !result?.info?.secure_url) {
             console.error("Información de carga incompleta:", result);
             Swal.fire({
@@ -44,9 +44,12 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
             });
             return;
         }
+
+        console.log(result);
+        console.log(public_id);
         
         if (public_id) {
-            eliminarImagenAnterior(public_id);
+            await eliminarImagenAnterior(public_id);
         }
 
         const info = result.info;

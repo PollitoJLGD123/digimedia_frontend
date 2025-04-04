@@ -13,8 +13,7 @@ export default function FormHeader({ dataHeader, setFormData }) {
     }));
   };
 
-  console.log(dataHeader);
-
+  console.log(dataHeader)
 
   return (
     <div
@@ -94,7 +93,7 @@ export default function FormHeader({ dataHeader, setFormData }) {
                   folder="blogs/headers/"
                   name_public = "public_image"
                   name_url = "url_image"
-                  size_image = {1.5 * 1024 * 1024}
+                  size_image = {5 * 1024 * 1024}
                   public_id={dataHeader.url_image}
                   setFormData={setFormData}
                 />
