@@ -13,14 +13,12 @@ export default function FormHeader({ dataHeader, setFormData }) {
     }));
   };
 
-  console.log(dataHeader);
-
 
   return (
     <div
       className="w-full h-screen md:h-[80vh] relative flex items-center justify-center text-center px-6 sm:px-12 bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: `url(${dataHeader.public_image.startsWith('http') ? dataHeader.public_image : "/blog/fondo_blog_extend.png"})`,
+        backgroundImage: `url(${dataHeader.public_image && dataHeader.public_image.startsWith('http') ? dataHeader.public_image : "/blog/fondo_blog_extend.png"})`,
       }}
     >
       <div className="absolute inset-0 bg-black/60"></div>
@@ -28,13 +26,13 @@ export default function FormHeader({ dataHeader, setFormData }) {
       <div className="relative max-w-7xl text-white flex flex-col md:flex-row items-center justify-between gap-6">
         <div className="text-center max-w-xl">
           <h1 className="text-5xl md:text-6xl font-extrabold mb-4 neon-textov4">
-            {dataHeader.titulo}
+            {dataHeader.titulo || "Título del Blog"}
           </h1>
           <h2 className="text-2xl md:text-xl font-bold mb-4">
-            {dataHeader.texto_frase}
+            {dataHeader.texto_frase || "Frase destacada"}
           </h2>
           <p className="text-lg text-gray-300 font-light">
-            {dataHeader.texto_descripcion}
+            {dataHeader.texto_descripcion || "Descripción del blog"}
           </p>
         </div>
 
@@ -52,7 +50,7 @@ export default function FormHeader({ dataHeader, setFormData }) {
                 <input
                   type="text"
                   name="titulo"
-                  value={dataHeader.titulo}
+                  value={dataHeader.titulo || ""}
                   onChange={handleChange}
                   className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                   placeholder="Título principal"
@@ -66,7 +64,7 @@ export default function FormHeader({ dataHeader, setFormData }) {
                 <input
                   type="text"
                   name="texto_frase"
-                  value={dataHeader.texto_frase}
+                  value={dataHeader.texto_frase || ""}
                   onChange={handleChange}
                   className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                   placeholder="Frase destacada"
@@ -78,10 +76,10 @@ export default function FormHeader({ dataHeader, setFormData }) {
                 </label>
                 <input
                   name="texto_descripcion"
-                  value={dataHeader.texto_descripcion}
+                  value={dataHeader.texto_descripcion || ""}
                   onChange={handleChange}
                   rows={4}
-                  className="w-full  bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none"
+                  className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none"
                   placeholder="Frase Secundaria"
                 />
               </div>
@@ -92,10 +90,10 @@ export default function FormHeader({ dataHeader, setFormData }) {
                 <UploadImage
                   uploadPreset="nextjs_digimedia_blog_head"
                   folder="blogs/headers/"
-                  name_public = "public_image"
-                  name_url = "url_image"
-                  size_image = {1.5 * 1024 * 1024}
-                  public_id={dataHeader.url_image}
+                  name_public="public_image"
+                  name_url="url_image"
+                  size_image={1.5 * 1024 * 1024}
+                  public_id={dataHeader.url_image || ""}
                   setFormData={setFormData}
                 />
               </div>
