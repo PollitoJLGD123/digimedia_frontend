@@ -2,7 +2,7 @@
 import React from 'react'
 import axios from 'axios'
 
-const API_DELETE = "/api/delete_image"
+const API_DELETE = "127.0.0.1:3000/api/delete_image"
 
 const Cloud = {
     deleteImage: async function deleteImage(public_id) {
@@ -19,7 +19,6 @@ const Cloud = {
                     }
                 }
             );
-            console.log(response);
             if (response.status === 200) {
                 console.log("Imagen eliminada de Cloudinary:", response.data.result);
                 return response.data.result;
