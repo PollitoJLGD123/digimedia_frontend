@@ -14,10 +14,10 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
     }, [public_id]);
 
     async function eliminarImagenAnterior(id_public) {
-        console.log("Attempting to delete image with public_id:", id_public);
+        console.log("Intenado eliminar imagen - public_id:", id_public);
         
         if (!id_public) {
-            console.log("No public_id to delete");
+            console.log("No public_id");
             return;
         }
     
@@ -32,7 +32,6 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
     }
 
     function handleUploadSuccess(result) {
-        console.log("===== UPLOAD SUCCESS =====");
         console.log("Resultado de la carga:", result);
         
         if (!result?.info?.public_id || !result?.info?.secure_url) {
