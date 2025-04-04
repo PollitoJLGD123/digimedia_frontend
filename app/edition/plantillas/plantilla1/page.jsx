@@ -22,8 +22,11 @@ const PageContent = () => {
     titulo: "Titulo Footer",
     descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, voluptate.",
     public_image1: "blog-10.jpg",
+    url_image1: "", //por esta vez url es la ruta para elimianr
     public_image2: "blog-1.jpg",
+    url_image1: "",
     public_image3: "blog-2.jpg",
+    url_image1: "",
   });
 
   const [dataHeader, setDataHeader] = useState({
@@ -31,6 +34,7 @@ const PageContent = () => {
     texto_frase: "Texto atractivo y llamativo para el cliente",
     texto_descripcion: "Texto destacado y secundario para el titulo",
     public_image: "/blog/fondo_blog_extend.jpg",
+    url_image: "",
   });
 
   const [formEncabezadoBody, setFormEncabezadoBody] = useState({
@@ -39,6 +43,7 @@ const PageContent = () => {
       "Las luces neón LED se han convertido en un elemento diferenciador en el mundo de la hospitalidad. No solo son visualmente atractivos, sino que también refuerzan la identidad de tu negocio. En este artículo, exploraremos cómo las letras luminosas pueden marcar la diferencia en la experiencia de tus clientes.",
     fecha: '2025-03-31',
     public_image1: "blog-4.jpg",
+    url_image1: "",
   });
 
   const [formInfoBody, setFormInfoBody] = useState([
@@ -77,7 +82,9 @@ const PageContent = () => {
 
   const [formGaleryBody, setFormGaleryBody] = useState({
     public_image2: "/blog/blog-2.jpg",
-    public_image3: "/blog/blog-2.jpg"
+    url_image2: "",
+    public_image3: "/blog/blog-2.jpg",
+    url_image3: "",
   });
 
   useEffect(() => {
@@ -325,7 +332,7 @@ const PageContent = () => {
       </div>
 
       <div className="bottom-0 left-0 fixed p-6 border-t border-slate-700/50 bg-slate-900/50 backdrop-blur-sm">
-        <button className="text-white rounded-xl flex items-center justify-center w-full bg-emerald-600 hover:bg-emerald-500 transition-all duration-300 px-5 py-3 shadow-lg shadow-emerald-900/20">
+        <button onClick={HandleSave} className="text-white rounded-xl flex items-center justify-center w-full bg-emerald-600 hover:bg-emerald-500 transition-all duration-300 px-5 py-3 shadow-lg shadow-emerald-900/20">
           <Save className="mr-2 h-4 w-4 text-blue-950" />
           Guardar Cambios
         </button>

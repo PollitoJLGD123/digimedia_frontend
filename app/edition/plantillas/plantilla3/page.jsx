@@ -22,8 +22,11 @@ const PageContent = () => {
     titulo: "Titulo Footer",
     descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, voluptate.",
     public_image1: "blog-10.jpg",
+    url_image1: "", //por esta vez url es la ruta para elimianr
     public_image2: "blog-1.jpg",
+    url_image1: "",
     public_image3: "blog-2.jpg",
+    url_image1: "",
   });
 
   const [dataHeader, setDataHeader] = useState({
@@ -31,6 +34,7 @@ const PageContent = () => {
     texto_frase: "Texto atractivo y llamativo para el cliente",
     texto_descripcion: "Texto destacado y secundario para el titulo",
     public_image: "/blog/fondo_blog_extend.jpg",
+    url_image: "",
   });
 
   const [formEncabezadoBody, setFormEncabezadoBody] = useState({
@@ -39,6 +43,7 @@ const PageContent = () => {
       "Las luces neón LED se han convertido en un elemento diferenciador en el mundo de la hospitalidad. No solo son visualmente atractivos, sino que también refuerzan la identidad de tu negocio. En este artículo, exploraremos cómo las letras luminosas pueden marcar la diferencia en la experiencia de tus clientes.",
     fecha: '2025-03-31',
     public_image1: "blog-4.jpg",
+    url_image1: "",
   });
 
   const [formInfoBody, setFormInfoBody] = useState([
@@ -77,7 +82,9 @@ const PageContent = () => {
 
   const [formGaleryBody, setFormGaleryBody] = useState({
     public_image2: "/blog/blog-2.jpg",
-    public_image3: "/blog/blog-2.jpg"
+    url_image2: "",
+    public_image3: "/blog/blog-2.jpg",
+    url_image3: "",
   });
 
   useEffect(() => {

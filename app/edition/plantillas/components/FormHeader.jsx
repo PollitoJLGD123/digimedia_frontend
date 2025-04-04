@@ -1,6 +1,7 @@
 "use client"
 import { Type, AlignLeft, Quote } from "lucide-react";
 import {Image} from "lucide-react";
+import UploadImage from '../components/UploadImage'
 
 export default function FormHeader({ dataHeader, setFormData }) {
 
@@ -11,6 +12,8 @@ export default function FormHeader({ dataHeader, setFormData }) {
       [name]: value,
     }));
   };
+
+  console.log(dataHeader);
 
 
   return (
@@ -86,20 +89,15 @@ export default function FormHeader({ dataHeader, setFormData }) {
                 <label className="flex items-center text-white text-sm font-medium mb-2">
                   <Quote className="w-5 h-5 mr-2 text-purple-400" /> Imagen
                 </label>
-                <div  className="relative w-full">
-                    <input
-                    accept="image/*"
-                    type="file"
-                    name="public_image"
-                    onChange={handleChange}
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                    />
-                    <div className="flex items-center justify-center w-full p-3 border-2 border-dashed border-gray-700 rounded-lg bg-gray-900 text-white transition-all hover:border-purple-500 hover:bg-gray-800">
-                    <Image className="w-5 h-5 mr-2 text-purple-400" />
-                    <span className="text-sm">Selecciona una imagen</span>
-                </div>
-                </div>
-                
+                <UploadImage
+                  uploadPreset="nextjs_digimedia_blog_head"
+                  folder="blogs/headers/"
+                  name_public = "public_image"
+                  name_url = "url_image"
+                  size_image = {1.5 * 1024 * 1024}
+                  public_id={dataHeader.url_image}
+                  setFormData={setFormData}
+                />
               </div>
             </form>
           </div>
