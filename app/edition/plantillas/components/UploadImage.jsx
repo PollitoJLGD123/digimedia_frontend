@@ -130,7 +130,6 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
                 {({ open }) => (
                     <button
                         onClick={() => {
-                            console.log("Botón de carga clickeado - public_id actual:", public_id);
                             open();
                         }}
                         type="button"

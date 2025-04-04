@@ -85,13 +85,13 @@ export default function FormFooter({ formFooter, setFormData }) {
                             {["1", "2", "3"].map((num, index) => (
                                 <div key={index} className="relative w-full mb-2">
                                     <UploadImage
-                                    uploadPreset="nextjs_digimedia_blog_footer"
-                                    folder="blogs/footers/"
-                                    name_public = {`public_image${num}`}
-                                    name_url = {`url_image${num}`} 
-                                    size_image = {1.5 * 700 * 700}
-                                    public_id={formFooter[`url_image${num}`]}
-                                    setFormData={setFormData}
+                                        uploadPreset="nextjs_digimedia_blog_footer"
+                                        folder="blogs/footers/"
+                                        name_public = {`public_image${num}`}
+                                        name_url = {`url_image${num}`} 
+                                        size_image = {1.5 * 700 * 700}
+                                        public_id={formFooter[`url_image${num}`]}
+                                        setFormData={setFormData}
                                     />
                                 </div>
                             ))}
