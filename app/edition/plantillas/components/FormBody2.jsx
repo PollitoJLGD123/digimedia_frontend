@@ -44,14 +44,6 @@ export default function FormBody2(props) {
     }))
   }
 
-  const handleGaleryBodyChange = (e) => {
-    const { name, value } = e.target
-    setFormGaleryBody((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
-  }
-
   return (
     <div className="relative bg-white text-black rounded-2xl shadow-[0px_10px_25px_rgba(0,0,0,0.15)] overflow-hidden">
       <div className='flex gap-4'>
