@@ -19,7 +19,6 @@ const Cloud = {
                 }
             );
             if (response.status === 200) {
-                console.log("Imagen eliminada de Cloudinary:", response.data.result);
                 return response.data.result;
             }
             else {

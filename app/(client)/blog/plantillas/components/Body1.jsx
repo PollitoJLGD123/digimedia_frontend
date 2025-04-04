@@ -102,10 +102,10 @@ export default function Body1({ id_blog_body, fecha }) {
                 <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/40 z-10"></div>
                 <img
                     src={
-                        data.public_image
-                            ? data.public_image.startsWith("http")
-                                ? data.public_image
-                                : `/blog/${data.public_image}`
+                        data.public_image1
+                            ? data.public_image1.startsWith("http")
+                                ? data.public_image1
+                                : `/blog/${data.public_image1}`
                             : "/blog/blog-4.jpg"
                     }
                     alt={data.titulo || "Imagen principal"}

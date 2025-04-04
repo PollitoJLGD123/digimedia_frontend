@@ -32,8 +32,6 @@ export default function FormBody1(props) {
     });
   };
 
-  console.log(formEncabezadoBody)
-
   return (
     <div className="relative p-0 text-black rounded-lg shadow-[0px_10px_25px_rgba(0,0,0,0.25)] overflow-hidden flex flex-row my-5 justify-center">
       <div className="w-[700px]">

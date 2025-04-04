@@ -138,10 +138,10 @@ export default function Body3({ id_blog_body, fecha }) {
                             <div className="relative">
                                 <img
                                     src={
-                                        data.public_image
-                                            ? data.public_image.startsWith("http")
-                                                ? data.public_image
-                                                : `/blog/${data.public_image}`
+                                        data.public_image1
+                                            ? data.public_image1.startsWith("http")
+                                                ? data.public_image1
+                                                : `/blog/${data.public_image1}`
                                             : "/blog/blog-4.jpg"
                                     }
                                     alt={data.titulo || "Imagen principal"}

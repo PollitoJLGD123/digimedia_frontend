@@ -155,6 +155,8 @@ const PageContent = () => {
       url_image3: formGaleryBody.url_image3,
     }
 
+    console.log("Formulario del body del blog:", formBody);
+
     const id = await Service.saveBody(formBody);
     if (id && id > 0) {
       setFormSave((prev) => ({
@@ -181,6 +183,8 @@ const PageContent = () => {
         ...prev,
         id_commend_tarjeta: id,
       }));
+      
+      console.log("Id del la tarjeta comentario:", id);
       return "succes";
     }
     else {
@@ -298,7 +302,7 @@ const PageContent = () => {
       await executionFunction(guardarHeader, "No se pudo guardar el encabezado");
       await executionFunction(guardarFooter, "No se pudo guardar el pie de página");
       await executionFunction(guardarBlog, "No se pudo guardar el blog");
-      await executionFunction(guardarCard, "No se pudo guardar la tarjeta del blog");
+      await executionFunction(guardarCard, "No se pudo guardar la card");
 
       Swal.fire({
         title: "Guardado Correctamente",
@@ -385,7 +389,7 @@ const PageContent = () => {
         url_image3: "",
       });
 
-      router.push("/dashboard/blog");
+      router.push("/blog");
 
     } catch (error) {
       console.error("Error al guardar:", error.message);

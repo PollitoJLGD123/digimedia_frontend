@@ -4,13 +4,13 @@ import axios from 'axios'
 import url from "../../../api/url"
 import { getCookie } from 'cookies-next';
 
-const URL_API = `${url}/api/`
+const URL_API = `${url}/api`
 
 const Servicios = {
 
     saveHeader : async function saveHeader(formData) {
         try{
-            const response = await axios.get(`${url}/blog_head`, formData ,{
+            const response = await axios.post(`${URL_API}/blog_head`, formData ,{
                 headers: {
                     Authorization: `Bearer ${getCookie('token')}`,
                     'Accept': 'application/json',
@@ -31,7 +31,7 @@ const Servicios = {
 
     saveFooter : async function saveFooter(formData){
         try{
-            const response = await axios.post(`${url}/blog_footer`, formData,{
+            const response = await axios.post(`${URL_API}/blog_footer`, formData,{
                 headers: {
                     Authorization: `Bearer ${getCookie('token')}`,
                     'Accept': 'application/json',
@@ -52,7 +52,7 @@ const Servicios = {
 
     saveBody : async function saveBody(formData){
         try{
-            const response = await axios.post(`${url}/blog_body`, formData,{
+            const response = await axios.post(`${URL_API}/blog_body`, formData,{
                 headers: {
                     Authorization: `Bearer ${getCookie('token')}`,
                     'Accept': 'application/json',
@@ -73,7 +73,7 @@ const Servicios = {
 
     saveCommendTarjeta : async function saveCommendTarjeta(formData){
         try{
-            const response = await axios.post(`${url}/commend_tarjeta`, formData,{
+            const response = await axios.post(`${URL_API}/commend_tarjeta`, formData,{
                 headers: {
                     Authorization: `Bearer ${getCookie('token')}`,
                     'Accept': 'application/json',
@@ -94,7 +94,7 @@ const Servicios = {
 
     saveTarjeta : async function saveTarjeta(formData){
         try{
-            const response = await axios.post(`${url}/tarjeta`, formData,{
+            const response = await axios.post(`${URL_API}/tarjeta`, formData,{
                 headers: {
                     Authorization: `Bearer ${getCookie('token')}`,
                     'Accept': 'application/json',
@@ -115,7 +115,7 @@ const Servicios = {
 
     saveBlog : async function saveBlog(formData){
         try{
-            const response = await axios.post(`${url}/blog`, formData,{
+            const response = await axios.post(`${URL_API}/blog`, formData,{
                 headers: {
                     Authorization: `Bearer ${getCookie('token')}`,
                     'Accept': 'application/json',
@@ -136,7 +136,7 @@ const Servicios = {
 
     saveCard : async function saveCard(formData){
         try{
-            const response = await axios.post(`${url}/card`, formData,{
+            const response = await axios.post(`${URL_API}/card`, formData,{
                 headers: {
                     Authorization: `Bearer ${getCookie('token')}`,
                     'Accept': 'application/json',

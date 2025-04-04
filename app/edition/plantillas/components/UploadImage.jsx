@@ -18,7 +18,6 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
     
         try {
             const response = await Cloud.deleteImage(id_public);
-            console.log("Respuesta de eliminación:", response);
             return response; 
         } catch (error) {
             console.error("Error al eliminar imagen:", error);
@@ -27,8 +26,6 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
     }
 
     function handleUploadSuccess(result) {
-        console.log("Resultado de la carga:", result);
-        
         if (!result?.info?.public_id || !result?.info?.secure_url) {
             console.error("Información de carga incompleta:", result);
             Swal.fire({
@@ -47,7 +44,6 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
         if (idToDelete && idToDelete.trim() !== "") {            
             eliminarImagenAnterior(idToDelete)
                 .then(() => {
-                    console.log("Imagen anterior eliminada, actualizando estado...");
                     setFormData((prev) => ({
                         ...prev,
                         [name_public]: info.secure_url,
@@ -109,11 +105,9 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
                     }
                 }}
                 onUploadAdded={() => {
-                    console.log("Iniciando carga de imagen...");
                     setUploading(true);
                 }}
                 onSuccess={(result) => {
-                    console.log("Éxito en la carga - llamando al manejador");
                     handleUploadSuccess(result);
                 }}
                 onError={(error) => {

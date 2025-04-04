@@ -385,7 +385,7 @@ const PageContent = () => {
         url_image3: "",
       });
 
-      router.push("/dashboard/blog");
+      router.push("/blog");
 
     } catch (error) {
       console.error("Error al guardar:", error.message);

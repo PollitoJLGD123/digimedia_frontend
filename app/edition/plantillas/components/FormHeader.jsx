@@ -1,11 +1,8 @@
 "use client"
 import { Type, AlignLeft, Quote } from "lucide-react";
-import {Image} from "lucide-react";
 import UploadImage from '../components/UploadImage'
 
 export default function FormHeader({ dataHeader, setFormData }) {
-
-  console.log("FormHeader - dataHeader.url_image:", dataHeader.url_image);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
