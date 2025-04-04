@@ -45,19 +45,7 @@ export default function UXUI() {
       </div>
 
       <div className="relative z-10 w-full max-w-screen-lg px-4">
-        <ModalScroll
-          text="¡MEJORA TU EXPERIENCIA DIGITAL!"
-          fondo="/servicios/desarrollo/modal-scroll/fondo.webp"
-          title="DISEÑOS UX Y UI ATRACTIVOS"
-          serviceName="2"
-        />
-
-        <ModalButton
-          title="Haz que tu sitio sea intuitivo y visualmente atractivo"
-          fondo="/servicios/uxui/modal-button/imagen.webp"
-          text="Solicita una asesoría gratuita"
-          serviceName="2"
-        />
+        
 
 <div className="flex justify-center md:justify-start w-full">
   <Main

@@ -11,9 +11,7 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
     const [uploading, setUploading] = useState(false);
 
     async function eliminarImagenAnterior(id_public) {
-
-        console.log(id_public);
-
+        
         if (!id_public) return;
 
         try {

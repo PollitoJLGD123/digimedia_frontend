@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import { getCookie, deleteCookie, setCookie } from "cookies-next"
 import { useSearchParams, useRouter } from "next/navigation"
-import { User, Mail, Phone, BadgeIcon, Shield, ArrowLeft, Edit, KeyRound, Loader2, Trash2 } from "lucide-react"
+import { User, Mail, Phone, BadgeIcon, Shield, ArrowLeft, Edit, KeyRound, Loader2 } from "lucide-react"
 
 import ModalEmpleado from "../empleados/components/modal_empleado"
 import ModalUpdatePass from "../empleados/components/modal_update_password"
@@ -34,7 +34,7 @@ export default function Page() {
 
   useEffect(() => {
     setIsClient(true)
-  
+
     const loadData = async () => {
       if (empleadoId) {
         const userRole = getCookie("rol")
@@ -48,13 +48,13 @@ export default function Page() {
           setIsLoading(false)
           return
         }
-  
+
         try {
           const token = getCookie("token")
           if (!token) {
             throw new Error("No se encontró el token de autenticación")
           }
-  
+
           const response = await fetch(`${api_url}/${empleadoId}`, {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -62,7 +62,7 @@ export default function Page() {
               "Content-Type": "application/json",
             },
           })
-  
+
           if (!response.ok) {
             if (response.status === 401) {
               deleteCookie("token")
@@ -70,9 +70,9 @@ export default function Page() {
             }
             throw new Error(`Error ${response.status}: ${response.statusText}`)
           }
-  
+
           const data = await response.json()
-  
+
           if (data.status === 200) {
             setEmpleadoData(data.data)
             setUserRole(data.data.rol?.nombre || "Usuario")
@@ -100,13 +100,13 @@ export default function Page() {
           if (!token) {
             throw new Error("No se encontró el token de autenticación")
           }
-          
+
           const empleadoCookie = getCookie("empleado")
-          
+
           if (empleadoCookie) {
             const empleado = JSON.parse(empleadoCookie)
             const idEmpleado = empleado.id_empleado
-            
+
             if (idEmpleado) {
               const response = await fetch(`${api_url}/${idEmpleado}`, {
                 headers: {
@@ -115,7 +115,7 @@ export default function Page() {
                   "Content-Type": "application/json",
                 },
               })
-              
+
               if (!response.ok) {
                 if (response.status === 401) {
                   deleteCookie("token")
@@ -123,9 +123,9 @@ export default function Page() {
                 }
                 throw new Error(`Error ${response.status}: ${response.statusText}`)
               }
-              
+
               const data = await response.json()
-              
+
               if (data.status === 200) {
                 setEmpleadoData(data.data)
                 setUserRole(data.data.rol?.nombre || "Usuario")
@@ -133,7 +133,7 @@ export default function Page() {
                   data.data.imagen_perfil_url ||
                     "https://images.rawpixel.com/image_png_social_square/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png",
                 )
-                
+
                 setCookie("empleado", JSON.stringify(data.data))
               } else {
                 console.error("Error al obtener datos del empleado:", data.message)
@@ -142,25 +142,25 @@ export default function Page() {
               }
             }
           }
-          
+
           const userCookie = getCookie("user")
           const rolCookie = getCookie("rol")
-          
+
           if (userCookie) setUserData(JSON.parse(userCookie))
           if (rolCookie && !userRole) setUserRole(rolCookie)
         } catch (error) {
           console.error("Error al cargar datos del usuario:", error)
-          
+
           const userCookie = getCookie("user")
           const empleadoCookie = getCookie("empleado")
           const rolCookie = getCookie("rol")
-  
+
           if (empleadoCookie) {
             const empleado = JSON.parse(empleadoCookie)
             setEmpleadoData(empleado)
             setImageUrl(empleado.imagen_perfil_url)
           }
-  
+
           if (userCookie) setUserData(JSON.parse(userCookie))
           if (rolCookie) setUserRole(rolCookie)
         } finally {
@@ -168,7 +168,7 @@ export default function Page() {
         }
       }
     }
-  
+
     loadData()
   }, [empleadoId, router])
 
@@ -180,55 +180,56 @@ export default function Page() {
   const handleDeleteProfileImage = async () => {
     try {
       const confirmResult = await Swal.fire({
-        title: '¿Eliminar foto de perfil?',
+        title: "¿Eliminar foto de perfil?",
         text: "Esta acción no se puede deshacer",
-        icon: 'warning',
+        icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: '#8c52ff',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí, eliminar',
-        cancelButtonText: 'Cancelar'
-      });
-  
-      if (!confirmResult.isConfirmed) return;
-  
-      const token = getCookie("token");
-      const empleadoIdToUpdate = empleadoId || empleadoData?.id_empleado;
-      
+        confirmButtonColor: "#8c52ff",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, eliminar",
+        cancelButtonText: "Cancelar",
+      })
+
+      if (!confirmResult.isConfirmed) return
+
+      const token = getCookie("token")
+      const empleadoIdToUpdate = empleadoId || empleadoData?.id_empleado
+
       const response = await fetch(`${api_url}/${empleadoIdToUpdate}/image`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: "application/json",
-        }
-      });
+        },
+      })
 
-      if (!response.ok) throw new Error(`Error ${response.status}`);
-  
-      setImageUrl("https://images.rawpixel.com/image_png_social_square/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png");
-      setEmpleadoData(prev => ({
+      if (!response.ok) throw new Error(`Error ${response.status}`)
+
+      setImageUrl(
+        "https://images.rawpixel.com/image_png_social_square/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png",
+      )
+      setEmpleadoData((prev) => ({
         ...prev,
         imagen_perfil: null,
-        imagen_perfil_url: null
-      }));
-  
+        imagen_perfil_url: null,
+      }))
+
       Swal.fire({
         icon: "success",
         title: "Foto eliminada",
         text: "La foto de perfil se ha eliminado correctamente",
         confirmButtonColor: "#8c52ff",
-      });
-  
+      })
     } catch (error) {
-      console.error("Error al eliminar:", error);
+      console.error("Error al eliminar:", error)
       Swal.fire({
         icon: "error",
         title: "Error",
         text: "No se pudo eliminar la foto de perfil",
         confirmButtonColor: "#8c52ff",
-      });
+      })
     }
-  };
+  }
 
   if (isLoading) {
     return (
@@ -263,7 +264,7 @@ export default function Page() {
 
   return (
     <div className="container mx-auto py-6 px-4 max-w-5xl">
-      <Card className="overflow-hidden border-none shadow-md dark:bg-gray-800">
+      <Card className="overflow-hidden border-none shadow-md dark:bg-gray-800/95 dark:border dark:border-gray-700">
         <div className="bg-[#8c52ff] p-4 text-white">
           <div className="flex justify-between items-center">
             {empleadoId && <h1 className="text-xl md:text-2xl font-bold">Perfil del Empleado</h1>}
@@ -332,12 +333,16 @@ export default function Page() {
                 </div>
 
                 <h2 className="mt-3 text-xl font-bold text-gray-800 dark:text-white">{displayName}</h2>
-                <p className="text-gray-500 text-sm dark:text-white">{email}</p>
+                <p className="text-gray-500 text-sm dark:text-gray-300">{email}</p>
 
                 {!empleadoId && (
                   <div className="mt-4 w-full space-y-2">
                     <div className="flex w-full gap-2">
-                      <Button className="flex-1 text-sm" variant="outline" onClick={() => setShowEditModal(true)}>
+                      <Button
+                        variant="outline"
+                        onClick={() => setShowEditModal(true)}
+                        className="flex-1 text-sm dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
+                      >
                         <Edit className="mr-1.5 h-3.5 w-3.5" />
                         Editar Perfil
                       </Button>
@@ -349,11 +354,25 @@ export default function Page() {
                         title="Eliminar foto de perfil"
                         disabled={!empleadoData?.imagen_perfil}
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48"><defs><mask id="ipTPeopleDeleteOne0"><g fill="none" stroke="#fff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4"><path fill="#555555" d="M19 20a7 7 0 1 0 0-14a7 7 0 0 0 0 14"/><path d="m42 15l-8 8m0-8l8 8"/><path fill="#555555" d="M4 40.8V42h30v-1.2c0-4.48 0-6.72-.872-8.432a8 8 0 0 0-3.496-3.496C27.92 28 25.68 28 21.2 28h-4.4c-4.48 0-6.72 0-8.432.872a8 8 0 0 0-3.496 3.496C4 34.08 4 36.32 4 40.8"/></g></mask></defs><path fill="#9054fc" d="M0 0h48v48H0z" mask="url(#ipTPeopleDeleteOne0)"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+                          <defs>
+                            <mask id="ipTPeopleDeleteOne0">
+                              <g fill="none" stroke="#fff" strokeLinecap="round" strokeLinejoin="round" strokeWidth="4">
+                                <path fill="#555555" d="M19 20a7 7 0 1 0 0-14a7 7 0 0 0 0 14" />
+                                <path d="m42 15l-8 8m0-8l8 8" />
+                                <path
+                                  fill="#555555"
+                                  d="M4 40.8V42h30v-1.2c0-4.48 0-6.72-.872-8.432a8 8 0 0 0-3.496-3.496C27.92 28 25.68 28 21.2 28h-4.4c-4.48 0-6.72 0-8.432.872a8 8 0 0 0-3.496 3.496C4 34.08 4 36.32 4 40.8"
+                                />
+                              </g>
+                            </mask>
+                          </defs>
+                          <path fill="#9054fc" d="M0 0h48v48H0z" mask="url(#ipTPeopleDeleteOne0)" />
+                        </svg>
                       </Button>
                     </div>
                     <Button
-                      className="w-full text-sm bg-[#f0ebff] text-[#8c52ff] hover:bg-[#e4d9ff] border-[#8c52ff] border"
+                      className="w-full text-sm bg-[#f0ebff] text-[#8c52ff] hover:bg-[#e4d9ff] border-[#8c52ff] border dark:bg-[#4d2994]/40 dark:text-[#a67dff] dark:hover:bg-[#4d2994]/60 dark:border-[#6b42c9]"
                       variant="secondary"
                       onClick={() => setShowPasswordModal(true)}
                     >
@@ -367,83 +386,83 @@ export default function Page() {
 
             {/* Main content */}
             <div className="md:w-2/3 ">
-              <Card className="border border-gray-200 ">
+              <Card className="border border-gray-200 dark:border-gray-700 dark:bg-gray-800/80">
                 <CardHeader className="py-3 px-4 ">
-                  <CardTitle className="text-base text-[#8c52ff]">Información Personal</CardTitle>
+                  <CardTitle className="text-base text-[#8c52ff] dark:text-[#a67dff]">Información Personal</CardTitle>
                 </CardHeader>
                 <CardContent className="py-1 px-4">
                   <div className="flex items-center">
-                    <User className="h-4 w-4 text-[#8c52ff] mr-2.5" />
+                    <User className="h-4 w-4 text-[#8c52ff] dark:text-[#a67dff] mr-2.5" />
                     <div>
-                      <p className="text-xs text-gray-500">Nombre Completo</p>
-                      <p className="font-medium text-sm">{displayName}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Nombre Completo</p>
+                      <p className="font-medium text-sm dark:text-gray-200">{displayName}</p>
                     </div>
                   </div>
 
                   <div className="flex items-center">
-                    <BadgeIcon className="h-4 w-4 text-[#8c52ff] mr-2.5" />
+                    <BadgeIcon className="h-4 w-4 text-[#8c52ff] dark:text-[#a67dff] mr-2.5" />
                     <div>
-                      <p className="text-xs text-gray-500">DNI</p>
-                      <p className="font-medium text-sm">{dni}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">DNI</p>
+                      <p className="font-medium text-sm dark:text-gray-200">{dni}</p>
                     </div>
                   </div>
 
                   <div className="flex items-center">
-                    <Mail className="h-4 w-4 text-[#8c52ff] mr-2.5" />
+                    <Mail className="h-4 w-4 text-[#8c52ff] dark:text-[#a67dff] mr-2.5" />
                     <div>
-                      <p className="text-xs text-gray-500">Correo Electrónico</p>
-                      <p className="font-medium text-sm">{email}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Correo Electrónico</p>
+                      <p className="font-medium text-sm dark:text-gray-200">{email}</p>
                     </div>
                   </div>
 
                   <div className="flex items-center">
-                    <Phone className="h-4 w-4 text-[#8c52ff] mr-2.5" />
+                    <Phone className="h-4 w-4 text-[#8c52ff] dark:text-[#a67dff] mr-2.5" />
                     <div>
-                      <p className="text-xs text-gray-500">Teléfono</p>
-                      <p className="font-medium text-sm">{telefono}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Teléfono</p>
+                      <p className="font-medium text-sm dark:text-gray-200">{telefono}</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="mt-4 border border-gray-200">
+              <Card className="mt-4 border border-gray-200 dark:border-gray-700 dark:bg-gray-800/80">
                 <CardHeader className="py-3 px-4">
-                  <CardTitle className="text-base text-[#8c52ff]">Acceso al Sistema</CardTitle>
+                  <CardTitle className="text-base text-[#8c52ff] dark:text-[#a67dff]">Acceso al Sistema</CardTitle>
                 </CardHeader>
                 <CardContent className="py-1 px-2">
                   <div className="flex items-center">
-                    <div className="h-8 w-8 rounded-full bg-[#f0ebff] flex items-center justify-center">
-                      <Shield className="h-4 w-4 text-[#8c52ff]" />
+                    <div className="h-8 w-8 rounded-full bg-[#f0ebff] dark:bg-[#4d2994]/30 flex items-center justify-center">
+                      <Shield className="h-4 w-4 text-[#8c52ff] dark:text-[#a67dff]" />
                     </div>
                     <div className="ml-3">
-                      <h3 className="text-sm font-medium">Rol de Usuario</h3>
-                      <p className="text-[#8c52ff] font-semibold text-sm">{userRole}</p>
+                      <h3 className="text-sm font-medium dark:text-gray-300">Rol de Usuario</h3>
+                      <p className="text-[#8c52ff] dark:text-[#a67dff] font-semibold text-sm">{userRole}</p>
                     </div>
                   </div>
 
                   <Separator className="my-3" />
 
                   <div>
-                    <h4 className="text-xs font-medium text-gray-500 mb-2">Permisos</h4>
+                    <h4 className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">Permisos</h4>
                     <div className="flex flex-wrap gap-1.5">
                       {permissions.map((permission, index) => (
                         <Badge
                           key={index}
                           variant="outline"
-                          className="px-2 py-0.5 text-xs bg-[#f0ebff] text-[#8c52ff] border-[#d9c6ff]"
+                          className="px-2 py-0.5 text-xs bg-[#f0ebff] text-[#8c52ff] border-[#d9c6ff] dark:bg-[#4d2994]/30 dark:text-[#a67dff] dark:border-[#6b42c9]"
                         >
                           {permission}
                         </Badge>
                       ))}
                       <Badge
                         variant="outline"
-                        className="px-2 py-0.5 text-xs bg-[#f0ebff] text-[#8c52ff] border-[#d9c6ff]"
+                        className="px-2 py-0.5 text-xs bg-[#f0ebff] text-[#8c52ff] border-[#d9c6ff] dark:bg-[#4d2994]/30 dark:text-[#a67dff] dark:border-[#6b42c9]"
                       >
                         Reclamaciones
                       </Badge>
                       <Badge
                         variant="outline"
-                        className="px-2 py-0.5 text-xs bg-[#f0ebff] text-[#8c52ff] border-[#d9c6ff]"
+                        className="px-2 py-0.5 text-xs bg-[#f0ebff] text-[#8c52ff] border-[#d9c6ff] dark:bg-[#4d2994]/30 dark:text-[#a67dff] dark:border-[#6b42c9]"
                       >
                         Modales
                       </Badge>
