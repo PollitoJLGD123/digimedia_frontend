@@ -1,5 +1,6 @@
 "use client"
 import { Image, Type, AlignLeft } from "lucide-react"
+import UploadImage from "./UploadImage"
 
 export default function FormFooter({ formFooter, setFormData }) {
     const handleChange = (e) => {
@@ -81,22 +82,18 @@ export default function FormFooter({ formFooter, setFormData }) {
                             <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
                                 <Image className="w-4 h-4 mr-1.5 text-yellow-400" /> Imágenes
                             </label>
-                            {["public_image1", "public_image2", "public_image3"].map((imgField, index) => (
-                                <div key={index}  className="relative w-full mb-2">
-                                    <input
-                                    accept="image/*"
-                                    type="file"
-                                    name={imgField}
-                                    onChange={handleChange}
-                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                            {["1", "2", "3"].map((num, index) => (
+                                <div key={index} className="relative w-full mb-2">
+                                    <UploadImage
+                                    uploadPreset="nextjs_digimedia_blog_footer"
+                                    folder="blogs/footers/"
+                                    name_public = {`public_image${num}`}
+                                    name_url = {`url_image${num}`} 
+                                    size_image = {1.5 * 700 * 700}
+                                    public_id={formFooter[`url_image${num}`]}
+                                    setFormData={setFormData}
                                     />
-                                    <div className="flex items-center justify-center w-full p-3 border-2 border-dashed border-gray-700 rounded-lg bg-gray-900 text-white transition-all hover:border-purple-500 hover:bg-gray-800">
-                                    <Image className="w-5 h-5 mr-2 text-yellow-400" />
-                                    <span className="text-sm">Selecciona una imagen</span>
                                 </div>
-                            </div>
-
-                                
                             ))}
                         </div>
                     </form>

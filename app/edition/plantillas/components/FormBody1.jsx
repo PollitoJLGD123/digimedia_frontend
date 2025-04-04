@@ -1,6 +1,8 @@
 "use client";
 import { Type, AlignLeft, Quote, Image } from "lucide-react";
 import { Loader2, CheckCircle, ArrowRight } from "lucide-react"
+import UploadImage from "./UploadImage";
+
 export default function FormBody1(props) {
   const {
     formCommendBody,
@@ -30,6 +32,8 @@ export default function FormBody1(props) {
     });
   };
 
+  console.log(formEncabezadoBody)
+
   return (
     <div className="relative p-0 text-black rounded-lg shadow-[0px_10px_25px_rgba(0,0,0,0.25)] overflow-hidden flex flex-row my-5 justify-center">
       <div className="w-[700px]">
@@ -37,10 +41,10 @@ export default function FormBody1(props) {
           <div className="absolute bg-black/70"></div>
           <img
             src={
-              formEncabezadoBody.public_image
-                ? formEncabezadoBody.public_image.startsWith("http")
-                  ? formEncabezadoBody.public_image
-                  : `/blog/${formEncabezadoBody.public_image}`
+              formEncabezadoBody.public_image1
+                ? formEncabezadoBody.public_image1.startsWith("http")
+                  ? formEncabezadoBody.public_image1
+                  : `/blog/${formEncabezadoBody.public_image1}`
                 : "/blog/blog-4.jpg"
             }
             alt={formEncabezadoBody.titulo || "Imagen principal"}
@@ -165,19 +169,15 @@ export default function FormBody1(props) {
               <label className="flex items-center text-white text-sm font-medium mb-2">
                 <Image className="w-5 h-5 mr-2 text-purple-400" /> Imagen
               </label>
-              <div  className="relative w-full">
-                <input
-                accept="image/*"
-                type="file"
-                name="public_image1"
-                onChange={handleChange}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                />
-                <div className="flex items-center justify-center w-full p-3 border-2 border-dashed border-gray-700 rounded-lg bg-gray-900 text-white transition-all hover:border-purple-500 hover:bg-gray-800">
-                <Image className="w-5 h-5 mr-2 text-purple-400" />
-                    <span className="text-sm">Selecciona una imagen</span>
-                </div>
-              </div>
+              <UploadImage
+                uploadPreset="nextjs_digimedia_blog_body"
+                folder="blogs/bodies/"
+                name_public="public_image1"
+                name_url="url_image1"
+                size_image={4 * 1024 * 1024}
+                public_id={formEncabezadoBody.url_image1}
+                setFormData={setFormEncabezadoBody}
+              />
             </div>
             <div>
               <label className="flex items-center text-white text-sm font-medium mb-2">
@@ -260,39 +260,31 @@ export default function FormBody1(props) {
               <label className="flex items-center text-white text-sm font-medium mb-2">
                 <Image className="w-5 h-5 mr-2 text-purple-400" /> Imagen 1
               </label>
-              <div className="relative w-full">
-                <input
-                  accept="image/*"
-                  type="file"
-                  name="public_image2"
-                  onChange={handleChange(setFormGaleryBody)}
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                />
-                <div className="flex items-center justify-center w-full p-3 border-2 border-dashed border-gray-700 rounded-lg bg-gray-900 text-white transition-all hover:border-purple-500 hover:bg-gray-800">
-                  <Image className="w-5 h-5 mr-2 text-purple-400" />
-                  <span className="text-sm">Selecciona una imagen</span>
-                </div>
-              </div>
+              <UploadImage
+                uploadPreset="nextjs_digimedia_blog_body"
+                folder="blogs/bodies/"
+                name_public="public_image2"
+                name_url="url_image2"
+                size_image={3 * 900 * 900}
+                public_id={formGaleryBody.url_image2}
+                setFormData={setFormGaleryBody}
+              />
             </div>
 
             <div>
               <label className="flex items-center text-white text-sm font-medium mb-2">
                 <Image className="w-5 h-5 mr-2 text-purple-400" /> Imagen 2
               </label>
-              
-              <div className="relative w-full">
-              <input
-                type="file"
-                accept="image/*"
-                name="public_image3"
-                onChange={handleChange(setFormGaleryBody)}
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-              />
-              <div className="flex items-center justify-center w-full p-3 border-2 border-dashed border-gray-700 rounded-lg bg-gray-900 text-white transition-all hover:border-purple-500 hover:bg-gray-800">
-                <Image className="w-5 h-5 mr-2 text-purple-400" />
-                <span className="text-sm">Selecciona una imagen</span>
-              </div>
-            </div>
+
+              <UploadImage
+                  uploadPreset="nextjs_digimedia_blog_body"
+                  folder="blogs/bodies/"
+                  name_public = "public_image3"
+                  name_url = "url_image3"
+                  size_image = {3 * 900 * 900}
+                  public_id={formGaleryBody.url_image3}
+                  setFormData={setFormGaleryBody}
+                />
             </div>
           </form>
         </div>

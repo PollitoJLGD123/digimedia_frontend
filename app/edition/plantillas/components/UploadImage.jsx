@@ -32,7 +32,7 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
         }
     }
 
-    function handleUploadSuccess(result) {
+    async function handleUploadSuccess(result) {
         if (!result?.info?.public_id || !result?.info?.secure_url) {
             Swal.fire({
                 icon: "error",
