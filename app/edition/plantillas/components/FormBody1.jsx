@@ -150,6 +150,7 @@ export default function FormBody1(props) {
                 onChange={handleChange(setFormEncabezadoBody)}
                 className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                 placeholder="Título principal"
+                required
               />
             </div>
             <div>
@@ -163,6 +164,7 @@ export default function FormBody1(props) {
                 onChange={handleChange(setFormEncabezadoBody)}
                 className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                 placeholder="Fecha"
+                required
               />
             </div>
             <div>
@@ -305,6 +307,7 @@ export default function FormBody1(props) {
                       onChange={(e) => handleChangeMap(e, index, 'titulo')}
                       className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                       placeholder="Título principal"
+                      required
                     />
                   </div>
                   <div>

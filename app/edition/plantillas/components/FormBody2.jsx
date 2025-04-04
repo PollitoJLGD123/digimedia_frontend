@@ -2,6 +2,8 @@
 import React from 'react'
 import { CheckCircle, Clock, Bookmark, Share2, Eye, Image, Type, AlignLeft, Clock1, BookType, Upload } from "lucide-react"
 import { useState } from 'react';
+import UploadImage from './UploadImage';
+
 export default function FormBody2(props) {
 
   const [activeTab, setActiveTab] = useState("info")
@@ -138,21 +140,16 @@ export default function FormBody2(props) {
                   <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
                     <Image className="w-4 h-4 mr-1.5 text-blue-400" /> Imagen de Fondo
                   </label>
-                  <div  className="relative w-full">
-                    <input
-                    accept="image/*"
-                    type="file"
-                    name="public_image1"
-                    value={formEncabezadoBody.public_image1 || "/blog/blog-2.jpg"}
-                    onChange={handleEncabezadoBodyChange}
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                    />
-                    <div className="flex items-center justify-center w-full p-3 border-2 border-dashed border-gray-700 rounded-lg bg-gray-900 text-white transition-all hover:border-purple-500 hover:bg-gray-800">
-                    <Image className="w-5 h-5 mr-2 text-blue-400" />
-                        <span className="text-sm">Selecciona una imagen</span>
-                    </div>
-                  </div>
-                  </div>
+                  <UploadImage
+                    uploadPreset="nextjs_digimedia_blog_body"
+                    folder="blogs/bodies/"
+                    name_public="public_image1"
+                    name_url="url_image1"
+                    size_image={4 * 1024 * 1024}
+                    public_id={formEncabezadoBody.url_image1}
+                    setFormData={setFormEncabezadoBody}
+                  />
+                </div>
               </form>
             </div>
           </div>
@@ -328,8 +325,8 @@ export default function FormBody2(props) {
                 {[
                   { id: 2, url: formGaleryBody.public_image2 || "/blog/blog-10.jpg", title: "Imagen destacada 1" },
                   { id: 3, url: formGaleryBody.public_image3 || "/blog/blog-1.jpg", title: "Imagen destacada 2" },
-                ].map((image) => (
-                  <div key={image.id} className="bg-white rounded-lg shadow-sm overflow-hidden">
+                ].map((image, index) => (
+                  <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden">
                     <div className="relative h-64 bg-slate-100">
                       <img
                         src={image.url.startsWith("http") ? image.url : `${image.url}`}
@@ -348,20 +345,15 @@ export default function FormBody2(props) {
                         {image.title}
                       </h4>
 
-                      <div className="relative">
-                        <input
-                          type="text"
-                          name={`public_image${image.id}`}
-                          value={image.id === 2 ? formGaleryBody.public_image2 : formGaleryBody.public_image3}
-                          onChange={handleGaleryBodyChange}
-                          className="w-full bg-slate-50 border border-slate-200 rounded-md py-2 px-3 text-sm focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all duration-200"
-                          placeholder="URL de la imagen"
-                        />
-
-                        <button className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-teal-500">
-                          <Upload className="w-4 h-4" />
-                        </button>
-                      </div>
+                      <UploadImage
+                        uploadPreset="nextjs_digimedia_blog_body"
+                        folder="blogs/bodies/"
+                        name_public={`public_image${image.id}`}
+                        name_url={`url_image${image.id}`}
+                        size_image={3 * 900 * 900}
+                        public_id={formGaleryBody[`url_image${image.id}`]}
+                        setFormData={setFormGaleryBody}
+                      />
                     </div>
                   </div>
                 ))}
