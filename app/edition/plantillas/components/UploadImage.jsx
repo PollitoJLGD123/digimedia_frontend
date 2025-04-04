@@ -13,13 +13,8 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
         publicIdRef.current = public_id;
     }, [public_id]);
 
-    async function eliminarImagenAnterior(id_public) {
-        console.log("Intenado eliminar imagen - public_id:", id_public);
-        
-        if (!id_public) {
-            console.log("No public_id");
-            return;
-        }
+    async function eliminarImagenAnterior(id_public) {        
+        if (!id_public) return;
     
         try {
             const response = await Cloud.deleteImage(id_public);
@@ -46,15 +41,10 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
             return;
         }
         
-        const info = result.info;
-        console.log("Info de imagen subida:", info);
-        console.log("Estado actual - public_id prop:", public_id);
-        
+        const info = result.info;        
         const idToDelete = publicIdRef.current;
         
-        if (idToDelete && idToDelete.trim() !== "") {
-            console.log("Se procede a eliminar la imagen anterior:", idToDelete);
-            
+        if (idToDelete && idToDelete.trim() !== "") {            
             eliminarImagenAnterior(idToDelete)
                 .then(() => {
                     console.log("Imagen anterior eliminada, actualizando estado...");
@@ -75,7 +65,6 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
                     setUploading(false);
                 });
         } else {
-            console.log("No hay imagen anterior, se procede a guardar la nueva imagen");
             setFormData((prev) => ({
                 ...prev,
                 [name_public]: info.secure_url,
