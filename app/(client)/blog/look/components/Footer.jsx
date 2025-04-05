@@ -16,7 +16,8 @@ export default function Footer({url_image1, url_image2, url_image3 , descripcion
                     </h3>
 
                     <p className="text-gray-100 text-base leading-relaxed max-w-3xl mx-auto mb-6 text-center">
-                    Digimedia es una empresa de marketing digital, que se enfoca en potenciar tu empredimiento a nivel online. Ademas, le brinda a tu empredimiento estrategias que ayuden a cumplir los objetivos de manera eficaz. Somos un grupo de personas comprometidas con el desarollo de cada marca que nos contacta.
+                    El letrero de neón LED es una herramienta de marketing poderosa, capaz de captar la atención y aumentar la visibilidad de tu local. Un letrero de neón LED bien diseñado es una herramienta de marketing poderosa, capaz de captar la atención y aumentar la visibilidad de tu local.
+                    {descripcion}
                     </p>
 
                     {
