@@ -1,10 +1,10 @@
 
 
-export default function Header() {
+export default function Header({url_image}) {
     return (
         <div
             className="w-full h-screen md:h-[80vh] relative flex items-center justify-center text-center px-6 sm:px-12 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(/blog/fondo_blog_extend.png)` 
+            style={{ backgroundImage: `url(${url_image})` 
             }}
         >
             <div className="absolute inset-0 bg-black/60"></div>

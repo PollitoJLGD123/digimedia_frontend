@@ -1,5 +1,5 @@
 
-export default function Footer() {
+export default function Footer({url_image1, url_image2, url_image3}) {
 
     return (
         <div className="mt-12 max-w-[1000px] mx-auto bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-lg shadow-[0px_8px_20px_rgba(0,0,0,0.3)] overflow-hidden">
@@ -21,7 +21,7 @@ export default function Footer() {
 
                     {
                         <div className="flex flex-wrap justify-center gap-3 mt-6">
-                            {["/blog/blog-8.jpg", "/blog/blog-2.jpg", "/blog/blog-5.jpg"].map((image, index) => {
+                            {[url_image1, url_image2, url_image3].map((image, index) => {
 
                                 return (
                                     <div key={index} className="relative group">

@@ -68,20 +68,24 @@ function EnlacesForm() {
 
     const categories = [
         {
-            name: "Marketing y Gestión Digital",
-            url: "https://943060409.blogspot.com/search/label/Marketing%20y%20gesti%C3%B3n%20digital",
+            name: "Tu Bar en la Mira",
+            url: "/blog/look/plantilla1",
         },
         {
             name: "Diseño y Desarrollo Web",
-            url: "https://943060409.blogspot.com/search/label/Dise%C3%B1o%20y%20Desarrollo%20web",
+            url: "/blog/look/plantilla2",
         },
         {
             name: "Gestión de Redes Sociales",
-            url: "https://943060409.blogspot.com/search/label/Gestion%20de%20redes%20sociales",
+            url: "/blog/look/plantilla3",
         },
         {
             name: "Branding y Diseño",
-            url: "https://943060409.blogspot.com/search/label/Branding%20y%20dise%C3%B1o",
+            url: "/blog/look/plantilla4",
+        },
+        {
+            name: "Marketing y Gestión Digital",
+            url: "/blog/look/plantilla5",
         },
     ]
 
