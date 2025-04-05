@@ -109,7 +109,9 @@ const PageContent = () => {
         ...prev,
         id_blog_head: id,
       }));
-      return "succes";
+
+      console.log("Id del header:", id);
+      return id;
     }
     else {
       Swal.fire({
@@ -129,7 +131,8 @@ const PageContent = () => {
         ...prev,
         id_blog_footer: id,
       }));
-      return "succes";
+      console.log("Id del footer:", id);
+      return id;
     }
     else {
       Swal.fire({
@@ -142,11 +145,14 @@ const PageContent = () => {
     }
   }
 
-  async function guardarBody() {
+  async function guardarBody(id_commend_tarjeta) {
+
+    console.log("Id del commend tarjeta guarda body:", id_commend_tarjeta);
+
     const formBody = {
       titulo: formEncabezadoBody.titulo,
       descripcion: formEncabezadoBody.descripcion,
-      id_commend_tarjeta: formSave.id_commend_tarjeta,
+      id_commend_tarjeta: id_commend_tarjeta,
       public_image1: formEncabezadoBody.public_image1,
       url_image1: formEncabezadoBody.url_image1,
       public_image2: formGaleryBody.public_image2,
@@ -161,7 +167,7 @@ const PageContent = () => {
         ...prev,
         id_blog_body: id,
       }));
-      return "succes";
+      return id;
     }
     else {
       Swal.fire({
@@ -181,7 +187,9 @@ const PageContent = () => {
         ...prev,
         id_commend_tarjeta: id,
       }));
-      return "succes";
+      
+      console.log("Id del la tarjeta comentario:", id);
+      return id;
     }
     else {
       Swal.fire({
@@ -194,11 +202,14 @@ const PageContent = () => {
     }
   }
 
-  async function guardarBlog() {
+  async function guardarBlog( id_blog_head, id_blog_footer, id_blog_body) {
+
+    console.log("Ides de guardar el blog:", id_blog_head, id_blog_footer, id_blog_body);
+
     const formBlog = {
-      id_blog_head: formSave.id_blog_head,
-      id_blog_footer: formSave.id_blog_footer,
-      id_blog_body: formSave.id_blog_body,
+      id_blog_head: id_blog_head,
+      id_blog_footer: id_blog_footer,
+      id_blog_body: id_blog_body,
       fecha: formEncabezadoBody.fecha,
     }
     const id = await Service.saveBlog(formBlog);
@@ -207,7 +218,7 @@ const PageContent = () => {
         ...prev,
         id_blog: id,
       }));
-      return "succes";
+      return id;
     }
     else {
       Swal.fire({
@@ -220,14 +231,14 @@ const PageContent = () => {
     }
   }
 
-  async function guardarCard() {
+  async function guardarCard(id_blog) {
     const formCard = {
-      id_blog: formSave.id_blog,
+      id_blog: id_blog,
       titulo: dataHeader.titulo,
       descripcion: formEncabezadoBody.descripcion,
       public_image: dataHeader.public_image,
       url_image: dataHeader.url_image,
-      id_plantilla: 1,
+      id_plantilla: 2,
     }
     const id = await Service.saveCard(formCard);
     if (id && id > 0) {
@@ -235,7 +246,9 @@ const PageContent = () => {
         ...prev,
         id_card: id,
       }));
-      return "succes";
+
+      console.log("Id del card:", id);
+      return id;
     }
     else {
       Swal.fire({
@@ -248,12 +261,12 @@ const PageContent = () => {
     }
   }
 
-  async function guardarTarjetas() {
+  async function guardarTarjetas(id_blog_body) {
     try {
       const resultados = await Promise.all(
         formInfoBody.map(async (section) => {
           const formTarjeta = {
-            id_blog_body: formSave.id_blog_body,
+            id_blog_body: id_blog_body,
             titulo: section.titulo,
             descripcion: section.descripcion,
           };
@@ -276,7 +289,7 @@ const PageContent = () => {
 
   async function executionFunction(functionSave, mensajeError) {
     const resultado = await functionSave();
-    if (resultado !== "succes") {
+    if (!resultado || resultado === "error") {
       Swal.fire({
         title: "Error",
         text: mensajeError,
@@ -285,6 +298,7 @@ const PageContent = () => {
       });
       throw new Error(mensajeError);
     }
+    return resultado;
   }
 
   async function HandleSave() {
@@ -292,13 +306,17 @@ const PageContent = () => {
 
       setLoading(true);
 
-      await executionFunction(guardarCommendTarjeta, "No se pudo guardar la tarjeta de comentarios");
-      await executionFunction(guardarBody, "No se pudo guardar el contenido del blog");
-      await executionFunction(guardarTarjetas, "No se pudo guardar las tarjetas informativas");
-      await executionFunction(guardarHeader, "No se pudo guardar el encabezado");
-      await executionFunction(guardarFooter, "No se pudo guardar el pie de página");
-      await executionFunction(guardarBlog, "No se pudo guardar el blog");
-      await executionFunction(guardarCard, "No se pudo guardar la tarjeta del blog");
+      const id_commend_tarjeta = await executionFunction(guardarCommendTarjeta, "No se pudo guardar la tarjeta de comentarios");
+
+      const id_blog_body = await executionFunction(() => guardarBody(id_commend_tarjeta), "No se pudo guardar el contenido del blog");
+
+      await executionFunction(() => guardarTarjetas(id_blog_body), "No se pudo guardar las tarjetas informativas");
+
+      const id_blog_head = await executionFunction(() => guardarHeader(), "No se pudo guardar el encabezado");
+      const id_blog_footer = await executionFunction(() => guardarFooter(), "No se pudo guardar el pie de página");
+
+      const id_blog = await executionFunction(() => guardarBlog(id_blog_head, id_blog_footer, id_blog_body) , "No se pudo guardar el blog");
+      await executionFunction(() => guardarCard(id_blog), "No se pudo guardar la card");
 
       Swal.fire({
         title: "Guardado Correctamente",
@@ -389,7 +407,7 @@ const PageContent = () => {
 
     } catch (error) {
       console.error("Error al guardar:", error.message);
-    }finally{
+    } finally {
       setLoading(false);
     }
   }
