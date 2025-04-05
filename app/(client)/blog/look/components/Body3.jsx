@@ -1,4 +1,6 @@
 
+"use client"
+
 import { CheckCircle, Calendar, ArrowDownCircle, ExternalLink } from "lucide-react"
 
 export default function Body3() {
