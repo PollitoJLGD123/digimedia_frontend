@@ -1,25 +1,25 @@
 
-import React from 'react'
 import axios from 'axios'
+import url from "../../../api/url"
 
-const API_DELETE = "/api/delete_image";
+const API_URL = `${url}/api`;
 
 const Cloud = {
+
     deleteImage: async function deleteImage(public_id) {
         try {
-            const response = await axios.post(API_DELETE, 
-                { 
-                    "public_id": public_id
-                },
-                {   
-                    headers:{
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    }
+            const response = await axios.post(`${API_URL}/delete_image`, 
+            {
+                "public_id": public_id
+            },
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
                 }
-            );
+            });
             if (response.status === 200) {
-                return response.data.result;
+                return response.json();
             }
             else {
                 return null;
