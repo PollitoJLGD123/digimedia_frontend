@@ -16,9 +16,9 @@ export default function Page() {
         <Body4 />
 
         <Footer
-          url_image1={"/blog/blog-5.jpg"}
-          url_image2={"/blog/blog-8.jpg"}
-          url_image3={"/blog/blog-2.jpg"}
+          url_image1={"/blog/branding_1.webp"}
+          url_image2={"/blog/brading_fondo.webp"}
+          url_image3={"/blog/branding_2.webp"}
           descripcion={"Un buen branding y diseño no solo consiste en crear una imagen visual atractiva, sino en construir una identidad que hable por sí misma. Con un diseño coherente y bien pensado, tu marca puede conectar emocionalmente con tu público objetivo."}
         />
       </div>

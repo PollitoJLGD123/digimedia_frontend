@@ -12,11 +12,11 @@ const HeaderSection = () => (
       className="absolute inset-0 w-full h-full object-cover"
     />
     <div className="relative z-20 h-full flex flex-col justify-end p-8">
-      <p className="select-none text-green-400 mb-2 font-medium">
+      <p className="select-none text-blue-400 mb-2 font-medium">
         {"2025-03-31"}
       </p>
-      <h2 className="select-none text-4xl md:text-5xl font-['Poppins'] font-extrabold text-white mb-4 drop-shadow-lg">
-        Branding <span className="text-green-400">&</span> Diseño
+      <h2 className="select-none text-4xl md:text-5xl  font-extrabold text-white mb-4 drop-shadow-lg">
+        Branding <span className="text-blue-400">y</span> Diseño
       </h2>
     </div>
   </div>
@@ -26,7 +26,7 @@ const DescriptionSection = () => (
   <div className="relative mb-16 bg-white p-6 rounded-lg shadow-md -mt-12">
     <span className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-red-500 via-purple-500 to-blue-500 select-none"></span>
 
-    <p className="text-lg leading-relaxed text-gray-700 font-['Poppins']">
+    <p className="text-lg leading-relaxed text-gray-700 ">
       Detrás de cada gran marca hay una historia que resuena. Tu PYME también
       merece una identidad que comunique su esencia y valores. Desde el logo
       hasta la paleta de colores, cada elemento es una oportunidad para destacar
@@ -37,10 +37,10 @@ const DescriptionSection = () => (
 );
 
 const TipsList = ({ consejosBranding }) => (
-  <div className="mb-16 p-6 bg-gradient-to-br bg-white rounded-lg shadow-[0px_10px_25px_rgba(0,0,0,0.25)] text-center text-gray-100">
+  <div className="mb-16 p-6 bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg shadow-[0px_10px_25px_rgba(0,0,0,0.25)] text-center text-gray-100">
     <div className="flex items-center justify-center mb-4 select-none">
       <span className="h-0.5 w-12 bg-green-400 mr-4"></span>
-      <h3 className="text-2xl font-bold text-green-400 font-['Poppins']">
+      <h3 className="text-2xl font-bold text-green-400 ">
         Estrategias de Branding
       </h3>
       <span className="h-0.5 w-12 bg-green-400 ml-4"></span>
@@ -50,10 +50,10 @@ const TipsList = ({ consejosBranding }) => (
       {consejosBranding.map((text, index) => (
         <li
           key={`commend-${index}`}
-          className="flex items-start gap-3 bg-white p-4 rounded-lg border backdrop-blur-md bg-opacity-20 hover:bg-[#F8F9FA] transition-all duration-200 border-l-4 border-green-400"
+          className="flex items-center gap-3 bg-gray-800/50 p-3 rounded-lg"
         >
           <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0" />
-          <span className="text-left text-black/90">{text}</span>
+          <span className="text-left text-white/90">{text}</span>
         </li>
       ))}
     </ul>
@@ -67,7 +67,7 @@ const ImageGallery = ({ detailsImage }) => (
         key={index}
         className="group relative overflow-hidden rounded-xl shadow-xl"
       >
-        <div className="absolute inset-0 bg-gradient-to-t from-green-900/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-purple-900/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
         <img
           src={src}
           alt={`Imagen ${index + 1} del artículo`}
@@ -89,7 +89,7 @@ const ImageGallery = ({ detailsImage }) => (
 const BenefitCards = ({ cards, borderColors }) => (
   <div className="relative">
     <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 text-center">
-      <div className="select-none inline-block px-4 py-1 bg-green-500 text-white text-sm font-medium rounded-full">
+      <div className="select-none inline-block px-4 py-1 bg-blue-500 text-white text-sm font-medium rounded-full">
         Información Importante
       </div>
     </div>
@@ -98,14 +98,14 @@ const BenefitCards = ({ cards, borderColors }) => (
       {cards.map((card, index) => (
         <div
           key={`benefit-${index}`}
-          className={`p-6 rounded-lg shadow-md bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${
+          className={`p-6 rounded-lg shadow-md bg-gradient-to-t from-gray-900 to-gray-800 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${
             borderColors[index % borderColors.length]
           }`}
         >
-          <h3 className="text-xl font-['Poppins'] font-bold mb-3 text-[#003366]">
+          <h3 className="text-xl  font-bold mb-3 text-blue-400">
             {card.titulo}
           </h3>
-          <p className="text-gray-700">{card.descripcion}</p>
+          <p className="text-gray-100">{card.descripcion}</p>
         </div>
       ))}
     </div>
