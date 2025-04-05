@@ -18,9 +18,9 @@ export default function Page() {
                 <Body3 />
 
                 <Footer 
-                url_image1={"/blog/blog-5.jpg"} 
-                url_image2={"/blog/blog-8.jpg"} 
-                url_image3={"/blog/blog-2.jpg"} 
+                url_image1={"/blog/blog-14.jpg"} 
+                url_image2={"/blog/blog-15.jpg"} 
+                url_image3={"/blog/blog-16.jpg"} 
                 descripcion={"Al comprender las tendencias, el comportamiento del consumidor y las mejores prácticas de cada plataforma, podemos ayudarte a posicionar tu marca de manera efectiva. Invertir en una gestión profesional de redes sociales es esencial para mantener una presencia digital activa, relevante y rentable."}
                 />
 
