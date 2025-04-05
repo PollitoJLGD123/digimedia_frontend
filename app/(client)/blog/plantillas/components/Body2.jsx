@@ -120,7 +120,7 @@ export default function Body2({ id_blog_body, fecha }) {
                         data.public_image1
                             ? data.public_image1.startsWith("http")
                                 ? data.public_image1
-                                : `/blog/${data.public_image1}`
+                                : `${data.public_image1}`
                             : "/blog/blog-4.jpg"
                     }
                     alt={data.titulo || "Imagen principal"}
@@ -207,10 +207,10 @@ export default function Body2({ id_blog_body, fecha }) {
 
                     {activeTab === "gallery" && (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {[data.public_image1 || "/blog/blog-10.jpg", data.public_image2 || "/blog/blog-1.jpg"].map((src, index) => (
+                            {[data.public_image2 || "/blog/blog-10.jpg", data.public_image3 || "/blog/blog-1.jpg"].map((src, index) => (
                                 <div key={index} className="group relative rounded-xl overflow-hidden shadow-md">
                                     <img
-                                        src={src.startsWith("http") ? src : `/blog/${src}`}
+                                        src={src.startsWith("http") ? src : `${src}`}
                                         alt={`Imagen ${index + 1} del artículo`}
                                         className="w-full h-64 object-cover transition-transform duration-700 group-hover:scale-110"
                                     />

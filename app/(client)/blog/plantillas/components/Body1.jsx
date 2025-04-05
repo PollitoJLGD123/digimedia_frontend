@@ -105,7 +105,7 @@ export default function Body1({ id_blog_body, fecha }) {
                         data.public_image1
                             ? data.public_image1.startsWith("http")
                                 ? data.public_image1
-                                : `/blog/${data.public_image1}`
+                                : `${data.public_image1}`
                             : "/blog/blog-4.jpg"
                     }
                     alt={data.titulo || "Imagen principal"}
@@ -150,11 +150,11 @@ export default function Body1({ id_blog_body, fecha }) {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-16">
-                    {[data.public_image1 || "/blog/blog-10.jpg", data.public_image2 || "/blog/blog-1.jpg"].map((src, index) => (
+                    {[data.public_image2 || "/blog/blog-10.jpg", data.public_image3 || "/blog/blog-1.jpg"].map((src, index) => (
                         <div key={index} className="group relative overflow-hidden rounded-xl shadow-xl">
                             <div className="absolute inset-0 bg-gradient-to-t from-purple-900/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
                             <img
-                                src={src.startsWith("http") ? src : `/blog/${src}`}
+                                src={src.startsWith("http") ? src : `${src}`}
                                 alt={`Imagen ${index + 1} del artículo`}
                                 className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
                             />

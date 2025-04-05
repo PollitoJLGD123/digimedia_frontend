@@ -37,7 +37,7 @@ const PageContent = () => {
     titulo: "Titulo Header",
     texto_frase: "Texto atractivo y llamativo para el cliente",
     texto_descripcion: "Texto destacado y secundario para el titulo",
-    public_image: "/blog/fondo_blog_extend.jpg",
+    public_image: "/blog/fondo_blog_extend.png",
     url_image: "",
   });
 
@@ -46,7 +46,7 @@ const PageContent = () => {
     descripcion:
       "Las luces neón LED se han convertido en un elemento diferenciador en el mundo de la hospitalidad. No solo son visualmente atractivos, sino que también refuerzan la identidad de tu negocio. En este artículo, exploraremos cómo las letras luminosas pueden marcar la diferencia en la experiencia de tus clientes.",
     fecha: '2025-03-31',
-    public_image1: "blog-4.jpg",
+    public_image1: "/blog/blog-4.jpg",
     url_image1: "",
   });
 
@@ -349,7 +349,7 @@ const PageContent = () => {
         titulo: "Titulo Header",
         texto_frase: "Texto atractivo y llamativo para el cliente",
         texto_descripcion: "Texto destacado y secundario para el titulo",
-        public_image: "/blog/fondo_blog_extend.jpg",
+        public_image: "/blog/fondo_blog_extend.png",
         url_image: "",
       });
 

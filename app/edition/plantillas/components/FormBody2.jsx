@@ -69,7 +69,7 @@ export default function FormBody2(props) {
                 formEncabezadoBody.public_image1
                   ? formEncabezadoBody.public_image1.startsWith("http")
                     ? formEncabezadoBody.public_image1
-                    : `/blog/${formEncabezadoBody.public_image1}`
+                    : `${formEncabezadoBody.public_image1}`
                   : "/blog/blog-4.jpg"
               }
               alt={formEncabezadoBody.titulo || "Imagen principal"}
