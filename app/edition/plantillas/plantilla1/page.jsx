@@ -146,7 +146,7 @@ const PageContent = () => {
     const formBody = {
       titulo: formEncabezadoBody.titulo,
       descripcion: formEncabezadoBody.descripcion,
-      id_commend_tarjeta: commentId, // Use the directly passed ID
+      id_commend_tarjeta: commentId,
       public_image1: formEncabezadoBody.public_image1,
       url_image1: formEncabezadoBody.url_image1,
       public_image2: formGaleryBody.public_image2,
