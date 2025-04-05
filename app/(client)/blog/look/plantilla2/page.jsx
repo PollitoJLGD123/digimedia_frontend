@@ -20,8 +20,8 @@ export default function Page() {
 
                 <Body2 />
 
-                <Footer url_image1={"/blog/blog-5.jpg"} url_image2={"/blog/blog-8.jpg"} url_image3={"/blog/blog-2.jpg"} 
-                descripcion= "trallalero tralalala"/>
+                <Footer url_image1={"/blog/footer_plantilla2.webp"} url_image2={"/blog/footer2_plantilla2.webp"} url_image3={"/blog/footer3_plantilla2.webp"} 
+                descripcion= " El diseño y desarrollo web es un campo que está en constante evolución. A medida que surgen nuevas tecnologías y tendencias, es esencial mantenerse actualizado para crear experiencias de usuario que sean tanto funcionales como estéticamente atractivas "/>
             </div>
         </div>
     )
