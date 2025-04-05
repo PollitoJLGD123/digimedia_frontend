@@ -37,7 +37,7 @@ const DescriptionSection = () => (
 );
 
 const TipsList = ({ consejosBranding }) => (
-  <div className="mb-16 p-6 bg-gradient-to-br from-gray-950 to-gray-900 rounded-lg shadow-[0px_10px_25px_rgba(0,0,0,0.25)] text-center text-gray-100">
+  <div className="mb-16 p-6 bg-gradient-to-br bg-white rounded-lg shadow-[0px_10px_25px_rgba(0,0,0,0.25)] text-center text-gray-100">
     <div className="flex items-center justify-center mb-4 select-none">
       <span className="h-0.5 w-12 bg-green-400 mr-4"></span>
       <h3 className="text-2xl font-bold text-green-400 font-['Poppins']">
@@ -50,10 +50,10 @@ const TipsList = ({ consejosBranding }) => (
       {consejosBranding.map((text, index) => (
         <li
           key={`commend-${index}`}
-          className="flex items-center gap-3 bg-white/10 p-4 rounded-lg backdrop-blur-sm"
+          className="flex items-start gap-3 bg-white p-4 rounded-lg border backdrop-blur-md bg-opacity-20 hover:bg-[#F8F9FA] transition-all duration-200 border-l-4 border-green-400"
         >
           <CheckCircle className="w-6 h-6 text-green-400 flex-shrink-0" />
-          <span className="text-left text-white/90">{text}</span>
+          <span className="text-left text-black/90">{text}</span>
         </li>
       ))}
     </ul>
@@ -89,7 +89,7 @@ const ImageGallery = ({ detailsImage }) => (
 const BenefitCards = ({ cards, borderColors }) => (
   <div className="relative">
     <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 text-center">
-      <div className="select-none cursor-pointer inline-block px-4 py-1 bg-green-500 text-white text-sm font-medium rounded-full">
+      <div className="select-none inline-block px-4 py-1 bg-green-500 text-white text-sm font-medium rounded-full">
         Información Importante
       </div>
     </div>
