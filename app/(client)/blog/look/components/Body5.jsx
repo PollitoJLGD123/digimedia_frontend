@@ -125,7 +125,7 @@ export default function Body5() {
                                                           .map((text, index) => (
                                                               <div
                                                                   key={`commend-${index}`}
-                                                                  className="flex items-start p-4 bg-white rounded-lg shadow-sm border-l-4 border-green-500 hover:shadow-md transition-shadow"
+                                                                  className="flex items-start p-4  bg-white rounded-lg shadow-sm border-l-4 border-green-500 hover:shadow-md transition-shadow"
                                                               >
                                                                   <CheckCircle className="w-6 h-6 text-green-500 flex-shrink-0 mt-0.5 mr-3" />
                                                                   <p className="text-gray-700">{text}</p>

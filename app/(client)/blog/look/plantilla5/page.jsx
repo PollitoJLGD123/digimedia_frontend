@@ -7,7 +7,7 @@ export default function Page() {
     
     return (
         <div>
-            <Header url_image={"/blog/blog-3.jpg"} tituloPrincipal = {"Marketing y gestión digital"}
+            <Header url_image={"/blog/blog-3.jpg"} tituloPrincipal = {"MARKETING Y GESTIÓN DIGITAL"}
               tituloSecundario ={"¡Impulsa tu marca al éxito digital!"} 
               descripcion = {"El marketing y la gestión digital son tus aliados para potenciar el éxito de tu marca en el mundo digital"}
             />
@@ -18,8 +18,8 @@ export default function Page() {
               <Body5 />
 
               <Footer 
-              url_image1={"/blog/blog-5.jpg"} 
-              url_image2={"/blog/blog-8.jpg"} 
+              url_image1={"/blog/fondo-tablet.webp"} 
+              url_image2={"/blog/blog-11.jpg"} 
               url_image3={"/blog/blog-7.jpg"} 
               descripcion={"Una estrategia de marketing digital exitosa es aquella que integra múltiples canales de manera efectiva. Ya sea SEO, publicidad en redes sociales, email marketing o PPC, nuestro servicio de marketing y gestión digital garantiza que todos los esfuerzos estén alineados"}/>
             
