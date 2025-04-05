@@ -16,7 +16,8 @@ export default function Footer({url_image1, url_image2, url_image3 , descripcion
                     </h3>
 
                     <p className="text-gray-100 text-base leading-relaxed max-w-3xl mx-auto mb-6 text-center">
-                        {descripcion}
+                    El letrero de neón LED es una herramienta de marketing poderosa, capaz de captar la atención y aumentar la visibilidad de tu local. Un letrero de neón LED bien diseñado es una herramienta de marketing poderosa, capaz de captar la atención y aumentar la visibilidad de tu local.
+                    {descripcion}
                     </p>
 
                     {

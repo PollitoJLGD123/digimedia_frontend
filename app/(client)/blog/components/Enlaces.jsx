@@ -81,7 +81,7 @@ function EnlacesForm() {
         },
         {
             name: "Branding y Diseño",
-            url: "/blog/look/plantilla4",
+            url: "/blog/look/branding",
         },
         {
             name: "Marketing y Gestión Digital",
