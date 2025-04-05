@@ -1,7 +1,7 @@
 
 import { ArrowRight, CheckCircle} from "lucide-react"
 
-export default function Body1({url_image1, url_image2, url_image3}) {
+export default function Body1() {
 
     const tarjetas = [
         {
@@ -28,7 +28,7 @@ export default function Body1({url_image1, url_image2, url_image3}) {
             <div className="relative h-[400px] overflow-hidden">
                 <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/40 z-10"></div>
                 <img
-                    src={url_image1}
+                    src="/blog/blog-4.jpg"
                     alt="Imagen principal"
                     className="absolute inset-0 w-full h-full object-cover"
                 />
@@ -71,7 +71,7 @@ export default function Body1({url_image1, url_image2, url_image3}) {
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-16">
-                    {[url_image2, url_image3].map((src, index) => (
+                    {["/blog/blog-10.jpg", "/blog/blog-1.jpg"].map((src, index) => (
                         <div key={index} className="group relative overflow-hidden rounded-xl shadow-xl">
                             <div className="absolute inset-0 bg-gradient-to-t from-purple-900/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
                             <img
