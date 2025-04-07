@@ -5,7 +5,7 @@ import Cloud from "../../services/Cloud";
 import { useState, useEffect, useRef } from "react";
 import Swal from "sweetalert2";
 
-function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image, name_public, name_url }) {
+function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image, name_public, name_url, width, height, crop="fill" }) {
     const [uploading, setUploading] = useState(false);
     const publicIdRef = useRef(public_id);
 
@@ -37,16 +37,17 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
             setUploading(false);
             return;
         }
-        
-        const info = result.info;        
+    
+        const info = result.info;
         const idToDelete = publicIdRef.current;
-        
-        if (idToDelete && idToDelete.trim() !== "") {            
+        const transformedUrl = info.eager?.[0]?.secure_url || info.secure_url;
+    
+        if (idToDelete && idToDelete.trim() !== "") {
             eliminarImagenAnterior(idToDelete)
                 .then(() => {
                     setFormData((prev) => ({
                         ...prev,
-                        [name_public]: info.secure_url,
+                        [name_public]: transformedUrl,
                         [name_url]: info.public_id,
                     }));
                     setUploading(false);
@@ -55,7 +56,7 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
                     console.error("Error durante la eliminación de imagen:", error);
                     setFormData((prev) => ({
                         ...prev,
-                        [name_public]: info.secure_url,
+                        [name_public]: transformedUrl, 
                         [name_url]: info.public_id,
                     }));
                     setUploading(false);
@@ -63,7 +64,7 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
         } else {
             setFormData((prev) => ({
                 ...prev,
-                [name_public]: info.secure_url,
+                [name_public]: transformedUrl, // Usar la URL transformada
                 [name_url]: info.public_id,
             }));
             setUploading(false);
@@ -80,7 +81,7 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
                     sources: ["local", "google_drive", "url"],
                     resourceType: "image",
                     clientAllowedFormats: ["jpg", "png", "webp"],
-                    maxFileSize: size_image,
+                    maxFileSize: 10000000,
                     cropping: true,
                     croppingAspectRatio: 1,
                     croppingDefaultSelectionRatio: 1,
@@ -102,7 +103,14 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
                             complete: "#20B832",
                             sourceBg: "#F5F5F5"
                         }
-                    }
+                    },
+                    eager: [
+                        {
+                            width: width,
+                            height: height,
+                            crop: crop,
+                        }
+                    ]
                 }}
                 onUploadAdded={() => {
                     setUploading(true);
@@ -121,13 +129,13 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
                     });
                 }}
             >
-                {({ open }) => (
+                {(widget) => {
+                    const { open } = widget || {}; // Safely destructure
+                    return (
                     <button
-                        onClick={() => {
-                            open();
-                        }}
+                        onClick={() => open?.()}
                         type="button"
-                        disabled={uploading}
+                        disabled={uploading || !open}
                         className="flex items-center justify-center w-full p-3 border-2 border-dashed border-gray-700 rounded-lg bg-gray-900 text-white transition-all hover:border-purple-500 hover:bg-gray-800"
                     >
                         {uploading ? (
@@ -141,7 +149,9 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
                             </>
                         )}
                     </button>
-                )}
+                );
+            }}
+
             </CldUploadWidget>
 
             {public_id && (
