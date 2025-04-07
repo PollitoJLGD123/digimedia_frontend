@@ -173,7 +173,7 @@ export default function FormBody1(props) {
                 folder="blogs/bodies/"
                 name_public="public_image1"
                 name_url="url_image1"
-                size_image={4 * 400 * 780}
+                size_image = {8 * 1400 * 1400}
                 public_id={formEncabezadoBody.url_image1}
                 setFormData={setFormEncabezadoBody}
               />
@@ -266,7 +266,7 @@ export default function FormBody1(props) {
                 folder="blogs/bodies/"
                 name_public="public_image2"
                 name_url="url_image2"
-                size_image={3 * 900 * 900}
+                size_image = {8 * 1400 * 1400}
                 public_id={formGaleryBody.url_image2}
                 setFormData={setFormGaleryBody}
               />
@@ -283,7 +283,7 @@ export default function FormBody1(props) {
                   folder="blogs/bodies/"
                   name_public = "public_image3"
                   name_url = "url_image3"
-                  size_image = {3 * 900 * 900}
+                  size_image = {8 * 1400 * 1400}
                   public_id={formGaleryBody.url_image3}
                   setFormData={setFormGaleryBody}
                 />
@@ -299,6 +299,7 @@ export default function FormBody1(props) {
                   <div className="pb-4">
                     <label className="flex items-center text-white text-sm font-medium mb-2">
                       <Type className="w-5 h-5 mr-2 text-purple-400" /> Título
+                      <h1 className="ml-3 mt-1 text-xs">Máximo 50 caracteres</h1>
                     </label>
                     <input
                       type="text"

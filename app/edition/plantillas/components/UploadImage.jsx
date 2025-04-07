@@ -5,7 +5,7 @@ import Cloud from "../../services/Cloud";
 import { useState, useEffect, useRef } from "react";
 import Swal from "sweetalert2";
 
-function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image, name_public, name_url }) {
+function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image, name_public, name_url, height, width }) {
     const [uploading, setUploading] = useState(false);
     const publicIdRef = useRef(public_id);
 
@@ -82,8 +82,8 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
                     clientAllowedFormats: ["jpg", "png", "webp"],
                     maxFileSize: size_image,
                     cropping: true,
-                    croppingAspectRatio: 1,
-                    croppingDefaultSelectionRatio: 1,
+                    croppingAspectRatio: width / height, 
+                    croppingDefaultSelectionRatio: width / height,
                     showSkipCropButton: false,
                     multiple: false,
                     styles: {

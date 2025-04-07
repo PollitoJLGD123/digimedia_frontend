@@ -257,7 +257,9 @@ export default function FormBody3(props) {
                 folder="blogs/bodies/"
                 name_public="public_image1"
                 name_url="url_image1"
-                size_image={4 * 1024 * 1024}
+                size_image={8 * 1400 * 1400}
+                width={360}
+                height={360}
                 public_id={formEncabezadoBody.url_image1}
                 setFormData={setFormEncabezadoBody}
               />
@@ -291,7 +293,9 @@ export default function FormBody3(props) {
                 folder="blogs/bodies/"
                 name_public="public_image2"
                 name_url="url_image2"
-                size_image={3 * 900 * 900}
+                size_image={8 * 1400 * 1400}
+                width={260}
+                height={260}
                 public_id={formGaleryBody.url_image2}
                 setFormData={setFormGaleryBody}
               />
@@ -307,7 +311,9 @@ export default function FormBody3(props) {
                 folder="blogs/bodies/"
                 name_public="public_image3"
                 name_url="url_image3"
-                size_image={3 * 900 * 900}
+                size_image={8 * 1400 * 1400}
+                width={260}
+                height={260}
                 public_id={formGaleryBody.url_image3}
                 setFormData={setFormGaleryBody}
               />

@@ -139,7 +139,7 @@ export default function FormBody2(props) {
                     folder="blogs/bodies/"
                     name_public="public_image1"
                     name_url="url_image1"
-                    size_image={4 * 1024 * 1024}
+                    size_image = {8 * 1024 * 1024}
                     public_id={formEncabezadoBody.url_image1}
                     setFormData={setFormEncabezadoBody}
                   />
@@ -335,18 +335,18 @@ export default function FormBody2(props) {
                       </div>
                     </div>
                     <div className="p-4">
-                      <h4 className="text-sm font-medium text-slate-700 mb-3 flex items-center">
+                      <label className="text-sm font-medium text-slate-700 mb-3 flex items-center">
                         <Type className="w-4 h-4 mr-1.5 text-slate-400" />
                         {image.title}
                         <h1 className="ml-3 mt-1 text-xs">250x450 píxeles</h1>
-                      </h4>
+                      </label>
 
                       <UploadImage
                         uploadPreset="nextjs_digimedia_blog_body"
                         folder="blogs/bodies/"
                         name_public={`public_image${image.id}`}
                         name_url={`url_image${image.id}`}
-                        size_image={3 * 900 * 900}
+                        size_image={7 * 1400 * 1400}
                         public_id={formGaleryBody[`url_image${image.id}`]}
                         setFormData={setFormGaleryBody}
                       />
