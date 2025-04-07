@@ -94,7 +94,9 @@ export default function FormHeader({ dataHeader, setFormData }) {
                   folder="blogs/headers/"
                   name_public="public_image"
                   name_url="url_image"
-                  size_image={1.5 * 1024 * 1024}
+                  size_image={10 * 1024 * 1024}
+                  width={1920}
+                  height={1080}
                   public_id={dataHeader.url_image}
                   setFormData={setFormData}
                 />

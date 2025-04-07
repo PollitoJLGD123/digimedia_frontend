@@ -83,7 +83,7 @@ export default function FormFooter({ formFooter, setFormData }) {
                         <div className="mb-3">
                             <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
                                 <Image className="w-4 h-4 mr-1.5 text-yellow-400" /> Imágenes 
-                                <h1 className="ml-3 mt-1 text-xs">200x150 píxeles</h1>
+                                <h1 className="ml-3 mt-1 text-xs">200x170 píxeles</h1>
                             </label>
                             {["1", "2", "3"].map((num, index) => (
                                 <div key={index} className="relative w-full mb-2">
@@ -91,8 +91,10 @@ export default function FormFooter({ formFooter, setFormData }) {
                                         uploadPreset="nextjs_digimedia_blog_footer"
                                         folder="blogs/footers/"
                                         name_public = {`public_image${num}`}
-                                        name_url = {`url_image${num}`} 
-                                        size_image = {1.5 * 700 * 700}
+                                        name_url = {`url_image${num}`}
+                                        width={200}
+                                        height={170}
+                                        size_image = {8 * 1024 * 1024}
                                         public_id={formFooter[`url_image${num}`]}
                                         setFormData={setFormData}
                                     />
