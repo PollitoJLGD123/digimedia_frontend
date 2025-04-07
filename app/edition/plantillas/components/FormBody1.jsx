@@ -166,13 +166,14 @@ export default function FormBody1(props) {
             <div>
               <label className="flex items-center text-white text-sm font-medium mb-2">
                 <Image className="w-5 h-5 mr-2 text-purple-400" /> Imagen
+                <h1 className="ml-3 mt-1 text-xs">400x780 píxeles</h1>
               </label>
               <UploadImage
                 uploadPreset="nextjs_digimedia_blog_body"
                 folder="blogs/bodies/"
                 name_public="public_image1"
                 name_url="url_image1"
-                size_image={4 * 1024 * 1024}
+                size_image={4 * 400 * 780}
                 public_id={formEncabezadoBody.url_image1}
                 setFormData={setFormEncabezadoBody}
               />
@@ -197,6 +198,7 @@ export default function FormBody1(props) {
             <div>
               <label className="flex items-center text-white text-sm font-medium mb-2">
                 <Type className="w-5 h-5 mr-2 text-purple-400" /> Título
+                <h1 className="ml-3 mt-1 text-xs">Máximo 50 caracteres</h1>
               </label>
               <input
                 type="text"
@@ -257,6 +259,7 @@ export default function FormBody1(props) {
             <div>
               <label className="flex items-center text-white text-sm font-medium mb-2">
                 <Image className="w-5 h-5 mr-2 text-purple-400" /> Imagen 1
+                <h1 className="ml-3 mt-1 text-xs">250x310 píxeles</h1>
               </label>
               <UploadImage
                 uploadPreset="nextjs_digimedia_blog_body"
@@ -272,6 +275,7 @@ export default function FormBody1(props) {
             <div>
               <label className="flex items-center text-white text-sm font-medium mb-2">
                 <Image className="w-5 h-5 mr-2 text-purple-400" /> Imagen 2
+                <h1 className="ml-3 mt-1 text-xs">250x310 píxeles</h1>
               </label>
 
               <UploadImage
