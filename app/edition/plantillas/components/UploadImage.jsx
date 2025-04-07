@@ -47,8 +47,8 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
                 .then(() => {
                     setFormData((prev) => ({
                         ...prev,
-                        [name_public]: transformedUrl,
-                        [name_url]: info.public_id,
+                        [name_public]: "",
+                        [name_url]: "",
                     }));
                     setUploading(false);
                 })
