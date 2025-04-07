@@ -5,19 +5,19 @@ import Link from "next/link"
 const templates = [
     {
         src: "/dashboard/blogs/plantilla1.png",
-        viewLink: "/blog/look/plantilla1/",
+        viewLink: "/blog/look/blog-bar/",
         editLink: "/edition/plantillas/plantilla1",
         name: "Plantilla Moderna",
     },
     {
         src: "/dashboard/blogs/plantilla2.png",
-        viewLink: "/blog/look/plantilla2/",
+        viewLink: "/blog/look/desarrollo-web/",
         editLink: "/edition/plantillas/plantilla2",
         name: "Plantilla Elegante",
     },
     {
         src: "/dashboard/blogs/plantilla3.png",
-        viewLink: "/blog/look/plantilla3/",
+        viewLink: "/blog/look/gestion-redes/",
         editLink: "/edition/plantillas/plantilla3",
         name: "Plantilla Minimalista",
     },

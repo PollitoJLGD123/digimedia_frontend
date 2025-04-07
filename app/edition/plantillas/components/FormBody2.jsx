@@ -92,6 +92,7 @@ export default function FormBody2(props) {
                 <div className="mb-3">
                   <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
                     <Type className="w-4 h-4 mr-1.5 text-blue-400" /> Título
+                    <h1 className="ml-3 mt-1 text-xs">Máximo 30 caracteres</h1>
                   </label>
                   <input
                     type="text"
@@ -131,6 +132,7 @@ export default function FormBody2(props) {
                 <div className="">
                   <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
                     <Image className="w-4 h-4 mr-1.5 text-blue-400" /> Imagen de Fondo
+                    <h1 className="ml-3 mt-1 text-xs">980x450 píxeles</h1>
                   </label>
                   <UploadImage
                     uploadPreset="nextjs_digimedia_blog_body"
@@ -190,6 +192,7 @@ export default function FormBody2(props) {
                         <div className="mb-3">
                           <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
                             <Type className="w-4 h-4 mr-1.5 text-blue-400" /> {"Info Relevante " + (index + 1)}
+                            <h1 className="ml-3 mt-1 text-xs">Máximo 30 caracteres</h1>
                           </label>
                           <input
                             type="text"
@@ -335,6 +338,7 @@ export default function FormBody2(props) {
                       <h4 className="text-sm font-medium text-slate-700 mb-3 flex items-center">
                         <Type className="w-4 h-4 mr-1.5 text-slate-400" />
                         {image.title}
+                        <h1 className="ml-3 mt-1 text-xs">250x450 píxeles</h1>
                       </h4>
 
                       <UploadImage

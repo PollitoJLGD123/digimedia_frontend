@@ -69,15 +69,15 @@ function EnlacesForm() {
     const categories = [
         {
             name: "Tu Bar en la Mira",
-            url: "/blog/look/plantilla1",
+            url: "/blog/look/blog-bar",
         },
         {
             name: "Diseño y Desarrollo Web",
-            url: "/blog/look/plantilla2",
+            url: "/blog/look/desarrollo-web",
         },
         {
             name: "Gestión de Redes Sociales",
-            url: "/blog/look/plantilla3",
+            url: "/blog/look/gestion-redes",
         },
         {
             name: "Branding y Diseño",
@@ -85,7 +85,7 @@ function EnlacesForm() {
         },
         {
             name: "Marketing y Gestión Digital",
-            url: "/blog/look/plantilla5",
+            url: "/blog/look/marketing-digital",
         },
     ]
 

@@ -44,6 +44,7 @@ export default function FormHeader({ dataHeader, setFormData }) {
               <div>
                 <label className="flex items-center text-white text-sm font-medium mb-2">
                   <Type className="w-5 h-5 mr-2 text-purple-400" /> Título
+                  <h1 className="ml-3 mt-1 text-xs">Máximo 50 caracteres</h1>
                 </label>
                 <input
                   type="text"
@@ -58,6 +59,7 @@ export default function FormHeader({ dataHeader, setFormData }) {
               <div>
                 <label className="flex items-center text-white text-sm font-medium mb-2">
                   <Quote className="w-5 h-5 mr-2 text-purple-400" /> Frase Destacada
+                  <h1 className="ml-3 mt-1 text-xs">Máximo 70 caracteres</h1>
                 </label>
                 <input
                   type="text"
@@ -71,6 +73,7 @@ export default function FormHeader({ dataHeader, setFormData }) {
               <div>
                 <label className="flex items-center text-white text-sm font-medium mb-2">
                   <AlignLeft className="w-5 h-5 mr-2 text-purple-400" /> Frase Secundaria
+                  <h1 className="ml-3 mt-1 text-xs">Máximo 120 caracteres</h1>
                 </label>
                 <input
                   name="texto_descripcion"
@@ -84,6 +87,7 @@ export default function FormHeader({ dataHeader, setFormData }) {
               <div>
                 <label className="flex items-center text-white text-sm font-medium mb-2">
                   <Quote className="w-5 h-5 mr-2 text-purple-400" /> Imagen
+                  <h1 className="ml-3 mt-1 text-xs">1920x1080 píxeles</h1>
                 </label>
                 <UploadImage
                   uploadPreset="nextjs_digimedia_blog_head"

@@ -48,13 +48,14 @@ export default function FormFooter({ formFooter, setFormData }) {
 
             <div className="relative w-full md:w-[450px] h-auto p-6">
                 <div className="bg-black/75 backdrop-blur-md rounded-lg p-5 border border-white/10 shadow-lg">
-                    <h3 className="text-lg font-semibold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500 mb-4">
+                    <h1 className="text-lg font-semibold text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500 mb-4">
                         Editar Pie de Página
-                    </h3>
+                    </h1>
                     <form>
                         <div className="mb-3">
                             <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
                                 <Type className="w-4 h-4 mr-1.5 text-yellow-400" /> Título
+                                <h1 className="ml-3 mt-1 text-xs">Máximo 50 caracteres</h1>
                             </label>
                             <input
                                 type="text"
@@ -68,6 +69,7 @@ export default function FormFooter({ formFooter, setFormData }) {
                         <div className="mb-3">
                             <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
                                 <AlignLeft className="w-4 h-4 mr-1.5 text-yellow-400" /> Descripción
+                                <h1 className="ml-3 mt-1 text-xs">Máximo 300 caracteres</h1>
                             </label>
                             <textarea
                                 name="descripcion"
@@ -80,7 +82,8 @@ export default function FormFooter({ formFooter, setFormData }) {
                         </div>
                         <div className="mb-3">
                             <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
-                                <Image className="w-4 h-4 mr-1.5 text-yellow-400" /> Imágenes
+                                <Image className="w-4 h-4 mr-1.5 text-yellow-400" /> Imágenes 
+                                <h1 className="ml-3 mt-1 text-xs">200x150 píxeles</h1>
                             </label>
                             {["1", "2", "3"].map((num, index) => (
                                 <div key={index} className="relative w-full mb-2">
