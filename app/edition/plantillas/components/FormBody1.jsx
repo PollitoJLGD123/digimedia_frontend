@@ -140,10 +140,12 @@ export default function FormBody1(props) {
             <div>
               <label className="flex items-center text-white text-sm font-medium mb-2">
                 <Type className="w-5 h-5 mr-2 text-purple-400" /> Título
+                <h1 className="ml-3 mt-1 text-xs">Máximo 30 caracteres</h1>
               </label>
               <input
                 type="text"
                 name="titulo"
+                maxLength={30}
                 value={formEncabezadoBody.titulo}
                 onChange={handleChange(setFormEncabezadoBody)}
                 className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
@@ -184,10 +186,12 @@ export default function FormBody1(props) {
             <div>
               <label className="flex items-center text-white text-sm font-medium mb-2">
                 <AlignLeft className="w-5 h-5 mr-2 text-purple-400" /> Descripcion
+                <h1 className="ml-3 mt-1 text-xs">Máximo 400 caracteres</h1>
               </label>
               <input
                 name="descripcion"
                 value={formEncabezadoBody.descripcion}
+                maxLength={400}
                 onChange={handleChange(setFormEncabezadoBody)}
                 className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none"
                 placeholder="Frase Secundaria"
@@ -207,6 +211,7 @@ export default function FormBody1(props) {
                 type="text"
                 name="titulo"
                 value={formCommendBody.titulo}
+                maxLength={50}
                 onChange={handleChange(setFormCommendBody)}
                 className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                 placeholder="Título principal"
@@ -216,10 +221,12 @@ export default function FormBody1(props) {
             <div>
               <label className="flex items-center text-white text-sm font-medium mb-2">
                 <Quote className="w-5 h-5 mr-2 text-purple-400" /> Texto1
+                <h2 className="ml-3 mt-1 text-xs">Máximo 100 caracteres</h2>
               </label>
               <input
                 type="text"
                 name="texto1"
+                maxLength={100}
                 value={formCommendBody.texto1}
                 onChange={handleChange(setFormCommendBody)}
                 className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
@@ -230,10 +237,12 @@ export default function FormBody1(props) {
             <div>
               <label className="flex items-center text-white text-sm font-medium mb-2">
                 <Quote className="w-5 h-5 mr-2 text-purple-400" /> Texto2
+                <h2 className="ml-3 mt-1 text-xs">Máximo 100 caracteres</h2>
               </label>
               <input
                 type="text"
                 name="texto2"
+                maxLength={100}
                 value={formCommendBody.texto2}
                 onChange={handleChange(setFormCommendBody)}
                 className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
@@ -244,10 +253,12 @@ export default function FormBody1(props) {
             <div>
               <label className="flex items-center text-white text-sm font-medium mb-2">
                 <Quote className="w-5 h-5 mr-2 text-purple-400" /> Texto3
+                <h2 className="ml-3 mt-1 text-xs">Máximo 100 caracteres</h2>
               </label>
               <input
                 type="text"
                 name="texto3"
+                maxLength={100}
                 value={formCommendBody.texto3}
                 onChange={handleChange(setFormCommendBody)}
                 className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
@@ -314,6 +325,7 @@ export default function FormBody1(props) {
                       type="text"
                       name="titulo"
                       value={item.titulo}
+                      maxLength={50}
                       onChange={(e) => handleChangeMap(e, index, 'titulo')}
                       className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                       placeholder="Título principal"
@@ -323,10 +335,12 @@ export default function FormBody1(props) {
                   <div>
                     <label className="flex items-center text-white text-sm font-medium mb-2">
                       <Quote className="w-5 h-5 mr-2 text-purple-400" /> Descripción
+                      <h1 className="ml-3 mt-1 text-xs">Máximo 350 caracteres</h1>
                     </label>
                     <textarea
                       name="descripcion"
                       value={item.descripcion}
+                      maxLength={350}
                       onChange={(e) => handleChangeMap(e, index, 'descripcion')}
                       className="w-full resize-none h-[100px] bg-gray-800 text-white border border-gray-700 rounded-lg p-2 text-sm"
                       placeholder="Descripción"
