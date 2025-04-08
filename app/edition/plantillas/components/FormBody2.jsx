@@ -21,7 +21,7 @@ export default function FormBody2(props) {
 
   const [commendErrors, setCommendErrors] = useState({
     titulo: { message: 'Máximo 40 caracteres', isValid: null },
-    textos: Array(5).fill({ message: 'Máximo 120 caracteres', isValid: null })
+    textos: Array(5).fill({ message: 'Máximo 100 caracteres', isValid: null })
   });
 
   const handleCommendBodyChange = (e) => {
@@ -40,7 +40,7 @@ export default function FormBody2(props) {
     } else {
       const fieldIndex = parseInt(name.replace('texto', '')) - 1;
       isValid = value === '' || (value.length <= 120 && value.length >= 10);
-      message = isValid ? 'Validado' : value.length < 10 ? 'Mínimo 10 caracteres' : 'Máximo 120 caracteres';
+      message = isValid ? 'Validado' : value.length < 10 ? 'Mínimo 10 caracteres' : 'Máximo 100 caracteres';
 
       setCommendErrors(prev => {
         const newTextos = [...prev.textos];
@@ -76,8 +76,8 @@ export default function FormBody2(props) {
         )
       }));
     } else {
-      isValid = value.trim() !== '' && value.length <= 310 && value.length >= 20;
-      message = isValid ? 'Descripción Validado' : value.length < 20 ? 'Mínimo 20 caracteres' : 'Máximo 310 caracteres';
+      isValid = value.trim() !== '' && value.length <= 310 && value.length >= 10;
+      message = isValid ? 'Descripción Validado' : value.length < 20 ? 'Mínimo 10 caracteres' : 'Máximo 310 caracteres';
 
       setInfoErrors(prev => ({
         ...prev,
@@ -198,6 +198,8 @@ export default function FormBody2(props) {
                   <input
                     type="text"
                     name="titulo"
+                    maxLength={40}
+                    minLength={5}
                     value={formEncabezadoBody.titulo}
                     onChange={handleEncabezadoBodyChange}
                     className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg p-2 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
@@ -213,6 +215,8 @@ export default function FormBody2(props) {
                     name="descripcion"
                     value={formEncabezadoBody.descripcion}
                     onChange={handleEncabezadoBodyChange}
+                    maxLength={310}
+                    minLength={10}
                     rows={3}
                     className="w-full h-full bg-gray-800 text-white border border-gray-700 rounded-lg p-2 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-transparent resize-none"
                     placeholder="Descripción corta"
@@ -300,6 +304,8 @@ export default function FormBody2(props) {
                           <input
                             type="text"
                             name="titulo"
+                            maxLength={40}
+                            minLength={5}
                             value={formInfoBody[index].titulo}
                             onChange={(e) => handleInfoBodyChange(e, index, 'titulo')}
                             className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg p-2 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
@@ -315,6 +321,8 @@ export default function FormBody2(props) {
                             name="descripcion"
                             value={formInfoBody[index].descripcion}
                             onChange={(e) => handleInfoBodyChange(e, index, 'descripcion')}
+                            maxLength={310}
+                            minLength={10}
                             rows={3}
                             className="w-full h-full bg-gray-800 text-white border border-gray-700 rounded-lg p-2 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-transparent resize-none"
                             placeholder="Descripción corta"
@@ -381,6 +389,8 @@ export default function FormBody2(props) {
                       <input
                         type="text"
                         name="titulo"
+                        maxLength={40}
+                        minLength={5}
                         value={formCommendBody.titulo || ""}
                         onChange={handleCommendBodyChange}
                         className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-sm transition-all duration-200 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:bg-white"
@@ -398,6 +408,8 @@ export default function FormBody2(props) {
                         <input
                           type="text"
                           name={`texto${num}`}
+                          maxLength={100}
+                          minLength={10}
                           value={formCommendBody[`texto${num}`] || ""}
                           onChange={handleCommendBodyChange}
                           className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-sm transition-all duration-200 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:bg-white"
