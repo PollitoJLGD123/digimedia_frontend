@@ -108,6 +108,7 @@ export default function FormHeader({ dataHeader, setFormData }) {
                   height={1080}
                   public_id={dataHeader.url_image}
                   setFormData={setFormData}
+                  crop="fill"
                 />
               </div>
             </form>

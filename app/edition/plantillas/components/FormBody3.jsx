@@ -259,10 +259,11 @@ export default function FormBody3(props) {
                 name_public="public_image1"
                 name_url="url_image1"
                 size_image={8 * 1400 * 1400}
-                width={360}
-                height={360}
                 public_id={formEncabezadoBody.url_image1}
                 setFormData={setFormEncabezadoBody}
+                width={360}
+                height={360}
+                crop="fill"
               />
             </div>
 
@@ -301,6 +302,7 @@ export default function FormBody3(props) {
                 height={260}
                 public_id={formGaleryBody.url_image2}
                 setFormData={setFormGaleryBody}
+                crop="fill"
               />
             </div>
 
@@ -319,6 +321,7 @@ export default function FormBody3(props) {
                 height={260}
                 public_id={formGaleryBody.url_image3}
                 setFormData={setFormGaleryBody}
+                crop="fill"
               />
             </div>
           </form>

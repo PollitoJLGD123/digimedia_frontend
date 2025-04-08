@@ -249,6 +249,9 @@ export default function FormBody2(props) {
                     size_image={8 * 1024 * 1024}
                     public_id={formEncabezadoBody.url_image1}
                     setFormData={setFormEncabezadoBody}
+                    width={980}
+                    height={450}
+                    crop="fill"
                   />
                 </div>
               </form>
@@ -466,6 +469,9 @@ export default function FormBody2(props) {
                         size_image={7 * 1400 * 1400}
                         public_id={formGaleryBody[`url_image${image.id}`]}
                         setFormData={setFormGaleryBody}
+                        width={250}
+                        height={450}
+                        crop="fill"
                       />
                     </div>
                   </div>

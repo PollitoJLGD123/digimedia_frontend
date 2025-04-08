@@ -103,6 +103,7 @@ export default function FormFooter({ formFooter, setFormData }) {
                                         size_image = {8 * 1024 * 1024}
                                         public_id={formFooter[`url_image${num}`]}
                                         setFormData={setFormData}
+                                        crop="fill"
                                     />
                                 </div>
                             ))}
