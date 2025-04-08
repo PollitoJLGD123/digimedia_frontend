@@ -95,8 +95,8 @@ export default function FormBody2(props) {
 
   const [errors, setErrors] = useState({
     titulo: { message: 'Máximo 30 caracteres', isValid: null },
-    descripcion: { message: 'Descripción requerida', isValid: null },
-    fecha: { message: 'Fecha válida', isValid: null }
+    descripcion: { message: 'Máximo 310 caracteres', isValid: null },
+    fecha: { message: 'Fecha', isValid: null }
   });
 
   const ValidationMessage = ({ error }) => (
