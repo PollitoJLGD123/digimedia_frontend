@@ -3,6 +3,7 @@ import React from 'react'
 import { CheckCircle, Clock, Bookmark, Share2, Eye, Image, Type, AlignLeft, Clock1, BookType, Upload } from "lucide-react"
 import { useState } from 'react';
 import UploadImage from './UploadImage';
+import { ContentPasteGoOutlined } from '@mui/icons-material';
 
 export default function FormBody2(props) {
 
@@ -36,8 +37,53 @@ export default function FormBody2(props) {
     });
   };
 
+  const [errors, setErrors] = useState({
+    titulo: { message: 'Máximo 30 caracteres', isValid: null },
+    descripcion: { message: 'Descripción requerida', isValid: null },
+    fecha: { message: 'Fecha válida', isValid: null }
+  });
+
+  const ValidationMessage = ({ error }) => (
+
+    <h1 className={`text-xs mt-1 ml-3 ${
+      error.isValid === null ? 'text-gray-500' : 
+      error.isValid ? 'text-green-500' : 'text-red-500'
+    }`}>
+      {error.message}
+    </h1>
+  );
+
   const handleEncabezadoBodyChange = (e) => {
     const { name, value } = e.target
+    let isValid = true;
+
+    switch (name) {
+      case 'titulo':
+        isValid = value.trim() !== '' && value.length <= 60 && value.length >= 5;
+        break;
+
+      case 'descripcion':
+        isValid = value.trim() !== '' && value.length <= 310 && value.length >= 10;
+        break;
+
+      case 'fecha':
+        const selectedDate = new Date(value);
+        const today = new Date();
+        isValid = selectedDate <= today;
+        break;
+
+      default:
+        break;
+    }
+    
+    setErrors(prev => ({
+      ...prev,
+      [name]: {
+        ...prev[name],
+        isValid: isValid
+      }
+    }));
+
     setFormEncabezadoBody((prev) => ({
       ...prev,
       [name]: value,
@@ -92,7 +138,7 @@ export default function FormBody2(props) {
                 <div className="mb-3">
                   <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
                     <Type className="w-4 h-4 mr-1.5 text-blue-400" /> Título
-                    <h1 className="ml-3 mt-1 text-xs">Máximo 30 caracteres</h1>
+                    <ValidationMessage error={errors.titulo} />
                   </label>
                   <input
                     type="text"
@@ -105,7 +151,8 @@ export default function FormBody2(props) {
                 </div>
                 <div className="mb-3">
                   <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
-                    <AlignLeft className="w-4 h-4 mr-1.5 text-blue-400" /> Descripción
+                    <AlignLeft className="w-4 h-4 mr-1.5 text-blue-400" /> Descripción                    
+                    <ValidationMessage error={errors.descripcion} />
                   </label>
                   <textarea
                     name="descripcion"
@@ -119,6 +166,7 @@ export default function FormBody2(props) {
                 <div className="mb-3 mt-3">
                   <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
                     <Clock1 className="w-4 h-4 mr-1.5 text-blue-400" /> Fecha
+                    <ValidationMessage error={errors.fecha} />
                   </label>
                   <input
                     type="date"
@@ -139,7 +187,7 @@ export default function FormBody2(props) {
                     folder="blogs/bodies/"
                     name_public="public_image1"
                     name_url="url_image1"
-                    size_image = {8 * 1024 * 1024}
+                    size_image={8 * 1024 * 1024}
                     public_id={formEncabezadoBody.url_image1}
                     setFormData={setFormEncabezadoBody}
                   />
