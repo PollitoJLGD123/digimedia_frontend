@@ -64,7 +64,7 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
         } else {
             setFormData((prev) => ({
                 ...prev,
-                [name_public]: transformedUrl, // Usar la URL transformada
+                [name_public]: transformedUrl,
                 [name_url]: info.public_id,
             }));
             setUploading(false);

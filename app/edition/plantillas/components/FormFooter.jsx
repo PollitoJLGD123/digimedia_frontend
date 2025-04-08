@@ -55,15 +55,18 @@ export default function FormFooter({ formFooter, setFormData }) {
                         <div className="mb-3">
                             <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
                                 <Type className="w-4 h-4 mr-1.5 text-yellow-400" /> Título
-                                <h1 className="ml-3 mt-1 text-xs">Máximo 50 caracteres</h1>
+                                <h1 className="ml-3 mt-1 text-xs">Máximo 30 caracteres</h1>
                             </label>
                             <input
                                 type="text"
                                 name="titulo"
+                                maxLength={30}
+                                autoComplete="off"
                                 value={formFooter.titulo}
                                 onChange={handleChange}
                                 className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg p-2 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
                                 placeholder="Título del pie de página"
+                                required
                             />
                         </div>
                         <div className="mb-3">
@@ -75,9 +78,12 @@ export default function FormFooter({ formFooter, setFormData }) {
                                 name="descripcion"
                                 value={formFooter.descripcion}
                                 onChange={handleChange}
+                                maxLength={300}
+                                autoComplete="off"
                                 rows={3}
                                 className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg p-2 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-transparent resize-none"
                                 placeholder="Descripción corta"
+                                required
                             ></textarea>
                         </div>
                         <div className="mb-3">

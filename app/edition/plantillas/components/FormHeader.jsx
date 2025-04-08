@@ -44,44 +44,53 @@ export default function FormHeader({ dataHeader, setFormData }) {
               <div>
                 <label className="flex items-center text-white text-sm font-medium mb-2">
                   <Type className="w-5 h-5 mr-2 text-purple-400" /> Título
-                  <h1 className="ml-3 mt-1 text-xs">Máximo 50 caracteres</h1>
+                  <h1 className="ml-3 mt-1 text-xs">Máximo 30 caracteres</h1>
                 </label>
                 <input
                   type="text"
                   name="titulo"
                   value={dataHeader.titulo || ""}
                   onChange={handleChange}
+                  maxLength={30}
+                  autoComplete="off"
                   className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                   placeholder="Título principal"
+                  required
                 />
               </div>
 
               <div>
                 <label className="flex items-center text-white text-sm font-medium mb-2">
                   <Quote className="w-5 h-5 mr-2 text-purple-400" /> Frase Destacada
-                  <h1 className="ml-3 mt-1 text-xs">Máximo 70 caracteres</h1>
+                  <h1 className="ml-3 mt-1 text-xs">Máximo 50 caracteres</h1>
                 </label>
                 <input
                   type="text"
                   name="texto_frase"
                   value={dataHeader.texto_frase || ""}
                   onChange={handleChange}
+                  maxLength={50}
+                  autoComplete="off"
                   className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                   placeholder="Frase destacada"
+                  required
                 />
               </div>
               <div>
                 <label className="flex items-center text-white text-sm font-medium mb-2">
                   <AlignLeft className="w-5 h-5 mr-2 text-purple-400" /> Frase Secundaria
-                  <h1 className="ml-3 mt-1 text-xs">Máximo 120 caracteres</h1>
+                  <h1 className="ml-3 mt-1 text-xs">Máximo 80 caracteres</h1>
                 </label>
                 <input
                   name="texto_descripcion"
                   value={dataHeader.texto_descripcion || ""}
                   onChange={handleChange}
                   rows={4}
+                  maxLength={80}
+                  autoComplete="off"
                   className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none"
                   placeholder="Frase Secundaria"
+                  required
                 />
               </div>
               <div>
