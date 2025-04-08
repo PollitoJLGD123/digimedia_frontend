@@ -59,7 +59,7 @@ export default function FormBody2(props) {
 
     switch (name) {
       case 'titulo':
-        isValid = value.trim() !== '' && value.length <= 60 && value.length >= 5;
+        isValid = value.trim() !== '' && value.length <= 40 && value.length >= 5;
         break;
 
       case 'descripcion':
