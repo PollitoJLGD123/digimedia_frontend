@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { CheckCircle, Clock, Bookmark, Share2, Eye, Image, Type, AlignLeft, Clock1, BookType, Upload } from "lucide-react"
+import { CheckCircle, Clock, Bookmark, Share2, Eye, Image, Type, AlignLeft, Clock1, BookTypeIcon, BookType } from "lucide-react"
 import { useState } from 'react';
 import UploadImage from './UploadImage';
 
@@ -19,16 +19,73 @@ export default function FormBody2(props) {
     setFormGaleryBody
   } = props;
 
+  const [commendErrors, setCommendErrors] = useState({
+    titulo: { message: 'Máximo 40 caracteres', isValid: null },
+    textos: Array(5).fill({ message: 'Máximo 100 caracteres', isValid: null })
+  });
+
   const handleCommendBodyChange = (e) => {
     const { name, value } = e.target
+    let isValid = true;
+    let message = '';
+
+    if (name === 'titulo') {
+      isValid = value.trim() !== '' && value.length <= 40 && value.length >= 5;
+      message = isValid ? 'Validado' : value.length < 5 ? 'Mínimo 5 caracteres' : 'Máximo 40 caracteres';
+
+      setCommendErrors(prev => ({
+        ...prev,
+        titulo: { message, isValid }
+      }));
+    } else {
+      const fieldIndex = parseInt(name.replace('texto', '')) - 1;
+      isValid = value === '' || (value.length <= 120 && value.length >= 10);
+      message = isValid ? 'Validado' : value.length < 10 ? 'Mínimo 10 caracteres' : 'Máximo 100 caracteres';
+
+      setCommendErrors(prev => {
+        const newTextos = [...prev.textos];
+        newTextos[fieldIndex] = { message, isValid: value === '' ? null : isValid };
+        return { ...prev, textos: newTextos };
+      });
+    }
+
     setFormCommendBody((prev) => ({
       ...prev,
       [name]: value,
     }))
   }
 
+  const [infoErrors, setInfoErrors] = useState({
+    titulos: Array(formInfoBody.length).fill({ message: 'Máximo 40 caracteres', isValid: null }),
+    descripciones: Array(formInfoBody.length).fill({ message: 'Máximo 310 caracteres', isValid: null })
+  });
+
   const handleInfoBodyChange = (e, index, field) => {
     const { value } = e.target;
+    let isValid = true;
+    let message = '';
+
+    if (field === 'titulo') {
+      isValid = value.trim() !== '' && value.length <= 40 && value.length >= 5;
+      message = isValid ? 'Título Validado' : value.length < 5 ? 'Mínimo 5 caracteres' : 'Máximo 40 caracteres';
+
+      setInfoErrors(prev => ({
+        ...prev,
+        titulos: prev.titulos.map((item, i) =>
+          i === index ? { message, isValid } : item
+        )
+      }));
+    } else {
+      isValid = value.trim() !== '' && value.length <= 310 && value.length >= 10;
+      message = isValid ? 'Descripción Validado' : value.length < 20 ? 'Mínimo 10 caracteres' : 'Máximo 310 caracteres';
+
+      setInfoErrors(prev => ({
+        ...prev,
+        descripciones: prev.descripciones.map((item, i) =>
+          i === index ? { message, isValid } : item
+        )
+      }));
+    }
     setFormInfoBody(prevState => {
       const updatedState = [...prevState];
       updatedState[index] = { ...updatedState[index], [field]: value };
@@ -36,8 +93,52 @@ export default function FormBody2(props) {
     });
   };
 
+  const [errors, setErrors] = useState({
+    titulo: { message: 'Máximo 30 caracteres', isValid: null },
+    descripcion: { message: 'Máximo 310 caracteres', isValid: null },
+    fecha: { message: 'Fecha', isValid: null }
+  });
+
+  const ValidationMessage = ({ error }) => (
+
+    <h1 className={`text-xs mt-1 ml-3 ${error.isValid === null ? 'text-gray-500' :
+      error.isValid ? 'text-green-500' : 'text-red-500'
+      }`}>
+      {error.message}
+    </h1>
+  );
+
   const handleEncabezadoBodyChange = (e) => {
     const { name, value } = e.target
+    let isValid = true;
+
+    switch (name) {
+      case 'titulo':
+        isValid = value.trim() !== '' && value.length <= 40 && value.length >= 5;
+        break;
+
+      case 'descripcion':
+        isValid = value.trim() !== '' && value.length <= 310 && value.length >= 10;
+        break;
+
+      case 'fecha':
+        const selectedDate = new Date(value);
+        const today = new Date();
+        isValid = selectedDate <= today;
+        break;
+
+      default:
+        break;
+    }
+
+    setErrors(prev => ({
+      ...prev,
+      [name]: {
+        ...prev[name],
+        isValid: isValid
+      }
+    }));
+
     setFormEncabezadoBody((prev) => ({
       ...prev,
       [name]: value,
@@ -84,7 +185,7 @@ export default function FormBody2(props) {
 
           <div className="mx-10 my-5 text-lg text-gray-700 leading-relaxed">{formEncabezadoBody.descripcion}</div>
         </div>
-
+        {/* Form1 */}
         <div className='relative mt-28 w-full p-6'>
           <div className="">
             <div className="bg-black/90 backdrop-blur-md rounded-lg p-5 border border-white/10 shadow-lg">
@@ -92,11 +193,13 @@ export default function FormBody2(props) {
                 <div className="mb-3">
                   <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
                     <Type className="w-4 h-4 mr-1.5 text-blue-400" /> Título
-                    <h1 className="ml-3 mt-1 text-xs">Máximo 30 caracteres</h1>
+                    <ValidationMessage error={errors.titulo} />
                   </label>
                   <input
                     type="text"
                     name="titulo"
+                    maxLength={40}
+                    minLength={5}
                     value={formEncabezadoBody.titulo}
                     onChange={handleEncabezadoBodyChange}
                     className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg p-2 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
@@ -106,11 +209,14 @@ export default function FormBody2(props) {
                 <div className="mb-3">
                   <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
                     <AlignLeft className="w-4 h-4 mr-1.5 text-blue-400" /> Descripción
+                    <ValidationMessage error={errors.descripcion} />
                   </label>
                   <textarea
                     name="descripcion"
                     value={formEncabezadoBody.descripcion}
                     onChange={handleEncabezadoBodyChange}
+                    maxLength={310}
+                    minLength={10}
                     rows={3}
                     className="w-full h-full bg-gray-800 text-white border border-gray-700 rounded-lg p-2 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-transparent resize-none"
                     placeholder="Descripción corta"
@@ -119,6 +225,7 @@ export default function FormBody2(props) {
                 <div className="mb-3 mt-3">
                   <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
                     <Clock1 className="w-4 h-4 mr-1.5 text-blue-400" /> Fecha
+                    <ValidationMessage error={errors.fecha} />
                   </label>
                   <input
                     type="date"
@@ -139,7 +246,7 @@ export default function FormBody2(props) {
                     folder="blogs/bodies/"
                     name_public="public_image1"
                     name_url="url_image1"
-                    size_image = {8 * 1024 * 1024}
+                    size_image={8 * 1024 * 1024}
                     public_id={formEncabezadoBody.url_image1}
                     setFormData={setFormEncabezadoBody}
                   />
@@ -171,7 +278,7 @@ export default function FormBody2(props) {
             Galería
           </button>
         </div>
-
+        {/* cards */}
         <div className="mb-10">
           {activeTab === "info" && (
             <div className="space-y-6 ">
@@ -192,11 +299,13 @@ export default function FormBody2(props) {
                         <div className="mb-3">
                           <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
                             <Type className="w-4 h-4 mr-1.5 text-blue-400" /> {"Info Relevante " + (index + 1)}
-                            <h1 className="ml-3 mt-1 text-xs">Máximo 30 caracteres</h1>
+                            <ValidationMessage error={infoErrors.titulos[index]} />
                           </label>
                           <input
                             type="text"
                             name="titulo"
+                            maxLength={40}
+                            minLength={5}
                             value={formInfoBody[index].titulo}
                             onChange={(e) => handleInfoBodyChange(e, index, 'titulo')}
                             className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg p-2 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
@@ -206,11 +315,14 @@ export default function FormBody2(props) {
                         <div className="mb-3">
                           <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
                             <AlignLeft className="w-4 h-4 mr-1.5 text-blue-400" /> {"Descripción " + (index + 1)}
+                            <ValidationMessage error={infoErrors.descripciones[index]} />
                           </label>
                           <textarea
                             name="descripcion"
                             value={formInfoBody[index].descripcion}
                             onChange={(e) => handleInfoBodyChange(e, index, 'descripcion')}
+                            maxLength={310}
+                            minLength={10}
                             rows={3}
                             className="w-full h-full bg-gray-800 text-white border border-gray-700 rounded-lg p-2 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-transparent resize-none"
                             placeholder="Descripción corta"
@@ -277,28 +389,33 @@ export default function FormBody2(props) {
                       <input
                         type="text"
                         name="titulo"
+                        maxLength={40}
+                        minLength={5}
                         value={formCommendBody.titulo || ""}
                         onChange={handleCommendBodyChange}
                         className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-sm transition-all duration-200 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:bg-white"
                         placeholder="Ej: Consejos útiles"
                       />
+                      <ValidationMessage error={commendErrors.titulo} />
                       <BookType className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                     </div>
                   </div>
 
                   <div className="space-y-4">
                     <label className="block text-sm font-medium text-slate-700">Consejos</label>
-
                     {[1, 2, 3, 4, 5].map((num) => (
                       <div key={`tip-${num}`} className="relative">
                         <input
                           type="text"
                           name={`texto${num}`}
+                          maxLength={100}
+                          minLength={10}
                           value={formCommendBody[`texto${num}`] || ""}
                           onChange={handleCommendBodyChange}
                           className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-sm transition-all duration-200 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:bg-white"
                           placeholder={`Consejo #${num}`}
                         />
+                        <ValidationMessage error={commendErrors.textos[num - 1]} />
                         <div className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full bg-emerald-50 text-emerald-600 text-xs font-medium">
                           {num}
                         </div>
