@@ -12,8 +12,6 @@ export const MobileVersion = () => {
       <button className="bg-pink-500 hover:bg-pink-600 text-white text-lg font-bold py-5 px-10 rounded-lg mb-5 mx-auto block">
         Asesoría Gratis
       </button>
-
-      {/* Nueva imagen con Gradiente debajo del Párrafo (solo en pantallas pequeñas) */}
       <div className="border-4 border-white rounded-lg overflow-hidden">
         <img
           src="/servicios/planificacion/planificacion_imagen2.png"
@@ -24,4 +22,3 @@ export const MobileVersion = () => {
     </div>
   );
 };
-s;
