@@ -115,6 +115,7 @@ export default function Page() {
           confirmButtonText: "OK",
         })
       }
+      console.log(error)
     }
   }
 

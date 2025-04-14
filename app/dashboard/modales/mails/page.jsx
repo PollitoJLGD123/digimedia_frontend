@@ -10,7 +10,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { getCookie } from "cookies-next"
 
 const Page = () => {
     return (
@@ -37,6 +36,7 @@ function PageContent() {
     const id_modal = searchParams.get("id_modal")
 
     const [isLoadingMail, setIsLoadingMail] = useState(false)
+    const [isLoadingError, setIsLoadingError] = useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -79,8 +79,6 @@ function PageContent() {
         try {
             setIsLoadingMail(true)
 
-            console.log("ID: ", id_modal_email);
-
             const response = await axios.get(`${url}/api/modales/send_mail/${id_modal_email}`);
 
             if (response.status === 200) {
@@ -90,9 +88,8 @@ function PageContent() {
                     icon: "success",
                     confirmButtonText: "OK",
                 })
-                window.location.reload()
             }
-            else{
+            else {
                 Swal.fire({
                     title: "Error",
                     text: "No se pudo enviar el mensaje.",
@@ -100,7 +97,7 @@ function PageContent() {
                     confirmButtonText: "OK",
                 })
             }
-
+            window.location.reload()
         } catch (error) {
             Swal.fire({
                 title: "Error",
@@ -108,7 +105,7 @@ function PageContent() {
                 icon: "error",
                 confirmButtonText: "OK",
             })
-        }finally{
+        } finally {
             setIsLoadingMail(false)
         }
     }
@@ -161,6 +158,39 @@ function PageContent() {
         }).format(date)
     }
 
+    async function reportarError(id_modal_email) {
+        try {
+            setIsLoadingError(true)
+            const response = await axios.get(`${url}/api/modales/reportar_error/${id_modal_email}`);
+            if (response.status === 200) {
+                Swal.fire({
+                    title: "Error Reportado",
+                    text: "El error ha sido reportado exitosamente.",
+                    icon: "success",
+                    confirmButtonText: "OK",
+                })
+            }
+            else {
+                Swal.fire({
+                    title: "Error",
+                    text: response.message,
+                    icon: "error",
+                    confirmButtonText: "OK",
+                })
+            }
+            window.location.reload()
+        } catch (error) {
+            Swal.fire({
+                title: "Error",
+                text: "Ocurrió un error al obtener los datos.",
+                icon: "error",
+                confirmButtonText: "OK",
+            })
+        } finally {
+            setIsLoadingError(false)
+        }
+    }
+
     return (
         <div className="container mx-auto p-4 space-y-6">
             <button
@@ -203,7 +233,7 @@ function PageContent() {
                                                 {getStatusBadge(mail.estado, mail.error)}
                                             </div>
                                             <Separator className="my-2" />
-                                            <div className="space-y-1 text-sm">
+                                            <div className="space-y-1 text-sm flex justify-between">
                                                 {mail.error && (
                                                     <div className="text-red-600 bg-red-50 p-2 rounded-md mb-2">
                                                         <span className="font-semibold">Error:</span> {mail.error}
@@ -218,23 +248,47 @@ function PageContent() {
                                                 )}
 
                                                 {mail.estado == 0 && (
-                                                    <button
-                                                        title={
-                                                            email_pendientes
-                                                                ? "Primero debes enviar los correos anteriores"
-                                                                : "Enviar Mensaje de Email"
-                                                        }
-                                                        onClick={() => !email_pendientes && enviarMail(mail.id_modal_email)}
-                                                        className={`mx-auto mt-1 p-2 rounded-xl text-center text-sm ${email_pendientes
-                                                            ? "bg-gray-400 cursor-not-allowed"
-                                                            : "bg-green-700 text-white"
-                                                            }`}
-                                                        disabled={email_pendientes || isLoadingMail}
-                                                    >
-                                                        {email_pendientes ? "Pendiente anterior" : (isLoadingMail ? 
-                                                            (<Loader2 className="animate-spin h-4 w-4 ml-2" />) : "Enviar")}
-                                                    </button>
+                                                    <div>
+                                                        <button
+                                                            title={
+                                                                email_pendientes
+                                                                    ? "Primero debes enviar los correos anteriores"
+                                                                    : "Enviar Mensaje de Email"
+                                                            }
+                                                            onClick={() => !email_pendientes && enviarMail(mail.id_modal_email)}
+                                                            className={`mx-auto flex justify-center mt-1 py-2 px-4 rounded-xl text-center text-sm ${email_pendientes
+                                                                ? "bg-gray-400 cursor-not-allowed"
+                                                                : "bg-purple-700 text-white"
+                                                                }`}
+                                                            disabled={email_pendientes || isLoadingMail}
+                                                        >
+                                                            {email_pendientes ? "Pendiente anterior" : (isLoadingMail ?
+                                                                (<Loader2 className="animate-spin h-4 w-4 mx-auto" />) : "Enviar Email")}
+                                                        </button>
+                                                    </div>
                                                 )}
+                                                {
+                                                    (mail.estado == 1 && !mail.error) ? (
+                                                        <div>
+                                                            <button
+                                                                title={
+                                                                    email_pendientes
+                                                                        ? "Primero debes enviar los correos anteriores"
+                                                                        : "Reportar error en el correo Enviado"
+                                                                }
+                                                                onClick={() => !email_pendientes && reportarError(mail.id_modal_email)}
+                                                                className={`mx-auto mt-1 py-2 px-4 rounded-xl text-center text-sm ${email_pendientes
+                                                                    ? "bg-gray-400 cursor-not-allowed"
+                                                                    : "bg-red-700 text-white"
+                                                                    }`}
+                                                                disabled={email_pendientes || isLoadingError}
+                                                            >
+                                                                {email_pendientes ? "Pendiente anterior" : (isLoadingError ?
+                                                                    (<Loader2 className="animate-spin h-4 w-4 ml-2" />) : "Reportar error")}
+                                                            </button>
+                                                        </div>
+                                                    ) : ("")
+                                                }
                                             </div>
                                         </div>
                                     );
@@ -255,10 +309,9 @@ function PageContent() {
                                 {data.wats && data.wats.length > 0 ? (
                                     <div className="space-y-4">
                                         {data.wats.map((wat, index) => {
-                                            // Buscar si hay un mensaje anterior que no ha sido enviado
                                             const wat_pendientes = data.wats
-                                                .slice(0, index) // solo los anteriores
-                                                .some(prev => prev.estado == 0); // alguno sin enviar
+                                                .slice(0, index)
+                                                .some(prev => prev.estado == 0);
 
                                             return (
                                                 <div key={index} className="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
@@ -294,8 +347,8 @@ function PageContent() {
                                                                     }
                                                                 }}
                                                                 className={`mx-auto mt-1 p-2 rounded-xl text-sm ${wat_pendientes
-                                                                        ? "bg-gray-400 cursor-not-allowed"
-                                                                        : "bg-purple-600 text-white hover:bg-purple-700"
+                                                                    ? "bg-gray-400 cursor-not-allowed"
+                                                                    : "bg-purple-600 text-white hover:bg-purple-700"
                                                                     }`}
                                                                 disabled={wat_pendientes}
                                                             >
