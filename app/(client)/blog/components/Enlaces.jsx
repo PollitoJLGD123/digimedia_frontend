@@ -68,20 +68,24 @@ function EnlacesForm() {
 
     const categories = [
         {
-            name: "Marketing y Gestión Digital",
-            url: "https://943060409.blogspot.com/search/label/Marketing%20y%20gesti%C3%B3n%20digital",
+            name: "Tu Bar en la Mira",
+            url: "/blog/look/blog-bar",
         },
         {
             name: "Diseño y Desarrollo Web",
-            url: "https://943060409.blogspot.com/search/label/Dise%C3%B1o%20y%20Desarrollo%20web",
+            url: "/blog/look/desarrollo-web",
         },
         {
             name: "Gestión de Redes Sociales",
-            url: "https://943060409.blogspot.com/search/label/Gestion%20de%20redes%20sociales",
+            url: "/blog/look/gestion-redes",
         },
         {
             name: "Branding y Diseño",
-            url: "https://943060409.blogspot.com/search/label/Branding%20y%20dise%C3%B1o",
+            url: "/blog/look/branding",
+        },
+        {
+            name: "Marketing y Gestión Digital",
+            url: "/blog/look/marketing-digital",
         },
     ]
 
@@ -114,7 +118,7 @@ function EnlacesForm() {
                                         >
                                             <div className="relative overflow-hidden">
                                                 <img
-                                                    src={card.url_image.startsWith("http") ? card.url_image : `/blog/${card.url_image}`}
+                                                    src={card.public_image.startsWith("http") ? card.public_image : `${card.public_image}`}
                                                     alt={card.titulo}
                                                     className="w-full h-48 object-cover transition-transform duration-500 hover:scale-105"
                                                 />

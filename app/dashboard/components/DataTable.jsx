@@ -15,18 +15,33 @@ export default function DataTable({ headers, data, onDelete, onUpdate, onShow })
   const empleadoCookie = getCookie("empleado")
   const empleadoAutenticado = empleadoCookie ? JSON.parse(empleadoCookie) : null
   const empleadoAutenticadoId = empleadoAutenticado?.id_empleado
+  const empleadoAutenticadoEmail = empleadoAutenticado?.email
 
-  // Función para alternar la expansión de filas en vista móvil
+  const restrictedEmails = ["joseluisjlgd123@gmail.com", "keving.kpg@gmail.com", "tmlighting@hotmail.com"]
+  
+  const isPrivilegedUser = empleadoAutenticadoEmail === "tmlighting@hotmail.com"
+
   const toggleRowExpansion = (index) => {
     setExpandedRow(expandedRow === index ? null : index)
   }
 
-  // Renderizado para vista móvil (tarjetas)
+  const verificarEditDelete = (dataRow) => {
+    // si el usuario es privilegiado, permitir editar cualquier registro
+    if (isPrivilegedUser) return true
+    
+    // permitir que el usuario edite su propio perfil
+    if (empleadoAutenticadoId && dataRow.id_empleado === empleadoAutenticadoId) return true
+    
+    // en cualquier otro caso, se debe verificar si es un email restringido
+    return !restrictedEmails.includes(dataRow.email)
+  }
+
   const renderMobileView = () => {
     return (
       <div className="grid gap-4 md:hidden ">
         {data.map((dataRow, index) => {
           const isEmpleadoAutenticado = empleadoAutenticadoId && dataRow.id_empleado === empleadoAutenticadoId
+          const canEditDelete = verificarEditDelete(dataRow)
 
           return (
             <Card
@@ -63,7 +78,7 @@ export default function DataTable({ headers, data, onDelete, onUpdate, onShow })
                       </Button>
                     )}
 
-                    {!isEmpleadoAutenticado && onUpdate && (
+                    {!isEmpleadoAutenticado && onUpdate && canEditDelete && (
                       <Button
                         variant="ghost"
                         size="icon"
@@ -85,7 +100,7 @@ export default function DataTable({ headers, data, onDelete, onUpdate, onShow })
                       </Button>
                     )}
 
-                    {!isEmpleadoAutenticado && onDelete && (
+                    {!isEmpleadoAutenticado && onDelete && canEditDelete && (
                       <Button
                         variant="ghost"
                         size="icon"
@@ -116,7 +131,6 @@ export default function DataTable({ headers, data, onDelete, onUpdate, onShow })
     )
   }
 
-  // Renderizado para vista desktop (tabla)
   const renderDesktopView = () => {
     return (
       <div className="hidden md:block overflow-auto rounded-md border">
@@ -134,13 +148,14 @@ export default function DataTable({ headers, data, onDelete, onUpdate, onShow })
           <TableBody>
             {data.map((dataRow, index) => {
               const isEmpleadoAutenticado = empleadoAutenticadoId && dataRow.id_empleado === empleadoAutenticadoId;
+              const canEditDelete = verificarEditDelete(dataRow);
               
               return (
                 <TableRow 
                   key={dataRow.id || `row-${index}`}
                   className={`${
                     isEmpleadoAutenticado 
-                      ? "bg-[#caeafe]" 
+                      ? "bg-[#caeafe] text-black" 
                       : index % 2 === 0 ? "bg-white dark:bg-gray-900" : "bg-gray-50 dark:bg-gray-700"
                   } hover:bg-neutral-200 transition-colors`}
                 >
@@ -163,7 +178,7 @@ export default function DataTable({ headers, data, onDelete, onUpdate, onShow })
                         </Button>
                       )}
 
-                      {!isEmpleadoAutenticado && onUpdate && (
+                      {!isEmpleadoAutenticado && onUpdate && canEditDelete && (
                         <Button
                           variant="ghost"
                           size="icon"
@@ -187,7 +202,7 @@ export default function DataTable({ headers, data, onDelete, onUpdate, onShow })
                         </Button>
                       )}
 
-                      {!isEmpleadoAutenticado && onDelete && (
+                      {!isEmpleadoAutenticado && onDelete && canEditDelete && (
                         <Button
                           variant="ghost"
                           size="icon"
@@ -209,7 +224,6 @@ export default function DataTable({ headers, data, onDelete, onUpdate, onShow })
     )
   }
 
-  // Si no hay datos, mostrar mensaje
   if (!data || data.length === 0) {
     return (
       <div className="text-center p-8 bg-gray-50 rounded-md border border-gray-200">
@@ -225,4 +239,3 @@ export default function DataTable({ headers, data, onDelete, onUpdate, onShow })
     </div>
   )
 }
-

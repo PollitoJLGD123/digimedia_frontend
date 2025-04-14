@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Swal from "sweetalert2"
-import { Loader2, CheckCircle, Clock, ChevronRight, Bookmark, Share2, Eye } from "lucide-react"
+import { Loader2, CheckCircle, Clock, Bookmark, Share2, Eye } from "lucide-react"
 import Fetch from "../../services/fetch"
 
 export default function Body2({ id_blog_body, fecha }) {
@@ -117,10 +117,10 @@ export default function Body2({ id_blog_body, fecha }) {
             <div className="relative h-[300px] md:h-[400px] overflow-hidden">
                 <img
                     src={
-                        data.url_image
-                            ? data.url_image.startsWith("http")
-                                ? data.url_image
-                                : `/blog/${data.url_image}`
+                        data.public_image1
+                            ? data.public_image1.startsWith("http")
+                                ? data.public_image1
+                                : `${data.public_image1}`
                             : "/blog/blog-4.jpg"
                     }
                     alt={data.titulo || "Imagen principal"}
@@ -207,10 +207,10 @@ export default function Body2({ id_blog_body, fecha }) {
 
                     {activeTab === "gallery" && (
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {[data.url_image1 || "/blog/blog-10.jpg", data.url_image2 || "/blog/blog-1.jpg"].map((src, index) => (
+                            {[data.public_image2 || "/blog/blog-10.jpg", data.public_image3 || "/blog/blog-1.jpg"].map((src, index) => (
                                 <div key={index} className="group relative rounded-xl overflow-hidden shadow-md">
                                     <img
-                                        src={src.startsWith("http") ? src : `/blog/${src}`}
+                                        src={src.startsWith("http") ? src : `${src}`}
                                         alt={`Imagen ${index + 1} del artículo`}
                                         className="w-full h-64 object-cover transition-transform duration-700 group-hover:scale-110"
                                     />

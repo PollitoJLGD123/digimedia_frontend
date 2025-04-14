@@ -74,7 +74,7 @@ export default function Header2() {
                     <Link href="/blog">Blog</Link>
                   </li>
                   <li className={isActive('/preguntas') ? 'active-sub' : ''} onClick={closeMenu}>
-                    <Link href="/preguntas">FQA</Link>
+                    <Link href="/preguntas">Preguntas Frecuentes</Link>
                   </li>
                   <li className={isActive('/contactanos') ? 'active-sub' : ''} onClick={closeMenu}>
                     <Link href="/contactanos">Contacto</Link>

@@ -7,6 +7,7 @@ import { getCookie } from 'cookies-next';
 import Swal from 'sweetalert2';
 
 import url from '../../../api/url';
+import { Loader2 } from 'lucide-react';
 
 const URL_API = `${url}/api/reclamaciones`;
 
@@ -323,8 +324,14 @@ const ComplaintForm = () => {
             <button
               type="submit"
               className="w-full bg-[#6f4be8] hover:bg-[#5c40d1]  p-2 rounded text-white transition-all duration-300"
+              disabled={isSubmitting}
+              title={isSubmitting ? 'Guardando...' : 'Enviar Reclamación'}
             >
-              {isSubmitting ? 'Enviando...' : 'Enviar Reclamación'}
+              {isSubmitting ? (
+              <span className="flex items-center justify-center">
+                <Loader2 className="animate-spin h-4 w-4 mx-auto" />
+              </span>
+              ) : 'Enviar Reclamación'}
             </button>
           </form>
         </div>

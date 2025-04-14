@@ -6,6 +6,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import { getCookie } from 'cookies-next';
 import url from '../../../../api/url';
+import { Loader2 } from 'lucide-react';
 
 const URL_API = `${url}/api/modales`
 
@@ -130,8 +131,13 @@ export default function ModalClick({ text, fondo, title, serviceName }) {
               value={correo}  
               onChange={(e) => setEmail(e.target.value)}
             />
-            <button disabled={loading} className="bg-[#0095ff] p-2 text-2xl font-bold rounded-2xl mt-4">
-            {loading ? 'Enviando...' : 'HAZLO YA'}
+            <button disabled={loading} className="bg-[#0095ff] p-2 text-2xl font-bold rounded-2xl mt-4" type="submit"
+              title={loading ? 'Guardando...' : 'Enviar Mensaje'}>
+              {loading ? (
+              <span className="flex items-center">
+                <Loader2 className="animate-spin h-4 w-4 mx-auto" />
+              </span>
+              ) : 'HAZLO YA'}
             </button>
           </form>
         </div>

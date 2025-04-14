@@ -4,20 +4,20 @@ import Link from "next/link"
 
 const templates = [
     {
-        src: "/dashboard/blogs/plantilla1.png",
-        viewLink: "/blog/plantillas/plantilla1/?id_blog=1",
+        src: "/dashboard/blogs/plantilla1.webp",
+        viewLink: "/blog/look/blog-bar/",
         editLink: "/edition/plantillas/plantilla1",
         name: "Plantilla Moderna",
     },
     {
-        src: "/dashboard/blogs/plantilla2.png",
-        viewLink: "/blog/plantillas/plantilla2/?id_blog=2",
+        src: "/dashboard/blogs/plantilla2.webp",
+        viewLink: "/blog/look/desarrollo-web/",
         editLink: "/edition/plantillas/plantilla2",
         name: "Plantilla Elegante",
     },
     {
-        src: "/dashboard/blogs/plantilla3.png",
-        viewLink: "/blog/plantillas/plantilla3/?id_blog=3",
+        src: "/dashboard/blogs/plantilla3.webp",
+        viewLink: "/blog/look/gestion-redes/",
         editLink: "/edition/plantillas/plantilla3",
         name: "Plantilla Minimalista",
     },
@@ -27,10 +27,10 @@ export default function Page() {
     return (
         <div className="flex w-full justify-center items-center">
             <div className="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-2xl shadow-xl w-full max-w-6xl overflow-hidden">
-                <div className="py-3 px-10 text-center relative">
+                <div className="py-1 px-10 text-center relative">
                     <div className="absolute top-0 left-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.1)_0,_rgba(255,255,255,0)_70%)]"></div>
                     <div className="relative z-10">
-                        <h1 className="text-4xl md:text-5xl font-bold text-white mb-2 tracking-tight">PLANTILLAS DE BLOGS</h1>
+                        <h1 className="mt-5 mb-0 text-4xl md:text-5xl font-bold text-white tracking-tight">PLANTILLAS DE BLOGS</h1>
                         <p className="text-purple-100 text-lg max-w-2xl mx-auto">
                             Selecciona una de nuestras plantillas para crear tu blog
                         </p>

@@ -1,68 +1,198 @@
 "use client"
-import Header from './components/Header';
-import Footer from './components/Footer';
-import React, { useState } from "react";
+
+import { useState, useEffect, useRef } from "react"
+import Link from "next/link"
+import Header from "./components/Header"
+import Footer from "./components/Footer"
+import { Button } from "@/components/ui/button"
+import { Save, Layout, Type, FootprintsIcon as FooterIcon, House, BookTemplate, Pencil } from "lucide-react"
 import "../globals.css"
 
 export default function EditionLayout({ children }) {
-  // Estado para controlar qué botón está seleccionado
-  const [selectedSection, setSelectedSection] = useState(null);
-
-  // Función para manejar la selección de una sección
-  const handleSectionClick = (section) => {
-    setSelectedSection(section);
-  };
+  const [selectedSection, setSelectedSection] = useState("header")
+  const observerRef = useRef(null)
+  const isNavigatingRef = useRef(false)
+  const sectionsRef = useRef(null)
+  
+  const handleSectionClick = (id) => {
+    setSelectedSection(id)
+    
+    if (observerRef.current) {
+      observerRef.current.disconnect()
+    }
+    
+    isNavigatingRef.current = true
+    
+    const targetElement = document.getElementById(id)
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+    
+    setTimeout(() => {
+      if (document.getElementById(id)) {
+        setupObserver()
+        isNavigatingRef.current = false
+      }
+    }, 1000)
+  }
+  
+  const setupObserver = () => {
+    if (observerRef.current) {
+      observerRef.current.disconnect()
+    }
+    
+    if (!sectionsRef.current) {
+      sectionsRef.current = document.querySelectorAll("#header, #body, #footer")
+    }
+    
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        if (!isNavigatingRef.current) {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setSelectedSection(entry.target.id)
+            }
+          })
+        }
+      },
+      { 
+        threshold: [0.2],
+        rootMargin: "-10% 0px"
+      }
+    )
+    
+    if (sectionsRef.current) {
+      sectionsRef.current.forEach(section => {
+        observerRef.current.observe(section)
+      })
+    }
+  }
+  
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      sectionsRef.current = document.querySelectorAll("#header, #body, #footer")
+      setupObserver()
+    }, 500)
+    
+    return () => {
+      clearTimeout(timer)
+      if (observerRef.current) {
+        observerRef.current.disconnect()
+      }
+    }
+  }, [])
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      if (isNavigatingRef.current) return
+    }
+    
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
 
   return (
-    <div className="flex flex-col h-screen">
-      {/* Header */}
+    <div className="flex flex-col min-h-screen">
       <Header />
-      
-      {/* Main Content Area */}
+
       <div className="flex flex-1">
-        {/* Sidebar */}
-        <div className="w-44 bg-purple-800 text-white p-4 flex flex-col justify-between">
-          <div>
-            <h2 className="text-lg text-center p-4">Estructura</h2>
-            <div className="space-y-3">
-              <button
-                className={`w-full py-2 rounded-md text-center ${selectedSection === 'header' ? 'bg-black' : 'bg-purple-700'} 
-                  hover:bg-yellow hover:scale-105 hover:shadow-lg transition-all duration-200`}
-                onClick={() => handleSectionClick('header')}
-              >
-                Header
-              </button>
-              <button
-                className={`w-full py-2 rounded-md text-center ${selectedSection === 'body' ? 'bg-black' : 'bg-purple-700'} 
-                  hover:bg-purple-800 hover:scale-105 hover:shadow-lg transition-all duration-200`}
-                onClick={() => handleSectionClick('body')}
-              >
-                Body
-              </button>
-              <button
-                className={`w-full py-2 rounded-md text-center ${selectedSection === 'footer' ? 'bg-black' : 'bg-purple-700'} 
-                  hover:bg-purple-800 hover:scale-105 hover:shadow-lg transition-all duration-200`}
-                onClick={() => handleSectionClick('footer')}
-              >
-                Footer
-              </button>
+        <div className="w-64 bg-gradient-to-b from-slate-800 to-slate-900 text-white fixed top-0 left-0 h-full pt-20 shadow-xl">
+          <div className="px-6 py-4 border-b border-slate-700/50">
+            <div className="flex items-center justify-center space-x-2">
+              <div className="h-2 w-2 rounded-full bg-emerald-500"></div>
+              <h1 className="text-lg tracking-wide font-extrabold">MODO EDICIÓN</h1>
+              <Pencil className="mb-1 h-4 w-4" />
             </div>
           </div>
 
-          {/* Button "Guardar" */}
-          <button className="w-full py-2 mt-4 bg-[#4CAF50] hover:bg-[#3cf743] text-white rounded-md">
-            Guardar
-          </button>
-        </div>
+          <div className="p-6">
+            <h2 className="text-xs font-medium uppercase tracking-wider text-slate-400 mb-4 flex items-center">
+              <span className="h-px flex-grow bg-slate-700 mr-2"></span>
+              Estructura
+              <span className="h-px flex-grow bg-slate-700 ml-2"></span>
+            </h2>
 
-        {/* Main Editing Area */}
-        <div className="flex-1 p-8 bg-white">
-          {children} {/* Aquí se renderiza el contenido de la página de edición */}
+            <div className="space-y-3 w-full mb-auto">
+              <button
+                className={`section group w-full py-3 px-4 rounded-lg text-sm font-medium transition-all duration-300 flex items-center
+                  ${selectedSection === "header"
+                    ? "bg-gradient-to-r from-slate-700 to-slate-800 text-white shadow-lg border-l-4 border-emerald-500"
+                    : "bg-slate-800/30 hover:bg-slate-700/50 hover:translate-x-1"
+                  }`}
+                onClick={() => handleSectionClick("header")}
+              >
+                <Layout
+                  className={`mr-3 h-4 w-4 ${selectedSection === "header" ? "text-emerald-400" : "text-slate-400 group-hover:text-white"}`}
+                />
+                Header
+              </button>
+
+              <button
+                className={`section group w-full py-3 px-4 rounded-lg text-sm font-medium transition-all duration-300 flex items-center
+                  ${selectedSection === "body"
+                    ? "bg-gradient-to-r from-slate-700 to-slate-800 text-white shadow-lg border-l-4 border-emerald-500"
+                    : "bg-slate-800/30 hover:bg-slate-700/50 hover:translate-x-1"
+                  }`}
+                onClick={() => handleSectionClick("body")}
+              >
+                <Layout
+                  className={`mr-3 h-4 w-4 ${selectedSection === "body" ? "text-emerald-400" : "text-slate-400 group-hover:text-white"}`}
+                />
+                Body
+              </button>
+
+              <button
+                className={`section group w-full py-3 px-4 rounded-lg text-sm font-medium transition-all duration-300 flex items-center
+                  ${selectedSection === "footer"
+                    ? "bg-gradient-to-r from-slate-700 to-slate-800 text-white shadow-lg border-l-4 border-emerald-500"
+                    : "bg-slate-800/30 hover:bg-slate-700/50 hover:translate-x-1"
+                  }`}
+                onClick={() => handleSectionClick("footer")}
+              >
+                <FooterIcon
+                  className={`mr-3 h-4 w-4 ${selectedSection === "footer" ? "text-emerald-400" : "text-slate-400 group-hover:text-white"}`}
+                />
+                Footer
+              </button>
+            </div>
+
+            <h2 className="text-xs mt-3 font-medium uppercase tracking-wider text-slate-400 mb-4 flex items-center">
+              <span className="h-px flex-grow bg-slate-700 mr-2"></span>
+              OPCIONES
+              <span className="h-px flex-grow bg-slate-700 ml-2"></span>
+            </h2>
+
+            <button
+              className="group w-full py-3 px-4 rounded-lg text-sm font-medium transition-all duration-300 flex items-center bg-slate-800/30 hover:bg-slate-700/50 hover:translate-x-1"
+            >
+              <Link href="/dashboard/main" className="flex items-center">
+                <House
+                  className="mr-3 h-4 w-4 text-slate-400 group-hover:text-white"
+                />
+                Inicio
+              </Link>
+            </button>
+
+            <button
+              className="group w-full py-3 px-4 rounded-lg text-sm font-medium transition-all duration-300 flex items-center bg-slate-800/30 hover:bg-slate-700/50 hover:translate-x-1"
+            >
+              <Link href="/dashboard/blogs" className="flex items-center">
+                <BookTemplate
+                  className="mr-3 h-4 w-4 text-slate-400 group-hover:text-white"
+                />
+                Plantillas
+              </Link>
+            </button>
+          </div>
         </div>
+        <div className="flex-1 p-6 ml-64 bg-slate-50 overflow-auto">{children}</div>
       </div>
-
-      {/* Footer */}
-      <Footer />
+      <div>
+        <Footer />
+      </div>
     </div>
-  );
+  )
 }
