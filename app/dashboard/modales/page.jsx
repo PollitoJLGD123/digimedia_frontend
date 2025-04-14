@@ -8,8 +8,9 @@ import user_service from '../users/services/user.service';
 import url from '../../../api/url';
 import axios from 'axios'
 import Swal from 'sweetalert2';
-import { Search, Eye, ToggleLeft, Trash2, Loader2, Filter, Download, RefreshCw } from "lucide-react"
+import { Search, Eye, ToggleLeft, Trash2, Loader2, Filter, Download, RefreshCw, Contact } from "lucide-react"
 import auth_service from "../users/services/auth.service"
+import Link from "next/link"
 
 const API_BASE_URL = `${url}/api/modales`;
 
@@ -114,6 +115,7 @@ export default function Page() {
           confirmButtonText: "OK",
         })
       }
+      console.log(error)
     }
   }
 
@@ -424,6 +426,15 @@ export default function Page() {
                               className="p-1.5 bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100 transition-colors"
                             >
                               <Eye size={18} />
+                            </button>
+
+                            <button
+                              title="Emails y WhatsApp"
+                              className="p-1.5 bg-amber-50 text-amber-600 rounded-lg hover:bg-amber-100 transition-colors"
+                            >
+                              <Link href={`./mails?id_modal=${modal.id_modalservicio}`} >
+                                <Contact size={17} />
+                              </Link>
                             </button>
 
                             <button

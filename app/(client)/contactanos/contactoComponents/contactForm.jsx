@@ -6,6 +6,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import { getCookie } from 'cookies-next';
 import url from '../../../../api/url';
+import { Loader2 } from 'lucide-react';
 
 
 const URL_API = `${url}/api/contactanos`;
@@ -147,8 +148,11 @@ const ContactForm = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 1.5 }}
         >
-          <button type="submit" disabled={loading}>
-            {loading ? "Enviando..." : "Enviar mensaje"} <span className="icon">📩</span>
+          <button type="submit" disabled={loading} title={loading ? 'Guardando...' : 'Enviar Mensaje'}>
+            {loading ? (
+              <span className="flex items-center">
+                <Loader2 className="animate-spin h-4 w-4 mx-auto" />
+              </span>) : "Enviar mensaje"} <span className="icon">📩</span>
           </button>
         </motion.div>
       </form>
