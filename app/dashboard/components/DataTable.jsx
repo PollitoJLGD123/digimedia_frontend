@@ -2,53 +2,81 @@
 
 import { getCookie } from "cookies-next"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { use, useState } from "react"
 import { Eye, Pencil, Trash2, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import auth_service from "../users/services/auth.service"
 
 export default function DataTable({ headers, data, onDelete, onUpdate, onShow }) {
   const router = useRouter()
   const [expandedRow, setExpandedRow] = useState(null)
 
-  const empleadoCookie = getCookie("empleado")
-  const empleadoAutenticado = empleadoCookie ? JSON.parse(empleadoCookie) : null
+  const empleadoAutenticado = auth_service.getCurrentEmpleado()
   const empleadoAutenticadoId = empleadoAutenticado?.id_empleado
   const empleadoAutenticadoEmail = empleadoAutenticado?.email
 
   const restrictedEmails = ["joseluisjlgd123@gmail.com", "keving.kpg@gmail.com", "tmlighting@hotmail.com"]
-  
-  const isPrivilegedUser = empleadoAutenticadoEmail === "tmlighting@hotmail.com"
 
+  const isPrivilegedUser = empleadoAutenticadoEmail === "tmlighting@hotmail.com"
+  const isRestrictedUser = restrictedEmails.includes(empleadoAutenticadoEmail) && !isPrivilegedUser
+  const isNormalAdmin = !restrictedEmails.includes(empleadoAutenticadoEmail)
+
+  console.log("Empleado autenticado:", empleadoAutenticado)
+  console.log("Tipo de usuario:", { isPrivilegedUser, isRestrictedUser, isNormalAdmin })
+  
   const toggleRowExpansion = (index) => {
     setExpandedRow(expandedRow === index ? null : index)
   }
 
   const verificarEditDelete = (dataRow) => {
-    // si el usuario es privilegiado, permitir editar cualquier registro
-    if (isPrivilegedUser) return true
-    
-    // permitir que el usuario edite su propio perfil
-    if (empleadoAutenticadoId && dataRow.id_empleado === empleadoAutenticadoId) return true
-    
-    // en cualquier otro caso, se debe verificar si es un email restringido
-    return !restrictedEmails.includes(dataRow.email)
+    console.log("verificarEditDelete - dataRow:", dataRow)
+
+    if (dataRow.id_empleado === empleadoAutenticadoId) {
+      console.log("Registro es propio. Permitir editar/eliminar (mostrar perfil).")
+      return true
+    }
+
+    if (isPrivilegedUser) {
+      console.log("Usuario privilegiado. Permitir editar/eliminar.")
+      return true
+    }
+
+    if (restrictedEmails.includes(dataRow.email)) {
+      console.log("Registro con email restringido:", dataRow.email, ". No se permite editar/eliminar para usuarios restringidos/administradores normales.")
+      return false
+    }
+
+    console.log("Registro no restringido. Permitir editar/eliminar para este usuario.")
+    return true
+  }
+
+  const verificarShow = (dataRow) => {
+    console.log("verificarShow - dataRow:", dataRow)
+  
+    if (dataRow.id_empleado === empleadoAutenticadoId) {
+      console.log("Registro es propio. No se muestra botón Show.")
+      return false
+    }
+  
+    console.log("Permitir mostrar registro para cualquier usuario.")
+    return true
   }
 
   const renderMobileView = () => {
     return (
       <div className="grid gap-4 md:hidden ">
         {data.map((dataRow, index) => {
-          const isEmpleadoAutenticado = empleadoAutenticadoId && dataRow.id_empleado === empleadoAutenticadoId
-          const canEditDelete = verificarEditDelete(dataRow)
+          const esMismoUsuario = empleadoAutenticadoId && dataRow.id_empleado === empleadoAutenticadoId
+          console.log(`MobileView - Fila ${index}:`, { esMismoUsuario, dataRow })
 
           return (
             <Card
               key={dataRow.id || `card-${index}`}
-              className={`overflow-hidden ${isEmpleadoAutenticado ? "border-[#8c52ff] border-2 dark:bg-gray-900" : "border-gray-200"}`}
+              className={`overflow-hidden ${esMismoUsuario ? "border-[#8c52ff] border-2 dark:bg-gray-900" : "border-gray-200"}`}
             >
-              <div className={`p-3 ${isEmpleadoAutenticado ? "bg-[#f0ebff] dark:bg-gray-900" : "bg-white"}`}>
+              <div className={`p-3 ${esMismoUsuario ? "bg-[#f0ebff] dark:bg-gray-900" : "bg-white"}`}>
                 {headers.slice(0, 2).map((header) => (
                   <div key={`mobile-${dataRow.id}-${header}`} className="mb-1">
                     <span className="font-semibold text-xs text-gray-500 dark:bg-gray-900">{header.toUpperCase()}: </span>
@@ -67,7 +95,8 @@ export default function DataTable({ headers, data, onDelete, onUpdate, onShow })
                   </Button>
 
                   <div className="flex space-x-1">
-                    {!isEmpleadoAutenticado && (
+                    {/* Botón Mostrar */}
+                    {!esMismoUsuario && verificarShow(dataRow) && (
                       <Button
                         variant="ghost"
                         size="icon"
@@ -78,7 +107,8 @@ export default function DataTable({ headers, data, onDelete, onUpdate, onShow })
                       </Button>
                     )}
 
-                    {!isEmpleadoAutenticado && onUpdate && canEditDelete && (
+                    {/* Botón Editar */}
+                    {!esMismoUsuario && onUpdate && verificarEditDelete(dataRow) && (
                       <Button
                         variant="ghost"
                         size="icon"
@@ -89,18 +119,8 @@ export default function DataTable({ headers, data, onDelete, onUpdate, onShow })
                       </Button>
                     )}
 
-                    {isEmpleadoAutenticado && (
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 text-[#305dfe]"
-                        onClick={() => router.push("/dashboard/main")}
-                      >
-                        <User className="h-4 w-4" />
-                      </Button>
-                    )}
-
-                    {!isEmpleadoAutenticado && onDelete && canEditDelete && (
+                    {/* Botón Eliminar */}
+                    {!esMismoUsuario && onDelete && verificarEditDelete(dataRow) && (
                       <Button
                         variant="ghost"
                         size="icon"
@@ -108,6 +128,17 @@ export default function DataTable({ headers, data, onDelete, onUpdate, onShow })
                         onClick={() => onDelete(dataRow.id)}
                       >
                         <Trash2 className="h-4 w-4" />
+                      </Button>
+                    )}
+
+                    {esMismoUsuario && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-[#305dfe]"
+                        onClick={() => router.push("/dashboard/main")}
+                      >
+                        <User className="h-4 w-4" />
                       </Button>
                     )}
                   </div>
@@ -147,14 +178,14 @@ export default function DataTable({ headers, data, onDelete, onUpdate, onShow })
           </TableHeader>
           <TableBody>
             {data.map((dataRow, index) => {
-              const isEmpleadoAutenticado = empleadoAutenticadoId && dataRow.id_empleado === empleadoAutenticadoId;
-              const canEditDelete = verificarEditDelete(dataRow);
-              
+              const esMismoUsuario = empleadoAutenticadoId && dataRow.id_empleado === empleadoAutenticadoId
+              console.log(`DesktopView - Fila ${index}:`, { esMismoUsuario, dataRow })
+
               return (
                 <TableRow 
                   key={dataRow.id || `row-${index}`}
                   className={`${
-                    isEmpleadoAutenticado 
+                    esMismoUsuario 
                       ? "bg-[#caeafe] text-black" 
                       : index % 2 === 0 ? "bg-white dark:bg-gray-900" : "bg-gray-50 dark:bg-gray-700"
                   } hover:bg-neutral-200 transition-colors`}
@@ -166,7 +197,8 @@ export default function DataTable({ headers, data, onDelete, onUpdate, onShow })
                   ))}
                   <TableCell className="text-center">
                     <div className="flex justify-center space-x-1">
-                      {!isEmpleadoAutenticado && (
+                      {/* Botón Mostrar */}
+                      {!esMismoUsuario && verificarShow(dataRow) && (
                         <Button
                           variant="ghost"
                           size="icon"
@@ -174,11 +206,11 @@ export default function DataTable({ headers, data, onDelete, onUpdate, onShow })
                           onClick={() => onShow(dataRow.id)}
                         >
                           <Eye className="h-4 w-4" />
-                          <span className="sr-only">Ver perfil</span>
                         </Button>
                       )}
 
-                      {!isEmpleadoAutenticado && onUpdate && canEditDelete && (
+                      {/* Botón Editar */}
+                      {!esMismoUsuario && onUpdate && verificarEditDelete(dataRow) && (
                         <Button
                           variant="ghost"
                           size="icon"
@@ -186,23 +218,11 @@ export default function DataTable({ headers, data, onDelete, onUpdate, onShow })
                           onClick={() => onUpdate(dataRow.id)}
                         >
                           <Pencil className="h-4 w-4" />
-                          <span className="sr-only">Editar</span>
                         </Button>
                       )}
 
-                      {isEmpleadoAutenticado && (
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          className="h-8 w-8 text-[#305dfe] hover:text-[#3e329a] hover:bg-blue-50"
-                          onClick={() => router.push("/dashboard/main")}
-                        >
-                          <User className="h-4 w-4" />
-                          <span className="sr-only">Ver mi perfil</span>
-                        </Button>
-                      )}
-
-                      {!isEmpleadoAutenticado && onDelete && canEditDelete && (
+                      {/* Botón Eliminar */}
+                      {!esMismoUsuario && onDelete && verificarEditDelete(dataRow) && (
                         <Button
                           variant="ghost"
                           size="icon"
@@ -210,7 +230,18 @@ export default function DataTable({ headers, data, onDelete, onUpdate, onShow })
                           onClick={() => onDelete(dataRow.id)}
                         >
                           <Trash2 className="h-4 w-4" />
-                          <span className="sr-only">Eliminar</span>
+                        </Button>
+                      )}
+
+                      {/* Botón Mi Perfil: Solo para la fila del usuario autenticado */}
+                      {esMismoUsuario && (
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-8 w-8 text-[#305dfe] hover:text-[#3e329a] hover:bg-blue-50"
+                          onClick={() => router.push("/dashboard/main")}
+                        >
+                          <User className="h-4 w-4" />
                         </Button>
                       )}
                     </div>
@@ -225,6 +256,7 @@ export default function DataTable({ headers, data, onDelete, onUpdate, onShow })
   }
 
   if (!data || data.length === 0) {
+    console.log("No hay datos disponibles")
     return (
       <div className="text-center p-8 bg-gray-50 rounded-md border border-gray-200">
         <p className="text-gray-500">No hay datos disponibles</p>

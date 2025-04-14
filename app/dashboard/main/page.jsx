@@ -15,12 +15,13 @@ import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { CldImage } from "next-cloudinary"
 
+import auth_service from "../users/services/auth.service"
+
 import url from "@/api/url"
 export default function Page() {
   const [userData, setUserData] = useState(null)
   const [empleadoData, setEmpleadoData] = useState(null)
   const [userRole, setUserRole] = useState("Usuario")
-  const [isClient, setIsClient] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [showEditModal, setShowEditModal] = useState(false)
   const [showPasswordModal, setShowPasswordModal] = useState(false)
@@ -33,144 +34,66 @@ export default function Page() {
   const api_url = `${url}/api/empleados`
 
   useEffect(() => {
-    setIsClient(true)
-
     const loadData = async () => {
-      if (empleadoId) {
-        const userRole = getCookie("rol")
-        if (userRole !== "administrador") {
-          Swal.fire({
-            icon: "error",
-            title: "Acceso denegado",
-            text: "No tienes permiso para ver este perfil.",
-            confirmButtonColor: "#8c52ff",
-          })
-          setIsLoading(false)
-          return
+      setIsLoading(true);
+      
+      try {
+        const meData = await auth_service.me();
+        
+        if (!meData || meData.error) {
+          auth_service.logoutClient(router);
+          return;
         }
 
-        try {
-          const token = getCookie("token")
-          if (!token) {
-            throw new Error("No se encontró el token de autenticación")
+        const currentUser = meData.user || auth_service.getCurrentUser();
+        const currentEmpleado = meData.empleado || auth_service.getCurrentEmpleado();
+        const roleName = currentEmpleado?.rol?.nombre || 
+                        currentUser?.rol?.nombre || 
+                        auth_service.getCurrentRole() || 
+                        "Usuario";
+
+        setUserRole(roleName.toString());
+        
+        if (empleadoId) {
+          if (!auth_service.hasPermission("ver-empleados")) {
+            return;
           }
-
-          const response = await fetch(`${api_url}/${empleadoId}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-          })
-
-          if (!response.ok) {
-            if (response.status === 401) {
-              deleteCookie("token")
-              router.push("/login")
-            }
-            throw new Error(`Error ${response.status}: ${response.statusText}`)
+          
+          const empleadoResponse = await fetchEmpleado(empleadoId);
+          if (empleadoResponse) {
+            setEmpleadoData(empleadoResponse);
           }
-
-          const data = await response.json()
-
-          if (data.status === 200) {
-            setEmpleadoData(data.data)
-            setUserRole(data.data.rol?.nombre || "Usuario")
-            setImageUrl(
-              data.data.imagen_perfil_url ||
-                "https://images.rawpixel.com/image_png_social_square/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png",
-            )
-          } else {
-            console.error("Empleado no encontrado:", data.message)
-          }
-        } catch (error) {
-          console.error("Error API:", error)
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "Hubo un error al cargar el perfil del empleado.",
-            confirmButtonColor: "#8c52ff",
-          })
-        } finally {
-          setIsLoading(false)
+        } else {
+          if (currentUser) setUserData(currentUser);
+          if (currentEmpleado) setEmpleadoData(currentEmpleado);
         }
-      } else {
-        try {
-          const token = getCookie("token")
-          if (!token) {
-            throw new Error("No se encontró el token de autenticación")
-          }
-
-          const empleadoCookie = getCookie("empleado")
-
-          if (empleadoCookie) {
-            const empleado = JSON.parse(empleadoCookie)
-            const idEmpleado = empleado.id_empleado
-
-            if (idEmpleado) {
-              const response = await fetch(`${api_url}/${idEmpleado}`, {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                  Accept: "application/json",
-                  "Content-Type": "application/json",
-                },
-              })
-
-              if (!response.ok) {
-                if (response.status === 401) {
-                  deleteCookie("token")
-                  router.push("/login")
-                }
-                throw new Error(`Error ${response.status}: ${response.statusText}`)
-              }
-
-              const data = await response.json()
-
-              if (data.status === 200) {
-                setEmpleadoData(data.data)
-                setUserRole(data.data.rol?.nombre || "Usuario")
-                setImageUrl(
-                  data.data.imagen_perfil_url ||
-                    "https://images.rawpixel.com/image_png_social_square/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png",
-                )
-
-                setCookie("empleado", JSON.stringify(data.data))
-              } else {
-                console.error("Error al obtener datos del empleado:", data.message)
-                setEmpleadoData(empleado)
-                setImageUrl(empleado.imagen_perfil_url)
-              }
-            }
-          }
-
-          const userCookie = getCookie("user")
-          const rolCookie = getCookie("rol")
-
-          if (userCookie) setUserData(JSON.parse(userCookie))
-          if (rolCookie && !userRole) setUserRole(rolCookie)
-        } catch (error) {
-          console.error("Error al cargar datos del usuario:", error)
-
-          const userCookie = getCookie("user")
-          const empleadoCookie = getCookie("empleado")
-          const rolCookie = getCookie("rol")
-
-          if (empleadoCookie) {
-            const empleado = JSON.parse(empleadoCookie)
-            setEmpleadoData(empleado)
-            setImageUrl(empleado.imagen_perfil_url)
-          }
-
-          if (userCookie) setUserData(JSON.parse(userCookie))
-          if (rolCookie) setUserRole(rolCookie)
-        } finally {
-          setIsLoading(false)
-        }
+      } catch (error) {
+        console.error("Error loading data:", error);
+      } finally {
+        setIsLoading(false);
       }
-    }
+    };
 
-    loadData()
-  }, [empleadoId, router])
+    loadData();
+  }, [empleadoId]);
+
+  const fetchEmpleado = async (id) => {
+    try {
+      const response = await fetch(`${api_url}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${auth_service.getToken()}`,
+        },
+      });
+      
+      if (!response.ok) throw new Error("Error fetching empleado");
+      
+      const data = await response.json();
+      return data.status === 200 ? data.data : null;
+    } catch (error) {
+      console.error("Error fetching empleado:", error);
+      return null;
+    }
+  };
 
   const handleUpdateSuccess = (updatedData) => {
     setEmpleadoData(updatedData)
@@ -240,21 +163,23 @@ export default function Page() {
     )
   }
 
-  const nombre = empleadoData?.nombre || userData?.nombre || "No disponible"
-  const apellido = empleadoData?.apellido || userData?.apellido || "No disponible"
-  const dni = empleadoData?.dni || userData?.dni || "No disponible"
-  const displayName = `${nombre} ${apellido}`
-  const email = empleadoData?.email || userData?.email || "No disponible"
-  const telefono = empleadoData?.telefono || "No disponible"
+  const currentUser = userData || auth_service.getCurrentUser();
+  const currentEmpleado = empleadoData || auth_service.getCurrentEmpleado();
 
+  const nombre = currentEmpleado?.nombre || currentUser?.name?.split(' ')[0] || "No disponible";
+  const apellido = currentEmpleado?.apellido || currentUser?.name?.split(' ').slice(1).join(' ') || "No disponible";
+  const dni = currentEmpleado?.dni || "No disponible"
+  const displayName = `${nombre} ${apellido}`
+  const email = currentEmpleado?.email || currentUser?.email || "No disponible"
+  const telefono = currentEmpleado?.telefono || "No disponible"
   const getRolePermissions = (role) => {
     switch (role.toLowerCase()) {
       case "administrador":
-        return ["Acceso Total", "Gestión de Empleados", "Reportes", "Configuración"]
+        return ["Acceso Total", "Gestión de Empleados", "Gestión de Roles", "Modales", "Contactanos", "Reclamaciones", "Gestión Total de Blogs"]
       case "marketing":
-        return ["Gestión de Contenido", "Campañas", "Análisis"]
+        return ["Modales", "Contactanos", "Reclamaciones", "Creación de Blogs"]
       case "ventas":
-        return ["Registro de Ventas", "Clientes", "Cotizaciones"]
+        return ["Modales", "Contactanos", "Reclamaciones"]
       default:
         return ["Acceso Básico"]
     }
@@ -312,7 +237,9 @@ export default function Page() {
                     </div>
                   )}
                   <Badge className="absolute -bottom-2 left-1/2 -translate-x-1/2 py-0.5 text-xs bg-[#4d2994] text-white">
-                    {userRole.charAt(0).toUpperCase() + userRole.slice(1)}
+                    {typeof userRole === 'string' ? 
+                      (userRole.charAt(0).toUpperCase() + userRole.slice(1)) : 
+                      "Usuario"}
                   </Badge>
 
                   {!empleadoId && (
@@ -342,6 +269,7 @@ export default function Page() {
                         variant="outline"
                         onClick={() => setShowEditModal(true)}
                         className="flex-1 text-sm dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
+                        disabled={!auth_service.hasPermission("editar-empleados")}
                       >
                         <Edit className="mr-1.5 h-3.5 w-3.5" />
                         Editar Perfil
@@ -445,27 +373,19 @@ export default function Page() {
                   <div>
                     <h4 className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">Permisos</h4>
                     <div className="flex flex-wrap gap-1.5">
-                      {permissions.map((permission, index) => (
-                        <Badge
-                          key={index}
-                          variant="outline"
-                          className="px-2 py-0.5 text-xs bg-[#f0ebff] text-[#8c52ff] border-[#d9c6ff] dark:bg-[#4d2994]/30 dark:text-[#a67dff] dark:border-[#6b42c9]"
-                        >
-                          {permission}
-                        </Badge>
-                      ))}
-                      <Badge
-                        variant="outline"
-                        className="px-2 py-0.5 text-xs bg-[#f0ebff] text-[#8c52ff] border-[#d9c6ff] dark:bg-[#4d2994]/30 dark:text-[#a67dff] dark:border-[#6b42c9]"
-                      >
-                        Reclamaciones
-                      </Badge>
-                      <Badge
-                        variant="outline"
-                        className="px-2 py-0.5 text-xs bg-[#f0ebff] text-[#8c52ff] border-[#d9c6ff] dark:bg-[#4d2994]/30 dark:text-[#a67dff] dark:border-[#6b42c9]"
-                      >
-                        Modales
-                      </Badge>
+                      {permissions.length > 0 ? (
+                        permissions.map((permission, index) => (
+                          <Badge
+                            key={index}
+                            variant="outline"
+                            className="px-2 py-0.5 text-xs bg-[#f0ebff] text-[#8c52ff] border-[#d9c6ff] dark:bg-[#4d2994]/30 dark:text-[#a67dff] dark:border-[#6b42c9]"
+                          >
+                            {permission}
+                          </Badge>
+                        ))
+                      ) : (
+                        <p className="text-sm text-gray-500 dark:text-gray-400">Sin permisos asignados</p>
+                      )}
                     </div>
                   </div>
                 </CardContent>
