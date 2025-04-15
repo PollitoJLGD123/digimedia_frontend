@@ -51,8 +51,8 @@ const PERMISSION_CATEGORIES = {
       keywords: ["Cambiar"]
     },
     "Enviar ": { 
-      nombre: "Gestión de Accesos", 
-      icon: <LockSend className="h-4 w-4" />,
+      nombre: "Enviar", 
+      icon: <Send className="h-4 w-4" />,
       keywords: ["Enviar"]
     },
     other: { 
