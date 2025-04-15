@@ -1,10 +1,10 @@
 export default function Header({
 
   /*SI Referenciables para el cambio de contenido*/
-    url_image,
-    tituloPrincipal = "TU BAR EN LA MIRA",
-    tituloSecundario = "El Letro Perfecto para Cautivar a los Clientes",
-    descripcion = "Haz que tu bar sea tu mejor amigo en la mira de tus clientes",
+  url_image,
+  tituloPrincipal = "TU BAR EN LA MIRA",
+  tituloSecundario = "El Letro Perfecto para Cautivar a los Clientes",
+  descripcion = "Haz que tu bar sea tu mejor amigo en la mira de tus clientes",
 
     /*NO referenciables*/
     backgroundOverlay = "bg-gradient-to-r from-transparent via-transparent to-black/80",
@@ -30,6 +30,5 @@ export default function Header({
           {decoracion && <div className=" w-20 h-1 bg-white mt-6 ml-auto"></div>}
         </div>
       </div>
-    );
-  }
-
+  );
+}
