@@ -10,6 +10,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import ModalError from "./components/ModalError"
+import ModalEstado from "./components/ModalEstado"
 
 const Page = () => {
     return (
@@ -36,7 +38,14 @@ function PageContent() {
     const id_modal = searchParams.get("id_modal")
 
     const [isLoadingMail, setIsLoadingMail] = useState(false)
-    const [isLoadingError, setIsLoadingError] = useState(false)
+
+    const [isModalError, setIsModalError] = useState(false);
+    const [selectedEmailId, setSelectedEmailId] = useState(null);
+
+    const [isLoadingWat, setIsLoadingWat] = useState(false);
+
+    const [isModalWat, setIsModalWat] = useState(false);
+    const [selectedWatId, setSelectedWatId] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -82,12 +91,13 @@ function PageContent() {
             const response = await axios.get(`${url}/api/modales/send_mail/${id_modal_email}`);
 
             if (response.status === 200) {
-                Swal.fire({
+                await Swal.fire({
                     title: "Correo Enviado Correctamente",
                     text: "Es recomendable que revises el correo de DIGIMEDIA para ver si este correo existe.",
                     icon: "success",
                     confirmButtonText: "OK",
-                })
+                });
+                window.location.reload();
             }
             else {
                 Swal.fire({
@@ -97,7 +107,6 @@ function PageContent() {
                     confirmButtonText: "OK",
                 })
             }
-            window.location.reload()
         } catch (error) {
             Swal.fire({
                 title: "Error",
@@ -112,7 +121,9 @@ function PageContent() {
 
     async function enviarWat(id_modal_wat) {
         try {
+            setIsLoadingWat(true)
 
+            window.open(`${url}/api/modales/send_wat/${id_modal_wat}`, "_blank")
 
         } catch (error) {
             Swal.fire({
@@ -121,6 +132,8 @@ function PageContent() {
                 icon: "error",
                 confirmButtonText: "OK",
             })
+        } finally {
+            setIsLoadingWat(false)
         }
     }
 
@@ -146,6 +159,28 @@ function PageContent() {
         }
     }
 
+    const getStatusBadgeWat = (estado, error) => {
+        if (estado == 1 && !error) {
+            return (
+                <Badge variant="success" className="bg-green-100 text-green-800 hover:bg-green-200">
+                    <CheckCircle className="w-3 h-3 mr-1" /> Enviado Correctamente
+                </Badge>
+            )
+        } else if (error) {
+            return (
+                <Badge variant="destructive">
+                    <XCircle className="w-3 h-3 mr-1" /> Error de Envío
+                </Badge>
+            )
+        } else if (estado == 0 && !error) {
+            return (
+                <Badge variant="outline" className="bg-yellow-100 text-yellow-800 hover:bg-yellow-200">
+                    <Clock className="w-3 h-3 mr-1" /> Pendiente de Envío
+                </Badge>
+            )
+        }
+    }
+
     const formatDate = (dateString) => {
         if (!dateString) return ""
         const date = new Date(dateString)
@@ -158,37 +193,14 @@ function PageContent() {
         }).format(date)
     }
 
-    async function reportarError(id_modal_email) {
-        try {
-            setIsLoadingError(true)
-            const response = await axios.get(`${url}/api/modales/reportar_error/${id_modal_email}`);
-            if (response.status === 200) {
-                Swal.fire({
-                    title: "Error Reportado",
-                    text: "El error ha sido reportado exitosamente.",
-                    icon: "success",
-                    confirmButtonText: "OK",
-                })
-            }
-            else {
-                Swal.fire({
-                    title: "Error",
-                    text: response.message,
-                    icon: "error",
-                    confirmButtonText: "OK",
-                })
-            }
-            window.location.reload()
-        } catch (error) {
-            Swal.fire({
-                title: "Error",
-                text: "Ocurrió un error al obtener los datos.",
-                icon: "error",
-                confirmButtonText: "OK",
-            })
-        } finally {
-            setIsLoadingError(false)
-        }
+    function viewReportError(id_modal_email) {
+        setSelectedEmailId(id_modal_email);
+        setIsModalError(true);
+    }
+
+    function cambiarEstadoWat(id_modal_wat) {
+        setSelectedWatId(id_modal_wat);
+        setIsModalWat(true);
     }
 
     return (
@@ -256,7 +268,7 @@ function PageContent() {
                                                                     : "Enviar Mensaje de Email"
                                                             }
                                                             onClick={() => !email_pendientes && enviarMail(mail.id_modal_email)}
-                                                            className={`mx-auto flex justify-center mt-1 py-2 px-4 rounded-xl text-center text-sm ${email_pendientes
+                                                            className={`mx-auto flex justify-center mt-1 py-2 px-4 rounded-lg text-center text-sm ${email_pendientes
                                                                 ? "bg-gray-400 cursor-not-allowed"
                                                                 : "bg-purple-700 text-white"
                                                                 }`}
@@ -276,15 +288,13 @@ function PageContent() {
                                                                         ? "Primero debes enviar los correos anteriores"
                                                                         : "Reportar error en el correo Enviado"
                                                                 }
-                                                                onClick={() => !email_pendientes && reportarError(mail.id_modal_email)}
-                                                                className={`mx-auto mt-1 py-2 px-4 rounded-xl text-center text-sm ${email_pendientes
+                                                                onClick={() => !email_pendientes && viewReportError(mail.id_modal_email)}
+                                                                className={`mx-auto mt-1 py-2 px-4 rounded-lg text-center text-sm ${email_pendientes
                                                                     ? "bg-gray-400 cursor-not-allowed"
                                                                     : "bg-red-700 text-white"
                                                                     }`}
-                                                                disabled={email_pendientes || isLoadingError}
                                                             >
-                                                                {email_pendientes ? "Pendiente anterior" : (isLoadingError ?
-                                                                    (<Loader2 className="animate-spin h-4 w-4 ml-2" />) : "Reportar error")}
+                                                                {"Reportar error"}
                                                             </button>
                                                         </div>
                                                     ) : ("")
@@ -311,50 +321,77 @@ function PageContent() {
                                         {data.wats.map((wat, index) => {
                                             const wat_pendientes = data.wats
                                                 .slice(0, index)
-                                                .some(prev => prev.estado == 0);
+                                                .some(prev => !prev.error && prev.estado == 0);
 
                                             return (
                                                 <div key={index} className="border rounded-lg p-4 hover:bg-gray-50 transition-colors">
                                                     <div className="flex justify-between items-start mb-2">
                                                         <h3 className="font-medium">Mensaje #{wat.number_message}</h3>
-                                                        {getStatusBadge(wat.estado, wat.error)}
+                                                        {getStatusBadgeWat(wat.estado, wat.error)}
                                                     </div>
                                                     <Separator className="my-2" />
-                                                    <div className="space-y-1 text-sm ">
+                                                    <div className="space-y-1 text-sm flex justify-between gap-2">
                                                         {wat.error && (
-                                                            <div className="text-red-600 bg-red-50 p-2 rounded-md mb-2">
-                                                                <span className="font-semibold">Error:</span> {wat.error}
-                                                            </div>
+                                                            <>
+                                                                <div className="text-red-600 bg-red-50 p-2 rounded-md my-2 ">
+                                                                    <span className="font-semibold">Error:</span> {wat.error}
+                                                                </div>
+                                                                <div className="flex items-center gap-1 text-gray-600">
+                                                                    <Clock className="h-4 w-4" />
+                                                                    <span>Reportado el {formatDate(wat.fecha)}</span>
+                                                                </div>
+                                                            </>
                                                         )}
 
-                                                        {wat.estado != 0 && (
+                                                        {!wat.error && wat.estado == 1 && (
                                                             <div className="flex items-center gap-1 text-gray-600">
                                                                 <Clock className="h-4 w-4" />
                                                                 <span>Enviado el {formatDate(wat.fecha)}</span>
                                                             </div>
                                                         )}
 
-                                                        {wat.estado == 0 && (
-                                                            <button
-                                                                title={
-                                                                    wat_pendientes
-                                                                        ? "Primero debes enviar los mensajes anteriores"
-                                                                        : "Enviar Mensaje de WhatsApp"
-                                                                }
-                                                                onClick={() => {
-                                                                    if (!wat_pendientes) {
-                                                                        enviarWat(wat.id_modal_wat);
+                                                        {wat.estado == 0 && !wat.error && (
+                                                            <div>
+                                                                <button
+                                                                    title={
+                                                                        wat_pendientes
+                                                                            ? "Primero debes enviar los mensajes anteriores"
+                                                                            : "Enviar Mensaje de WhatsApp"
                                                                     }
-                                                                }}
-                                                                className={`mx-auto mt-1 p-2 rounded-xl text-sm ${wat_pendientes
-                                                                    ? "bg-gray-400 cursor-not-allowed"
-                                                                    : "bg-purple-600 text-white hover:bg-purple-700"
-                                                                    }`}
-                                                                disabled={wat_pendientes}
-                                                            >
-                                                                {wat_pendientes ? "Pendiente anterior" : "Enviar"}
-                                                            </button>
+                                                                    onClick={() => {
+                                                                        if (!wat_pendientes) {
+                                                                            enviarWat(wat.id_modal_wat);
+                                                                        }
+                                                                    }}
+                                                                    className={`mx-auto mt-1 py-2 px-4 rounded-lg text-sm ${wat_pendientes
+                                                                        ? "bg-gray-400 cursor-not-allowed"
+                                                                        : "bg-purple-600 text-white hover:bg-purple-700"
+                                                                        }`}
+                                                                    disabled={wat_pendientes || isLoadingWat}
+                                                                >
+                                                                    {wat_pendientes ? "Pendiente anterior" : "Enviar Mensaje"}
+                                                                </button>
+                                                            </div>
                                                         )}
+                                                        {(wat.estado == 0 && !wat.error) ? (
+                                                            <div>
+                                                                <button
+                                                                    title={
+                                                                        wat_pendientes
+                                                                            ? "Primero debes enviar los reportar del anterior envío"
+                                                                            : "Reportar estado de envío"
+                                                                    }
+                                                                    onClick={() => !wat_pendientes && cambiarEstadoWat(wat.id_modal_wat)}
+                                                                    className={`mx-auto mt-1 py-2 px-4 rounded-lg text-center text-sm ${wat_pendientes
+                                                                        ? "bg-gray-400 cursor-not-allowed"
+                                                                        : "bg-blue-400 text-white"
+                                                                        }`}
+                                                                    disabled={wat_pendientes}
+                                                                >
+                                                                    {"Reportar Estado de Envío"}
+                                                                </button>
+                                                            </div>
+                                                        ) : ("")}
                                                     </div>
                                                 </div>
                                             );
@@ -370,6 +407,25 @@ function PageContent() {
                             </ScrollArea>
                         </CardContent>
                     </Card>
+                    {
+                        isModalError && (
+                            <ModalError
+                                id_modal_email={selectedEmailId}
+                                isVisible={isModalError}
+                                onClose={() => setIsModalError(false)}
+                            />
+                        )
+                    }
+
+                    {
+                        isModalWat && (
+                            <ModalEstado
+                                id_modal_wat={selectedWatId}
+                                isVisible={isModalWat}
+                                onClose={() => setIsModalWat(false)}
+                            />
+                        )
+                    }
                 </div>
             )}
         </div>
