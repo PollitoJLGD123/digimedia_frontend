@@ -26,23 +26,22 @@ export default function Body1() {
     return (
         <div className="relative lg:mx-48 p-0 text-black rounded-lg shadow-[0px_10px_25px_rgba(0,0,0,0.25)] overflow-hidden">
             <div className="relative h-[400px] overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/40 z-10"></div>
+                <div className="absolute inset-0 z-10"></div>
                 <img
                     src="/blog/blog-4.jpg"
                     alt="Imagen principal"
                     className="absolute inset-0 w-full h-full object-cover"
                 />
-                <div className="relative z-20 h-full flex flex-col justify-end p-8">
-                    <p className="text-red-300 mb-2">{"2025-03-31"}</p>
-                    <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4 drop-shadow-lg">TU BAR EN LA MIRA</h2>
+            <div className="relative z-20 h-full flex flex-col justify-end p-8">
+                <p className="text-red-300 mb-2 bg-black bg-opacity-60 inline w-fit">{"2025-03-31"}</p>
+                <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-4 bg-black bg-opacity-60 inline w-fit">TU BAR EN LA MIRA</h2>
+                    <p className='text-lg leading-relaxed bg-black bg-opacity-60 w-fit  text-white'>Las luces neón LED se han convertido en un elemento diferenciador en el mundo de la hospitalidad. No solo son visualmente atractivos, sino que también refuerzan la identidad de tu negocio. En este artículo, exploraremos cómo las letras luminosas pueden marcar la diferencia en la experiencia de tus clientes.</p>
                 </div>
             </div>
 
+            
+
             <div className="bg-black/5 p-8">
-                <div className="relative mb-16 bg-white p-6 rounded-lg shadow-md -mt-12">
-                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-red-500 via-purple-500 to-blue-500"></div>
-                    <p className="text-lg leading-relaxed text-gray-700">Las luces neón LED se han convertido en un elemento diferenciador en el mundo de la hospitalidad. No solo son visualmente atractivos, sino que también refuerzan la identidad de tu negocio. En este artículo, exploraremos cómo las letras luminosas pueden marcar la diferencia en la experiencia de tus clientes.</p>
-                </div>
 
                 <div className="mb-16 p-6 bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg shadow-[0px_10px_25px_rgba(0,0,0,0.25)] text-center text-gray-100">
                     <div className="flex items-center justify-center mb-4">
