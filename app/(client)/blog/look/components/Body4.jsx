@@ -5,7 +5,7 @@ import { ArrowRight, CheckCircle } from "lucide-react";
 
 const HeaderSection = () => (
   <div className="relative h-[400px] overflow-hidden">
-    <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/40 z-10"></div>
+    {/* <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/40 z-10"></div> */}
     <img
       src="/blog/blog-6.jpg"
       alt="Imagen principal"

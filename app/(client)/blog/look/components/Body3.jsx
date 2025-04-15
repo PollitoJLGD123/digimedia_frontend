@@ -54,13 +54,13 @@ export default function Body3() {
                         </button>
                     </div>
                     <div className="md:w-1/2 flex justify-center">
-                        <div className="relative">
+                        <div className="relative group">
                             <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-3xl blur"></div>
-                            <div className="relative">
+                            <div className="relative overflow-hidden rounded-2xl shadow-2xl">
                                 <img
                                     src="/blog/blog-11.jpg"
                                         alt="Imagen principal"
-                                    className="w-[22rem] h-[22rem] rounded-2xl shadow-lg object-cover relative z-10"
+                                    className="w-[22rem] h-[22rem] object-cover transform transition-transform duration-500 ease-in-out group-hover:scale-110 rounded-2xl shadow-lg object-cover relative z-10"
                                 />
                             </div>
                             <div className="absolute -bottom-3 -right-3 w-24 h-24 bg-indigo-100 rounded-full z-0"></div>
