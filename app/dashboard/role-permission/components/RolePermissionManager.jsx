@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { Check, Filter, Lock, Plus, Save, Search, Shield, Trash, Users } from "lucide-react"
+import { Check, Filter, Lock, Plus, Save, Search, Shield, Trash, Users, Send } from "lucide-react"
 import { motion } from "framer-motion"
 
 import { Button } from "@/components/ui/button"
@@ -45,9 +45,15 @@ const PERMISSION_CATEGORIES = {
       icon: <Trash className="h-4 w-4" />,
       keywords: ["Eliminar"] 
     },
-    "Cambiar ": { 
+    "Cambiar ": {
       nombre: "Gestión de Accesos", 
-      icon: <Lock className="h-4 w-4" /> 
+      icon: <Lock className="h-4 w-4" />,
+      keywords: ["Cambiar"]
+    },
+    "Enviar ": { 
+      nombre: "Gestión de Accesos", 
+      icon: <LockSend className="h-4 w-4" />,
+      keywords: ["Enviar"]
     },
     other: { 
       nombre: "Otras Operaciones", 
