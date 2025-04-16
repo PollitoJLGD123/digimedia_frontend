@@ -8,9 +8,9 @@ export default function Header({
 
   /*NO referenciables*/
   backgroundOverlay = "bg-black/60",
-  tituloClase = "text-5xl md:text-6xl font-extrabold mb-4 neon-textov4",
-  subtituloClase = "text-2xl md:text-xl font-bold mb-4",
-  descripcionClase = "text-lg text-gray-300 font-light",
+  tituloClase = "text-5xl md:text-8xl font-extrabold mb-4 neon-textov4",
+  subtituloClase = "text-2xl md:text-4xl font-bold mb-4",
+  descripcionClase = "text-2xl text-gray-300 font-light",
   decoracion = true,
 }) {
   return (
@@ -19,7 +19,7 @@ export default function Header({
       style={{ backgroundImage: `url(${url_image})` }}
     >
       {/* <div className={`absolute inset-0 ${backgroundOverlay}`}></div> */}
-      <div className="relative z-10 max-w-2xl text-white md:text-right">
+      <div className="relative z-10 max-w-4xl text-white md:text-right">
         <h1 className={tituloClase}>{tituloPrincipal}</h1>
         <h2 className={subtituloClase}>{tituloSecundario}</h2>
         <p className={descripcionClase}>{descripcion}</p>
