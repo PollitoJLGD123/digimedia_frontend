@@ -12,6 +12,7 @@ import { Separator } from "@/components/ui/separator"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import ModalError from "./components/ModalError"
 import ModalEstado from "./components/ModalEstado"
+import { getCookie } from "cookies-next"
 
 const Page = () => {
     return (
@@ -55,7 +56,12 @@ function PageContent() {
             }
             try {
                 setIsLoading(true)
-                const response = await axios.get(`${url}/api/modals_emails_wats/${id_modal}`)
+
+                const response = await axios.get(`${url}/api/modales/modals_emails_wats/${id_modal}`, {
+                    headers: {
+                        Authorization: `Bearer ${getCookie("token")}`,
+                    },
+                })
 
                 if (response.status === 200) {
                     setData(response.data)
@@ -88,7 +94,9 @@ function PageContent() {
         try {
             setIsLoadingMail(true)
 
-            const response = await axios.get(`${url}/api/modales/send_mail/${id_modal_email}`);
+            const response = await axios.get(`${url}/api/modales/send_mail/${id_modal_email}`
+                , { headers: { Authorization: `Bearer ${getCookie("token")}` } }
+            );
 
             if (response.status === 200) {
                 await Swal.fire({
@@ -106,6 +114,7 @@ function PageContent() {
                     icon: "error",
                     confirmButtonText: "OK",
                 })
+                console.log(response.message)
             }
         } catch (error) {
             Swal.fire({
@@ -114,6 +123,7 @@ function PageContent() {
                 icon: "error",
                 confirmButtonText: "OK",
             })
+            console.log(error.message)
         } finally {
             setIsLoadingMail(false)
         }
