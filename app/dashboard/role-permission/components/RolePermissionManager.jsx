@@ -45,20 +45,11 @@ const PERMISSION_CATEGORIES = {
       icon: <Trash className="h-4 w-4" />,
       keywords: ["Eliminar"] 
     },
-    "Cambiar ": {
-      nombre: "Gestión de Accesos", 
-      icon: <Lock className="h-4 w-4" />,
-      keywords: ["Cambiar"]
-    },
     "Enviar ": { 
       nombre: "Enviar", 
       icon: <Send className="h-4 w-4" />,
       keywords: ["Enviar"]
     },
-    other: { 
-      nombre: "Otras Operaciones", 
-      icon: <Shield className="h-4 w-4" /> 
-    }
   };
 
 export default function RolePermissionManager() {
