@@ -37,6 +37,7 @@ function PageContent() {
     const searchParams = useSearchParams()
     const router = useRouter()
     const id_modal = searchParams.get("id_modal")
+    console.log("id_modal extraído:", id_modal);
 
     const [isLoadingMail, setIsLoadingMail] = useState(false)
 

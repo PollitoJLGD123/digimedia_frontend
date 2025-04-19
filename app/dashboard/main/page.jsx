@@ -269,7 +269,7 @@ export default function Page() {
                         variant="outline"
                         onClick={() => setShowEditModal(true)}
                         className="flex-1 text-sm dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-700"
-                        disabled={!auth_service.hasPermission("editar-empleados")}
+                        disabled={!auth_service.hasPermission("permisos-generales")}
                       >
                         <Edit className="mr-1.5 h-3.5 w-3.5" />
                         Editar Perfil

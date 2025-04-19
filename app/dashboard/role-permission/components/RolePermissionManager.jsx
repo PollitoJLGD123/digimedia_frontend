@@ -45,11 +45,6 @@ const PERMISSION_CATEGORIES = {
       icon: <Trash className="h-4 w-4" />,
       keywords: ["Eliminar"] 
     },
-    "Cambiar ": {
-      nombre: "Gestión de Accesos", 
-      icon: <Lock className="h-4 w-4" />,
-      keywords: ["Cambiar"]
-    },
     "Enviar ": { 
       nombre: "Enviar", 
       icon: <Send className="h-4 w-4" />,
@@ -129,28 +124,38 @@ export default function RolePermissionManager() {
   }
 
   const handleGuardar = async () => {
-    if (!rolSeleccionado || esAdmin) return
-
+    if (!rolSeleccionado || esAdmin) return;
+  
+    if (permisosRol.length === 0) {
+      toast({
+        title: "Error",
+        description: "Debes seleccionar al menos un permiso antes de guardar.",
+        variant: "destructive",
+      });
+      return;
+    }
+  
     try {
-      setIsSaving(true)
-      const res = await role_service.syncPermisos(rolSeleccionado.id_rol, permisosRol)
-
+      setIsSaving(true);
+      const res = await role_service.syncPermisos(rolSeleccionado.id_rol, permisosRol);
+  
       toast({
         title: "Éxito",
         description: res.message || "Permisos actualizados correctamente",
         variant: "default",
-      })
+      });
     } catch (error) {
-      console.error("Error saving permissions:", error)
+      console.error("Error saving permissions:", error);
       toast({
         title: "Error",
         description: "No se pudieron guardar los cambios.",
         variant: "destructive",
-      })
+      });
     } finally {
-      setIsSaving(false)
+      setIsSaving(false);
     }
-  }
+  };
+  
 
   const filteredPermissions = Array.isArray(permisosDisponibles) ? permisosDisponibles.filter((permiso) => {
     if (!permiso || !permiso.nombre) return false;
