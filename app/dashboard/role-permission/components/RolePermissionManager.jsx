@@ -50,6 +50,10 @@ const PERMISSION_CATEGORIES = {
       icon: <Send className="h-4 w-4" />,
       keywords: ["Enviar"]
     },
+    other: { 
+      nombre: "Otras Operaciones", 
+      icon: <Shield className="h-4 w-4" /> 
+    }
   };
 
 export default function RolePermissionManager() {

@@ -69,16 +69,21 @@ export default function RootLayout({ children }) {
                 <ul className="flex flex-col gap-1">
                   
                   <TableLink title="Sección Principal" href="/dashboard/main" />
-                  {auth_service.hasRole('administrador') && (
+                  {auth_service.hasPermission('ver-empleados') && (
                     <TableLink title="Empleados" href="/dashboard/empleados" />
                   )}
-                  {auth_service.hasRole('ventas') && (
+                  {auth_service.hasPermission('ver-contactos') && (
                     <TableLink title="Contactanos" href="/dashboard/contactanos" />
                   )}
-                  <TableLink title="Modales" href="/dashboard/modales"/>
-                  <TableLink title="Contactanos" href="/dashboard/contactanos" />
-                  <TableLink title="Libro de Reclamaciones" href="/dashboard/reclamaciones" />
-                  <TableLink title="Creación de Blogs" href="/dashboard/blogs"/>
+                  {auth_service.hasPermission('ver-modales') && (
+                    <TableLink title="Modales" href="/dashboard/modales"/>
+                  )}
+                  {auth_service.hasPermission('ver-reclamaciones') && (
+                    <TableLink title="Libro de Reclamaciones" href="/dashboard/reclamaciones" />
+                  )}
+                  {auth_service.hasPermission('crear-blogs') && (
+                    <TableLink title="Creación de Blogs" href="/dashboard/blogs"/>
+                  )}
                   {auth_service.hasRole('administrador') && (
                     <TableLink title="Roles y Permisos" href="/dashboard/role-permission" />
                   )}  

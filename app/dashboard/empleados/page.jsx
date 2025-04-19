@@ -19,6 +19,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 
 const headers = ["id_empleado", "nombre", "apellido", "email", "dni", "telefono", "rol"]
 
+import auth_service from "../users/services/auth.service"
+
 export default function Page() {
   const searchParams = useSearchParams()
   const currentPage = searchParams.get("page") || 1
@@ -238,6 +240,7 @@ export default function Page() {
                 Administra la información de los empleados de la empresa
               </CardDescription>
             </div>
+            { auth_service.hasPermission("crear-empleados") && (
             <Button
               className="bg-white text-[#8c52ff] hover:bg-gray-100 transition-colors shadow-sm w-full md:w-auto"
               onClick={() => {
@@ -248,6 +251,7 @@ export default function Page() {
               <PlusCircle className="h-4 w-4 mr-2" />
               Añadir empleado
             </Button>
+            )}
           </div>
         </CardHeader>
 
@@ -316,13 +320,15 @@ export default function Page() {
           ) : (
             <>
               <div className="rounded-lg border overflow-hidden">
+              { auth_service.hasPermission("ver-empleados") && (
                 <Table 
-                  headers={headers}
+                 headers={headers}
                   data={filteredData}
                   onDelete={onDelete}
                   onUpdate={onUpdate}
-                  onShow={handleShow}
+                  onShow={handleShow} 
                 />
+               )}  
               </div>
 
               {filteredData.length === 0 && (
