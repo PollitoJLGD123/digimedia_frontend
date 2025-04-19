@@ -34,6 +34,7 @@ function PageContent() {
     const searchParams = useSearchParams()
     const router = useRouter()
     const id_modal = searchParams.get("id_modal")
+    console.log("id_modal extraído:", id_modal);
 
     const [isLoadingMail, setIsLoadingMail] = useState(false)
     const [isLoadingError, setIsLoadingError] = useState(false)
@@ -46,7 +47,13 @@ function PageContent() {
             }
             try {
                 setIsLoading(true)
-                const response = await axios.get(`${url}/api/modals_emails_wats/${id_modal}`)
+                console.log("Token obtenido:", localStorage.getItem('token'));
+
+                const response = await axios.get(`${url}/api/modals_emails_wats/${id_modal}`, {
+                    headers: {
+                        'Authorization': `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
 
                 if (response.status === 200) {
                     setData(response.data)
