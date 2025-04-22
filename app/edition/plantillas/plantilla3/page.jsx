@@ -16,11 +16,11 @@ const PageContent = () => {
   const [formFooter, setFormFooter] = useState({
     titulo: "Titulo Footer",
     descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, voluptate.",
-    public_image1: "blog-10.jpg",
-    url_image1: "", //por esta vez url es la ruta para elimianr
-    public_image2: "blog-1.jpg",
+    public_image1: "/blog/blog-10.jpg",
+    url_image1: "", //por esta vez url es la ruta para eliminar
+    public_image2: "/blog/blog-10.jpg",
     url_image2: "",
-    public_image3: "blog-2.jpg",
+    public_image3: "/blog/blog-10.jpg",
     url_image3: "",
   });
 

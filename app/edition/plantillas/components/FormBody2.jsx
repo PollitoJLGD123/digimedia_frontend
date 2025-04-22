@@ -1,12 +1,13 @@
 
 import React from 'react'
-import { CheckCircle, Clock, Bookmark, Share2, Eye, Image, Type, AlignLeft, Clock1, BookTypeIcon, BookType } from "lucide-react"
+import { CheckCircle, Clock, Bookmark, Share2, Eye, Image, Type, AlignLeft, Clock1, Loader2, BookTypeIcon, BookType } from "lucide-react"
 import { useState } from 'react';
 import UploadImage from './UploadImage';
 
 export default function FormBody2(props) {
 
   const [activeTab, setActiveTab] = useState("info")
+  const [uploading, setUploading] = useState(false);
 
   const {
     formCommendBody,
@@ -17,12 +18,42 @@ export default function FormBody2(props) {
     setFormEncabezadoBody,
     formGaleryBody,
     setFormGaleryBody,
+    setFileBodyHeader,
+    setFileBodyFile1,
+    setFileBodyFile2,
   } = props;
 
   const [commendErrors, setCommendErrors] = useState({
     titulo: { message: 'Máximo 40 caracteres', isValid: null },
     textos: Array(5).fill({ message: 'Máximo 100 caracteres', isValid: null })
   });
+
+  const handleImageHeader = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      setUploading(true);
+
+      const tempUrl = URL.createObjectURL(file);
+      setFormEncabezadoBody((prev) => ({
+        ...prev,
+        ["public_image1"]: tempUrl,
+      }));
+
+      setFileBodyHeader(file);
+
+    } catch (error) {
+      console.error("Error al subir imagen:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Ocurrió un error al subir la imagen",
+        confirmButtonColor: "#8c52ff",
+      });
+    } finally {
+      setUploading(false);
+    }
+  }
 
   const handleCommendBodyChange = (e) => {
     const { name, value } = e.target
@@ -185,7 +216,6 @@ export default function FormBody2(props) {
 
           <div className="mx-10 my-5 text-lg text-gray-700 leading-relaxed">{formEncabezadoBody.descripcion}</div>
         </div>
-        {/* Form1 */}
         <div className='relative mt-28 w-full p-6'>
           <div className="">
             <div className="bg-black/90 backdrop-blur-md rounded-lg p-5 border border-white/10 shadow-lg">
@@ -241,18 +271,40 @@ export default function FormBody2(props) {
                     <Image className="w-4 h-4 mr-1.5 text-blue-400" /> Imagen de Fondo
                     <h1 className="ml-3 mt-1 text-xs">980x450 píxeles</h1>
                   </label>
-                  <UploadImage
-                    uploadPreset="nextjs_digimedia_blog_body"
-                    folder="blogs/bodies/"
-                    name_public="public_image1"
-                    name_url="url_image1"
-                    size_image={8 * 1024 * 1024}
-                    public_id={formEncabezadoBody.url_image1}
-                    setFormData={setFormEncabezadoBody}
-                    width={980}
-                    height={450}
-                    crop="fill"
-                  />
+                  <div className="relative">
+                    <label
+                      className={`flex items-center justify-center w-full p-3 border-2 border-dashed rounded-lg text-white transition-all cursor-pointer ${uploading
+                        ? "border-gray-700 bg-gray-900 opacity-50 cursor-not-allowed"
+                        : "border-gray-700 bg-gray-900 hover:border-purple-500 hover:bg-gray-800"
+                        }`}
+                    >
+                      {uploading ? (
+                        <Loader2 className="w-5 h-5 animate-spin text-purple-400 mr-2" />
+                      ) : (
+                        <>
+                          {formEncabezadoBody.public_image1 !== "/blog/blog-4.jpg" ? (
+                            <>
+                              <Image className="w-5 h-5 mr-2 text-purple-400" />
+                              <span className="text-sm">Cambiar imagen</span>
+                            </>
+                          ) : (
+                            <>
+                              <Image className="w-5 h-5 mr-2 text-purple-400" />
+                              <span className="text-sm">Seleccionar imagen</span>
+                            </>
+                          )}
+                        </>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        name="image"
+                        className="hidden"
+                        onChange={handleImageHeader}
+                        disabled={uploading}
+                      />
+                    </label>
+                  </div>
                 </div>
               </form>
             </div>
@@ -281,7 +333,6 @@ export default function FormBody2(props) {
             Galería
           </button>
         </div>
-        {/* cards */}
         <div className="mb-10">
           {activeTab === "info" && (
             <div className="space-y-6 ">
