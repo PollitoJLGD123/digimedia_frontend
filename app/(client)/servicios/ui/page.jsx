@@ -30,10 +30,10 @@ export default function UXUI() {
   ];
   
   return (
-    <div className="relative min-h-screen flex flex-col items-center bg-gray-100 overflow-x-hidden">
+    <div className="flex flex-col items-center bg-gray-100">
       
       {/* Imagen de fondo con mejor responsividad */}
-      <div className="absolute inset-0 w-full h-full opacity-30 md:opacity-40 lg:opacity-50"
+      <div className="absolute inset-0 w-full opacity-30 md:opacity-40 lg:opacity-50"
   style={{ 
     backgroundImage: "url('/servicios/DiseñoUI/Digimediaui.jpg')",
     backgroundSize: "cover", // La imagen se estira horizontalmente sin deformarse
@@ -44,7 +44,7 @@ export default function UXUI() {
   }}>
       </div>
 
-      <div className="relative z-10 w-full max-w-screen-lg px-4">
+      <div className=" z-10 w-full max-w-screen-lg px-4">
         
 
 <div className="flex justify-center md:justify-start w-full">
@@ -70,9 +70,9 @@ export default function UXUI() {
 
 
         {/* Sección de características con Grid */}
-<div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 px-4">
+<div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-5 px-4  justify-center md:h-[270px]">
   {/* Primer bloque */}
-  <div className="flex flex-col items-center md:items-start md:translate-x-[-70px] md:translate-y-[30px]">
+  <div className="flex flex-col items-center md:items-start md:translate-x-[-70px] md:translate-y-[30px] ">
     <p className="font-montserrat text-black text-lg md:text-xl font-extrabold uppercase tracking-wide"
     style={{
       fontWeight: "bold",
@@ -81,7 +81,7 @@ export default function UXUI() {
     }}
     
     >USABILIDAD Y SATISFACCIÓN</p>
-    <img src="/servicios/DiseñoUI/servicio12.jpg" alt="Usabilidad y satisfacción" className="w-60 h-auto mt-4" />
+    <img src="/servicios/DiseñoUI/servicio12.jpg" alt="Usabilidad y satisfacción" className="w-44" />
   </div>
 
   {/* Segundo bloque */}
@@ -93,7 +93,7 @@ export default function UXUI() {
       textShadow: "3px 3px 10px rgba(106, 13, 173, 0.8)",
     }}
     >CREATIVIDAD</p>
-    <img src="/servicios/DiseñoUI/servicios13.jpg" alt="Creatividad" className="w-60 h-auto mt-4" />
+    <img src="/servicios/DiseñoUI/servicios13.jpg" alt="Creatividad" className="w-44" />
   </div>
 
   {/* Tercer bloque */}
@@ -105,7 +105,7 @@ export default function UXUI() {
       textShadow: "3px 3px 10px rgba(106, 13, 173, 0.8)",
     }}
     >INTERFAZ VISUAL</p>
-    <img src="/servicios/DiseñoUI/servicio14.jpg" alt="Interfaz visual" className="w-60 h-auto mt-4" />
+    <img src="/servicios/DiseñoUI/servicio14.jpg" alt="Interfaz visual" className="w-44" />
   </div>
 </div>
 
