@@ -13,15 +13,6 @@ const PageContent = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  const [formSave, setFormSave] = useState({
-    id_blog_head: -1,
-    id_blog_footer: -1,
-    id_blog_body: -1,
-    id_commend_tarjeta: -1,
-    id_card: -1,
-    id_blog: -1,
-  });
-
   const [formFooter, setFormFooter] = useState({
     titulo: "Titulo Footer",
     descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, voluptate.",
@@ -105,11 +96,6 @@ const PageContent = () => {
   async function guardarHeader() {
     const id = await Service.saveHeader(dataHeader);
     if (id && id > 0) {
-      setFormSave((prev) => ({
-        ...prev,
-        id_blog_head: id,
-      }));
-
       console.log("Id del header:", id);
       return id;
     }
@@ -127,10 +113,6 @@ const PageContent = () => {
   async function guardarFooter() {
     const id = await Service.saveFooter(formFooter);
     if (id && id > 0) {
-      setFormSave((prev) => ({
-        ...prev,
-        id_blog_footer: id,
-      }));
       console.log("Id del footer:", id);
       return id;
     }
@@ -163,10 +145,6 @@ const PageContent = () => {
 
     const id = await Service.saveBody(formBody);
     if (id && id > 0) {
-      setFormSave((prev) => ({
-        ...prev,
-        id_blog_body: id,
-      }));
       return id;
     }
     else {
@@ -182,12 +160,7 @@ const PageContent = () => {
 
   async function guardarCommendTarjeta() {
     const id = await Service.saveCommendTarjeta(formCommendBody);
-    if (id && id > 0) {
-      setFormSave((prev) => ({
-        ...prev,
-        id_commend_tarjeta: id,
-      }));
-      
+    if (id && id > 0) {      
       console.log("Id del la tarjeta comentario:", id);
       return id;
     }
@@ -214,10 +187,6 @@ const PageContent = () => {
     }
     const id = await Service.saveBlog(formBlog);
     if (id && id > 0) {
-      setFormSave((prev) => ({
-        ...prev,
-        id_blog: id,
-      }));
       return id;
     }
     else {
@@ -242,11 +211,6 @@ const PageContent = () => {
     }
     const id = await Service.saveCard(formCard);
     if (id && id > 0) {
-      setFormSave((prev) => ({
-        ...prev,
-        id_card: id,
-      }));
-
       console.log("Id del card:", id);
       return id;
     }
@@ -324,16 +288,6 @@ const PageContent = () => {
         icon: "success",
         confirmButtonText: "OK",
       });
-
-      setFormSave({
-        id_blog_head: -1,
-        id_blog_footer: -1,
-        id_blog_body: -1,
-        id_commend_tarjeta: -1,
-        id_card: -1,
-        id_blog: -1,
-      })
-
       setFormFooter({
         titulo: "Titulo Footer",
         descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, voluptate.",

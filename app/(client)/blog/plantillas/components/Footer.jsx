@@ -159,7 +159,7 @@ export default function Footer({ id_blog_footer }) {
                     {(data.public_image1 || data.public_image2 || data.public_image3) && (
                         <div className="flex flex-wrap justify-center gap-3 mt-6">
                             {[data.public_image1, data.public_image2, data.public_image3].map((image, index) => {
-                                const imageUrl = image ? (image.startsWith("http") ? image : `/blog/${image}`) : "/blog/blog-2.jpg"
+                                const imageUrl = image
 
                                 return (
                                     <div key={index} className="relative group">

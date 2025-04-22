@@ -130,7 +130,7 @@ function UploadImage({ uploadPreset, folder, setFormData, public_id, size_image,
                 }}
             >
                 {(widget) => {
-                    const { open } = widget || {}; // Safely destructure
+                    const { open } = widget || {}; 
                     return (
                     <button
                         onClick={() => open?.()}

@@ -16,7 +16,7 @@ export default function FormBody2(props) {
     formEncabezadoBody,
     setFormEncabezadoBody,
     formGaleryBody,
-    setFormGaleryBody
+    setFormGaleryBody,
   } = props;
 
   const [commendErrors, setCommendErrors] = useState({

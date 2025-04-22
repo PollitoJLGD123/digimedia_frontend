@@ -19,6 +19,7 @@ import {
     FileText,
     User,
     X,
+    PlusCircleIcon,
 } from "lucide-react"
 import auth_service from "../users/services/auth.service"
 
@@ -197,7 +198,6 @@ export default function Page() {
 
     return (
         <main className="p-6 flex flex-col w-full min-h-screen bg-slate-50">
-            {/* Header */}
             <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
                 <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4">
                     <div>
@@ -262,8 +262,8 @@ export default function Page() {
                                 href="/dashboard/blogs/create"
                                 className="flex items-center gap-2 px-3 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors"
                             >
-                                <Plus className="w-4 h-4" />
-                                <span className="hidden sm:inline">Crear</span>
+                                <PlusCircleIcon className="w-4 h-4" />
+                                <span className="hidden sm:inline">Crear Nuevo</span>
                             </Link>
                         </div>
                     </div>

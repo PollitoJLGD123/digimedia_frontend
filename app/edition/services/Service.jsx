@@ -153,7 +153,25 @@ const Servicios = {
             console.log(error);
             return error;
         }
-    }
+    },
+
+    saveImage: async function saveImage(formData,ruta) {
+        try {
+            const response = await axios.put(`${URL_API}/${ruta}`, formData, {
+                headers: {
+                    Authorization: `Bearer ${getCookie('token')}`,
+                },
+            });
+            if (response.status === 200) {
+                return response.data;
+            } else if(response.status === 400){
+                return response.data;
+            }
+        } catch (error) {
+            console.log(error);
+            return error;
+        }
+    },
 
 }
 

@@ -1,8 +1,10 @@
 "use client"
-import { Type, AlignLeft, Quote } from "lucide-react";
-import UploadImage from '../components/UploadImage'
+import { Type, AlignLeft, Quote, Image as IconImage, Loader2 } from "lucide-react";
+import { useState } from "react";
 
-export default function FormHeader({ dataHeader, setFormData }) {
+export default function FormHeader({ dataHeader, setFormData, setFile }) {
+
+  const [uploading, setUploading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -12,11 +14,39 @@ export default function FormHeader({ dataHeader, setFormData }) {
     }));
   };
 
+  const handleImage = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      setUploading(true);
+
+      const tempUrl = URL.createObjectURL(file);
+      setFormData((prev) => ({
+        ...prev,
+        ["public_image"]: tempUrl,
+      }));
+
+      setFile(file);
+
+    } catch (error) {
+      console.error("Error al subir imagen:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Ocurrió un error al subir la imagen",
+        confirmButtonColor: "#8c52ff",
+      });
+    } finally {
+      setUploading(false);
+    }
+  }
+
   return (
     <div
-      className="w-full h-screen md:h-[80vh] relative flex items-center justify-center text-center px-6 sm:px-12 bg-cover bg-center bg-no-repeat"
+      className="w-full h-screen md:h-[80vh] relative flex items-center justify-center text-center px-6 sm:px-12 bg-cover bg-center bg-no-repeat" id="file-name"
       style={{
-        backgroundImage: `url(${dataHeader.public_image && dataHeader.public_image.startsWith('http') ? dataHeader.public_image : "/blog/fondo_blog_extend.png"})`,
+        backgroundImage: `url(${dataHeader.public_image})`,
+        backgroundSize: "cover",
       }}
     >
       <div className="absolute inset-0 bg-black/60"></div>
@@ -95,22 +125,45 @@ export default function FormHeader({ dataHeader, setFormData }) {
               </div>
               <div>
                 <label className="flex items-center text-white text-sm font-medium mb-2">
-                  <Quote className="w-5 h-5 mr-2 text-purple-400" /> Imagen
-                  <h1 className="ml-3 mt-1 text-xs">1920x1080 píxeles</h1>
+                  <IconImage className="w-5 h-5 mr-2 text-purple-400" /> Imagen Principal
+                  <h1 className="ml-3 mt-1 text-xs">1080x520 píxeles</h1>
                 </label>
-                <UploadImage
-                  uploadPreset="nextjs_digimedia_blog_head"
-                  folder="blogs/headers/"
-                  name_public="public_image"
-                  name_url="url_image"
-                  size_image={10 * 1024 * 1024}
-                  width={1920}
-                  height={1080}
-                  public_id={dataHeader.url_image}
-                  setFormData={setFormData}
-                  crop="fill"
-                />
+                <div className="relative">
+                  <label
+                    className={`flex items-center justify-center w-full p-3 border-2 border-dashed rounded-lg text-white transition-all cursor-pointer ${uploading
+                      ? "border-gray-700 bg-gray-900 opacity-50 cursor-not-allowed"
+                      : "border-gray-700 bg-gray-900 hover:border-purple-500 hover:bg-gray-800"
+                      }`}
+                  >
+                    {uploading ? (
+                      <Loader2 className="w-5 h-5 animate-spin text-purple-400 mr-2" />
+                    ) : (
+                      <>
+                        {dataHeader.public_image !== "/blog/fondo_blog_extend.png" ? (
+                          <>
+                            <IconImage className="w-5 h-5 mr-2 text-purple-400" />
+                            <span className="text-sm">Cambiar imagen</span>
+                          </>
+                        ) : (
+                          <>
+                            <IconImage className="w-5 h-5 mr-2 text-purple-400" />
+                            <span className="text-sm">Seleccionar imagen</span>
+                          </>
+                        )}
+                      </>
+                    )}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      name="image"
+                      className="hidden"
+                      onChange={handleImage}
+                      disabled={uploading}
+                    />
+                  </label>
+                </div>
               </div>
+
             </form>
           </div>
 
