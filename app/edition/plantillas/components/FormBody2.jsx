@@ -37,7 +37,7 @@ export default function FormBody2(props) {
       const tempUrl = URL.createObjectURL(file);
       setFormEncabezadoBody((prev) => ({
         ...prev,
-        ["public_image1"]: tempUrl,
+        ["public_image1"]: " ",
       }));
 
       setFileBodyHeader(file);
@@ -194,25 +194,23 @@ export default function FormBody2(props) {
               </button>
             </div>
           </div>
+          {[
 
-          <div className="relative h-[300px] md:h-[400px] overflow-hidden">
+                  { id: 1, url: formGaleryBody.public_image1 || "/blog/blog-4.jpg", title: "Imagen principal" },
+          ].map((image, index) => (
+          <div key={index} className="relative h-[300px] md:h-[400px] overflow-hidden">
             <img
-              src={
-                formEncabezadoBody.public_image1
-                  ? formEncabezadoBody.public_image1.startsWith("http")
-                    ? formEncabezadoBody.public_image1
-                    : `${formEncabezadoBody.public_image1}`
-                  : "/blog/blog-4.jpg"
-              }
+              src={image.url.startsWith("http") ? image.url : `${image.url}`}
               alt={formEncabezadoBody.titulo || "Imagen principal"}
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
             <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
-              <h1 className="text-3xl md:text-5xl font-bold text-white mb-2 leading-tight">{formEncabezadoBody.titulo}</h1>
+              <h1 className="text-3xl md:text-5xl font-bold text-white mb-2 leading-tight">{image.title}</h1>
               <div className="w-16 h-1 bg-teal-500 mb-4"></div>
             </div>
           </div>
+          ))}
 
           <div className="mx-10 my-5 text-lg text-gray-700 leading-relaxed">{formEncabezadoBody.descripcion}</div>
         </div>
@@ -272,38 +270,20 @@ export default function FormBody2(props) {
                     <h1 className="ml-3 mt-1 text-xs">980x450 píxeles</h1>
                   </label>
                   <div className="relative">
-                    <label
-                      className={`flex items-center justify-center w-full p-3 border-2 border-dashed rounded-lg text-white transition-all cursor-pointer ${uploading
-                        ? "border-gray-700 bg-gray-900 opacity-50 cursor-not-allowed"
-                        : "border-gray-700 bg-gray-900 hover:border-purple-500 hover:bg-gray-800"
-                        }`}
-                    >
-                      {uploading ? (
-                        <Loader2 className="w-5 h-5 animate-spin text-purple-400 mr-2" />
-                      ) : (
-                        <>
-                          {formEncabezadoBody.public_image1 !== "/blog/blog-4.jpg" ? (
-                            <>
-                              <Image className="w-5 h-5 mr-2 text-purple-400" />
-                              <span className="text-sm">Cambiar imagen</span>
-                            </>
-                          ) : (
-                            <>
-                              <Image className="w-5 h-5 mr-2 text-purple-400" />
-                              <span className="text-sm">Seleccionar imagen</span>
-                            </>
-                          )}
-                        </>
-                      )}
-                      <input
-                        type="file"
-                        accept="image/*"
-                        name="image"
-                        className="hidden"
+
+                      <UploadImage
+                        uploadPreset="nextjs_digimedia_blog_body"
+                        folder="blogs/bodies/"
+                        name_public={`public_image1`}
+                        name_url={`url_image1`}
+                        size_image={7 * 1400 * 1400}
+                        public_id={formGaleryBody[`url_image1`]}
+                        setFormData={setFormGaleryBody}
+                        width={980}
+                        height={450}
+                        crop="fill"
                         onChange={handleImageHeader}
-                        disabled={uploading}
                       />
-                    </label>
                   </div>
                 </div>
               </form>
