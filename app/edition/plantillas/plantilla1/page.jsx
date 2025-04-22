@@ -13,7 +13,9 @@ const PageContent = () => {
 
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+
   const [fileHeader, setFileHeader] = useState(null);
+  
   const [FileBodyHeader, setFileBodyHeader] = useState(null);
   const [FileBodyFile1, setFileBodyFile1] = useState(null);
   const [FileBodyFile2, setFileBodyFile2] = useState(null);

@@ -13,6 +13,16 @@ const PageContent = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
+  const [fileHeader, setFileHeader] = useState(null);
+  
+  const [FileBodyHeader, setFileBodyHeader] = useState(null);
+  const [FileBodyFile1, setFileBodyFile1] = useState(null);
+  const [FileBodyFile2, setFileBodyFile2] = useState(null);
+
+  const [FileFooterFile1, setFileFooterFile1] = useState(null);
+  const [FileFooterFile2, setFileFooterFile2] = useState(null);
+  const [FileFooterFile3, setFileFooterFile3] = useState(null);
+
 
   const [formFooter, setFormFooter] = useState({
     titulo: "Titulo Footer",
@@ -375,6 +385,7 @@ const PageContent = () => {
         <FormHeader
           dataHeader={dataHeader}
           setFormData={setDataHeader}
+          setFile={setFileHeader}
         />
       </div>
 
@@ -389,6 +400,11 @@ const PageContent = () => {
           formGaleryBody={formGaleryBody}
           setFormGaleryBody={setFormGaleryBody}
 
+          setFileBodyHeader={setFileBodyHeader}
+
+          setFileBodyFile1 = {setFileBodyFile1}
+          setFileBodyFile2 = {setFileBodyFile2}
+
           formEncabezadoBody={formEncabezadoBody}
           setFormEncabezadoBody={setFormEncabezadoBody}
         />
@@ -398,6 +414,9 @@ const PageContent = () => {
         <FormFooter
           formFooter={formFooter}
           setFormData={setFormFooter}
+          setFileFooterFile1={setFileFooterFile1}
+          setFileFooterFile2={setFileFooterFile2}
+          setFileFooterFile3={setFileFooterFile3}
         />
       </div>
 
