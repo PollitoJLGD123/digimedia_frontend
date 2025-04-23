@@ -30,7 +30,8 @@ export default function UXUI() {
   ];
   
   return (
-    <div className="relative min-h-screen flex flex-col items-center bg-gray-100 overflow-x-hidden">
+    <div className="relative min-h-screen flex flex-col items-center bg-gray-100 overflow-x-hidden overflow-y-auto">
+      
       
       {/* Imagen de fondo con mejor responsividad */}
       <div className="absolute inset-0 w-full h-full opacity-30 md:opacity-40 lg:opacity-50"
@@ -44,7 +45,7 @@ export default function UXUI() {
   }}>
       </div>
 
-      <div className="relative z-10 w-full max-w-screen-lg px-4">
+      <div className="relative z-10 w-full max-w-screen-lg px-4 pb-16">
         
 
 <div className="flex justify-center md:justify-start w-full">
