@@ -1,7 +1,8 @@
 "use client";
 import { Type, AlignLeft, Quote, Image } from "lucide-react";
-import { Loader2, CheckCircle, ArrowRight } from "lucide-react"
-import UploadImage from "./UploadImage";
+import { Loader2, CheckCircle, ArrowRight, Image as IconImage } from "lucide-react"
+import { useState } from "react";
+
 
 export default function FormBody1(props) {
   const {
@@ -13,7 +14,12 @@ export default function FormBody1(props) {
     setFormEncabezadoBody,
     formGaleryBody,
     setFormGaleryBody,
+    setFileBodyHeader,
+    setFileBodyFile1,
+    setFileBodyFile2,
   } = props;
+
+  const [uploading, setUploading] = useState(false);
 
   const handleChange = (setter) => (e) => {
     const { name, value } = e.target;
@@ -32,19 +38,72 @@ export default function FormBody1(props) {
     });
   };
 
+  const handleImageHeader = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      setUploading(true);
+
+      const tempUrl = URL.createObjectURL(file);
+      setFormEncabezadoBody((prev) => ({
+        ...prev,
+        ["public_image1"]: tempUrl,
+      }));
+
+      setFileBodyHeader(file);
+
+    } catch (error) {
+      console.error("Error al subir imagen:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Ocurrió un error al subir la imagen",
+        confirmButtonColor: "#8c52ff",
+      });
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  const handleImageBody = async (e) => {
+    const file = e.target.files[0];
+    const name = e.target.name;
+    if (!file) return;
+    try {
+      setUploading(true);
+
+      const tempUrl = URL.createObjectURL(file);
+      setFormGaleryBody((prev) => ({
+        ...prev,
+        [name]: tempUrl,
+      }));
+
+      if (name === "public_image2") {
+        setFileBodyFile1(file);
+      } else if (name === "public_image3") {
+        setFileBodyFile2(file);
+      }
+
+    } catch (error) {
+      console.error("Error al subir imagen:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Ocurrió un error al subir la imagen",
+        confirmButtonColor: "#8c52ff",
+      });
+    } finally {
+      setUploading(false);
+    }
+  }
+
   return (
     <div className="relative p-0 text-black rounded-lg shadow-[0px_10px_25px_rgba(0,0,0,0.25)] overflow-hidden flex flex-row my-5 justify-center">
       <div className="w-[700px]">
         <div className="relative h-[400px] overflow-hidden">
           <div className="absolute bg-black/70"></div>
           <img
-            src={
-              formEncabezadoBody.public_image1
-                ? formEncabezadoBody.public_image1.startsWith("http")
-                  ? formEncabezadoBody.public_image1
-                  : `${formEncabezadoBody.public_image1}`
-                : "/blog/blog-4.jpg"
-            }
+            src={formEncabezadoBody.public_image1}
             alt={formEncabezadoBody.titulo || "Imagen principal"}
             className="absolute w-full h-full object-cover"
           />
@@ -165,23 +224,39 @@ export default function FormBody1(props) {
                 placeholder="Fecha"
               />
             </div>
-            <div>
-              <label className="flex items-center text-white text-sm font-medium mb-2">
-                <Image className="w-5 h-5 mr-2 text-purple-400" /> Imagen
-                <h1 className="ml-3 mt-1 text-xs">400x780 píxeles</h1>
+            <div className="relative">
+              <label
+                className={`flex items-center justify-center w-full p-3 border-2 border-dashed rounded-lg text-white transition-all cursor-pointer ${uploading
+                  ? "border-gray-700 bg-gray-900 opacity-50 cursor-not-allowed"
+                  : "border-gray-700 bg-gray-900 hover:border-purple-500 hover:bg-gray-800"
+                  }`}
+              >
+                {uploading ? (
+                  <Loader2 className="w-5 h-5 animate-spin text-purple-400 mr-2" />
+                ) : (
+                  <>
+                    {formEncabezadoBody.public_image1 !== "/blog/blog-4.jpg" ? (
+                      <>
+                        <IconImage className="w-5 h-5 mr-2 text-purple-400" />
+                        <span className="text-sm">Cambiar imagen</span>
+                      </>
+                    ) : (
+                      <>
+                        <IconImage className="w-5 h-5 mr-2 text-purple-400" />
+                        <span className="text-sm">Seleccionar imagen</span>
+                      </>
+                    )}
+                  </>
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  name="image"
+                  className="hidden"
+                  onChange={handleImageHeader}
+                  disabled={uploading}
+                />
               </label>
-              <UploadImage
-                uploadPreset="nextjs_digimedia_blog_body"
-                folder="blogs/bodies/"
-                name_public="public_image1"
-                name_url="url_image1"
-                size_image = {8 * 1400 * 1400}
-                public_id={formEncabezadoBody.url_image1}
-                setFormData={setFormEncabezadoBody}
-                width={400}
-                height={780}
-                crop="fill"
-              />
             </div>
             <div>
               <label className="flex items-center text-white text-sm font-medium mb-2">
@@ -272,21 +347,44 @@ export default function FormBody1(props) {
           <form className="space-y-6">
             <div>
               <label className="flex items-center text-white text-sm font-medium mb-2">
-                <Image className="w-5 h-5 mr-2 text-purple-400" /> Imagen 1
+                <Image className="w-5 h-5 mr-2 text-purple-400" /> Imagen 2
                 <h1 className="ml-3 mt-1 text-xs">250x310 píxeles</h1>
               </label>
-              <UploadImage
-                uploadPreset="nextjs_digimedia_blog_body"
-                folder="blogs/bodies/"
-                name_public="public_image2"
-                name_url="url_image2"
-                size_image = {8 * 1400 * 1400}
-                public_id={formGaleryBody.url_image2}
-                setFormData={setFormGaleryBody}
-                width={250}
-                height={310}
-                crop="fill"
-              />
+
+              <div className="relative">
+                <label
+                  className={`flex items-center justify-center w-full p-3 border-2 border-dashed rounded-lg text-white transition-all cursor-pointer ${uploading
+                    ? "border-gray-700 bg-gray-900 opacity-50 cursor-not-allowed"
+                    : "border-gray-700 bg-gray-900 hover:border-purple-500 hover:bg-gray-800"
+                    }`}
+                >
+                  {uploading ? (
+                    <Loader2 className="w-5 h-5 animate-spin text-purple-400 mr-2" />
+                  ) : (
+                    <>
+                      {formGaleryBody.public_image2 !== "/blog/blog-2.jpg" ? (
+                        <>
+                          <IconImage className="w-5 h-5 mr-2 text-purple-400" />
+                          <span className="text-sm">Cambiar imagen</span>
+                        </>
+                      ) : (
+                        <>
+                          <IconImage className="w-5 h-5 mr-2 text-purple-400" />
+                          <span className="text-sm">Seleccionar imagen</span>
+                        </>
+                      )}
+                    </>
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    name="public_image2"
+                    className="hidden"
+                    onChange={handleImageBody}
+                    disabled={uploading}
+                  />
+                </label>
+              </div>
             </div>
 
             <div>
@@ -295,18 +393,40 @@ export default function FormBody1(props) {
                 <h1 className="ml-3 mt-1 text-xs">250x310 píxeles</h1>
               </label>
 
-              <UploadImage
-                  uploadPreset="nextjs_digimedia_blog_body"
-                  folder="blogs/bodies/"
-                  name_public = "public_image3"
-                  name_url = "url_image3"
-                  size_image = {8 * 1400 * 1400}
-                  public_id={formGaleryBody.url_image3}
-                  setFormData={setFormGaleryBody}
-                  width={250}
-                  height={310}  
-                  crop="fill"
-                />
+              <div className="relative">
+                <label
+                  className={`flex items-center justify-center w-full p-3 border-2 border-dashed rounded-lg text-white transition-all cursor-pointer ${uploading
+                    ? "border-gray-700 bg-gray-900 opacity-50 cursor-not-allowed"
+                    : "border-gray-700 bg-gray-900 hover:border-purple-500 hover:bg-gray-800"
+                    }`}
+                >
+                  {uploading ? (
+                    <Loader2 className="w-5 h-5 animate-spin text-purple-400 mr-2" />
+                  ) : (
+                    <>
+                      {formGaleryBody.public_image3 !== "/blog/blog-2.jpg" ? (
+                        <>
+                          <IconImage className="w-5 h-5 mr-2 text-purple-400" />
+                          <span className="text-sm">Cambiar imagen</span>
+                        </>
+                      ) : (
+                        <>
+                          <IconImage className="w-5 h-5 mr-2 text-purple-400" />
+                          <span className="text-sm">Seleccionar imagen</span>
+                        </>
+                      )}
+                    </>
+                  )}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    name="public_image3"
+                    className="hidden"
+                    onChange={handleImageBody}
+                    disabled={uploading}
+                  />
+                </label>
+              </div>
             </div>
           </form>
         </div>

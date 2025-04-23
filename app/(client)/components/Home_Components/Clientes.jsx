@@ -1,72 +1,69 @@
-"use client";
+'use client'
 import { useState, useEffect, useRef } from "react";
 
 export default function Clientes() {
-  const [activeIndex, setActiveIndex] = useState(1);
+  const [activeIndex, setActiveIndex] = useState(0); // Comienza en la primera imagen
   const [noTransition, setNoTransition] = useState(false);
+  const [itemsPerSlide, setItemsPerSlide] = useState(1); // Default to 1 item per slide
   const transitionDuration = 700;
   const intervalRef = useRef(null);
-  const timeoutRef = useRef(null); 
+  const timeoutRef = useRef(null);
+
   const clientes = [
-    { src: "/image-home/contigo_voy.svg", alt: "Contigo Voy logo"},
-    { src: "/image-home/digimedia.svg", alt: "Digimedia logo"},
-    { src: "/image-home/nhl.svg", alt: "NHL logo"},
-    { src: "/image-home/tami.svg", alt: "Tami logo"},
-    { src: "/image-home/yuntas.svg", alt: "Yuntas logo"},
-    { src: "/image-home/prevemedic.svg", alt: "prevemedic logo"},
-    { src: "/image-home/mj_eventos.svg", alt: "MJ eventos logo"},
-    { src: "/image-home/asden.svg", alt: "Asden logo"},
-    
+    { src: "/image-home/contigo_voy.svg", alt: "Contigo Voy logo" },
+    { src: "/image-home/digimedia.svg", alt: "Digimedia logo" },
+    { src: "/image-home/nhl.svg", alt: "NHL logo" },
+    { src: "/image-home/tami.svg", alt: "Tami logo" },
+    { src: "/image-home/yuntas.svg", alt: "Yuntas logo" },
+    { src: "/image-home/prevemedic.svg", alt: "prevemedic logo" },
+    { src: "/image-home/mj_eventos.svg", alt: "MJ eventos logo" },
+    { src: "/image-home/asden.svg", alt: "Asden logo" },
   ];
 
-    {/* CARRUSEL RESPONSIVE */}
+  // Ajusta el número de items por slide dependiendo del tamaño de la pantalla
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width >= 1024) {
+        setItemsPerSlide(4); // 4 items por slide en pantallas grandes
+      } else if (width >= 768) {
+        setItemsPerSlide(3); // 3 items por slide en pantallas medianas
+      } else {
+        setItemsPerSlide(1); // 1 item por slide en pantallas pequeñas
+      }
+    };
 
-  const slides = [
-    clientes[clientes.length - 1],
-    ...clientes,
-    clientes[0],
-  ];
+    window.addEventListener("resize", handleResize);
 
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Lógica para pasar de un conjunto de 4 imágenes a otro sin dejar espacios vacíos
   const nextSlide = () => {
     setNoTransition(false);
-    if (activeIndex < slides.length - 1) {
-      setActiveIndex((prevIndex) => prevIndex + 1);
+    if (activeIndex < clientes.length - itemsPerSlide) {
+      setActiveIndex(prevIndex => prevIndex + 1); // Avanza 1 posición
+    } else {
+      // Vuelve al inicio sin espacios vacíos
+      setActiveIndex(0); // Regresa al primer conjunto de imágenes
     }
   };
 
   const prevSlide = () => {
     setNoTransition(false);
     if (activeIndex > 0) {
-      setActiveIndex((prevIndex) => prevIndex - 1);
+      setActiveIndex(prevIndex => prevIndex - 1); // Retrocede 1 posición
+    } else {
+      // Si estamos en la primera imagen, saltamos al final
+      setActiveIndex(clientes.length - itemsPerSlide); // Vuelve al último conjunto de imágenes
     }
   };
 
-  useEffect(() => {
-    startAutoSlide();
-    return () => clearInterval(intervalRef.current);
-  }, []);
-
-  useEffect(() => {
-    clearTimeout(timeoutRef.current);
-
-    if (activeIndex === 0) {
-      timeoutRef.current = setTimeout(() => {
-        setNoTransition(true);
-        setActiveIndex(slides.length - 2);
-      }, transitionDuration);
-    } else if (activeIndex === slides.length - 1) {
-      timeoutRef.current = setTimeout(() => {
-        setNoTransition(true);
-        setActiveIndex(1);
-      }, transitionDuration);
-    }
-    
-    return () => clearTimeout(timeoutRef.current);
-  }, [activeIndex]);
-
   const handleManualChange = (index) => {
     setNoTransition(false);
-    setActiveIndex(index + 1);
+    setActiveIndex(index);
   };
 
   const startAutoSlide = () => {
@@ -80,21 +77,38 @@ export default function Clientes() {
     startAutoSlide();
   };
 
+  useEffect(() => {
+    clearTimeout(timeoutRef.current);
 
-  {/* SECCIÓN NUESTROS CLIENTES */}
+    // Si llegamos al índice final, volvemos al inicio sin transición
+    if (activeIndex >= clientes.length) {
+      timeoutRef.current = setTimeout(() => {
+        setNoTransition(true);
+        setActiveIndex(0);
+      }, transitionDuration);
+    }
+
+    return () => clearTimeout(timeoutRef.current);
+  }, [activeIndex]);
 
   return (
     <section className="my-6 mx-12">
       <h3 className="text-2xl text-[#752E75]">NUESTROS CLIENTES</h3>
 
-      <div className="relative w-full md:hidden overflow-hidden" data-carousel="slide">
-        
-        
-        <div className={`flex ${!noTransition ? "transition-transform duration-700 ease-in-out" : ""}`}
-          style={{ transform: `translateX(-${activeIndex * 100}%)` }}>
-
-          {slides.map((cliente, index) => (
-            <div key={index} className="flex-shrink-0 w-full h-56">
+      <div className="relative w-full overflow-hidden" data-carousel="slide">
+        <div
+          className={`flex ${
+            !noTransition ? "transition-transform duration-700 ease-in-out" : ""
+          }`}
+          style={{
+            transform: `translateX(-${(activeIndex * 100) / itemsPerSlide}%)`,
+          }}
+        >
+          {clientes.map((cliente, index) => (
+            <div
+              key={index}
+              className={`flex-shrink-0 w-full sm:w-1/2 md:w-1/3 lg:w-1/4 h-56 px-2`}
+            >
               <a href={cliente.link} target="_blank" rel="noopener noreferrer">
                 <img
                   src={cliente.src}
@@ -110,10 +124,11 @@ export default function Clientes() {
           {clientes.map((_, index) => (
             <button
               key={index}
-              className={`h-3 rounded-full transition-all duration-500 ${index === (activeIndex - 1 + clientes.length) % clientes.length
+              className={`h-3 rounded-full transition-all duration-500 ${
+                index === activeIndex
                   ? "bg-[#752E75] w-[1.25rem]"
                   : "bg-gray-300 w-3"
-                }`}
+              }`}
               onClick={() => {
                 handleManualChange(index);
                 resetAutoSlide();
@@ -141,20 +156,6 @@ export default function Clientes() {
         >
           <span className="text-[#752E75] text-3xl">&#10095;</span>
         </button>
-      </div>
-      <div className="hidden md:flex justify-center items-center border-b-[1px] max-w-max m-auto border-[#752E75] flex-wrap ">
-        {clientes.map((cliente) => (
-          <a
-            key={cliente.alt}
-            href={cliente.link}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img className={`w-60 ${cliente.alt === "prevemedic logo" ? "scale-150" : ""}`} 
-              src={cliente.src} 
-              alt={cliente.alt}  />
-          </a>
-        ))}
       </div>
     </section>
   );

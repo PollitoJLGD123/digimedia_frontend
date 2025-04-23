@@ -1,8 +1,8 @@
 "use client"
-import { Image, Type, AlignLeft } from "lucide-react"
-import UploadImage from "./UploadImage"
+import { Image, Type, AlignLeft, Image as IconImage, Loader2 } from "lucide-react"
+import { useState } from "react"
 
-export default function FormFooter({ formFooter, setFormData }) {
+export default function FormFooter({ formFooter, setFormData, setFileFooterFile1, setFileFooterFile2, setFileFooterFile3 }) {
     const handleChange = (e) => {
         const { name, value } = e.target
         setFormData((prev) => ({
@@ -10,6 +10,49 @@ export default function FormFooter({ formFooter, setFormData }) {
             [name]: value,
         }))
     }
+
+    const [uploading, setUploading] = useState(false);
+
+    const handleImagenFooter = async (e) => {
+        const file = e.target.files[0];
+        const name = e.target.name;
+        if (!file) return;
+        try {
+            setUploading(true);
+
+            const tempUrl = URL.createObjectURL(file);
+
+            console.log("Ahora su file: ", name, tempUrl);
+
+            setFormData((prev) => ({
+                ...prev,
+                [name]: tempUrl,
+            }));
+
+            if (name === "public_image1") {
+                setFileFooterFile1(file);
+            } 
+            else 
+                if (name === "public_image2") {
+                    setFileFooterFile2(file);
+                } 
+                else {
+                    setFileFooterFile3(file);
+                }
+
+        } catch (error) {
+            console.error("Error al subir imagen:", error);
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "Ocurrió un error al subir la imagen",
+                confirmButtonColor: "#8c52ff",
+            });
+        } finally {
+            setUploading(false);
+        }
+    }
+
 
     return (
         <div className="relative mt-12 flex flex-col md:flex-row justify-center items-stretch max-w-5xl mx-auto bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-lg shadow-lg overflow-hidden p-6 gap-6">
@@ -24,7 +67,7 @@ export default function FormFooter({ formFooter, setFormData }) {
                 {(formFooter.public_image1 || formFooter.public_image2 || formFooter.public_image3) && (
                     <div className="flex flex-wrap justify-center gap-3 mt-6">
                         {[formFooter.public_image1, formFooter.public_image2, formFooter.public_image3].map((image, index) => {
-                            const imageUrl = image ? (image.startsWith("http") ? image : `/blog/${image}`) : "/blog/blog-2.jpg"
+                            const imageUrl = image
 
                             return (
                                 <div key={index} className="relative group">
@@ -88,23 +131,45 @@ export default function FormFooter({ formFooter, setFormData }) {
                         </div>
                         <div className="mb-3">
                             <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
-                                <Image className="w-4 h-4 mr-1.5 text-yellow-400" /> Imágenes 
+                                <Image className="w-4 h-4 mr-1.5 text-yellow-400" /> Imágenes
                                 <h1 className="ml-3 mt-1 text-xs">200x170 píxeles</h1>
                             </label>
                             {["1", "2", "3"].map((num, index) => (
                                 <div key={index} className="relative w-full mb-2">
-                                    <UploadImage
-                                        uploadPreset="nextjs_digimedia_blog_footer"
-                                        folder="blogs/footers/"
-                                        name_public = {`public_image${num}`}
-                                        name_url = {`url_image${num}`}
-                                        width={200}
-                                        height={170}
-                                        size_image = {8 * 1024 * 1024}
-                                        public_id={formFooter[`url_image${num}`]}
-                                        setFormData={setFormData}
-                                        crop="fill"
-                                    />
+                                    <div className="relative">
+                                        <label
+                                            className={`flex items-center justify-center w-full p-3 border-2 border-dashed rounded-lg text-white transition-all cursor-pointer ${uploading
+                                                ? "border-gray-700 bg-gray-900 opacity-50 cursor-not-allowed"
+                                                : "border-gray-700 bg-gray-900 hover:border-purple-500 hover:bg-gray-800"
+                                                }`}
+                                        >
+                                            {uploading ? (
+                                                <Loader2 className="w-5 h-5 animate-spin text-purple-400 mr-2" />
+                                            ) : (
+                                                <>
+                                                    {formFooter[`public_image${num}`] !== "/blog/blog-10.jpg" ? (
+                                                        <>
+                                                            <IconImage className="w-5 h-5 mr-2 text-purple-400" />
+                                                            <span className="text-sm">Cambiar imagen</span>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <IconImage className="w-5 h-5 mr-2 text-purple-400" />
+                                                            <span className="text-sm">Seleccionar imagen</span>
+                                                        </>
+                                                    )}
+                                                </>
+                                            )}
+                                            <input
+                                                type="file"
+                                                accept="image/*"
+                                                name={`public_image${num}`}
+                                                className="hidden"
+                                                onChange={handleImagenFooter}
+                                                disabled={uploading}
+                                            />
+                                        </label>
+                                    </div>
                                 </div>
                             ))}
                         </div>

@@ -1,12 +1,13 @@
 
 import React from 'react'
-import { CheckCircle, Clock, Bookmark, Share2, Eye, Image, Type, AlignLeft, Clock1, BookTypeIcon, BookType } from "lucide-react"
+import { CheckCircle, Clock, Bookmark, Share2, Eye, Image, Type, AlignLeft, Clock1, Loader2, BookTypeIcon, BookType } from "lucide-react"
 import { useState } from 'react';
 import UploadImage from './UploadImage';
 
 export default function FormBody2(props) {
 
   const [activeTab, setActiveTab] = useState("info")
+  const [uploading, setUploading] = useState(false);
 
   const {
     formCommendBody,
@@ -16,13 +17,43 @@ export default function FormBody2(props) {
     formEncabezadoBody,
     setFormEncabezadoBody,
     formGaleryBody,
-    setFormGaleryBody
+    setFormGaleryBody,
+    setFileBodyHeader,
+    setFileBodyFile1,
+    setFileBodyFile2,
   } = props;
 
   const [commendErrors, setCommendErrors] = useState({
     titulo: { message: 'Máximo 40 caracteres', isValid: null },
     textos: Array(5).fill({ message: 'Máximo 100 caracteres', isValid: null })
   });
+
+  const handleImageHeader = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    try {
+      setUploading(true);
+
+      const tempUrl = URL.createObjectURL(file);
+      setFormEncabezadoBody((prev) => ({
+        ...prev,
+        ["public_image1"]: " ",
+      }));
+
+      setFileBodyHeader(file);
+
+    } catch (error) {
+      console.error("Error al subir imagen:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Ocurrió un error al subir la imagen",
+        confirmButtonColor: "#8c52ff",
+      });
+    } finally {
+      setUploading(false);
+    }
+  }
 
   const handleCommendBodyChange = (e) => {
     const { name, value } = e.target
@@ -163,29 +194,26 @@ export default function FormBody2(props) {
               </button>
             </div>
           </div>
+          {[
 
-          <div className="relative h-[300px] md:h-[400px] overflow-hidden">
+                  { id: 1, url: formGaleryBody.public_image1 || "/blog/blog-4.jpg", title: "Imagen principal" },
+          ].map((image, index) => (
+          <div key={index} className="relative h-[300px] md:h-[400px] overflow-hidden">
             <img
-              src={
-                formEncabezadoBody.public_image1
-                  ? formEncabezadoBody.public_image1.startsWith("http")
-                    ? formEncabezadoBody.public_image1
-                    : `${formEncabezadoBody.public_image1}`
-                  : "/blog/blog-4.jpg"
-              }
+              src={image.url.startsWith("http") ? image.url : `${image.url}`}
               alt={formEncabezadoBody.titulo || "Imagen principal"}
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
             <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
-              <h1 className="text-3xl md:text-5xl font-bold text-white mb-2 leading-tight">{formEncabezadoBody.titulo}</h1>
+              <h1 className="text-3xl md:text-5xl font-bold text-white mb-2 leading-tight">{image.title}</h1>
               <div className="w-16 h-1 bg-teal-500 mb-4"></div>
             </div>
           </div>
+          ))}
 
           <div className="mx-10 my-5 text-lg text-gray-700 leading-relaxed">{formEncabezadoBody.descripcion}</div>
         </div>
-        {/* Form1 */}
         <div className='relative mt-28 w-full p-6'>
           <div className="">
             <div className="bg-black/90 backdrop-blur-md rounded-lg p-5 border border-white/10 shadow-lg">
@@ -241,18 +269,22 @@ export default function FormBody2(props) {
                     <Image className="w-4 h-4 mr-1.5 text-blue-400" /> Imagen de Fondo
                     <h1 className="ml-3 mt-1 text-xs">980x450 píxeles</h1>
                   </label>
-                  <UploadImage
-                    uploadPreset="nextjs_digimedia_blog_body"
-                    folder="blogs/bodies/"
-                    name_public="public_image1"
-                    name_url="url_image1"
-                    size_image={8 * 1024 * 1024}
-                    public_id={formEncabezadoBody.url_image1}
-                    setFormData={setFormEncabezadoBody}
-                    width={980}
-                    height={450}
-                    crop="fill"
-                  />
+                  <div className="relative">
+
+                      <UploadImage
+                        uploadPreset="nextjs_digimedia_blog_body"
+                        folder="blogs/bodies/"
+                        name_public={`public_image1`}
+                        name_url={`url_image1`}
+                        size_image={7 * 1400 * 1400}
+                        public_id={formGaleryBody[`url_image1`]}
+                        setFormData={setFormGaleryBody}
+                        width={980}
+                        height={450}
+                        crop="fill"
+                        onChange={handleImageHeader}
+                      />
+                  </div>
                 </div>
               </form>
             </div>
@@ -281,7 +313,6 @@ export default function FormBody2(props) {
             Galería
           </button>
         </div>
-        {/* cards */}
         <div className="mb-10">
           {activeTab === "info" && (
             <div className="space-y-6 ">
