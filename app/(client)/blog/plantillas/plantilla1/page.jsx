@@ -108,7 +108,7 @@ const PageContent = () => {
 
         <Body1 id_blog_body={data.id_blog_body} fecha={data.fecha} />
 
-        <Footer id_blog_footer={data.id_blog} />
+        <Footer id_blog_footer={data.id_blog_footer} />
       </div>
     </div>
   )

@@ -1,8 +1,8 @@
 "use client"
-import { Image, Type, AlignLeft, Image as IconImage, Loader2, Trash2 } from "lucide-react"
+import { Image, Type, AlignLeft, Image as IconImage, Loader2 } from "lucide-react"
 import { useState } from "react"
 
-export default function FormFooter({ formFooter, setFormData, setFileFooterFile1, setFileFooterFile2, setFileFooterFile3, onDeleteFooterFile1, onDeleteFooterFile2, onDeleteFooterFile3}) {
+export default function FormFooter({ formFooter, setFormData, setFileFooterFile1, setFileFooterFile2, setFileFooterFile3 }) {
     const handleChange = (e) => {
         const { name, value } = e.target
         setFormData((prev) => ({
@@ -169,20 +169,6 @@ export default function FormFooter({ formFooter, setFormData, setFileFooterFile1
                                                 disabled={uploading}
                                             />
                                         </label>
-                                        <button
-                                         type="button"
-                                         onClick={
-                                         num === "1"
-                                         ? onDeleteFooterFile1
-                                         : num === "2"
-                                         ? onDeleteFooterFile2
-                                         : onDeleteFooterFile3
-                                         }     // ← Eliminar agregado aquí
-                                         className="ml-2 p-2 rounded-full hover:bg-red-100"
-                                         title={`Eliminar imagen ${num}`}
-                                        >
-                                        <Trash2 className="w-5 h-5 text-red-500" />
-                                       </button>
                                     </div>
                                 </div>
                             ))}
