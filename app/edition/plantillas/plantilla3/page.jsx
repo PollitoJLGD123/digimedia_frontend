@@ -173,7 +173,7 @@ const PageContent = () => {
 
   async function guardarCommendTarjeta() {
     const id = await Service.saveCommendTarjeta(formCommendBody);
-    if (id && id > 0) {      
+    if (id && id > 0) {
       console.log("Id del la tarjeta comentario:", id);
       return id;
     }
@@ -282,6 +282,12 @@ const PageContent = () => {
     return resultado;
   }
 
+  /* 
+    storage/app/public/images/templates/plantilla{id_plantilla}/blog{id_blog}/head/image.jpeg
+    storage/app/public/images/templates/plantilla{id_plantilla}/blog{id_blog}/body/image.webp
+    storage/app/public/images/templates/plantilla{id_plantilla}/blog{id_blog}/footer/image.webp
+  */
+
   async function SaveImage(file,ruta, name = null){
     try{
 
@@ -312,7 +318,7 @@ const PageContent = () => {
 
       setLoading(true);
 
-      const id_commend_tarjeta = await executionFunction(guardarCommendTarjeta, "No se pudo guardar la tarjeta de comentarios");
+      const id_commend_tarjeta = await executionFunction(guardarCommendTarjeta, "No se pudo guardar la tarjeta de comentariosss");
 
       const id_blog_body = await executionFunction(() => guardarBody(id_commend_tarjeta), "No se pudo guardar el contenido del blog");
 
@@ -322,7 +328,7 @@ const PageContent = () => {
       const id_blog_footer = await executionFunction(() => guardarFooter(), "No se pudo guardar el pie de página");
 
       const id_blog = await executionFunction(() => guardarBlog(id_blog_head, id_blog_footer, id_blog_body) , "No se pudo guardar el blog");
-      await executionFunction(() => guardarCard(id_blog), "No se pudo guardar la card");
+      const id_card = await executionFunction(() => guardarCard(id_blog,id_empleado), "No se pudo guardar la card");
 
       if(fileHeader){
         await executionFunction(() => SaveImage(fileHeader,`card/blog/image_head/${id_card}`), "No se pudo guardar la imagen");
@@ -362,11 +368,11 @@ const PageContent = () => {
       setFormFooter({
         titulo: "Titulo Footer",
         descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, voluptate.",
-        public_image1: "blog-10.jpg",
+        public_image1: "/blog/blog-10.jpg",
         url_image1: "", //por esta vez url es la ruta para elimianr
-        public_image2: "blog-1.jpg",
+        public_image2: "/blog/blog-10.jpg",
         url_image2: "",
-        public_image3: "blog-2.jpg",
+        public_image3: "/blog/blog-10.jpg",
         url_image3: "",
       });
 
