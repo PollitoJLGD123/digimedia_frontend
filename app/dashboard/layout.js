@@ -79,10 +79,10 @@ export default function RootLayout({ children }) {
                     <TableLink title="Modales" href="/dashboard/modales"/>
                   )}
                   {auth_service.hasPermission('ver-reclamaciones') && (
-                    <TableLink title="Libro de Reclamaciones" href="/dashboard/reclamaciones" />
+                    <TableLink title="Reclamaciones" href="/dashboard/reclamaciones" />
                   )}
                   {auth_service.hasPermission('crear-blogs') && (
-                    <TableLink title="Creación de Blogs" href="/dashboard/blogs"/>
+                    <TableLink title="Blogs" href="/dashboard/blogs"/>
                   )}
                   {auth_service.hasRole('administrador') && (
                     <TableLink title="Roles y Permisos" href="/dashboard/role-permission" />

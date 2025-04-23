@@ -154,7 +154,7 @@ export default function Body1({ id_blog_body, fecha }) {
                         <div key={index} className="group relative overflow-hidden rounded-xl shadow-xl">
                             <div className="absolute inset-0 bg-gradient-to-t from-purple-900/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
                             <img
-                                src={src.startsWith("http") ? src : `${src}`}
+                                src={src}
                                 alt={`Imagen ${index + 1} del artículo`}
                                 className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
                             />

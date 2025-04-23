@@ -137,13 +137,7 @@ export default function Body3({ id_blog_body, fecha }) {
                             <div className="absolute -inset-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-3xl blur"></div>
                             <div className="relative">
                                 <img
-                                    src={
-                                        data.public_image1
-                                            ? data.public_image1.startsWith("http")
-                                                ? data.public_image1
-                                                : `${data.public_image1}`
-                                            : "/blog/blog-4.jpg"
-                                    }
+                                    src={data.public_image1}
                                     alt={data.titulo || "Imagen principal"}
                                     className="w-[22rem] h-[22rem] rounded-2xl shadow-lg object-cover relative z-10"
                                 />
@@ -170,7 +164,7 @@ export default function Body3({ id_blog_body, fecha }) {
                             <div key={index} className="group relative overflow-hidden rounded-xl shadow-lg">
                                 <div className="absolute inset-0 bg-gradient-to-t from-indigo-900/80 via-indigo-900/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                 <img
-                                    src={src.startsWith("http") ? src : `${src}`}
+                                    src={src}
                                     alt={`Imagen ${index + 1} del artículo`}
                                     className="w-full h-64 object-cover transition-transform duration-700 group-hover:scale-110"
                                 />

@@ -291,6 +291,8 @@ const PageContent = () => {
   async function SaveImage(file,ruta, name = null){
     try{
 
+      if (!file) return;
+
       const formData = new FormData();
       formData.append("file", file);
 
@@ -299,7 +301,7 @@ const PageContent = () => {
       }
 
       const response = await Service.saveImage(formData, ruta);
-      if (response.status === 200 || response.status === 400) {
+      if (response.status === 200 || response.status === 201) {
         setFileHeader(null)
         return "ok";
       } else {
@@ -328,17 +330,35 @@ const PageContent = () => {
       const id_blog = await executionFunction(() => guardarBlog(id_blog_head, id_blog_footer, id_blog_body) , "No se pudo guardar el blog");
       const id_card = await executionFunction(() => guardarCard(id_blog,id_empleado), "No se pudo guardar la card");
 
-      await executionFunction(() => SaveImage(fileHeader,`card/blog/image_head/${id_card}`), "No se pudo guardar la imagen");
+      if(fileHeader){
+        await executionFunction(() => SaveImage(fileHeader,`card/blog/image_head/${id_card}`), "No se pudo guardar la imagen");
+      }
 
-      await executionFunction(() => SaveImage(FileBodyHeader,`card/blog/images_body/${id_card}`, "image1"), "No se pudo guardar la imagen");
-      await executionFunction(() => SaveImage(FileBodyFile1,`card/blog/images_body/${id_card}`, "image2"), "No se pudo guardar la imagen");
-      await executionFunction(() => SaveImage(FileBodyFile2,`card/blog/images_body/${id_card}`,"image3"), "No se pudo guardar la imagen");
+      if(FileBodyHeader){
+        await executionFunction(() => SaveImage(FileBodyHeader,`card/blog/images_body/${id_card}`, "image1"), "No se pudo guardar la imagen");
+      }
 
-      await executionFunction(() => SaveImage(FileFooterFile1,`card/blog/images_footer/${id_card}`, "image1"), "No se pudo guardar la imagen");
-      await executionFunction(() => SaveImage(FileFooterFile2,`card/blog/images_footer/${id_card}`, "image2"), "No se pudo guardar la imagen");
-      await executionFunction(() => SaveImage(FileFooterFile3,`card/blog/images_footer/${id_card}`,"image3"), "No se pudo guardar la imagen");
+      if(FileBodyFile1){
+        await executionFunction(() => SaveImage(FileBodyFile1,`card/blog/images_body/${id_card}`, "image2"), "No se pudo guardar la imagen");
+      }
 
-      Swal.fire({
+      if(FileBodyFile2){
+        await executionFunction(() => SaveImage(FileBodyFile2,`card/blog/images_body/${id_card}`,"image3"), "No se pudo guardar la imagen");
+      }
+
+      if(FileFooterFile1){
+        await executionFunction(() => SaveImage(FileFooterFile1,`card/blog/images_footer/${id_card}`, "image1"), "No se pudo guardar la imagen");
+      }
+
+      if(FileFooterFile2){
+        await executionFunction(() => SaveImage(FileFooterFile2,`card/blog/images_footer/${id_card}`, "image2"), "No se pudo guardar la imagen");
+      }
+
+      if(FileFooterFile3){
+        await executionFunction(() => SaveImage(FileFooterFile3,`card/blog/images_footer/${id_card}`,"image3"), "No se pudo guardar la imagen");
+      }
+
+      await Swal.fire({
         title: "Guardado Correctamente",
         text: "¡Podrás ver tu blog en la sección de blogs de la página principal!",
         icon: "success",
@@ -422,7 +442,9 @@ const PageContent = () => {
       setFileFooterFile2(null);
       setFileFooterFile3(null);
 
-      router.push("/blog");
+      router.push("/dashboard/blogs/")
+
+      window.open("/blog", "_blank");
 
     } catch (error) {
       console.error("Error al guardar:", error.message);

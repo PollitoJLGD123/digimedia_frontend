@@ -157,9 +157,15 @@ const Servicios = {
 
     saveImage: async function saveImage(formData,ruta) {
         try {
-            const response = await axios.put(`${URL_API}/${ruta}`, formData, {
+
+            for (let pair of formData.entries()) {
+                console.log(pair[0] + ':', pair[1]);
+            }
+
+            const response = await axios.post(`${URL_API}/${ruta}`, formData, {
                 headers: {
                     Authorization: `Bearer ${getCookie('token')}`,
+                    'Content-Type': 'multipart/form-data'
                 },
             });
             if (response.status === 200) {
