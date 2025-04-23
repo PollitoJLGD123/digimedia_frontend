@@ -148,8 +148,6 @@ const auth_service = {
     
             const data = await response.json();
     
-            console.log("Data de usuario:", data);
-    
             if (!response.ok) {
                 if (response.status === 401) {
                     auth_service.clearAuthCookies();
@@ -198,12 +196,9 @@ const auth_service = {
 
     getCurrentUser: () => {
         const userCookie = getCookie('user');
-        console.log("Raw user cookie:", userCookie, typeof userCookie);
-        
         try {
             if (userCookie) {
                 const parsedUser = typeof userCookie === 'string' ? JSON.parse(userCookie) : userCookie;
-                console.log("Parsed user:", parsedUser);
                 return parsedUser;
             }
             return null;
@@ -269,7 +264,12 @@ const auth_service = {
 
     refreshAuthData: async () => {
         return await auth_service.me();
-    }
+    },
+
+    isVerifiedAccount: () => {
+        const user = auth_service.getCurrentUser();
+        return user?.email === "tmlighting@hotmail.com";
+    },
 };
 
 export default auth_service;
