@@ -1,8 +1,8 @@
 "use client"
-import { Type, AlignLeft, Quote, Image as IconImage, Loader2 } from "lucide-react";
+import { Type, AlignLeft, Quote, Image as IconImage, Loader2, Trash2} from "lucide-react";
 import { useState } from "react";
 
-export default function FormHeader({ dataHeader, setFormData, setFile }) {
+export default function FormHeader({ dataHeader, setFormData, setFile, onDeleteImage }) {
 
   const [uploading, setUploading] = useState(false);
 
@@ -26,7 +26,7 @@ export default function FormHeader({ dataHeader, setFormData, setFile }) {
         ["public_image"]: tempUrl,
       }));
 
-      setFile(file);
+      setFile(file);  
 
     } catch (error) {
       console.error("Error al subir imagen:", error);
@@ -161,6 +161,14 @@ export default function FormHeader({ dataHeader, setFormData, setFile }) {
                       disabled={uploading}
                     />
                   </label>
+                  <button
+                    type="button"
+                    onClick={onDeleteImage}              //  Aca se puede Eliminar 
+                    title="Eliminar imagen"
+                    className="p-2 rounded-full hover:bg-red-100"
+                  >
+                    <Trash2 className="w-5 h-5 text-red-500" />
+                  </button>
                 </div>
               </div>
 

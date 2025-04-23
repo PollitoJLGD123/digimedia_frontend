@@ -1,5 +1,5 @@
 "use client";
-import { Type, AlignLeft, Quote, Image } from "lucide-react";
+import { Type, AlignLeft, Quote, Image,Trash2 } from "lucide-react";     //Agregue trash
 import { Loader2, CheckCircle, ArrowRight, Image as IconImage } from "lucide-react"
 import { useState } from "react";
 
@@ -257,6 +257,14 @@ export default function FormBody1(props) {
                   disabled={uploading}
                 />
               </label>
+              <button
+               type="button"
+               onClick={props.onDeleteBodyHeaderImage}    //  Aca se puede Eliminar 
+               className="ml-2 p-2 rounded-full hover:bg-red-100"
+               title="Eliminar imagen principal"
+               >
+              <Trash2 className="w-5 h-5 text-red-500" />
+             </button>
             </div>
             <div>
               <label className="flex items-center text-white text-sm font-medium mb-2">
@@ -384,6 +392,14 @@ export default function FormBody1(props) {
                     disabled={uploading}
                   />
                 </label>
+                <button
+                 type="button"
+                 onClick={props.onDeleteBodyFile1}         //  Aca se puede Eliminar 
+                 className="ml-2 p-2 rounded-full hover:bg-red-100"
+                 title="Eliminar imagen galería 1"
+               >
+                <Trash2 className="w-5 h-5 text-red-500" />
+               </button>
               </div>
             </div>
 
@@ -426,6 +442,14 @@ export default function FormBody1(props) {
                     disabled={uploading}
                   />
                 </label>
+                <button
+                 type="button"
+                 onClick={props.onDeleteBodyFile2}         //  Aca se puede Eliminar 
+                 className="ml-2 p-2 rounded-full hover:bg-red-100"
+                 title="Eliminar imagen galería 2"
+                >
+               <Trash2 className="w-5 h-5 text-red-500" />
+                </button>
               </div>
             </div>
           </form>
