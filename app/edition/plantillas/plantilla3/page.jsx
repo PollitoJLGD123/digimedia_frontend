@@ -4,14 +4,27 @@ import FormFooter from '../components/FormFooter'
 import FormHeader from '../components/FormHeader'
 import { useState, useEffect } from 'react';
 import Service from "../../services/Service"
-import Swal from 'sweetalert2';
 import { Save } from "lucide-react"
+import Swal from 'sweetalert2';
 import { useRouter } from "next/navigation";
+import { getCookie } from 'cookies-next';
 
 const PageContent = () => {
 
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+
+  const [fileHeader, setFileHeader] = useState(null);
+  
+  const [FileBodyHeader, setFileBodyHeader] = useState(null);
+  const [FileBodyFile1, setFileBodyFile1] = useState(null);
+  const [FileBodyFile2, setFileBodyFile2] = useState(null);
+
+  const [FileFooterFile1, setFileFooterFile1] = useState(null);
+  const [FileFooterFile2, setFileFooterFile2] = useState(null);
+  const [FileFooterFile3, setFileFooterFile3] = useState(null);
+
+  const id_empleado = getCookie("empleado") ? JSON.parse(getCookie("empleado")).id_empleado : -1
 
   const [formFooter, setFormFooter] = useState({
     titulo: "Titulo Footer",
@@ -200,7 +213,7 @@ const PageContent = () => {
     }
   }
 
-  async function guardarCard(id_blog) {
+  async function guardarCard(id_blog,id_empleado) {
     const formCard = {
       id_blog: id_blog,
       titulo: dataHeader.titulo,
@@ -208,7 +221,11 @@ const PageContent = () => {
       public_image: dataHeader.public_image,
       url_image: dataHeader.url_image,
       id_plantilla: 3,
+      id_empleado : id_empleado,
     }
+
+    console.log(formCard);
+
     const id = await Service.saveCard(formCard);
     if (id && id > 0) {
       console.log("Id del card:", id);
@@ -265,6 +282,31 @@ const PageContent = () => {
     return resultado;
   }
 
+  async function SaveImage(file,ruta, name = null){
+    try{
+
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      if(name){
+        formData.append("name", name);
+      }
+
+      const response = await Service.saveImage(formData, ruta);
+      if (response.status === 200 || response.status === 201) {
+        setFileHeader(null)
+        return "ok";
+      } else {
+        throw new Error("Error al subir la imagen");
+      }
+
+    }catch(error){
+      console.log(error);
+    }
+  }
+
   async function HandleSave() {
     try {
 
@@ -282,12 +324,41 @@ const PageContent = () => {
       const id_blog = await executionFunction(() => guardarBlog(id_blog_head, id_blog_footer, id_blog_body) , "No se pudo guardar el blog");
       await executionFunction(() => guardarCard(id_blog), "No se pudo guardar la card");
 
-      Swal.fire({
+      if(fileHeader){
+        await executionFunction(() => SaveImage(fileHeader,`card/blog/image_head/${id_card}`), "No se pudo guardar la imagen");
+      }
+
+      if(FileBodyHeader){
+        await executionFunction(() => SaveImage(FileBodyHeader,`card/blog/images_body/${id_card}`, "image1"), "No se pudo guardar la imagen");
+      }
+
+      if(FileBodyFile1){
+        await executionFunction(() => SaveImage(FileBodyFile1,`card/blog/images_body/${id_card}`, "image2"), "No se pudo guardar la imagen");
+      }
+
+      if(FileBodyFile2){
+        await executionFunction(() => SaveImage(FileBodyFile2,`card/blog/images_body/${id_card}`,"image3"), "No se pudo guardar la imagen");
+      }
+
+      if(FileFooterFile1){
+        await executionFunction(() => SaveImage(FileFooterFile1,`card/blog/images_footer/${id_card}`, "image1"), "No se pudo guardar la imagen");
+      }
+
+      if(FileFooterFile2){
+        await executionFunction(() => SaveImage(FileFooterFile2,`card/blog/images_footer/${id_card}`, "image2"), "No se pudo guardar la imagen");
+      }
+
+      if(FileFooterFile3){
+        await executionFunction(() => SaveImage(FileFooterFile3,`card/blog/images_footer/${id_card}`,"image3"), "No se pudo guardar la imagen");
+      }
+
+      await Swal.fire({
         title: "Guardado Correctamente",
         text: "¡Podrás ver tu blog en la sección de blogs de la página principal!",
         icon: "success",
         confirmButtonText: "OK",
       });
+
       setFormFooter({
         titulo: "Titulo Footer",
         descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, voluptate.",
@@ -357,7 +428,18 @@ const PageContent = () => {
         url_image3: "",
       });
 
-      router.push("/blog");
+      setFileHeader(null);
+      setFileBodyHeader(null);
+      setFileBodyFile1(null);
+      setFileBodyFile2(null);
+      setFileFooterFile1(null);
+      setFileFooterFile2(null);
+      setFileFooterFile3(null);
+
+
+      router.push("/dashboard/blogs/")
+
+      window.open("/blog", "_blank");
 
     } catch (error) {
       console.error("Error al guardar:", error.message);
@@ -373,6 +455,7 @@ const PageContent = () => {
         <FormHeader
           dataHeader={dataHeader}
           setFormData={setDataHeader}
+          setFile = {setFileHeader}
         />
       </div>
 
@@ -387,6 +470,11 @@ const PageContent = () => {
           formGaleryBody={formGaleryBody}
           setFormGaleryBody={setFormGaleryBody}
 
+          setFileBodyHeader={setFileBodyHeader}
+
+          setFileBodyFile1 = {setFileBodyFile1}
+          setFileBodyFile2 = {setFileBodyFile2}
+
           formEncabezadoBody={formEncabezadoBody}
           setFormEncabezadoBody={setFormEncabezadoBody}
         />
@@ -396,6 +484,9 @@ const PageContent = () => {
         <FormFooter
           formFooter={formFooter}
           setFormData={setFormFooter}
+          setFileFooterFile1={setFileFooterFile1}
+          setFileFooterFile2={setFileFooterFile2}
+          setFileFooterFile3={setFileFooterFile3}
         />
       </div>
 
