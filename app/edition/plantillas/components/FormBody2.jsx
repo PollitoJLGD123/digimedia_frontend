@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { CheckCircle, Clock, Bookmark, Share2, Eye, Image, Type, AlignLeft, Clock1, Loader2, BookTypeIcon, BookType } from "lucide-react"
+import { CheckCircle, Clock, Bookmark, Share2, Eye, Image, Type, AlignLeft, Clock1, Loader2, Trash2, BookType } from "lucide-react"
 import { useState } from 'react';
 import UploadImage from './UploadImage';
 
@@ -27,6 +27,15 @@ export default function FormBody2(props) {
     titulo: { message: 'Máximo 40 caracteres', isValid: null },
     textos: Array(5).fill({ message: 'Máximo 100 caracteres', isValid: null })
   });
+
+  const handleChangeMap = (e, index, field) => {
+    const { value } = e.target;
+    setFormInfoBody(prevState => {
+      const updatedState = [...prevState];
+      updatedState[index] = { ...updatedState[index], [field]: value };
+      return updatedState;
+    });
+  };
 
   const handleImageHeader = async (e) => {
     const file = e.target.files[0];
@@ -84,6 +93,38 @@ export default function FormBody2(props) {
       ...prev,
       [name]: value,
     }))
+  }
+
+  const handleImageBody = async (e) => {
+    const file = e.target.files[0];
+    const name = e.target.name;
+    if (!file) return;
+    try {
+      setUploading(true);
+
+      const tempUrl = URL.createObjectURL(file);
+      setFormGaleryBody((prev) => ({
+        ...prev,
+        [name]: tempUrl,
+      }));
+
+      if (name === "public_image2") {
+        setFileBodyFile1(file);
+      } else if (name === "public_image3") {
+        setFileBodyFile2(file);
+      }
+
+    } catch (error) {
+      console.error("Error al subir imagen:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Ocurrió un error al subir la imagen",
+        confirmButtonColor: "#8c52ff",
+      });
+    } finally {
+      setUploading(false);
+    }
   }
 
   const [infoErrors, setInfoErrors] = useState({
@@ -194,23 +235,19 @@ export default function FormBody2(props) {
               </button>
             </div>
           </div>
-          {[
-
-                  { id: 1, url: formGaleryBody.public_image1 || "/blog/blog-4.jpg", title: "Imagen principal" },
-          ].map((image, index) => (
-          <div key={index} className="relative h-[300px] md:h-[400px] overflow-hidden">
+          
+          <div className="relative h-[300px] md:h-[400px] overflow-hidden">
             <img
-              src={image.url.startsWith("http") ? image.url : `${image.url}`}
+              src={formEncabezadoBody.public_image1}
               alt={formEncabezadoBody.titulo || "Imagen principal"}
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
             <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
-              <h1 className="text-3xl md:text-5xl font-bold text-white mb-2 leading-tight">{image.title}</h1>
+              <h1 className="text-3xl md:text-5xl font-bold text-white mb-2 leading-tight">Imagen Principal</h1>
               <div className="w-16 h-1 bg-teal-500 mb-4"></div>
             </div>
           </div>
-          ))}
 
           <div className="mx-10 my-5 text-lg text-gray-700 leading-relaxed">{formEncabezadoBody.descripcion}</div>
         </div>
@@ -269,21 +306,47 @@ export default function FormBody2(props) {
                     <Image className="w-4 h-4 mr-1.5 text-blue-400" /> Imagen de Fondo
                     <h1 className="ml-3 mt-1 text-xs">980x450 píxeles</h1>
                   </label>
-                  <div className="relative">
-
-                      <UploadImage
-                        uploadPreset="nextjs_digimedia_blog_body"
-                        folder="blogs/bodies/"
-                        name_public={`public_image1`}
-                        name_url={`url_image1`}
-                        size_image={7 * 1400 * 1400}
-                        public_id={formGaleryBody[`url_image1`]}
-                        setFormData={setFormGaleryBody}
-                        width={980}
-                        height={450}
-                        crop="fill"
+                  <div className="relative flex flex-column justify-center">
+                    <label
+                      className={`flex items-center justify-center w-full p-3 border-2 border-dashed rounded-lg text-white transition-all cursor-pointer ${uploading
+                        ? "border-gray-700 bg-gray-900 opacity-50 cursor-not-allowed"
+                        : "border-gray-700 bg-gray-900 hover:border-purple-500 hover:bg-gray-800"
+                        }`}
+                    >
+                      {uploading ? (
+                        <Loader2 className="w-5 h-5 animate-spin text-purple-400 mr-2" />
+                      ) : (
+                        <>
+                          {formEncabezadoBody.public_image1 !== "/blog/blog-4.jpg" ? (
+                            <>
+                              <Image className="w-5 h-5 mr-2 text-purple-400" />
+                              <span className="text-sm">Cambiar imagen</span>
+                            </>
+                          ) : (
+                            <>
+                              <Image className="w-5 h-5 mr-2 text-purple-400" />
+                              <span className="text-sm">Seleccionar imagen</span>
+                            </>
+                          )}
+                        </>
+                      )}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        name="image"
+                        className="hidden"
                         onChange={handleImageHeader}
+                        disabled={uploading}
                       />
+                    </label>
+                    <button
+                      type="button"
+                      onClick={props.onDeleteBodyHeaderImage}
+                      className="ml-2 p-2 rounded-full hover:bg-red-100"
+                      title="Eliminar imagen principal"
+                    >
+                      <Trash2 className="w-5 h-5 text-red-500" />
+                    </button>
                   </div>
                 </div>
               </form>
@@ -475,7 +538,7 @@ export default function FormBody2(props) {
                   <div key={index} className="bg-white rounded-lg shadow-sm overflow-hidden">
                     <div className="relative h-64 bg-slate-100">
                       <img
-                        src={image.url.startsWith("http") ? image.url : `${image.url}`}
+                        src={image.url}
                         alt={`${image.title}`}
                         className="w-full h-64 object-cover"
                       />
@@ -492,18 +555,48 @@ export default function FormBody2(props) {
                         <h1 className="ml-3 mt-1 text-xs">250x450 píxeles</h1>
                       </label>
 
-                      <UploadImage
-                        uploadPreset="nextjs_digimedia_blog_body"
-                        folder="blogs/bodies/"
-                        name_public={`public_image${image.id}`}
-                        name_url={`url_image${image.id}`}
-                        size_image={7 * 1400 * 1400}
-                        public_id={formGaleryBody[`url_image${image.id}`]}
-                        setFormData={setFormGaleryBody}
-                        width={250}
-                        height={450}
-                        crop="fill"
-                      />
+                      <div className="relative">
+                        <label
+                          className={`flex items-center justify-center w-full p-3 border-2 border-dashed rounded-lg text-white transition-all cursor-pointer ${uploading
+                            ? "border-gray-700 bg-gray-900 opacity-50 cursor-not-allowed"
+                            : "border-gray-700 bg-gray-900 hover:border-purple-500 hover:bg-gray-800"
+                            }`}
+                        >
+                          {uploading ? (
+                            <Loader2 className="w-5 h-5 animate-spin text-purple-400 mr-2" />
+                          ) : (
+                            <>
+                              {image.url !== "/blog/blog-4.jpg" ? (
+                                <>
+                                  <Image className="w-5 h-5 mr-2 text-purple-400" />
+                                  <span className="text-sm">Cambiar imagen</span>
+                                </>
+                              ) : (
+                                <>
+                                  <Image className="w-5 h-5 mr-2 text-purple-400" />
+                                  <span className="text-sm">Seleccionar imagen</span>
+                                </>
+                              )}
+                            </>
+                          )}
+                          <input
+                            type="file"
+                            accept="image/*"
+                            name= {`public_image${image.id}`}
+                            className="hidden"
+                            onChange={handleImageBody}
+                            disabled={uploading}
+                          />
+                        </label>
+                        <button
+                          type="button"
+                          onClick={image.id == 2 ? props.onDeleteBodyFile1 : props.onDeleteBodyFile2} 
+                          className="ml-2 p-2 rounded-full hover:bg-red-100"
+                          title={image.title}
+                        >
+                          <Trash2 className="w-5 h-5 text-red-500" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}

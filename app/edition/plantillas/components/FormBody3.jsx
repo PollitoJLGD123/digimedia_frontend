@@ -135,10 +135,6 @@ export default function FormBody3(props) {
                   <img
                     src={
                       formEncabezadoBody.public_image1
-                        ? formEncabezadoBody.public_image1.startsWith("http")
-                          ? formEncabezadoBody.public_image1
-                          : `${formEncabezadoBody.public_image1}`
-                        : "/blog/blog-4.jpg"
                     }
                     alt={formEncabezadoBody.titulo || "Imagen principal"}
                     className="w-[22rem] h-[22rem] rounded-2xl shadow-lg object-cover relative "
@@ -337,7 +333,7 @@ export default function FormBody3(props) {
               </label>
                   <button
                     type="button"
-                    onClick={props.onDeleteBodyHeaderImage}    //  Aca se puede Eliminar 
+                    onClick={props.onDeleteBodyHeaderImage} 
                     className="ml-2 p-2 rounded-full hover:bg-red-100"
                     title="Eliminar imagen principal"
                     >

@@ -1,5 +1,5 @@
 "use client";
-import { Type, AlignLeft, Quote, Image,Trash2 } from "lucide-react";     //Agregue trash
+import { Type, AlignLeft, Quote, Image, Trash2 } from "lucide-react"; 
 import { Loader2, CheckCircle, ArrowRight, Image as IconImage } from "lucide-react"
 import { useState } from "react";
 
@@ -148,7 +148,7 @@ export default function FormBody1(props) {
               <div key={index} className="group relative overflow-hidden rounded-xl shadow-xl">
                 <div className="absolute inset-0 bg-gradient-to-t from-purple-900/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
                 <img
-                  src={src.startsWith("http") ? src : `${src}`}
+                  src={src}
                   alt={`Imagen ${index + 1} del artículo`}
                   className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
                 />
@@ -258,13 +258,13 @@ export default function FormBody1(props) {
                 />
               </label>
               <button
-               type="button"
-               onClick={props.onDeleteBodyHeaderImage}    //  Aca se puede Eliminar 
-               className="ml-2 p-2 rounded-full hover:bg-red-100"
-               title="Eliminar imagen principal"
-               >
-              <Trash2 className="w-5 h-5 text-red-500" />
-             </button>
+                type="button"
+                onClick={props.onDeleteBodyHeaderImage}    //  Aca se puede Eliminar 
+                className="ml-2 p-2 rounded-full hover:bg-red-100"
+                title="Eliminar imagen principal"
+              >
+                <Trash2 className="w-5 h-5 text-red-500" />
+              </button>
             </div>
             <div>
               <label className="flex items-center text-white text-sm font-medium mb-2">
@@ -393,13 +393,13 @@ export default function FormBody1(props) {
                   />
                 </label>
                 <button
-                 type="button"
-                 onClick={props.onDeleteBodyFile1}         //  Aca se puede Eliminar 
-                 className="ml-2 p-2 rounded-full hover:bg-red-100"
-                 title="Eliminar imagen galería 1"
-               >
-                <Trash2 className="w-5 h-5 text-red-500" />
-               </button>
+                  type="button"
+                  onClick={props.onDeleteBodyFile1}         //  Aca se puede Eliminar 
+                  className="ml-2 p-2 rounded-full hover:bg-red-100"
+                  title="Eliminar imagen galería 1"
+                >
+                  <Trash2 className="w-5 h-5 text-red-500" />
+                </button>
               </div>
             </div>
 
@@ -443,12 +443,12 @@ export default function FormBody1(props) {
                   />
                 </label>
                 <button
-                 type="button"
-                 onClick={props.onDeleteBodyFile2}         //  Aca se puede Eliminar 
-                 className="ml-2 p-2 rounded-full hover:bg-red-100"
-                 title="Eliminar imagen galería 2"
+                  type="button"
+                  onClick={props.onDeleteBodyFile2}         //  Aca se puede Eliminar 
+                  className="ml-2 p-2 rounded-full hover:bg-red-100"
+                  title="Eliminar imagen galería 2"
                 >
-               <Trash2 className="w-5 h-5 text-red-500" />
+                  <Trash2 className="w-5 h-5 text-red-500" />
                 </button>
               </div>
             </div>

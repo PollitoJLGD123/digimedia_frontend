@@ -15,7 +15,7 @@ const PageContent = () => {
   const [loading, setLoading] = useState(false);
 
   const [fileHeader, setFileHeader] = useState(null);
-  
+
   const [FileBodyHeader, setFileBodyHeader] = useState(null);
   const [FileBodyFile1, setFileBodyFile1] = useState(null);
   const [FileBodyFile2, setFileBodyFile2] = useState(null);
@@ -24,29 +24,28 @@ const PageContent = () => {
   const [FileFooterFile2, setFileFooterFile2] = useState(null);
   const [FileFooterFile3, setFileFooterFile3] = useState(null);
 
-
   const deleteFooterFile1 = () => {
     setFileFooterFile1(null);
-    setFormFooter(prev => ({ 
-      ...prev, 
-      public_image1: "/blog/blog-10.jpg",  // o la ruta por defecto que quieras
-      url_image1: "" 
+    setFormFooter(prev => ({
+      ...prev,
+      public_image1: "/blog/blog-10.jpg",
+      url_image1: ""
     }));
   };
   const deleteFooterFile2 = () => {
     setFileFooterFile2(null);
-    setFormFooter(prev => ({ 
-      ...prev, 
-      public_image2: "/blog/blog-10.jpg", 
-      url_image2: "" 
+    setFormFooter(prev => ({
+      ...prev,
+      public_image2: "/blog/blog-10.jpg",
+      url_image2: ""
     }));
   };
   const deleteFooterFile3 = () => {
     setFileFooterFile3(null);
-    setFormFooter(prev => ({ 
-      ...prev, 
-      public_image3: "/blog/blog-10.jpg", 
-      url_image3: "" 
+    setFormFooter(prev => ({
+      ...prev,
+      public_image3: "/blog/blog-10.jpg",
+      url_image3: ""
     }));
   };
 
@@ -58,7 +57,7 @@ const PageContent = () => {
       url_image: ""
     }));
   };
-  
+
   const deleteBodyHeaderImage = () => {
     setFileBodyHeader(null);
     setFormEncabezadoBody(prev => ({
@@ -67,7 +66,7 @@ const PageContent = () => {
       url_image1: ""
     }));
   };
-  
+
   const deleteBodyFile1 = () => {
     setFileBodyFile1(null);
     setFormGaleryBody(prev => ({
@@ -76,7 +75,7 @@ const PageContent = () => {
       url_image2: ""
     }));
   };
-  
+
   const deleteBodyFile2 = () => {
     setFileBodyFile2(null);
     setFormGaleryBody(prev => ({
@@ -85,7 +84,6 @@ const PageContent = () => {
       url_image3: ""
     }));
   };
-
 
   const id_empleado = getCookie("empleado") ? JSON.parse(getCookie("empleado")).id_empleado : -1
 
@@ -251,7 +249,7 @@ const PageContent = () => {
     }
   }
 
-  async function guardarBlog( id_blog_head, id_blog_footer, id_blog_body) {
+  async function guardarBlog(id_blog_head, id_blog_footer, id_blog_body) {
 
     console.log("Ides de guardar el blog:", id_blog_head, id_blog_footer, id_blog_body);
 
@@ -276,7 +274,7 @@ const PageContent = () => {
     }
   }
 
-  async function guardarCard(id_blog,id_empleado) {
+  async function guardarCard(id_blog, id_empleado) {
     const formCard = {
       id_blog: id_blog,
       titulo: dataHeader.titulo,
@@ -284,7 +282,7 @@ const PageContent = () => {
       public_image: dataHeader.public_image,
       url_image: dataHeader.url_image,
       id_plantilla: 3,
-      id_empleado : id_empleado,
+      id_empleado: id_empleado,
     }
 
     console.log(formCard);
@@ -351,15 +349,15 @@ const PageContent = () => {
     storage/app/public/images/templates/plantilla{id_plantilla}/blog{id_blog}/footer/image.webp
   */
 
-  async function SaveImage(file,ruta, name = null){
-    try{
+  async function SaveImage(file, ruta, name = null) {
+    try {
 
       if (!file) return;
 
       const formData = new FormData();
       formData.append("file", file);
 
-      if(name){
+      if (name) {
         formData.append("name", name);
       }
 
@@ -371,7 +369,7 @@ const PageContent = () => {
         throw new Error("Error al subir la imagen");
       }
 
-    }catch(error){
+    } catch (error) {
       console.log(error);
     }
   }
@@ -381,7 +379,7 @@ const PageContent = () => {
 
       setLoading(true);
 
-      const id_commend_tarjeta = await executionFunction(guardarCommendTarjeta, "No se pudo guardar la tarjeta de comentariosss");
+      const id_commend_tarjeta = await executionFunction(guardarCommendTarjeta, "No se pudo guardar la tarjeta de comentarios");
 
       const id_blog_body = await executionFunction(() => guardarBody(id_commend_tarjeta), "No se pudo guardar el contenido del blog");
 
@@ -390,35 +388,35 @@ const PageContent = () => {
       const id_blog_head = await executionFunction(() => guardarHeader(), "No se pudo guardar el encabezado");
       const id_blog_footer = await executionFunction(() => guardarFooter(), "No se pudo guardar el pie de página");
 
-      const id_blog = await executionFunction(() => guardarBlog(id_blog_head, id_blog_footer, id_blog_body) , "No se pudo guardar el blog");
-      const id_card = await executionFunction(() => guardarCard(id_blog,id_empleado), "No se pudo guardar la card");
+      const id_blog = await executionFunction(() => guardarBlog(id_blog_head, id_blog_footer, id_blog_body), "No se pudo guardar el blog");
+      const id_card = await executionFunction(() => guardarCard(id_blog, id_empleado), "No se pudo guardar la card");
 
-      if(fileHeader){
-        await executionFunction(() => SaveImage(fileHeader,`card/blog/image_head/${id_card}`), "No se pudo guardar la imagen");
+      if (fileHeader) {
+        await executionFunction(() => SaveImage(fileHeader, `card/blog/image_head/${id_card}`), "No se pudo guardar la imagen");
       }
 
-      if(FileBodyHeader){
-        await executionFunction(() => SaveImage(FileBodyHeader,`card/blog/images_body/${id_card}`, "image1"), "No se pudo guardar la imagen");
+      if (FileBodyHeader) {
+        await executionFunction(() => SaveImage(FileBodyHeader, `card/blog/images_body/${id_card}`, "image1"), "No se pudo guardar la imagen");
       }
 
-      if(FileBodyFile1){
-        await executionFunction(() => SaveImage(FileBodyFile1,`card/blog/images_body/${id_card}`, "image2"), "No se pudo guardar la imagen");
+      if (FileBodyFile1) {
+        await executionFunction(() => SaveImage(FileBodyFile1, `card/blog/images_body/${id_card}`, "image2"), "No se pudo guardar la imagen");
       }
 
-      if(FileBodyFile2){
-        await executionFunction(() => SaveImage(FileBodyFile2,`card/blog/images_body/${id_card}`,"image3"), "No se pudo guardar la imagen");
+      if (FileBodyFile2) {
+        await executionFunction(() => SaveImage(FileBodyFile2, `card/blog/images_body/${id_card}`, "image3"), "No se pudo guardar la imagen");
       }
 
-      if(FileFooterFile1){
-        await executionFunction(() => SaveImage(FileFooterFile1,`card/blog/images_footer/${id_card}`, "image1"), "No se pudo guardar la imagen");
+      if (FileFooterFile1) {
+        await executionFunction(() => SaveImage(FileFooterFile1, `card/blog/images_footer/${id_card}`, "image1"), "No se pudo guardar la imagen");
       }
 
-      if(FileFooterFile2){
-        await executionFunction(() => SaveImage(FileFooterFile2,`card/blog/images_footer/${id_card}`, "image2"), "No se pudo guardar la imagen");
+      if (FileFooterFile2) {
+        await executionFunction(() => SaveImage(FileFooterFile2, `card/blog/images_footer/${id_card}`, "image2"), "No se pudo guardar la imagen");
       }
 
-      if(FileFooterFile3){
-        await executionFunction(() => SaveImage(FileFooterFile3,`card/blog/images_footer/${id_card}`,"image3"), "No se pudo guardar la imagen");
+      if (FileFooterFile3) {
+        await executionFunction(() => SaveImage(FileFooterFile3, `card/blog/images_footer/${id_card}`, "image3"), "No se pudo guardar la imagen");
       }
 
       await Swal.fire({
@@ -452,7 +450,7 @@ const PageContent = () => {
         descripcion:
           "Las luces neón LED se han convertido en un elemento diferenciador en el mundo de la hospitalidad. No solo son visualmente atractivos, sino que también refuerzan la identidad de tu negocio. En este artículo, exploraremos cómo las letras luminosas pueden marcar la diferencia en la experiencia de tus clientes.",
         fecha: '2025-03-31',
-        public_image1:  "/blog/blog-4.jpg",
+        public_image1: "/blog/blog-4.jpg",
         url_image1: "",
       });
 
@@ -505,7 +503,6 @@ const PageContent = () => {
       setFileFooterFile2(null);
       setFileFooterFile3(null);
 
-
       router.push("/dashboard/blogs/")
 
       window.open("/blog", "_blank");
@@ -524,7 +521,7 @@ const PageContent = () => {
         <FormHeader
           dataHeader={dataHeader}
           setFormData={setDataHeader}
-          setFile = {setFileHeader}
+          setFile={setFileHeader}
           onDeleteImage={deleteHeaderImage}
         />
       </div>
@@ -543,9 +540,9 @@ const PageContent = () => {
           setFileBodyHeader={setFileBodyHeader}
           onDeleteBodyHeaderImage={deleteBodyHeaderImage}
 
-          setFileBodyFile1 = {setFileBodyFile1}
+          setFileBodyFile1={setFileBodyFile1}
           onDeleteBodyFile1={deleteBodyFile1}
-          setFileBodyFile2 = {setFileBodyFile2}
+          setFileBodyFile2={setFileBodyFile2}
           onDeleteBodyFile2={deleteBodyFile2}
 
           formEncabezadoBody={formEncabezadoBody}
