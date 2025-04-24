@@ -24,13 +24,11 @@ const PageContent = () => {
   const [FileFooterFile2, setFileFooterFile2] = useState(null);
   const [FileFooterFile3, setFileFooterFile3] = useState(null);
 
-  // ← Aquí defines las funciones de eliminación:
-
   const deleteFooterFile1 = () => {
     setFileFooterFile1(null);
     setFormFooter(prev => ({ 
       ...prev, 
-      public_image1: "/blog/blog-10.jpg",  // o la ruta por defecto que quieras
+      public_image1: "/blog/blog-10.jpg", 
       url_image1: "" 
     }));
   };

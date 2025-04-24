@@ -3,7 +3,6 @@ import FormBody1 from '../../components/FormBody1';
 import FormFooter from '../../components/FormFooter'
 import FormHeader from '../../components/FormHeader'
 import { useState, useEffect } from 'react';
-import Service from "../../services/Service"
 import { Save } from "lucide-react"
 import Swal from 'sweetalert2';
 import { useRouter } from "next/navigation";
@@ -18,6 +17,7 @@ const PageContent = () => {
   const [loading, setLoading] = useState(false);
 
   const [data, setDataResponse] = useState(null);
+
   const [formFooter, setFormFooter] = useState(null);
   const [dataHeader, setDataHeader] = useState(null);
   const [formEncabezadoBody, setFormEncabezadoBody] = useState(null);
@@ -37,6 +37,8 @@ const PageContent = () => {
   const id_blog = searchParams.get("id_blog")
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState(null)
+
+  console.log(id_blog);
 
 
   useEffect(() => {
@@ -341,74 +343,6 @@ const PageContent = () => {
         confirmButtonText: "OK",
       });
 
-      setFormFooter({
-        titulo: "Titulo Footer",
-        descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, voluptate.",
-        public_image1: "/blog/blog-10.jpg",
-        url_image1: "", //por esta vez url es la ruta para elimianr
-        public_image2: "/blog/blog-10.jpg",
-        url_image2: "",
-        public_image3: "/blog/blog-10.jpg",
-        url_image3: "",
-      });
-
-      setDataHeader({
-        titulo: "Titulo Header",
-        texto_frase: "Texto atractivo y llamativo para el cliente",
-        texto_descripcion: "Texto destacado y secundario para el titulo",
-        public_image: "/blog/fondo_blog_extend.png",
-        url_image: "",
-      });
-
-      setFormEncabezadoBody({
-        titulo: "Titulo del Blog",
-        descripcion:
-          "Las luces neón LED se han convertido en un elemento diferenciador en el mundo de la hospitalidad. No solo son visualmente atractivos, sino que también refuerzan la identidad de tu negocio. En este artículo, exploraremos cómo las letras luminosas pueden marcar la diferencia en la experiencia de tus clientes.",
-        fecha: '2025-03-31',
-        public_image1:  "/blog/blog-4.jpg",
-        url_image1: "",
-      });
-
-      setFormInfoBody([
-        {
-          titulo: "El Factor Sorpresa y Distinción",
-          descripcion: "Las letras de neón LED permiten personalizar la imagen de tu local, haciendo que el nombre de tu bar sea visible desde lejos. Un diseño llamativo puede convertirse en un sello distintivo y en un punto de referencia para los clientes.",
-        },
-
-        {
-          titulo: "Ambiente y Experiencia Visual",
-          descripcion: "La iluminación juega un papel crucial en la atmósfera de un bar. Los colores vibrantes y cálidos del neón LED pueden transformar un espacio ordinario en un entorno acogedor e instagrameable.",
-        },
-        {
-          titulo: "Eficiencia Energética y Durabilidad",
-          descripcion: "A diferencia del neón tradicional, las luces LED son más eficientes, consumen menos energía y tienen una vida útil más prolongada.",
-        },
-        {
-          titulo: "Marketing y Atracción de Clientes",
-          descripcion: "Un letrero de neón LED bien diseñado es una herramienta de marketing poderosa, capaz de captar la atención y aumentar la visibilidad de tu local.",
-        }
-      ]);
-
-      setFormCommendBody({
-        titulo: "Consejos para Elegir el Letrero Perfecto",
-        texto1:
-          "Opta por colores que reflejen la personalidad de tu bar.",
-        texto2:
-          "Elige un diseño legible y atractivo.",
-        texto3:
-          "Considera el lugar de instalación para maximizar su impacto.",
-        texto4:
-          "",
-        texto5:
-          "",
-      });
-
-      setFormGaleryBody({
-        public_image2: "/blog/blog-2.jpg",
-        url_image2: "",
-        public_image3: "/blog/blog-2.jpg",
-        url_image3: "",
-      });
 
       setFileHeader(null);
       setFileBodyHeader(null);
@@ -482,29 +416,11 @@ const PageContent = () => {
           dataHeader={dataHeader}
           setFormData={setDataHeader}
           setFile = {setFileHeader}
+          id_blog_head={data.id_blog_head}
         />
       </div>
 
-      <div id="body" className="section-container my-8">
-        <FormBody1
-          formCommendBody={formCommendBody}
-          setFormCommendBody={setFormCommendBody}
-
-          formInfoBody={formInfoBody}
-          setFormInfoBody={setFormInfoBody}
-
-          formGaleryBody={formGaleryBody}
-          setFormGaleryBody={setFormGaleryBody}
-
-          setFileBodyHeader={setFileBodyHeader}
-
-          setFileBodyFile1 = {setFileBodyFile1}
-          setFileBodyFile2 = {setFileBodyFile2}
-
-          formEncabezadoBody={formEncabezadoBody}
-          setFormEncabezadoBody={setFormEncabezadoBody}
-        />
-      </div>
+      
 
       <div id="footer" className="section-container mt-8">
         <FormFooter
@@ -513,6 +429,7 @@ const PageContent = () => {
           setFileFooterFile1={setFileFooterFile1}
           setFileFooterFile2={setFileFooterFile2}
           setFileFooterFile3={setFileFooterFile3}
+          id_blog_footer={data.id_blog_footer}
         />
       </div>
 
