@@ -24,6 +24,69 @@ const PageContent = () => {
   const [FileFooterFile2, setFileFooterFile2] = useState(null);
   const [FileFooterFile3, setFileFooterFile3] = useState(null);
 
+
+  const deleteFooterFile1 = () => {
+    setFileFooterFile1(null);
+    setFormFooter(prev => ({ 
+      ...prev, 
+      public_image1: "/blog/blog-10.jpg",  // o la ruta por defecto que quieras
+      url_image1: "" 
+    }));
+  };
+  const deleteFooterFile2 = () => {
+    setFileFooterFile2(null);
+    setFormFooter(prev => ({ 
+      ...prev, 
+      public_image2: "/blog/blog-10.jpg", 
+      url_image2: "" 
+    }));
+  };
+  const deleteFooterFile3 = () => {
+    setFileFooterFile3(null);
+    setFormFooter(prev => ({ 
+      ...prev, 
+      public_image3: "/blog/blog-10.jpg", 
+      url_image3: "" 
+    }));
+  };
+
+  const deleteHeaderImage = () => {
+    setFileHeader(null);
+    setDataHeader(prev => ({
+      ...prev,
+      public_image: "/blog/fondo_blog_extend.png",
+      url_image: ""
+    }));
+  };
+  
+  const deleteBodyHeaderImage = () => {
+    setFileBodyHeader(null);
+    setFormEncabezadoBody(prev => ({
+      ...prev,
+      public_image1: "/blog/blog-4.jpg",
+      url_image1: ""
+    }));
+  };
+  
+  const deleteBodyFile1 = () => {
+    setFileBodyFile1(null);
+    setFormGaleryBody(prev => ({
+      ...prev,
+      public_image2: "/blog/blog-2.jpg",
+      url_image2: ""
+    }));
+  };
+  
+  const deleteBodyFile2 = () => {
+    setFileBodyFile2(null);
+    setFormGaleryBody(prev => ({
+      ...prev,
+      public_image3: "/blog/blog-2.jpg",
+      url_image3: ""
+    }));
+  };
+
+
   const id_empleado = getCookie("empleado") ? JSON.parse(getCookie("empleado")).id_empleado : -1
 
   const [formFooter, setFormFooter] = useState({
@@ -173,7 +236,7 @@ const PageContent = () => {
 
   async function guardarCommendTarjeta() {
     const id = await Service.saveCommendTarjeta(formCommendBody);
-    if (id && id > 0) {      
+    if (id && id > 0) {
       console.log("Id del la tarjeta comentario:", id);
       return id;
     }
@@ -282,6 +345,12 @@ const PageContent = () => {
     return resultado;
   }
 
+  /* 
+    storage/app/public/images/templates/plantilla{id_plantilla}/blog{id_blog}/head/image.jpeg
+    storage/app/public/images/templates/plantilla{id_plantilla}/blog{id_blog}/body/image.webp
+    storage/app/public/images/templates/plantilla{id_plantilla}/blog{id_blog}/footer/image.webp
+  */
+
   async function SaveImage(file,ruta, name = null){
     try{
 
@@ -312,7 +381,7 @@ const PageContent = () => {
 
       setLoading(true);
 
-      const id_commend_tarjeta = await executionFunction(guardarCommendTarjeta, "No se pudo guardar la tarjeta de comentarios");
+      const id_commend_tarjeta = await executionFunction(guardarCommendTarjeta, "No se pudo guardar la tarjeta de comentariosss");
 
       const id_blog_body = await executionFunction(() => guardarBody(id_commend_tarjeta), "No se pudo guardar el contenido del blog");
 
@@ -322,7 +391,7 @@ const PageContent = () => {
       const id_blog_footer = await executionFunction(() => guardarFooter(), "No se pudo guardar el pie de página");
 
       const id_blog = await executionFunction(() => guardarBlog(id_blog_head, id_blog_footer, id_blog_body) , "No se pudo guardar el blog");
-      await executionFunction(() => guardarCard(id_blog), "No se pudo guardar la card");
+      const id_card = await executionFunction(() => guardarCard(id_blog,id_empleado), "No se pudo guardar la card");
 
       if(fileHeader){
         await executionFunction(() => SaveImage(fileHeader,`card/blog/image_head/${id_card}`), "No se pudo guardar la imagen");
@@ -362,11 +431,11 @@ const PageContent = () => {
       setFormFooter({
         titulo: "Titulo Footer",
         descripcion: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorum, voluptate.",
-        public_image1: "blog-10.jpg",
+        public_image1: "/blog/blog-10.jpg",
         url_image1: "", //por esta vez url es la ruta para elimianr
-        public_image2: "blog-1.jpg",
+        public_image2: "/blog/blog-10.jpg",
         url_image2: "",
-        public_image3: "blog-2.jpg",
+        public_image3: "/blog/blog-10.jpg",
         url_image3: "",
       });
 
@@ -456,6 +525,7 @@ const PageContent = () => {
           dataHeader={dataHeader}
           setFormData={setDataHeader}
           setFile = {setFileHeader}
+          onDeleteImage={deleteHeaderImage}
         />
       </div>
 
@@ -471,9 +541,12 @@ const PageContent = () => {
           setFormGaleryBody={setFormGaleryBody}
 
           setFileBodyHeader={setFileBodyHeader}
+          onDeleteBodyHeaderImage={deleteBodyHeaderImage}
 
           setFileBodyFile1 = {setFileBodyFile1}
+          onDeleteBodyFile1={deleteBodyFile1}
           setFileBodyFile2 = {setFileBodyFile2}
+          onDeleteBodyFile2={deleteBodyFile2}
 
           formEncabezadoBody={formEncabezadoBody}
           setFormEncabezadoBody={setFormEncabezadoBody}
@@ -485,8 +558,11 @@ const PageContent = () => {
           formFooter={formFooter}
           setFormData={setFormFooter}
           setFileFooterFile1={setFileFooterFile1}
+          onDeleteFooterFile1={deleteFooterFile1}
           setFileFooterFile2={setFileFooterFile2}
+          onDeleteFooterFile2={deleteFooterFile2}
           setFileFooterFile3={setFileFooterFile3}
+          onDeleteFooterFile3={deleteFooterFile3}
         />
       </div>
 
