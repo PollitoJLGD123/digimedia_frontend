@@ -24,6 +24,69 @@ const PageContent = () => {
   const [FileFooterFile2, setFileFooterFile2] = useState(null);
   const [FileFooterFile3, setFileFooterFile3] = useState(null);
 
+
+  const deleteFooterFile1 = () => {
+    setFileFooterFile1(null);
+    setFormFooter(prev => ({ 
+      ...prev, 
+      public_image1: "/blog/blog-10.jpg",  // o la ruta por defecto que quieras
+      url_image1: "" 
+    }));
+  };
+  const deleteFooterFile2 = () => {
+    setFileFooterFile2(null);
+    setFormFooter(prev => ({ 
+      ...prev, 
+      public_image2: "/blog/blog-10.jpg", 
+      url_image2: "" 
+    }));
+  };
+  const deleteFooterFile3 = () => {
+    setFileFooterFile3(null);
+    setFormFooter(prev => ({ 
+      ...prev, 
+      public_image3: "/blog/blog-10.jpg", 
+      url_image3: "" 
+    }));
+  };
+
+  const deleteHeaderImage = () => {
+    setFileHeader(null);
+    setDataHeader(prev => ({
+      ...prev,
+      public_image: "/blog/fondo_blog_extend.png",
+      url_image: ""
+    }));
+  };
+  
+  const deleteBodyHeaderImage = () => {
+    setFileBodyHeader(null);
+    setFormEncabezadoBody(prev => ({
+      ...prev,
+      public_image1: "/blog/blog-4.jpg",
+      url_image1: ""
+    }));
+  };
+  
+  const deleteBodyFile1 = () => {
+    setFileBodyFile1(null);
+    setFormGaleryBody(prev => ({
+      ...prev,
+      public_image2: "/blog/blog-2.jpg",
+      url_image2: ""
+    }));
+  };
+  
+  const deleteBodyFile2 = () => {
+    setFileBodyFile2(null);
+    setFormGaleryBody(prev => ({
+      ...prev,
+      public_image3: "/blog/blog-2.jpg",
+      url_image3: ""
+    }));
+  };
+
+
   const id_empleado = getCookie("empleado") ? JSON.parse(getCookie("empleado")).id_empleado : -1
 
   const [formFooter, setFormFooter] = useState({
@@ -462,6 +525,7 @@ const PageContent = () => {
           dataHeader={dataHeader}
           setFormData={setDataHeader}
           setFile = {setFileHeader}
+          onDeleteImage={deleteHeaderImage}
         />
       </div>
 
@@ -477,9 +541,12 @@ const PageContent = () => {
           setFormGaleryBody={setFormGaleryBody}
 
           setFileBodyHeader={setFileBodyHeader}
+          onDeleteBodyHeaderImage={deleteBodyHeaderImage}
 
           setFileBodyFile1 = {setFileBodyFile1}
+          onDeleteBodyFile1={deleteBodyFile1}
           setFileBodyFile2 = {setFileBodyFile2}
+          onDeleteBodyFile2={deleteBodyFile2}
 
           formEncabezadoBody={formEncabezadoBody}
           setFormEncabezadoBody={setFormEncabezadoBody}
@@ -491,8 +558,11 @@ const PageContent = () => {
           formFooter={formFooter}
           setFormData={setFormFooter}
           setFileFooterFile1={setFileFooterFile1}
+          onDeleteFooterFile1={deleteFooterFile1}
           setFileFooterFile2={setFileFooterFile2}
+          onDeleteFooterFile2={deleteFooterFile2}
           setFileFooterFile3={setFileFooterFile3}
+          onDeleteFooterFile3={deleteFooterFile3}
         />
       </div>
 

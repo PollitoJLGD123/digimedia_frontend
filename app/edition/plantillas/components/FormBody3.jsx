@@ -1,7 +1,7 @@
 "use client";
-import { Type, AlignLeft, Quote,Image } from "lucide-react";
+import { Type, AlignLeft, Quote,Image,Trash2 } from "lucide-react";
 import { useState } from "react";
-import {Loader2,CheckCircle,Calendar,ArrowDownCircle,ExternalLink,Image as IconImage} from "lucide-react";
+import {Loader2,CheckCircle,Calendar,ExternalLink,Image as IconImage} from "lucide-react";
 
 export default function FormBody3(props) {
   const {
@@ -316,7 +316,7 @@ export default function FormBody3(props) {
                     {formEncabezadoBody.public_image1 !== "/blog/blog-4.jpg" ? (
                       <>
                         <IconImage className="w-5 h-5 mr-2 text-purple-400" />
-                        <span className="text-sm">Cambiar imagen XDDDDDDDD</span>
+                        <span className="text-sm">Cambiar imagen</span>
                       </>
                     ) : (
                       <>
@@ -335,6 +335,14 @@ export default function FormBody3(props) {
                   disabled={uploading}
                 />
               </label>
+                  <button
+                    type="button"
+                    onClick={props.onDeleteBodyHeaderImage}    //  Aca se puede Eliminar 
+                    className="ml-2 p-2 rounded-full hover:bg-red-100"
+                    title="Eliminar imagen principal"
+                    >
+                    <Trash2 className="w-5 h-5 text-red-500" />
+                    </button>
             </div>
             <div>
               <label className="flex items-center text-white text-sm font-medium mb-2">
@@ -395,7 +403,14 @@ export default function FormBody3(props) {
                     disabled={uploading}
                   />
                 </label>
-                
+                  <button
+                      type="button"
+                      onClick={props.onDeleteBodyFile1}    //  Aca se puede Eliminar 
+                      className="ml-2 p-2 rounded-full hover:bg-red-100"
+                      title="Eliminar imagen galeria 1"
+                      >
+                      <Trash2 className="w-5 h-5 text-red-500" />
+                  </button>
               </div>
             </div>
 
@@ -438,6 +453,14 @@ export default function FormBody3(props) {
                     disabled={uploading}
                   />
                 </label>
+                <button
+                  type="button"
+                  onClick={props.onDeleteBodyFile2}    //  Aca se puede Eliminar 
+                  className="ml-2 p-2 rounded-full hover:bg-red-100"
+                  title="Eliminar imagen de galeria 2"
+                  >
+                  <Trash2 className="w-5 h-5 text-red-500" />
+               </button>
               </div>
             </div>
 
