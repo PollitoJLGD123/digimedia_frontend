@@ -2,7 +2,7 @@
 import { Type, AlignLeft, Quote, Image as IconImage, Loader2, Trash2} from "lucide-react";
 import { useState } from "react";
 
-export default function FormHeader({ dataHeader, setFormData, setFile, onDeleteImage }) {
+export default function FormHeader({ dataHeader, setFormData, setFile, onDeleteImage, setIsDisabled }) {
 
   const [uploading, setUploading] = useState(false);
 
@@ -13,15 +13,18 @@ export default function FormHeader({ dataHeader, setFormData, setFile, onDeleteI
     switch (name) {
       case 'titulo':
         isValid = value.trim() !== '' && value.length <= 30 && value.length >= 10;
+        setIsDisabled(isValid);
         break;
 
       case 'texto_frase':
         isValid = value.trim() !== '' && value.length <= 50 && value.length >= 10;
+        setIsDisabled(isValid);
         break;
 
-        case 'texto_descripcion':
-          isValid = value.trim() !== '' && value.length <= 80 && value.length >= 10;
-          break;
+      case 'texto_descripcion':
+        isValid = value.trim() !== '' && value.length <= 80 && value.length >= 10;
+        setIsDisabled(isValid);
+        break;
 
       default:
         break;
