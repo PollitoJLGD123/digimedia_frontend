@@ -2,7 +2,7 @@
 import { Image, Type, AlignLeft, Image as IconImage, Loader2, Trash2 } from "lucide-react"
 import { useState } from "react"
 
-export default function FormFooter({ formFooter, setFormData, setFileFooterFile1, setFileFooterFile2, setFileFooterFile3, onDeleteFooterFile1, onDeleteFooterFile2, onDeleteFooterFile3 }) {
+export default function FormFooter({ formFooter, setFormData, setFileFooterFile1, setFileFooterFile2, setFileFooterFile3, onDeleteFooterFile1, onDeleteFooterFile2, onDeleteFooterFile3,setValidacionFooter }) {
     const handleChange = (e) => {
         const { name, value } = e.target
 
@@ -11,10 +11,12 @@ export default function FormFooter({ formFooter, setFormData, setFileFooterFile1
         switch (name) {
           case 'titulo':
             isValid = value.trim() !== '' && value.length <= 30 && value.length >= 10;
+            setValidacionFooter(isValid)
             break;
     
           case 'descripcion':
             isValid = value.trim() !== '' && value.length <= 300 && value.length >= 10;
+            setValidacionFooter(isValid)
             break;
     
           default:
