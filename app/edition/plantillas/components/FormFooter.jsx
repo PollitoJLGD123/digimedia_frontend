@@ -169,6 +169,7 @@ export default function FormFooter({ formFooter, setFormData, setFileFooterFile1
                                                 disabled={uploading}
                                             />
                                         </label>
+                                        <div className="flex justify-center mt-2">
                                         <button
                                             type="button"
                                             onClick={
@@ -183,6 +184,7 @@ export default function FormFooter({ formFooter, setFormData, setFileFooterFile1
                                         >
                                             <Trash2 className="w-5 h-5 text-red-500" />
                                         </button>
+                                    </div>
                                     </div>
                                 </div>
                             ))}

@@ -161,6 +161,7 @@ export default function FormHeader({ dataHeader, setFormData, setFile, onDeleteI
                       disabled={uploading}
                     />
                   </label>
+                  <div className="flex justify-center mt-2">
                   <button
                     type="button"
                     onClick={onDeleteImage}              //  Aca se puede Eliminar 
@@ -169,6 +170,7 @@ export default function FormHeader({ dataHeader, setFormData, setFile, onDeleteI
                   >
                     <Trash2 className="w-5 h-5 text-red-500" />
                   </button>
+                  </div>
                 </div>
               </div>
 
