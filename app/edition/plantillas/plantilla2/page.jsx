@@ -285,8 +285,6 @@ const PageContent = () => {
         id_empleado: id_empleado,
       }
   
-      console.log(formCard);
-  
       const id = await Service.saveCard(formCard);
       if (id && id > 0) {
         console.log("Id del card:", id);

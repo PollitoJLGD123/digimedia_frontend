@@ -46,7 +46,7 @@ export default function FormBody2(props) {
       const tempUrl = URL.createObjectURL(file);
       setFormEncabezadoBody((prev) => ({
         ...prev,
-        ["public_image1"]: " ",
+        ["public_image1"]: tempUrl,
       }));
 
       setFileBodyHeader(file);
