@@ -331,6 +331,7 @@ export default function FormBody3(props) {
                   disabled={uploading}
                 />
               </label>
+              <div className="flex justify-center mt-2">
                   <button
                     type="button"
                     onClick={props.onDeleteBodyHeaderImage} 
@@ -339,6 +340,7 @@ export default function FormBody3(props) {
                     >
                     <Trash2 className="w-5 h-5 text-red-500" />
                     </button>
+                    </div>
             </div>
             <div>
               <label className="flex items-center text-white text-sm font-medium mb-2">
@@ -399,6 +401,7 @@ export default function FormBody3(props) {
                     disabled={uploading}
                   />
                 </label>
+                <div className="flex justify-center mt-2">
                   <button
                       type="button"
                       onClick={props.onDeleteBodyFile1}    //  Aca se puede Eliminar 
@@ -407,6 +410,7 @@ export default function FormBody3(props) {
                       >
                       <Trash2 className="w-5 h-5 text-red-500" />
                   </button>
+                </div>
               </div>
             </div>
 
@@ -449,6 +453,7 @@ export default function FormBody3(props) {
                     disabled={uploading}
                   />
                 </label>
+                <div className="flex justify-center mt-2">
                 <button
                   type="button"
                   onClick={props.onDeleteBodyFile2}    //  Aca se puede Eliminar 
@@ -457,6 +462,7 @@ export default function FormBody3(props) {
                   >
                   <Trash2 className="w-5 h-5 text-red-500" />
                </button>
+               </div>
               </div>
             </div>
 

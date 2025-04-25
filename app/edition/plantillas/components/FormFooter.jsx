@@ -5,11 +5,51 @@ import { useState } from "react"
 export default function FormFooter({ formFooter, setFormData, setFileFooterFile1, setFileFooterFile2, setFileFooterFile3, onDeleteFooterFile1, onDeleteFooterFile2, onDeleteFooterFile3 }) {
     const handleChange = (e) => {
         const { name, value } = e.target
+
+        let isValid = true;
+
+        switch (name) {
+          case 'titulo':
+            isValid = value.trim() !== '' && value.length <= 30 && value.length >= 10;
+            break;
+    
+          case 'descripcion':
+            isValid = value.trim() !== '' && value.length <= 300 && value.length >= 10;
+            break;
+    
+          default:
+            break;
+        }
+
+        
+    
+        setErrors(prev => ({
+          ...prev,
+          [name]: {
+            ...prev[name],
+            isValid: isValid
+          }
+        }));
+
         setFormData((prev) => ({
             ...prev,
             [name]: value,
         }))
     }
+
+    const ValidationMessage = ({ error }) => (
+
+        <h1 className={`text-xs mt-1 ml-3 ${error.isValid === null ? 'text-gray-500' :
+          error.isValid ? 'text-green-500' : 'text-red-500'
+          }`}>
+          {error.message}
+        </h1>
+      );
+
+      const [errors, setErrors] = useState({
+        titulo: { message: 'Máximo 30 caracteres', isValid: null },
+        descripcion: { message: 'Máximo 300 caracteres', isValid: null },
+      });
 
     const [uploading, setUploading] = useState(false);
 
@@ -98,7 +138,7 @@ export default function FormFooter({ formFooter, setFormData, setFileFooterFile1
                         <div className="mb-3">
                             <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
                                 <Type className="w-4 h-4 mr-1.5 text-yellow-400" /> Título
-                                <h1 className="ml-3 mt-1 text-xs">Máximo 30 caracteres</h1>
+                                <ValidationMessage error={errors.titulo} />
                             </label>
                             <input
                                 type="text"
@@ -115,7 +155,7 @@ export default function FormFooter({ formFooter, setFormData, setFileFooterFile1
                         <div className="mb-3">
                             <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
                                 <AlignLeft className="w-4 h-4 mr-1.5 text-yellow-400" /> Descripción
-                                <h1 className="ml-3 mt-1 text-xs">Máximo 300 caracteres</h1>
+                                <ValidationMessage error={errors.descripcion} />
                             </label>
                             <textarea
                                 name="descripcion"
@@ -136,7 +176,7 @@ export default function FormFooter({ formFooter, setFormData, setFileFooterFile1
                             </label>
                             {["1", "2", "3"].map((num, index) => (
                                 <div key={index} className="relative w-full mb-2">
-                                    <div className="relative">
+                                    <div className="relative flex flex-row">
                                         <label
                                             className={`flex items-center justify-center w-full p-3 border-2 border-dashed rounded-lg text-white transition-all cursor-pointer ${uploading
                                                 ? "border-gray-700 bg-gray-900 opacity-50 cursor-not-allowed"
@@ -169,6 +209,7 @@ export default function FormFooter({ formFooter, setFormData, setFileFooterFile1
                                                 disabled={uploading}
                                             />
                                         </label>
+                                        <div className="flex justify-center mt-2">
                                         <button
                                             type="button"
                                             onClick={
@@ -183,6 +224,7 @@ export default function FormFooter({ formFooter, setFormData, setFileFooterFile1
                                         >
                                             <Trash2 className="w-5 h-5 text-red-500" />
                                         </button>
+                                    </div>
                                     </div>
                                 </div>
                             ))}

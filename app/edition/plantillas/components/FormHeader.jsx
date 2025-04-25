@@ -8,11 +8,53 @@ export default function FormHeader({ dataHeader, setFormData, setFile, onDeleteI
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    let isValid = true;
+
+    switch (name) {
+      case 'titulo':
+        isValid = value.trim() !== '' && value.length <= 30 && value.length >= 10;
+        break;
+
+      case 'texto_frase':
+        isValid = value.trim() !== '' && value.length <= 50 && value.length >= 10;
+        break;
+
+        case 'texto_descripcion':
+          isValid = value.trim() !== '' && value.length <= 80 && value.length >= 10;
+          break;
+
+      default:
+        break;
+    }
+
+    setErrors(prev => ({
+      ...prev,
+      [name]: {
+        ...prev[name],
+        isValid: isValid
+      }
+    }));
+
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
+
+  const ValidationMessage = ({ error }) => (
+
+    <h1 className={`text-xs mt-1 ml-3 ${error.isValid === null ? 'text-gray-500' :
+      error.isValid ? 'text-green-500' : 'text-red-500'
+      }`}>
+      {error.message}
+    </h1>
+  );
+
+  const [errors, setErrors] = useState({
+      titulo: { message: 'Máximo 30 caracteres', isValid: null },
+      texto_frase: { message: 'Máximo 50 caracteres', isValid: null },
+      texto_descripcion: { message: 'Máximo 80 caracteres', isValid: null },
+    });
 
   const handleImage = async (e) => {
     const file = e.target.files[0];
@@ -74,7 +116,7 @@ export default function FormHeader({ dataHeader, setFormData, setFile, onDeleteI
               <div>
                 <label className="flex items-center text-white text-sm font-medium mb-2">
                   <Type className="w-5 h-5 mr-2 text-purple-400" /> Título
-                  <h1 className="ml-3 mt-1 text-xs">Máximo 30 caracteres</h1>
+                  <ValidationMessage error={errors.titulo} />
                 </label>
                 <input
                   type="text"
@@ -82,6 +124,7 @@ export default function FormHeader({ dataHeader, setFormData, setFile, onDeleteI
                   value={dataHeader.titulo || ""}
                   onChange={handleChange}
                   maxLength={30}
+                  minLength={5}
                   autoComplete="off"
                   className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                   placeholder="Título principal"
@@ -92,7 +135,7 @@ export default function FormHeader({ dataHeader, setFormData, setFile, onDeleteI
               <div>
                 <label className="flex items-center text-white text-sm font-medium mb-2">
                   <Quote className="w-5 h-5 mr-2 text-purple-400" /> Frase Destacada
-                  <h1 className="ml-3 mt-1 text-xs">Máximo 50 caracteres</h1>
+                  <ValidationMessage error={errors.texto_frase} />
                 </label>
                 <input
                   type="text"
@@ -109,7 +152,7 @@ export default function FormHeader({ dataHeader, setFormData, setFile, onDeleteI
               <div>
                 <label className="flex items-center text-white text-sm font-medium mb-2">
                   <AlignLeft className="w-5 h-5 mr-2 text-purple-400" /> Frase Secundaria
-                  <h1 className="ml-3 mt-1 text-xs">Máximo 80 caracteres</h1>
+                  <ValidationMessage error={errors.texto_descripcion} />
                 </label>
                 <input
                   name="texto_descripcion"
@@ -128,7 +171,7 @@ export default function FormHeader({ dataHeader, setFormData, setFile, onDeleteI
                   <IconImage className="w-5 h-5 mr-2 text-purple-400" /> Imagen Principal
                   <h1 className="ml-3 mt-1 text-xs">1080x520 píxeles</h1>
                 </label>
-                <div className="relative">
+                <div className="relative flex flex-row">
                   <label
                     className={`flex items-center justify-center w-full p-3 border-2 border-dashed rounded-lg text-white transition-all cursor-pointer ${uploading
                       ? "border-gray-700 bg-gray-900 opacity-50 cursor-not-allowed"
@@ -161,6 +204,7 @@ export default function FormHeader({ dataHeader, setFormData, setFile, onDeleteI
                       disabled={uploading}
                     />
                   </label>
+                  <div className="flex justify-center mt-2">
                   <button
                     type="button"
                     onClick={onDeleteImage}              //  Aca se puede Eliminar 
@@ -169,6 +213,7 @@ export default function FormHeader({ dataHeader, setFormData, setFile, onDeleteI
                   >
                     <Trash2 className="w-5 h-5 text-red-500" />
                   </button>
+                  </div>
                 </div>
               </div>
 
