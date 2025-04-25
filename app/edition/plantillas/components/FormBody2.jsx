@@ -555,7 +555,7 @@ export default function FormBody2(props) {
                         <h1 className="ml-3 mt-1 text-xs">250x450 píxeles</h1>
                       </label>
 
-                      <div className="relative">
+                      <div className="relative flex flex-row">
                         <label
                           className={`flex items-center justify-center w-full p-3 border-2 border-dashed rounded-lg text-white transition-all cursor-pointer ${uploading
                             ? "border-gray-700 bg-gray-900 opacity-50 cursor-not-allowed"
