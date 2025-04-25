@@ -17,20 +17,12 @@ const PageContent = () => {
   const [validacionFooter, setValidacionFooter] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
 
-  
-
-  
-
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   
 
   const [fileHeader, setFileHeader] = useState(null);
 
-
-
-  
-  
   const [FileBodyHeader, setFileBodyHeader] = useState(null);
   const [FileBodyFile1, setFileBodyFile1] = useState(null);
   const [FileBodyFile2, setFileBodyFile2] = useState(null);
@@ -594,7 +586,7 @@ const PageContent = () => {
           {isDisabled?(
             <button
             onClick={HandleSave}
-            disabled={loading}
+            disabled={loading }
             className={`text-white rounded-xl flex items-center justify-center w-full transition-all duration-300 px-5 py-3 shadow-lg shadow-emerald-900/20 ${loading ? "bg-emerald-400 cursor-not-allowed" : "bg-emerald-600 hover:bg-emerald-500"
               }`}
           >

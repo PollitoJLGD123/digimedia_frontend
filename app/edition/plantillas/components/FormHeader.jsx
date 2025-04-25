@@ -7,41 +7,59 @@ import { useEffect, useState } from "react";
 export default function FormHeader({ dataHeader, setFormData, setFile, onDeleteImage, setIsDisabled, setValidacionHeader }) {
 
   const [uploading, setUploading] = useState(false);
-  
+  const [isValid_titulo, setIsValid_titulo] = useState(true);
+  const [isValid_texto_frase, setIsValid_texto_frase] = useState(true);
+  const [isValid_texto_descripcion, setIsValid_texto_descripcion] = useState(true);
   
   const handleChange = (e) => {
     const { name, value } = e.target;
     let isValid = true;
     
-
-    
     switch (name) {
       case 'titulo':
         isValid = value.trim() !== '' && value.length <= 30 && value.length >= 10;
-        setValidacionHeader(isValid)
+        setIsValid_titulo(isValid);
+        setErrors(prev => ({
+          ...prev,
+          [name]: {
+            ...prev[name],
+            isValid: isValid
+          }
+        }));
         break;
 
       case 'texto_frase':
         isValid = value.trim() !== '' && value.length <= 50 && value.length >= 10;
-        setValidacionHeader(isValid)
+        setIsValid_texto_frase(isValid);
+        setErrors(prev => ({
+          ...prev,
+          [name]: {
+            ...prev[name],
+            isValid: isValid
+          }
+        }));
         break;
 
       case 'texto_descripcion':
         isValid = value.trim() !== '' && value.length <= 80 && value.length >= 10;
-        setValidacionHeader(isValid)
+        setIsValid_texto_descripcion(isValid);
+        setErrors(prev => ({
+          ...prev,
+          [name]: {
+            ...prev[name],
+            isValid: isValid
+          }
+        }));
         break;
-
       default:
         break;
     }
 
-    setErrors(prev => ({
-      ...prev,
-      [name]: {
-        ...prev[name],
-        isValid: isValid
-      }
-    }));
+    if (isValid_titulo && isValid_texto_frase && isValid_texto_descripcion) {
+      setValidacionHeader(true)
+    }else{
+      setValidacionHeader(false)
+    }
 
     setFormData((prev) => ({
       ...prev,
