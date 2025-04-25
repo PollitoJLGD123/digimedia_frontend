@@ -17,6 +17,11 @@ export default function FormBody1(props) {
         setFileBodyHeader,
         setFileBodyFile1,
         setFileBodyFile2,
+        onDeleteBodyHeaderImage,
+        onDeleteBodyFile1,
+        onDeleteBodyFile2,
+        error,
+        isLoading,
     } = props;
 
     const [uploading, setUploading] = useState(false);
@@ -89,7 +94,7 @@ export default function FormBody1(props) {
             Swal.fire({
                 icon: "error",
                 title: "Error",
-                text: "Ocurrió un error al subir la imagen",
+                text: "Ocurrió un error al subir la imagen",    
                 confirmButtonColor: "#8c52ff",
             });
         } finally {

@@ -1,9 +1,8 @@
 "use client"
 import { Image, Type, AlignLeft, Image as IconImage, Loader2 } from "lucide-react"
-import { useState, useEffect } from "react"
-import Fetch from "../services/fetch";
+import { useState } from "react"
 
-export default function FormFooter({ id_blog_footer ,formFooter, setFormData, setFileFooterFile1, setFileFooterFile2, setFileFooterFile3 }) {
+export default function FormFooter({ isLoading ,error, formFooter, setFormData, setFileFooterFile1, setFileFooterFile2, setFileFooterFile3, onDeleteFooterFile1, onDeleteFooterFile2, onDeleteFooterFile3 }) {
     const handleChange = (e) => {
         const { name, value } = e.target
         setFormData((prev) => ({
@@ -12,33 +11,7 @@ export default function FormFooter({ id_blog_footer ,formFooter, setFormData, se
         }))
     }
 
-    useEffect(() => {
-        fetchFooterData();
-    }, [id_blog_footer]);
-
     const [uploading, setUploading] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    const fetchFooterData = async () => {
-        try {
-            setIsLoading(true);
-            setError(null);
-            const response = await Fetch.fetchBlogFooter(id_blog_footer);
-            setFormData(response);
-        } catch (error) {
-            console.error("Error fetching blog header:", error);
-            setError("Ocurrió un error al cargar el encabezado");
-            Swal.fire({
-                title: "Error",
-                text: "Ocurrió un error inesperado.",
-                icon: "error",
-                confirmButtonText: "OK",
-            });
-        } finally {
-            setIsLoading(false);
-        }
-    };
 
     const handleImagenFooter = async (e) => {
         const file = e.target.files[0];
@@ -48,9 +21,6 @@ export default function FormFooter({ id_blog_footer ,formFooter, setFormData, se
             setUploading(true);
 
             const tempUrl = URL.createObjectURL(file);
-
-            console.log("Ahora su file: ", name, tempUrl);
-
             setFormData((prev) => ({
                 ...prev,
                 [name]: tempUrl,

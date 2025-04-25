@@ -1,37 +1,10 @@
 "use client"
 import { Type, AlignLeft, Quote, Image as IconImage, Loader2 } from "lucide-react";
-import { useState, useEffect } from "react";
-import Fetch from "../services/fetch";
+import { useState } from "react";
 
-export default function FormHeader({ id_blog_head, dataHeader, setFormData, setFile }) {
+export default function FormHeader({ isLoading, error, dataHeader, setFormData, setFile, onDeleteImage }) {
 
     const [uploading, setUploading] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-    useEffect(() => {
-        fetchHeaderData();
-    }, [id_blog_head]);
-
-    const fetchHeaderData = async () => {
-        try {
-            setIsLoading(true);
-            setError(null);
-            const response = await Fetch.fetchBlogHead(id_blog_head);
-            setFormData(response);
-        } catch (error) {
-            console.error("Error fetching blog header:", error);
-            setError("Ocurrió un error al cargar el encabezado");
-            Swal.fire({
-                title: "Error",
-                text: "Ocurrió un error inesperado.",
-                icon: "error",
-                confirmButtonText: "OK",
-            });
-        } finally {
-            setIsLoading(false);
-        }
-    };
 
     if (isLoading) {
         return (
