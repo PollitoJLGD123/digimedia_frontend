@@ -18,24 +18,104 @@ export default function FormBody3(props) {
     setFileBodyFile2,
   } = props;
   
+
+  
+
+  const [errors, setErrors] = useState({
+    titulo: { message: 'Debe tener entre 10 y 50 caracteres', isValid: null },
+    texto1: { message: 'Debe tener entre 10 y 150 caracteres', isValid: null },
+    texto2: { message: 'Debe tener entre 10 y 150 caracteres', isValid: null },
+    texto3: { message: 'Debe tener entre 10 y 150 caracteres', isValid: null },
+    descripcion: { message: 'Debe tener entre 10 y 400 caracteres', isValid: null },
+  });
+
+
   const [uploading, setUploading] = useState(false);
 
   const handleChange = (setter) => (e) => {
     const { name, value } = e.target;
+    let isValid = true;
+
+  switch (name) {
+    case 'titulo':
+      isValid = value.trim().length >= 10 && value.length <= 50;
+      break;
+      case 'descripcion':
+        isValid = value.trim().length >= 10 && value.length <= 400;
+        break;
+    case 'texto1':
+    case 'texto2':
+    case 'texto3':
+      isValid = value.trim().length >= 10 && value.length <= 150;
+      break;
+    default:
+      break;
+  }
+
+  setErrors(prev => ({
+    ...prev,
+    [name]: {
+      ...prev[name],
+      isValid: isValid
+    }
+  }));
+
     setter((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
+  const ValidationMessage = ({ error }) => (
+    <p className={`text-xs mt-1 ml-3 ${error.isValid === null ? 'text-gray-400' :
+      error.isValid ? 'text-green-400' : 'text-red-500'}`}>
+      {error.message}
+    </p>
+  );
+
+
+  const [errorsInfoBody, setErrorsInfoBody] = useState(
+    formInfoBody.map(() => ({
+      titulo: { message: 'Debe tener entre 10 y 50 caracteres', isValid: null },
+      descripcion: { message: 'Debe tener entre 10 y 400 caracteres', isValid: null },
+    }))
+  );
+  
   const handleChangeMap = (e, index, field) => {
     const { value } = e.target;
-    setFormInfoBody((prevState) => {
-      const updatedState = [...prevState];
-      updatedState[index] = { ...updatedState[index], [field]: value };
-      return updatedState;
+    const name = field; // <--- Agregado
+    let isValid = true;
+  
+    switch (name) {
+      case 'titulo':
+        isValid = value.trim().length >= 10 && value.length <= 50;
+        break;
+      case 'descripcion':
+        isValid = value.trim().length >= 10 && value.length <= 400;
+        break;
+      default:
+        break;
+    }
+  
+    setFormInfoBody(prev => {
+      const updated = [...prev];
+      updated[index] = { ...updated[index], [field]: value };
+      return updated;
+    });
+  
+    setErrorsInfoBody(prev => {
+      const updatedErrors = [...prev];
+      updatedErrors[index] = {
+        ...updatedErrors[index],
+        [field]: {
+          ...updatedErrors[index][field],
+          isValid: isValid
+        }
+      };
+      return updatedErrors;
     });
   };
+  
 
   const handleImageHeader = async (e) => {
     const file = e.target.files[0];
@@ -282,6 +362,7 @@ export default function FormBody3(props) {
                 className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                 placeholder="Título principal"
               />
+              <ValidationMessage error={errors.titulo} />
             </div>
 
             <div>
@@ -355,6 +436,7 @@ export default function FormBody3(props) {
                 className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all resize-none"
                 placeholder="Frase Secundaria"
               />
+              <ValidationMessage error={errors.descripcion} />
             </div>
           </form>
         </div>
@@ -486,6 +568,7 @@ export default function FormBody3(props) {
                 className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                 placeholder="Título principal"
               />
+              <ValidationMessage error={errors.titulo} />
             </div>
 
             <div>
@@ -502,6 +585,7 @@ export default function FormBody3(props) {
                 className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                 placeholder="texto1"
               />
+              <ValidationMessage error={errors.texto1} />
             </div>
 
             <div>
@@ -518,6 +602,7 @@ export default function FormBody3(props) {
                 className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                 placeholder="texto2"
               />
+              <ValidationMessage error={errors.texto2} />
             </div>
 
             <div>
@@ -534,6 +619,7 @@ export default function FormBody3(props) {
                 className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                 placeholder="texto3"
               />
+              <ValidationMessage error={errors.texto3} />
             </div>
           </form>
         </div>
@@ -556,6 +642,8 @@ export default function FormBody3(props) {
                     className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                     placeholder="Título principal"
                   />
+                  <ValidationMessage error={errorsInfoBody[index]?.titulo || { isValid: null, message: '' }} />
+
                 </div>
                 <div>
                   <label className="flex items-center text-white text-sm font-medium mb-2">
@@ -571,6 +659,8 @@ export default function FormBody3(props) {
                     className="w-full resize-none h-[100px] bg-gray-800 text-white border border-gray-700 rounded-lg p-2 text-sm"
                     placeholder="Descripción"
                   />
+                  <ValidationMessage error={errorsInfoBody[index]?.descripcion || { isValid: null, message: '' }} />
+
                 </div>
               </div>
             ))}
