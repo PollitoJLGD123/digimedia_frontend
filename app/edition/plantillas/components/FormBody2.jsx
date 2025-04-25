@@ -21,6 +21,7 @@ export default function FormBody2(props) {
     setFileBodyHeader,
     setFileBodyFile1,
     setFileBodyFile2,
+    setValidacionBody
   } = props;
 
   const [commendErrors, setCommendErrors] = useState({

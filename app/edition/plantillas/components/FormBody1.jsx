@@ -17,6 +17,7 @@ export default function FormBody1(props) {
     setFileBodyHeader,
     setFileBodyFile1,
     setFileBodyFile2,
+    setValidacionBody,
   } = props;
 
   const [uploading, setUploading] = useState(false);
