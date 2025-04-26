@@ -4,6 +4,7 @@ import { useState } from "react";
 import {Loader2,CheckCircle,Calendar,ExternalLink,Image as IconImage} from "lucide-react";
 
 export default function FormBody3(props) {
+
   const {
     formCommendBody,
     setFormCommendBody,
@@ -16,10 +17,27 @@ export default function FormBody3(props) {
     setFileBodyHeader,
     setFileBodyFile1,
     setFileBodyFile2,
+    setValidacionBody,
   } = props;
-  
 
-  
+  const [isValidTituloPrincipal, setIsValidTituloPrincipal] = useState(true);
+  const [isValidDescripcion, setIsValidDescripcion] = useState(true);
+  const [isValidTexto1, setIsValidTexto1] = useState(true);
+  const [isValidTexto2, setIsValidTexto2] = useState(true);
+  const [isValidTexto3, setIsValidTexto3] = useState(true);
+
+  const [isValidInfoTitulo1, setIsValidInfoTitulo1] = useState(true);
+  const [isValidInfoDescripcion1, setIsValidInfoDescripcion1] = useState(true);
+
+  const [isValidInfoTitulo2, setIsValidInfoTitulo2] = useState(true);
+  const [isValidInfoDescripcion2, setIsValidInfoDescripcion2] = useState(true);
+
+  const [isValidInfoTitulo3, setIsValidInfoTitulo3] = useState(true);
+  const [isValidInfoDescripcion3, setIsValidInfoDescripcion3] = useState(true);
+
+  const [isValidInfoTitulo4, setIsValidInfoTitulo4] = useState(true);
+  const [isValidInfoDescripcion4, setIsValidInfoDescripcion4] = useState(true);
+
 
   const [errors, setErrors] = useState({
     titulo: { message: 'Debe tener entre 10 y 50 caracteres', isValid: null },
@@ -29,42 +47,87 @@ export default function FormBody3(props) {
     descripcion: { message: 'Debe tener entre 10 y 400 caracteres', isValid: null },
   });
 
-
   const [uploading, setUploading] = useState(false);
 
+  //HANDLE CHANGE
   const handleChange = (setter) => (e) => {
     const { name, value } = e.target;
     let isValid = true;
 
-  switch (name) {
-    case 'titulo':
-      isValid = value.trim().length >= 10 && value.length <= 50;
-      break;
+    switch (name) {
+      case 'titulo':
+        isValid = value.trim().length >= 10 && value.length <= 50;
+        setIsValidTituloPrincipal(isValid);
+        setErrors(prev => ({
+          ...prev,
+          [name]: {
+            ...prev[name],
+            isValid: isValid
+          }
+        }));
+        break;
       case 'descripcion':
         isValid = value.trim().length >= 10 && value.length <= 400;
+        setIsValidDescripcion(isValid);
+        setErrors(prev => ({
+          ...prev,
+          [name]: {
+            ...prev[name],
+            isValid: isValid
+          }
+        }));
         break;
-    case 'texto1':
-    case 'texto2':
-    case 'texto3':
-      isValid = value.trim().length >= 10 && value.length <= 150;
-      break;
-    default:
-      break;
-  }
-
-  setErrors(prev => ({
-    ...prev,
-    [name]: {
-      ...prev[name],
-      isValid: isValid
+      case 'texto1':
+        isValid = value.trim().length >= 10 && value.length <= 150;
+        setIsValidTexto1(isValid);
+        setErrors(prev => ({
+          ...prev,
+          [name]: {
+            ...prev[name],
+            isValid: isValid
+          }
+        }));
+        break;
+      case 'texto2':
+        isValid = value.trim().length >= 10 && value.length <= 150;
+        setIsValidTexto2(isValid);
+        setErrors(prev => ({
+          ...prev,
+          [name]: {
+            ...prev[name],
+            isValid: isValid
+          }
+        }));
+        break;
+      case 'texto3':
+        isValid = value.trim().length >= 10 && value.length <= 150;
+        setIsValidTexto3(isValid);
+        setErrors(prev => ({
+          ...prev,
+          [name]: {
+            ...prev[name],
+            isValid: isValid
+          }
+        }));
+        break;
+      default:
+        break;
     }
-  }));
+    if (isValidTituloPrincipal && isValidDescripcion && isValidTexto1 && isValidTexto2 && isValidTexto3 && isValidInfoTitulo1 && isValidInfoDescripcion1 && isValidInfoTitulo2 && isValidInfoDescripcion2 && isValidInfoTitulo3 && isValidInfoDescripcion3 && isValidInfoTitulo4 && isValidInfoDescripcion4
+    ) {
+      setValidacionBody(true)
+    }else{
+      setValidacionBody(false)
+    }
 
     setter((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
+
+  // VALIDATION MESSAGE
+  // Validation message component
 
   const ValidationMessage = ({ error }) => (
     <p className={`text-xs mt-1 ml-3 ${error.isValid === null ? 'text-gray-400' :
@@ -80,29 +143,60 @@ export default function FormBody3(props) {
       descripcion: { message: 'Debe tener entre 10 y 400 caracteres', isValid: null },
     }))
   );
-  
+
+  // HANDLE CHANGE MAP
+
   const handleChangeMap = (e, index, field) => {
     const { value } = e.target;
-    const name = field; // <--- Agregado
+    const name = field; 
     let isValid = true;
-  
+
     switch (name) {
       case 'titulo':
         isValid = value.trim().length >= 10 && value.length <= 50;
+
+        if (index === 0) {
+          setIsValidInfoTitulo1(isValid);
+        } else if (index === 1) {
+          setIsValidInfoTitulo2(isValid);
+        } else if (index === 2) {
+          setIsValidInfoTitulo3(isValid);
+        } else if (index === 3) {
+          setIsValidInfoTitulo4(isValid);
+        }
+
         break;
       case 'descripcion':
         isValid = value.trim().length >= 10 && value.length <= 400;
+
+        if (index === 0) {
+          setIsValidInfoDescripcion1(isValid);
+        } else if (index === 1) {
+          setIsValidInfoDescripcion2(isValid);
+        } else if (index === 2) {
+          setIsValidInfoDescripcion3(isValid);
+        } else if (index === 3) {
+          setIsValidInfoDescripcion4(isValid);
+        }
+
         break;
       default:
         break;
     }
-  
+
+    if (isValidTituloPrincipal && isValidDescripcion && isValidTexto1 && isValidTexto2 && isValidTexto3
+      && isValidInfoTitulo1 && isValidInfoDescripcion1 && isValidInfoTitulo2 && isValidInfoDescripcion2 && isValidInfoTitulo3 && isValidInfoDescripcion3 && isValidInfoTitulo4 && isValidInfoDescripcion4) {
+      setValidacionBody(true)
+    }else{
+      setValidacionBody(false)
+    }
+
     setFormInfoBody(prev => {
       const updated = [...prev];
       updated[index] = { ...updated[index], [field]: value };
       return updated;
     });
-  
+
     setErrorsInfoBody(prev => {
       const updatedErrors = [...prev];
       updatedErrors[index] = {
@@ -115,8 +209,12 @@ export default function FormBody3(props) {
       return updatedErrors;
     });
   };
-  
 
+
+// HANDLE IMAGE UPLOAD
+  // Handle image upload for header and body images
+
+  
   const handleImageHeader = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -175,6 +273,7 @@ export default function FormBody3(props) {
       setUploading(false);
     }
   }
+
 
   return (
     <div className="relative p-0 text-black rounded-lg shadow-[0px_10px_25px_rgba(0,0,0,0.25)] overflow-hidden flex flex-row my-5 justify-center">
@@ -351,7 +450,7 @@ export default function FormBody3(props) {
             <div>
               <label className="flex items-center text-white text-sm font-medium mb-2">
                 <Type className="w-5 h-5 mr-2 text-purple-400" /> Título
-                <h1 className="ml-3 mt-1 text-xs">Máximo 50 caracteres</h1>
+                <ValidationMessage error={errors.titulo} />
               </label>
               <input
                 type="text"
@@ -362,7 +461,7 @@ export default function FormBody3(props) {
                 className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                 placeholder="Título principal"
               />
-              <ValidationMessage error={errors.titulo} />
+              
             </div>
 
             <div>
