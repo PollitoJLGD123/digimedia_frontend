@@ -12,6 +12,12 @@ import { getCookie } from 'cookies-next';
 const PageContent = () => {
 
   const router = useRouter();
+
+  const [validacionHeader, setValidacionHeader] = useState(true);
+  const [validacionBody, setValidacionBody] = useState(true);
+  const [validacionFooter, setValidacionFooter] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(true);
+
     const [loading, setLoading] = useState(false);
   
     const [fileHeader, setFileHeader] = useState(null);
@@ -521,6 +527,7 @@ const PageContent = () => {
           setFormData={setDataHeader}
           setFile={setFileHeader}
           onDeleteImage={deleteHeaderImage}
+          setValidacionHeader={setValidacionHeader}
         />
       </div>
 
@@ -546,6 +553,9 @@ const PageContent = () => {
 
           formEncabezadoBody={formEncabezadoBody}
           setFormEncabezadoBody={setFormEncabezadoBody}
+
+          setIsDisabled={setIsDisabled}
+          setValidacionBody={setValidacionBody}
         />
       </div>
 
@@ -561,6 +571,7 @@ const PageContent = () => {
 
           setFileFooterFile3={setFileFooterFile3}
           onDeleteFooterFile3={deleteFooterFile3}
+          setValidacionFooter={setValidacionFooter}
         />
       </div>
 

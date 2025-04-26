@@ -9,6 +9,25 @@ export default function FormBody2(props) {
   const [activeTab, setActiveTab] = useState("info")
   const [uploading, setUploading] = useState(false);
 
+  const [isValidTituloPrincipal, setIsValidTituloPrincipal] = useState(true);
+  const [isValidDescripcion, setIsValidDescripcion] = useState(true);
+  const [isValidTexto1, setIsValidTexto1] = useState(true);
+  const [isValidTexto2, setIsValidTexto2] = useState(true);
+  const [isValidTexto3, setIsValidTexto3] = useState(true);
+
+  const [isValidInfoTitulo1, setIsValidInfoTitulo1] = useState(true);
+  const [isValidInfoDescripcion1, setIsValidInfoDescripcion1] = useState(true);
+
+  const [isValidInfoTitulo2, setIsValidInfoTitulo2] = useState(true);
+  const [isValidInfoDescripcion2, setIsValidInfoDescripcion2] = useState(true);
+
+  const [isValidInfoTitulo3, setIsValidInfoTitulo3] = useState(true);
+  const [isValidInfoDescripcion3, setIsValidInfoDescripcion3] = useState(true);
+
+  const [isValidInfoTitulo4, setIsValidInfoTitulo4] = useState(true);
+  const [isValidInfoDescripcion4, setIsValidInfoDescripcion4] = useState(true);
+
+
   const {
     formCommendBody,
     setFormCommendBody,
@@ -29,12 +48,146 @@ export default function FormBody2(props) {
     textos: Array(5).fill({ message: 'Máximo 100 caracteres', isValid: null })
   });
 
+  const handleChange = (setter) => (e) => {
+    const { name, value } = e.target;
+    let isValid = true;
+
+    switch (name) {
+      case 'titulo':
+        isValid = value.trim().length >= 10 && value.length <= 50;
+        setIsValidTituloPrincipal(isValid);
+        setErrors(prev => ({
+          ...prev,
+          [name]: {
+            ...prev[name],
+            isValid: isValid
+          }
+        }));
+        break;
+      case 'descripcion':
+        isValid = value.trim().length >= 10 && value.length <= 400;
+        setIsValidDescripcion(isValid);
+        setErrors(prev => ({
+          ...prev,
+          [name]: {
+            ...prev[name],
+            isValid: isValid
+          }
+        }));
+        break;
+      case 'texto1':
+        isValid = value.trim().length >= 10 && value.length <= 150;
+        setIsValidTexto1(isValid);
+        setErrors(prev => ({
+          ...prev,
+          [name]: {
+            ...prev[name],
+            isValid: isValid
+          }
+        }));
+        break;
+      case 'texto2':
+        isValid = value.trim().length >= 10 && value.length <= 150;
+        setIsValidTexto2(isValid);
+        setErrors(prev => ({
+          ...prev,
+          [name]: {
+            ...prev[name],
+            isValid: isValid
+          }
+        }));
+        break;
+      case 'texto3':
+        isValid = value.trim().length >= 10 && value.length <= 150;
+        setIsValidTexto3(isValid);
+        setErrors(prev => ({
+          ...prev,
+          [name]: {
+            ...prev[name],
+            isValid: isValid
+          }
+        }));
+        break;
+      default:
+        break;
+    }
+
+    if (isValidTituloPrincipal && isValidDescripcion && isValidTexto1 && isValidTexto2 && isValidTexto3
+      && isValidInfoTitulo1 && isValidInfoDescripcion1 && isValidInfoTitulo2 && isValidInfoDescripcion2 && isValidInfoTitulo3 && isValidInfoDescripcion3 && isValidInfoTitulo4 && isValidInfoDescripcion4
+    ) {
+      setValidacionBody(true)
+    }else{
+      setValidacionBody(false)
+    }
+
+    setter((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+
   const handleChangeMap = (e, index, field) => {
     const { value } = e.target;
-    setFormInfoBody(prevState => {
-      const updatedState = [...prevState];
-      updatedState[index] = { ...updatedState[index], [field]: value };
-      return updatedState;
+    const name = field; 
+    let isValid = true;
+
+    switch (name) {
+      case 'titulo':
+        isValid = value.trim().length >= 10 && value.length <= 50;
+
+        if (index === 0) {
+          setIsValidInfoTitulo1(isValid);
+        } else if (index === 1) {
+          setIsValidInfoTitulo2(isValid);
+        } else if (index === 2) {
+          setIsValidInfoTitulo3(isValid);
+        } else if (index === 3) {
+          setIsValidInfoTitulo4(isValid);
+        }
+
+        break;
+      case 'descripcion':
+        isValid = value.trim().length >= 10 && value.length <= 400;
+
+        if (index === 0) {
+          setIsValidInfoDescripcion1(isValid);
+        } else if (index === 1) {
+          setIsValidInfoDescripcion2(isValid);
+        } else if (index === 2) {
+          setIsValidInfoDescripcion3(isValid);
+        } else if (index === 3) {
+          setIsValidInfoDescripcion4(isValid);
+        }
+
+        break;
+      default:
+        break;
+    }
+
+    if (isValidTituloPrincipal && isValidDescripcion && isValidTexto1 && isValidTexto2 && isValidTexto3
+      && isValidInfoTitulo1 && isValidInfoDescripcion1 && isValidInfoTitulo2 && isValidInfoDescripcion2 && isValidInfoTitulo3 && isValidInfoDescripcion3 && isValidInfoTitulo4 && isValidInfoDescripcion4) {
+      setValidacionBody(true)
+    }else{
+      setValidacionBody(false)
+    }
+
+    setFormInfoBody(prev => {
+      const updated = [...prev];
+      updated[index] = { ...updated[index], [field]: value };
+      return updated;
+    });
+
+    setErrorsInfoBody(prev => {
+      const updatedErrors = [...prev];
+      updatedErrors[index] = {
+        ...updatedErrors[index],
+        [field]: {
+          ...updatedErrors[index][field],
+          isValid: isValid
+        }
+      };
+      return updatedErrors;
     });
   };
 
@@ -267,7 +420,7 @@ export default function FormBody2(props) {
                     maxLength={40}
                     minLength={5}
                     value={formEncabezadoBody.titulo}
-                    onChange={handleEncabezadoBodyChange}
+                    onChange={handleChange(setFormEncabezadoBody)}
                     className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg p-2 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
                     placeholder="Título del pie de página"
                   />
@@ -280,7 +433,7 @@ export default function FormBody2(props) {
                   <textarea
                     name="descripcion"
                     value={formEncabezadoBody.descripcion}
-                    onChange={handleEncabezadoBodyChange}
+                    onChange={handleChange(setFormEncabezadoBody)}
                     maxLength={310}
                     minLength={10}
                     rows={3}
@@ -405,7 +558,7 @@ export default function FormBody2(props) {
                             maxLength={40}
                             minLength={5}
                             value={formInfoBody[index].titulo}
-                            onChange={(e) => handleInfoBodyChange(e, index, 'titulo')}
+                            onChange={handleChange(setFormCommendBody)}
                             className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg p-2 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
                             placeholder="Título del pie de página"
                           />
@@ -418,7 +571,7 @@ export default function FormBody2(props) {
                           <textarea
                             name="descripcion"
                             value={formInfoBody[index].descripcion}
-                            onChange={(e) => handleInfoBodyChange(e, index, 'descripcion')}
+                            onChange={handleChange(setFormCommendBody)}
                             maxLength={310}
                             minLength={10}
                             rows={3}
@@ -490,7 +643,7 @@ export default function FormBody2(props) {
                         maxLength={40}
                         minLength={5}
                         value={formCommendBody.titulo || ""}
-                        onChange={handleCommendBodyChange}
+                        onChange={handleChange(setFormCommendBody)}
                         className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-sm transition-all duration-200 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:bg-white"
                         placeholder="Ej: Consejos útiles"
                       />
@@ -501,15 +654,15 @@ export default function FormBody2(props) {
 
                   <div className="space-y-4">
                     <label className="block text-sm font-medium text-slate-700">Consejos</label>
-                    {[1, 2, 3, 4, 5].map((num) => (
-                      <div key={`tip-${num}`} className="relative">
+                      
+                      <div className="relative">
                         <input
                           type="text"
-                          name={`texto${num}`}
+                          name={`texto1`}
                           maxLength={100}
                           minLength={10}
-                          value={formCommendBody[`texto${num}`] || ""}
-                          onChange={handleCommendBodyChange}
+                          value={formCommendBody.texto1}
+                          onChange={handleChange(setFormCommendBody)}
                           className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-sm transition-all duration-200 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:bg-white"
                           placeholder={`Consejo #${num}`}
                         />
@@ -518,7 +671,94 @@ export default function FormBody2(props) {
                           {num}
                         </div>
                       </div>
-                    ))}
+
+                      <div className="relative">
+                        <input
+                          type="text"
+                          name={`texto1`}
+                          maxLength={100}
+                          minLength={10}
+                          value={formCommendBody.texto1}
+                          onChange={handleChange(setFormCommendBody)}
+                          className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-sm transition-all duration-200 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:bg-white"
+                          placeholder={`Consejo #${num}`}
+                        />
+                        <ValidationMessage error={commendErrors.textos1} />
+                        <div className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full bg-emerald-50 text-emerald-600 text-xs font-medium">
+                          {num}
+                        </div>
+                      </div>
+
+                      <div className="relative">
+                        <input
+                          type="text"
+                          name={`texto2`}
+                          maxLength={100}
+                          minLength={10}
+                          value={formCommendBody.texto2}
+                          onChange={handleChange(setFormCommendBody)}
+                          className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-sm transition-all duration-200 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:bg-white"
+                          placeholder={`Consejo #${num}`}
+                        />
+                        <ValidationMessage error={commendErrors.textos[num - 1]} />
+                        <div className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full bg-emerald-50 text-emerald-600 text-xs font-medium">
+                          {num}
+                        </div>
+                      </div>
+
+
+                      <div className="relative">
+                        <input
+                          type="text"
+                          name={`texto3`}
+                          maxLength={100}
+                          minLength={10}
+                          value={formCommendBody.texto3}
+                          onChange={handleChange(setFormCommendBody)}
+                          className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-sm transition-all duration-200 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:bg-white"
+                          placeholder={`Consejo #${num}`}
+                        />
+                        <ValidationMessage error={commendErrors.textos[num - 1]} />
+                        <div className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full bg-emerald-50 text-emerald-600 text-xs font-medium">
+                          {num}
+                        </div>
+                      </div>
+
+
+                      <div className="relative">
+                        <input
+                          type="text"
+                          name={`texto4`}
+                          maxLength={100}
+                          minLength={10}
+                          value={formCommendBody.texto4}
+                          onChange={handleChange(setFormCommendBody)}
+                          className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-sm transition-all duration-200 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:bg-white"
+                          placeholder={`Consejo #${num}`}
+                        />
+                        <ValidationMessage error={commendErrors.textos[num - 1]} />
+                        <div className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full bg-emerald-50 text-emerald-600 text-xs font-medium">
+                          {num}
+                        </div>
+                      </div>
+
+
+                      <div className="relative">
+                        <input
+                          type="text"
+                          name={`texto5`}
+                          maxLength={100}
+                          minLength={10}
+                          value={formCommendBody.texto5}
+                          onChange={handleChange(setFormCommendBody)}
+                          className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-sm transition-all duration-200 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:bg-white"
+                          placeholder={`Consejo #${num}`}
+                        />
+                        <ValidationMessage error={commendErrors.textos[num - 1]} />
+                        <div className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full bg-emerald-50 text-emerald-600 text-xs font-medium">
+                          {num}
+                        </div>
+                      </div>
                   </div>
                 </form>
               </div>
