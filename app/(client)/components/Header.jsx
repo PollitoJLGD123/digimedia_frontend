@@ -4,12 +4,14 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import './Header.css';
+import { useEffect } from 'react'; // ya lo tienes, pero si no, importa useEffect también.
 
 export default function Header2() {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [isServiceOpen, setIsServiceOpen] = useState(false);
   const [isMoreOpen, setIsMoreOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const isActive = (path) => pathname === path || pathname === `${path}/`;
 
@@ -18,6 +20,17 @@ export default function Header2() {
     setIsServiceOpen(false);
     setIsMoreOpen(false);
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 700); 
+    };
+  
+    handleResize(); 
+  
+    window.addEventListener('resize', handleResize); 
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <header className="header">
@@ -82,9 +95,11 @@ export default function Header2() {
                 </ul>
               )}
             </li>
-            <li className={isActive('/login') ? 'active' : ''} onClick={closeMenu}>
+            {!isMobile && (
+                <li className={isActive('/login') ? 'active' : ''} onClick={closeMenu}>
               <Link href="/login">Ingresar</Link>
-            </li>
+              </li>
+               )} 
           </ul>
         </div>
       </div>

@@ -169,3 +169,13 @@
     transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
   }
 }
+
+.hide-on-mobile {
+  display: block;
+}
+
+@media screen and (max-width: 700px) {
+  .hide-on-mobile {
+    display: none;
+  }
+}
