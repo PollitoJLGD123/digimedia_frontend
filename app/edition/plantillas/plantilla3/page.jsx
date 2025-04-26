@@ -11,6 +11,12 @@ import { getCookie } from 'cookies-next';
 
 const PageContent = () => {
 
+  const [validacionHeader, setValidacionHeader] = useState(true);
+  const [validacionBody, setValidacionBody] = useState(true);
+  const [validacionFooter, setValidacionFooter] = useState(true);
+
+  const [isDisabled, setIsDisabled] = useState(true);
+
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
@@ -165,6 +171,10 @@ const PageContent = () => {
       }
     });
   }, []);
+
+  useEffect(() => {
+    setIsDisabled((validacionHeader && validacionFooter && validacionBody));
+  }, [validacionHeader, validacionFooter, validacionBody]);
 
 
   async function guardarHeader() {
@@ -523,6 +533,7 @@ const PageContent = () => {
           setFormData={setDataHeader}
           setFile={setFileHeader}
           onDeleteImage={deleteHeaderImage}
+          setValidacionHeader={setValidacionHeader}
         />
       </div>
 
@@ -547,6 +558,11 @@ const PageContent = () => {
 
           formEncabezadoBody={formEncabezadoBody}
           setFormEncabezadoBody={setFormEncabezadoBody}
+
+          setIsDisabled={setIsDisabled}
+          setValidacionBody={setValidacionBody}
+          
+
         />
       </div>
 
@@ -560,40 +576,53 @@ const PageContent = () => {
           onDeleteFooterFile2={deleteFooterFile2}
           setFileFooterFile3={setFileFooterFile3}
           onDeleteFooterFile3={deleteFooterFile3}
+          setValidacionFooter={setValidacionFooter}
         />
       </div>
 
       <div className="bottom-0 left-0 fixed p-6 border-t border-slate-700/50 bg-slate-900/50 backdrop-blur-sm">
-        <button
-          onClick={HandleSave}
-          disabled={loading}
-          className={`text-white rounded-xl flex items-center justify-center w-full transition-all duration-300 px-5 py-3 shadow-lg shadow-emerald-900/20 ${loading ? "bg-emerald-400 cursor-not-allowed" : "bg-emerald-600 hover:bg-emerald-500"
-            }`}
-        >
-          {loading ? (
-            <>
-              <svg
-                className="animate-spin mr-2 h-4 w-4 text-white"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path
-                  className="opacity-75"
-                  fill="currentColor"
-                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
-                ></path>
-              </svg>
-              Guardando...
-            </>
-          ) : (
-            <>
-              <Save className="mr-2 h-4 w-4 text-blue-950" />
-              Guardar Cambios
-            </>
+          {isDisabled?(
+            <button
+            onClick={HandleSave}
+            disabled={loading }
+            className={`text-white rounded-xl flex items-center justify-center w-full transition-all duration-300 px-5 py-3 shadow-lg shadow-emerald-900/20 ${loading ? "bg-emerald-400 cursor-not-allowed" : "bg-emerald-600 hover:bg-emerald-500"
+              }`}
+          >
+              {loading ? (
+                <>
+                  <svg
+                    className="animate-spin mr-2 h-4 w-4 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                    ></path>
+                  </svg>
+                  Guardando...
+                  </>
+                
+              ) : (
+                <>
+                  <Save className="mr-2 h-4 w-4 text-blue-950" />
+                  Guardar Cambios
+                </>
+              )}
+            </button>
+          ):(
+            <button disabled className="flex items-center px-4 py-2 bg-gray-300 text-gray-500 cursor-not-allowed rounded">
+              <>
+                <Save className="mr-2 h-4 w-4 text-blue-950" />
+                Guardar Cambios
+              </>
+            </button>
+
           )}
-        </button>
+          
       </div>
     </>
   );
