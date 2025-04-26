@@ -2,36 +2,50 @@
 import { Image, Type, AlignLeft, Image as IconImage, Loader2, Trash2 } from "lucide-react"
 import { useState } from "react"
 
-export default function FormFooter({ formFooter, setFormData, setFileFooterFile1, setFileFooterFile2, setFileFooterFile3, onDeleteFooterFile1, onDeleteFooterFile2, onDeleteFooterFile3,setValidacionFooter }) {
+export default function FormFooter({ formFooter, setFormData, setFileFooterFile1, setFileFooterFile2, setFileFooterFile3, onDeleteFooterFile1, onDeleteFooterFile2, onDeleteFooterFile3, setValidacionFooter }) {
+    
+    const [isValid_titulo, setIsValid_titulo] = useState(true);
+    const [isValid_descripcion, setIsValid_descripcion] = useState(true);
+    
     const handleChange = (e) => {
         const { name, value } = e.target
 
         let isValid = true;
 
         switch (name) {
-          case 'titulo':
-            isValid = value.trim() !== '' && value.length <= 30 && value.length >= 10;
-            setValidacionFooter(isValid)
-            break;
-    
-          case 'descripcion':
-            isValid = value.trim() !== '' && value.length <= 300 && value.length >= 10;
-            setValidacionFooter(isValid)
-            break;
-    
-          default:
-            break;
+            case 'titulo':
+                isValid = value.trim() !== '' && value.length <= 30 && value.length >= 10;
+                setIsValid_titulo(isValid);
+                setErrors(prev => ({
+                    ...prev,
+                    [name]: {
+                        ...prev[name],
+                        isValid: isValid
+                    }
+                }));
+                break;
+
+            case 'descripcion':
+                isValid = value.trim() !== '' && value.length <= 300 && value.length >= 10;
+                setIsValid_descripcion(isValid);
+                setErrors(prev => ({
+                    ...prev,
+                    [name]: {
+                        ...prev[name],
+                        isValid: isValid
+                    }
+                }));
+                break;
+
+            default:
+                break;
         }
 
-        
-    
-        setErrors(prev => ({
-          ...prev,
-          [name]: {
-            ...prev[name],
-            isValid: isValid
-          }
-        }));
+        if (isValid_titulo && isValid_descripcion) {
+            setValidacionFooter(true)
+        }else{
+            setValidacionFooter(false)
+        }
 
         setFormData((prev) => ({
             ...prev,
@@ -42,16 +56,16 @@ export default function FormFooter({ formFooter, setFormData, setFileFooterFile1
     const ValidationMessage = ({ error }) => (
 
         <h1 className={`text-xs mt-1 ml-3 ${error.isValid === null ? 'text-gray-500' :
-          error.isValid ? 'text-green-500' : 'text-red-500'
-          }`}>
-          {error.message}
+            error.isValid ? 'text-green-500' : 'text-red-500'
+            }`}>
+            {error.message}
         </h1>
-      );
+    );
 
-      const [errors, setErrors] = useState({
+    const [errors, setErrors] = useState({
         titulo: { message: 'Máximo 30 caracteres', isValid: null },
         descripcion: { message: 'Máximo 300 caracteres', isValid: null },
-      });
+    });
 
     const [uploading, setUploading] = useState(false);
 
@@ -212,21 +226,21 @@ export default function FormFooter({ formFooter, setFormData, setFileFooterFile1
                                             />
                                         </label>
                                         <div className="flex justify-center mt-2">
-                                        <button
-                                            type="button"
-                                            onClick={
-                                                num === "1"
-                                                    ? onDeleteFooterFile1
-                                                    : num === "2"
-                                                        ? onDeleteFooterFile2
-                                                        : onDeleteFooterFile3
-                                            } 
-                                            className="ml-2 p-2 rounded-full hover:bg-red-100"
-                                            title={`Eliminar imagen ${num}`}
-                                        >
-                                            <Trash2 className="w-5 h-5 text-red-500" />
-                                        </button>
-                                    </div>
+                                            <button
+                                                type="button"
+                                                onClick={
+                                                    num === "1"
+                                                        ? onDeleteFooterFile1
+                                                        : num === "2"
+                                                            ? onDeleteFooterFile2
+                                                            : onDeleteFooterFile3
+                                                }
+                                                className="ml-2 p-2 rounded-full hover:bg-red-100"
+                                                title={`Eliminar imagen ${num}`}
+                                            >
+                                                <Trash2 className="w-5 h-5 text-red-500" />
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             ))}

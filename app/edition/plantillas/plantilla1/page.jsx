@@ -12,10 +12,11 @@ import { getCookie } from 'cookies-next';
 const PageContent = () => {
   
 
-  const [validacionHeader, setValidacionHeader] = useState(false);
-  const [validacionBody, setValidacionBody] = useState(false);
-  const [validacionFooter, setValidacionFooter] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(false);
+  const [validacionHeader, setValidacionHeader] = useState(true);
+  const [validacionBody, setValidacionBody] = useState(true);
+  const [validacionFooter, setValidacionFooter] = useState(true);
+
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -174,8 +175,8 @@ const PageContent = () => {
   }, []);
 
   useEffect(() => {
-    setIsDisabled((validacionHeader && validacionFooter));
-  }, [validacionHeader, validacionFooter]);
+    setIsDisabled((validacionHeader && validacionFooter && validacionBody));
+  }, [validacionHeader, validacionFooter, validacionBody]);
 
 
   async function guardarHeader() {
