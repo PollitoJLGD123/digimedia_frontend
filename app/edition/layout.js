@@ -15,58 +15,67 @@ export default function EditionLayout({ children }) {
   const sectionsRef = useRef(null)
   
   const handleSectionClick = (id) => {
-    setSelectedSection(id)
-    
+    setSelectedSection(id);
+
     if (observerRef.current) {
-      observerRef.current.disconnect()
+      observerRef.current.disconnect();
     }
-    
-    isNavigatingRef.current = true
-    
-    const targetElement = document.getElementById(id)
+
+    isNavigatingRef.current = true;
+
+    const targetElement = document.getElementById(id);
     if (targetElement) {
-      targetElement.scrollIntoView({ behavior: "smooth", block: "start" })
+      targetElement.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-    
+
     setTimeout(() => {
       if (document.getElementById(id)) {
-        setupObserver()
-        isNavigatingRef.current = false
+        setupObserver();
+        isNavigatingRef.current = false;
       }
-    }, 1000)
-  }
-  
+    }, 1000);
+  };
+
   const setupObserver = () => {
     if (observerRef.current) {
-      observerRef.current.disconnect()
+      observerRef.current.disconnect();
     }
-    
+
     if (!sectionsRef.current) {
-      sectionsRef.current = document.querySelectorAll("#header, #body, #footer")
+      sectionsRef.current = document.querySelectorAll("#header, #body, #footer");
     }
-    
+
     observerRef.current = new IntersectionObserver(
       (entries) => {
         if (!isNavigatingRef.current) {
+          let mostVisibleSection = null;
+          let maxVisibility = 0;
+
           entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              setSelectedSection(entry.target.id)
+            const visibility = entry.intersectionRect.height * entry.intersectionRect.width;
+            if (visibility > maxVisibility) {
+              maxVisibility = visibility;
+              mostVisibleSection = entry.target.id;
             }
-          })
+          });
+
+          if (mostVisibleSection) {
+            setSelectedSection(mostVisibleSection);
+          }
         }
       },
-      { 
-        threshold: [0.2],
-        rootMargin: "-10% 0px"
+      {
+        threshold: Array.from({ length: 21 }, (_, i) => i / 20), // More granular thresholds for precision
+        rootMargin: "-5% 0px -5% 0px", // Adjusted root margin for better detection
       }
-    )
-    
+    );
+
     if (sectionsRef.current) {
-      sectionsRef.current.forEach(section => {
-        observerRef.current.observe(section)
-      })
+      sectionsRef.current.forEach((section) => {
+        observerRef.current.observe(section);
+      });
     }
-  }
+  };
   
   useEffect(() => {
     const timer = setTimeout(() => {
