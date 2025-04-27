@@ -1,4 +1,4 @@
-
+"use client";
 import React from 'react'
 import { CheckCircle, Clock, Bookmark, Share2, Eye, Image, Type, AlignLeft, Clock1, Loader2, Trash2, BookType } from "lucide-react"
 import { useState } from 'react';
@@ -13,6 +13,8 @@ export default function FormBody2(props) {
   const [isValidTexto1, setIsValidTexto1] = useState(true);
   const [isValidTexto2, setIsValidTexto2] = useState(true);
   const [isValidTexto3, setIsValidTexto3] = useState(true);
+  const [isValidTexto4, setIsValidTexto4] = useState(true);
+  const [isValidTexto5, setIsValidTexto5] = useState(true);
 
   const [isValidInfoTitulo1, setIsValidInfoTitulo1] = useState(true);
   const [isValidInfoDescripcion1, setIsValidInfoDescripcion1] = useState(true);
@@ -25,7 +27,6 @@ export default function FormBody2(props) {
 
   const [isValidInfoTitulo4, setIsValidInfoTitulo4] = useState(true);
   const [isValidInfoDescripcion4, setIsValidInfoDescripcion4] = useState(true);
-
 
   const {
     formCommendBody,
@@ -46,6 +47,13 @@ export default function FormBody2(props) {
     titulo: { message: 'Máximo 40 caracteres', isValid: null },
     textos: Array(5).fill({ message: 'Máximo 100 caracteres', isValid: null })
   });
+
+  const [errorsInfoBody, setErrorsInfoBody] = useState(
+    formInfoBody.map(() => ({
+      titulo: { message: 'Debe tener entre 10 y 50 caracteres', isValid: null },
+      descripcion: { message: 'Debe tener entre 10 y 400 caracteres', isValid: null },
+    }))
+  );
 
   const handleChange = (setter) => (e) => {
     const { name, value } = e.target;
@@ -107,12 +115,36 @@ export default function FormBody2(props) {
           }
         }));
         break;
+
+        case 'texto4':
+        isValid = value.trim().length >= 10 && value.length <= 150;
+        setIsValidTexto4(isValid);
+        setErrors(prev => ({
+          ...prev,
+          [name]: {
+            ...prev[name],
+            isValid: isValid
+          }
+        }));
+        break;
+
+        case 'texto5':
+        isValid = value.trim().length >= 10 && value.length <= 150;
+        setIsValidTexto5(isValid);
+        setErrors(prev => ({
+          ...prev,
+          [name]: {
+            ...prev[name],
+            isValid: isValid
+          }
+        }));
+        break;
       default:
         break;
     }
 
-    if (isValidTituloPrincipal && isValidDescripcion && isValidTexto1 && isValidTexto2 && isValidTexto3
-      && isValidInfoTitulo1 && isValidInfoDescripcion1 && isValidInfoTitulo2 && isValidInfoDescripcion2 && isValidInfoTitulo3 && isValidInfoDescripcion3 && isValidInfoTitulo4 && isValidInfoDescripcion4
+    if (isValidTituloPrincipal && isValidDescripcion && isValidTexto1 && isValidTexto2 && isValidTexto3 && isValidTexto4 && isValidTexto5
+      && isValidInfoTitulo1 && isValidInfoDescripcion1 && isValidInfoTitulo2 && isValidInfoDescripcion2 && isValidInfoTitulo3 && isValidInfoDescripcion3 && isValidInfoTitulo4 && isValidInfoDescripcion4 
     ) {
       setValidacionBody(true)
     }else{
@@ -157,6 +189,10 @@ export default function FormBody2(props) {
           setIsValidInfoDescripcion3(isValid);
         } else if (index === 3) {
           setIsValidInfoDescripcion4(isValid);
+        }else if (index === 4) {
+          setIsValidInfoDescripcion5(isValid);
+        }else if (index === 5) {
+          setIsValidInfoDescripcion6(isValid);
         }
 
         break;
@@ -549,7 +585,7 @@ export default function FormBody2(props) {
                         <div className="mb-3">
                           <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
                             <Type className="w-4 h-4 mr-1.5 text-blue-400" /> {"Info Relevante " + (index + 1)}
-                            <ValidationMessage error={infoErrors.titulos[index]} />
+                            <ValidationMessage error={errorsInfoBody[index]?.titulo || { isValid: null, message: '' }} />
                           </label>
                           <input
                             type="text"
@@ -557,7 +593,7 @@ export default function FormBody2(props) {
                             maxLength={40}
                             minLength={5}
                             value={formInfoBody[index].titulo}
-                            onChange={handleChange(setFormCommendBody)}
+                            onChange={(e) => handleChangeMap(e, index, 'titulo')}
                             className="w-full bg-gray-800 text-white border border-gray-700 rounded-lg p-2 text-sm focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
                             placeholder="Título del pie de página"
                           />
@@ -565,12 +601,12 @@ export default function FormBody2(props) {
                         <div className="mb-3">
                           <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
                             <AlignLeft className="w-4 h-4 mr-1.5 text-blue-400" /> {"Descripción " + (index + 1)}
-                            <ValidationMessage error={infoErrors.descripciones[index]} />
+                            <ValidationMessage error={errorsInfoBody[index]?.descripcion || { isValid: null, message: '' }} />
                           </label>
                           <textarea
                             name="descripcion"
                             value={formInfoBody[index].descripcion}
-                            onChange={handleChange(setFormCommendBody)}
+                            onChange={(e) => handleChangeMap(e, index, 'descripcion')}
                             maxLength={310}
                             minLength={10}
                             rows={3}
@@ -633,133 +669,49 @@ export default function FormBody2(props) {
                 <h4 className="text-lg font-medium text-slate-800 mb-6 pb-2 border-b border-slate-100">Editar consejos</h4>
 
                 <form className="space-y-5">
-                  <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-1.5">Título de la sección</label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        name="titulo"
-                        maxLength={40}
-                        minLength={5}
-                        value={formCommendBody.titulo || ""}
-                        onChange={handleChange(setFormCommendBody)}
-                        className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-sm transition-all duration-200 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:bg-white"
-                        placeholder="Ej: Consejos útiles"
-                      />
-                      <ValidationMessage error={commendErrors.titulo} />
-                      <BookType className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <label className="block text-sm font-medium text-slate-700">Consejos</label>
-                      
-                      <div className="relative">
-                        <input
-                          type="text"
-                          name={`texto1`}
-                          maxLength={100}
-                          minLength={10}
-                          value={formCommendBody.texto1}
-                          onChange={handleChange(setFormCommendBody)}
-                          className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-sm transition-all duration-200 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:bg-white"
-                          placeholder={`Consejo #${num}`}
-                        />
-                        <ValidationMessage error={commendErrors.textos[num - 1]} />
-                        <div className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full bg-emerald-50 text-emerald-600 text-xs font-medium">
-                          {num}
-                        </div>
-                      </div>
-
-                      <div className="relative">
-                        <input
-                          type="text"
-                          name={`texto1`}
-                          maxLength={100}
-                          minLength={10}
-                          value={formCommendBody.texto1}
-                          onChange={handleChange(setFormCommendBody)}
-                          className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-sm transition-all duration-200 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:bg-white"
-                          placeholder={`Consejo #${num}`}
-                        />
-                        <ValidationMessage error={commendErrors.textos1} />
-                        <div className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full bg-emerald-50 text-emerald-600 text-xs font-medium">
-                          {num}
-                        </div>
-                      </div>
-
-                      <div className="relative">
-                        <input
-                          type="text"
-                          name={`texto2`}
-                          maxLength={100}
-                          minLength={10}
-                          value={formCommendBody.texto2}
-                          onChange={handleChange(setFormCommendBody)}
-                          className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-sm transition-all duration-200 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:bg-white"
-                          placeholder={`Consejo #${num}`}
-                        />
-                        <ValidationMessage error={commendErrors.textos[num - 1]} />
-                        <div className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full bg-emerald-50 text-emerald-600 text-xs font-medium">
-                          {num}
-                        </div>
-                      </div>
+  <div>
+    <label className="flex text-sm font-medium text-slate-700 mb-1.5 ">
+       Título de la sección
+       <ValidationMessage error={commendErrors.titulo} /> 
+    </label>
+    <div className="relative">
+      <input
+        type="text"
+        name="titulo"
+        maxLength={40}
+        value={formCommendBody.titulo}
+        onChange={handleChange(setFormCommendBody)} 
+        className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-sm transition-all duration-200 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:bg-white"
+        placeholder="Ej: Consejos útiles"
+      />
+       
+      <BookType className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+    </div>
+  </div>
 
 
-                      <div className="relative">
-                        <input
-                          type="text"
-                          name={`texto3`}
-                          maxLength={100}
-                          minLength={10}
-                          value={formCommendBody.texto3}
-                          onChange={handleChange(setFormCommendBody)}
-                          className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-sm transition-all duration-200 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:bg-white"
-                          placeholder={`Consejo #${num}`}
-                        />
-                        <ValidationMessage error={commendErrors.textos[num - 1]} />
-                        <div className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full bg-emerald-50 text-emerald-600 text-xs font-medium">
-                          {num}
-                        </div>
-                      </div>
-
-
-                      <div className="relative">
-                        <input
-                          type="text"
-                          name={`texto4`}
-                          maxLength={100}
-                          minLength={10}
-                          value={formCommendBody.texto4}
-                          onChange={handleChange(setFormCommendBody)}
-                          className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-sm transition-all duration-200 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:bg-white"
-                          placeholder={`Consejo #${num}`}
-                        />
-                        <ValidationMessage error={commendErrors.textos[num - 1]} />
-                        <div className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full bg-emerald-50 text-emerald-600 text-xs font-medium">
-                          {num}
-                        </div>
-                      </div>
-
-
-                      <div className="relative">
-                        <input
-                          type="text"
-                          name={`texto5`}
-                          maxLength={100}
-                          minLength={10}
-                          value={formCommendBody.texto5}
-                          onChange={handleChange(setFormCommendBody)}
-                          className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-sm transition-all duration-200 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:bg-white"
-                          placeholder={`Consejo #${num}`}
-                        />
-                        <ValidationMessage error={commendErrors.textos[num - 1]} />
-                        <div className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full bg-emerald-50 text-emerald-600 text-xs font-medium">
-                          {num}
-                        </div>
-                      </div>
-                  </div>
-                </form>
+  <div className="space-y-4">
+    <label className="block text-sm font-medium text-slate-700">Consejos</label>
+    {[1, 2, 3, 4, 5].map((num, index) => (
+      <div key={`consejo-${num}`} className="relative">
+        <input
+          type="text"
+          name={`texto${num}`}  
+          maxLength={100}
+          minLength={10}
+          value={formCommendBody[`texto${num}`] || ''}
+          onChange={handleChange(setFormCommendBody)}  
+          className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-slate-800 text-sm transition-all duration-200 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 focus:bg-white"
+          placeholder={`Consejo #${num}`}
+        />
+        <ValidationMessage error={commendErrors.textos[index]} />
+        <div className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center rounded-full bg-emerald-50 text-emerald-600 text-xs font-medium">
+          {num}
+        </div>
+      </div>
+    ))}
+  </div>
+</form>
               </div>
             </div>
           )}
