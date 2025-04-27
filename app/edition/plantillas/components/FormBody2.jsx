@@ -425,15 +425,15 @@ export default function FormBody2(props) {
             </div>
           </div>
           
-          <div className="relative h-[300px] md:h-[400px] overflow-hidden">
+          <div className="relative w-[850px] h-[300px] md:h-[400px] overflow-hidden">
             <img
               src={formEncabezadoBody.public_image1}
-              alt={formEncabezadoBody.titulo || "Imagen principal"}
+              alt={formEncabezadoBody.titulo}
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
             <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
-              <h1 className="text-3xl md:text-5xl font-bold text-white mb-2 leading-tight">Imagen Principal</h1>
+              <h1 className="text-3xl md:text-5xl font-bold text-white mb-2 leading-tight">{formEncabezadoBody.titulo}</h1>
               <div className="w-16 h-1 bg-teal-500 mb-4"></div>
             </div>
           </div>
