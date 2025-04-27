@@ -2,7 +2,6 @@
 import React from 'react'
 import { CheckCircle, Clock, Bookmark, Share2, Eye, Image, Type, AlignLeft, Clock1, Loader2, Trash2, BookType } from "lucide-react"
 import { useState } from 'react';
-import UploadImage from './UploadImage';
 
 export default function FormBody2(props) {
 

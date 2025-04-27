@@ -1,10 +1,10 @@
+const PageContent = () => {
 
-import React from 'react'
-
-export default function Page() {
   return (
-    <div>
-      
+    <div className="flex text-black mt-32">
+      <h1>En Proceso de Desarrollo</h1>
     </div>
-  )
-}
+  );
+};
+
+export default PageContent; 
