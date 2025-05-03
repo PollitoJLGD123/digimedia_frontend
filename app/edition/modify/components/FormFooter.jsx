@@ -1,15 +1,54 @@
 "use client"
-import { Image, Type, AlignLeft, Image as IconImage, Loader2 } from "lucide-react"
+import { Image, Type, AlignLeft, Image as IconImage, Loader2, Trash2 } from "lucide-react"
 import { useState } from "react"
 
-export default function FormFooter({ isLoading ,error, formFooter, setFormData, setFileFooterFile1, setFileFooterFile2, setFileFooterFile3, onDeleteFooterFile1, onDeleteFooterFile2, onDeleteFooterFile3 }) {
+export default function FormFooter({ formFooter, setFormData, setFileFooterFile1, setFileFooterFile2, setFileFooterFile3, onDeleteFooterFile1, onDeleteFooterFile2, onDeleteFooterFile3, setValidacionFooter }) {
     const handleChange = (e) => {
         const { name, value } = e.target
+
+        let isValid = true;
+
+        switch (name) {
+            case 'titulo':
+                isValid = value.trim() !== '' && value.length <= 30 && value.length >= 10;
+                setValidacionFooter(isValid)
+                break;
+
+            case 'descripcion':
+                isValid = value.trim() !== '' && value.length <= 300 && value.length >= 10;
+                setValidacionFooter(isValid)
+                break;
+
+            default:
+                break;
+        }
+        setErrors(prev => ({
+            ...prev,
+            [name]: {
+                ...prev[name],
+                isValid: isValid
+            }
+        }));
+
         setFormData((prev) => ({
             ...prev,
             [name]: value,
         }))
     }
+
+    const ValidationMessage = ({ error }) => (
+
+        <h1 className={`text-xs mt-1 ml-3 ${error.isValid === null ? 'text-gray-500' :
+            error.isValid ? 'text-green-500' : 'text-red-500'
+            }`}>
+            {error.message}
+        </h1>
+    );
+
+    const [errors, setErrors] = useState({
+        titulo: { message: 'Máximo 30 caracteres', isValid: null },
+        descripcion: { message: 'Máximo 300 caracteres', isValid: null },
+    });
 
     const [uploading, setUploading] = useState(false);
 
@@ -21,6 +60,9 @@ export default function FormFooter({ isLoading ,error, formFooter, setFormData, 
             setUploading(true);
 
             const tempUrl = URL.createObjectURL(file);
+
+            console.log("Ahora su file: ", name, tempUrl);
+
             setFormData((prev) => ({
                 ...prev,
                 [name]: tempUrl,
@@ -28,11 +70,11 @@ export default function FormFooter({ isLoading ,error, formFooter, setFormData, 
 
             if (name === "public_image1") {
                 setFileFooterFile1(file);
-            } 
-            else 
+            }
+            else
                 if (name === "public_image2") {
                     setFileFooterFile2(file);
-                } 
+                }
                 else {
                     setFileFooterFile3(file);
                 }
@@ -48,85 +90,6 @@ export default function FormFooter({ isLoading ,error, formFooter, setFormData, 
         } finally {
             setUploading(false);
         }
-    }
-
-    if (isLoading) {
-        return (
-            <div className="mt-12 max-w-[1000px] mx-auto bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-lg shadow-[0px_8px_20px_rgba(0,0,0,0.3)] overflow-hidden">
-                <div className="relative">
-                    <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-red-500 via-yellow-400 to-blue-500 animate-gradient-x"></div>
-
-                    <div className="p-6 md:p-8">
-                        <div className="h-8 bg-gradient-to-r from-yellow-400/20 to-yellow-500/30 w-2/3 mx-auto rounded-lg mb-4 animate-pulse"></div>
-                        <div className="h-0.5 w-16 bg-yellow-400/50 mx-auto mt-2 mb-6"></div>
-
-                        <div className="space-y-3 max-w-3xl mx-auto mb-6">
-                            <div className="h-4 bg-gradient-to-r from-gray-100/20 to-gray-100/10 rounded w-full animate-pulse"></div>
-                            <div className="h-4 bg-gradient-to-r from-gray-100/15 to-gray-100/5 rounded w-full animate-pulse delay-75"></div>
-                            <div className="h-4 bg-gradient-to-r from-gray-100/10 to-gray-100/5 rounded w-5/6 animate-pulse delay-150"></div>
-                        </div>
-
-                        <div className="flex flex-wrap justify-center gap-3 mt-6">
-                            {[1, 2, 3].map((i) => (
-                                <div
-                                    key={i}
-                                    className="w-48 h-36 bg-gradient-to-br from-gray-700 via-gray-800 to-gray-700 rounded-lg border border-gray-600/50 animate-pulse delay-300 relative overflow-hidden"
-                                >
-                                    <div className="absolute inset-0 flex items-center justify-center opacity-30">
-                                        <IconImage className="h-12 w-12 text-gray-500" />
-                                    </div>
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-                                </div>
-                            ))}
-                        </div>
-
-                        <div className="flex flex-col items-center justify-center mt-8 mb-2">
-                            <Loader2 className="h-8 w-8 text-yellow-400 animate-spin mb-2" />
-                            <p className="text-gray-300 text-sm font-medium">Cargando contenido...</p>
-                        </div>
-
-                        <div className="flex justify-center mt-6">
-                            <div className="w-12 h-0.5 bg-gradient-to-r from-transparent via-sky-400 to-transparent rounded-full"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
-    }
-
-    if (error && !formFooter) {
-        return (
-            <div className="mt-12 max-w-[1000px] mx-auto bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-lg shadow-[0px_8px_20px_rgba(0,0,0,0.3)] overflow-hidden">
-                <div className="relative">
-                    <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-red-500 via-yellow-400 to-blue-500"></div>
-
-                    <div className="p-6 md:p-8 flex flex-col items-center">
-                        <div className="text-red-400 mb-4 bg-red-400/10 p-3 rounded-full">
-                            <AlertTriangle className="h-8 w-8" />
-                        </div>
-                        <h3 className="text-2xl md:text-3xl text-center font-bold mb-4 text-yellow-400">
-                            No se pudo cargar el contenido
-                            <span className="block h-0.5 w-16 bg-gradient-to-r from-yellow-400/30 via-yellow-400 to-yellow-400/30 mx-auto mt-2"></span>
-                        </h3>
-
-                        <p className="text-gray-100 text-base leading-relaxed max-w-3xl mx-auto mb-6">
-                            Ocurrió un problema al cargar el pie de página. Por favor, intenta recargar la página.
-                        </p>
-
-                        <button
-                            onClick={() => window.location.reload()}
-                            className="px-6 py-2 bg-gradient-to-r from-yellow-400 to-yellow-500 text-gray-900 rounded-lg font-medium hover:from-yellow-500 hover:to-yellow-600 transition-colors shadow-lg shadow-yellow-500/20 hover:shadow-yellow-500/30"
-                        >
-                            Reintentar
-                        </button>
-
-                        <div className="flex justify-center mt-6">
-                            <div className="w-12 h-0.5 bg-gradient-to-r from-transparent via-sky-400 to-transparent rounded-full"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        )
     }
 
 
@@ -174,7 +137,7 @@ export default function FormFooter({ isLoading ,error, formFooter, setFormData, 
                         <div className="mb-3">
                             <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
                                 <Type className="w-4 h-4 mr-1.5 text-yellow-400" /> Título
-                                <h1 className="ml-3 mt-1 text-xs">Máximo 30 caracteres</h1>
+                                <ValidationMessage error={errors.titulo} />
                             </label>
                             <input
                                 type="text"
@@ -191,7 +154,7 @@ export default function FormFooter({ isLoading ,error, formFooter, setFormData, 
                         <div className="mb-3">
                             <label className="flex items-center text-gray-300 text-xs font-medium mb-1">
                                 <AlignLeft className="w-4 h-4 mr-1.5 text-yellow-400" /> Descripción
-                                <h1 className="ml-3 mt-1 text-xs">Máximo 300 caracteres</h1>
+                                <ValidationMessage error={errors.descripcion} />
                             </label>
                             <textarea
                                 name="descripcion"
@@ -212,7 +175,7 @@ export default function FormFooter({ isLoading ,error, formFooter, setFormData, 
                             </label>
                             {["1", "2", "3"].map((num, index) => (
                                 <div key={index} className="relative w-full mb-2">
-                                    <div className="relative">
+                                    <div className="relative flex flex-row">
                                         <label
                                             className={`flex items-center justify-center w-full p-3 border-2 border-dashed rounded-lg text-white transition-all cursor-pointer ${uploading
                                                 ? "border-gray-700 bg-gray-900 opacity-50 cursor-not-allowed"
@@ -245,6 +208,22 @@ export default function FormFooter({ isLoading ,error, formFooter, setFormData, 
                                                 disabled={uploading}
                                             />
                                         </label>
+                                        <div className="flex justify-center mt-2">
+                                            <button
+                                                type="button"
+                                                onClick={
+                                                    num === "1"
+                                                        ? onDeleteFooterFile1
+                                                        : num === "2"
+                                                            ? onDeleteFooterFile2
+                                                            : onDeleteFooterFile3
+                                                }
+                                                className="ml-2 p-2 rounded-full hover:bg-red-100"
+                                                title={`Eliminar imagen ${num}`}
+                                            >
+                                                <Trash2 className="w-5 h-5 text-red-500" />
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             ))}

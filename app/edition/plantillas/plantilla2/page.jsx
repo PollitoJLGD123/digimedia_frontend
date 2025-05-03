@@ -559,7 +559,6 @@ const PageContent = () => {
           formEncabezadoBody={formEncabezadoBody}
           setFormEncabezadoBody={setFormEncabezadoBody}
 
-          setIsDisabled={setIsDisabled}
           setValidacionBody={setValidacionBody}
         />
       </div>

@@ -1,61 +1,84 @@
 "use client"
-import { Type, AlignLeft, Quote, Image as IconImage, Loader2 } from "lucide-react";
-import { useState } from "react";
+import { Type, AlignLeft, Quote, Image as IconImage, Loader2, Trash2 } from "lucide-react";
+import { useState, useEffect } from "react";
 
-export default function FormHeader({ isLoading, error, dataHeader, setFormData, setFile, onDeleteImage }) {
+export default function FormHeader({ dataHeader, setFormData, setFile, onDeleteImage, setValidacionHeader, setIsDisabled}) {
 
     const [uploading, setUploading] = useState(false);
-
-    if (isLoading) {
-        return (
-            <div className="w-full h-screen md:h-[80vh] relative flex items-center justify-center text-center px-6 sm:px-12 bg-gray-900 animate-pulse">
-                <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/80"></div>
-
-                <div className="relative z-10 max-w-2xl">
-                    <div className="h-16 bg-white/20 rounded-lg w-3/4 mx-auto mb-4"></div>
-                    <div className="h-8 bg-white/20 rounded-lg w-1/2 mx-auto mb-4"></div>
-                    <div className="h-24 bg-white/10 rounded-lg w-full mx-auto"></div>
-                    <div className="w-20 h-1 bg-white/30 mt-6 mx-auto"></div>
-                </div>
-
-                <div className="absolute inset-0 flex flex-col items-center justify-center">
-                    <div className="bg-black/70 p-8 rounded-xl backdrop-blur-sm flex flex-col items-center">
-                        <Loader2 className="h-12 w-12 text-white animate-spin mb-4" />
-                        <p className="text-white font-medium">Cargando encabezado...</p>
-                    </div>
-                </div>
-            </div>
-        )
-    }
-
-    if (error && !dataHeader) {
-        return (
-            <div className="w-full h-screen md:h-[80vh] relative flex items-center justify-center text-center px-6 sm:px-12 bg-gray-900">
-                <div className="absolute inset-0 bg-black/60"></div>
-                <div className="relative z-10 max-w-2xl text-white">
-                    <div className="text-red-400 text-6xl mb-4">⚠️</div>
-                    <h1 className="text-3xl md:text-4xl font-bold mb-4">No se pudo cargar el encabezado</h1>
-                    <p className="text-lg text-gray-300 font-light mb-6">
-                        Ocurrió un problema al cargar el contenido. Por favor, intenta recargar la página.
-                    </p>
-                    <button
-                        onClick={() => window.location.reload()}
-                        className="px-6 py-3 bg-white text-gray-900 rounded-lg font-medium hover:bg-gray-200 transition-colors"
-                    >
-                        Reintentar
-                    </button>
-                </div>
-            </div>
-        )
-    }
+    const [isValid_titulo, setIsValid_titulo] = useState(true);
+    const [isValid_texto_frase, setIsValid_texto_frase] = useState(true);
+    const [isValid_texto_descripcion, setIsValid_texto_descripcion] = useState(true);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        let isValid = true;
+
+        switch (name) {
+            case 'titulo':
+                isValid = value.trim() !== '' && value.length <= 30 && value.length >= 10;
+                setIsValid_titulo(isValid);
+                setErrors(prev => ({
+                    ...prev,
+                    [name]: {
+                        ...prev[name],
+                        isValid: isValid
+                    }
+                }));
+                break;
+
+            case 'texto_frase':
+                isValid = value.trim() !== '' && value.length <= 50 && value.length >= 10;
+                setIsValid_texto_frase(isValid);
+                setErrors(prev => ({
+                    ...prev,
+                    [name]: {
+                        ...prev[name],
+                        isValid: isValid
+                    }
+                }));
+                break;
+
+            case 'texto_descripcion':
+                isValid = value.trim() !== '' && value.length <= 80 && value.length >= 10;
+                setIsValid_texto_descripcion(isValid);
+                setErrors(prev => ({
+                    ...prev,
+                    [name]: {
+                        ...prev[name],
+                        isValid: isValid
+                    }
+                }));
+                break;
+            default:
+                break;
+        }
+
+        if (isValid_titulo && isValid_texto_frase && isValid_texto_descripcion) {
+            setValidacionHeader(true)
+        } else {
+            setValidacionHeader(false)
+        }
+
         setFormData((prev) => ({
             ...prev,
             [name]: value,
         }));
     };
+
+    const ValidationMessage = ({ error }) => (
+
+        <h1 className={`text-xs mt-1 ml-3 ${error.isValid === null ? 'text-gray-500' :
+            error.isValid ? 'text-green-500' : 'text-red-500'
+            }`}>
+            {error.message}
+        </h1>
+    );
+
+    const [errors, setErrors] = useState({
+        titulo: { message: 'Máximo 30 caracteres', isValid: null },
+        texto_frase: { message: 'Máximo 50 caracteres', isValid: null },
+        texto_descripcion: { message: 'Máximo 80 caracteres', isValid: null },
+    });
 
     const handleImage = async (e) => {
         const file = e.target.files[0];
@@ -83,6 +106,11 @@ export default function FormHeader({ isLoading, error, dataHeader, setFormData, 
             setUploading(false);
         }
     }
+
+    useEffect(() => {
+        const allValid = Object.values(errors).every(error => error.isValid === true);
+        setIsDisabled && setIsDisabled(!allValid);
+    }, [errors]);
 
     return (
         <div
@@ -117,7 +145,7 @@ export default function FormHeader({ isLoading, error, dataHeader, setFormData, 
                             <div>
                                 <label className="flex items-center text-white text-sm font-medium mb-2">
                                     <Type className="w-5 h-5 mr-2 text-purple-400" /> Título
-                                    <h1 className="ml-3 mt-1 text-xs">Máximo 30 caracteres</h1>
+                                    <ValidationMessage error={errors.titulo} />
                                 </label>
                                 <input
                                     type="text"
@@ -125,6 +153,7 @@ export default function FormHeader({ isLoading, error, dataHeader, setFormData, 
                                     value={dataHeader.titulo || ""}
                                     onChange={handleChange}
                                     maxLength={30}
+                                    minLength={5}
                                     autoComplete="off"
                                     className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
                                     placeholder="Título principal"
@@ -135,7 +164,7 @@ export default function FormHeader({ isLoading, error, dataHeader, setFormData, 
                             <div>
                                 <label className="flex items-center text-white text-sm font-medium mb-2">
                                     <Quote className="w-5 h-5 mr-2 text-purple-400" /> Frase Destacada
-                                    <h1 className="ml-3 mt-1 text-xs">Máximo 50 caracteres</h1>
+                                    <ValidationMessage error={errors.texto_frase} />
                                 </label>
                                 <input
                                     type="text"
@@ -152,7 +181,7 @@ export default function FormHeader({ isLoading, error, dataHeader, setFormData, 
                             <div>
                                 <label className="flex items-center text-white text-sm font-medium mb-2">
                                     <AlignLeft className="w-5 h-5 mr-2 text-purple-400" /> Frase Secundaria
-                                    <h1 className="ml-3 mt-1 text-xs">Máximo 80 caracteres</h1>
+                                    <ValidationMessage error={errors.texto_descripcion} />
                                 </label>
                                 <input
                                     name="texto_descripcion"
@@ -171,7 +200,7 @@ export default function FormHeader({ isLoading, error, dataHeader, setFormData, 
                                     <IconImage className="w-5 h-5 mr-2 text-purple-400" /> Imagen Principal
                                     <h1 className="ml-3 mt-1 text-xs">1080x520 píxeles</h1>
                                 </label>
-                                <div className="relative">
+                                <div className="relative flex flex-row">
                                     <label
                                         className={`flex items-center justify-center w-full p-3 border-2 border-dashed rounded-lg text-white transition-all cursor-pointer ${uploading
                                             ? "border-gray-700 bg-gray-900 opacity-50 cursor-not-allowed"
@@ -204,6 +233,16 @@ export default function FormHeader({ isLoading, error, dataHeader, setFormData, 
                                             disabled={uploading}
                                         />
                                     </label>
+                                    <div className="flex justify-center mt-2">
+                                        <button
+                                            type="button"
+                                            onClick={onDeleteImage}              //  Aca se puede Eliminar 
+                                            title="Eliminar imagen"
+                                            className="p-2 rounded-full hover:bg-red-100"
+                                        >
+                                            <Trash2 className="w-5 h-5 text-red-500" />
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 

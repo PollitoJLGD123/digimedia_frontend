@@ -6,22 +6,14 @@ import { useState } from "react";
 
 export default function FormBody1(props) {
     const {
-        formCommendBody,
-        setFormCommendBody,
-        formInfoBody,
-        setFormInfoBody,
-        formEncabezadoBody,
-        setFormEncabezadoBody,
-        formGaleryBody,
-        setFormGaleryBody,
+        formBody,
+        setFormBody,
         setFileBodyHeader,
         setFileBodyFile1,
         setFileBodyFile2,
         onDeleteBodyHeaderImage,
         onDeleteBodyFile1,
         onDeleteBodyFile2,
-        error,
-        isLoading,
     } = props;
 
     const [uploading, setUploading] = useState(false);
