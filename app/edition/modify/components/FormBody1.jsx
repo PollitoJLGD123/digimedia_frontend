@@ -1,10 +1,11 @@
 "use client";
-import { Type, AlignLeft, Quote, Image } from "lucide-react";
+import { Type, AlignLeft, Quote, Image, Trash2, Clock1, Clock } from "lucide-react";
 import { Loader2, CheckCircle, ArrowRight, Image as IconImage } from "lucide-react"
 import { useState } from "react";
 
 
 export default function FormBody1(props) {
+
     const {
         formCommendBody,
         setFormCommendBody,
@@ -17,27 +18,194 @@ export default function FormBody1(props) {
         setFileBodyHeader,
         setFileBodyFile1,
         setFileBodyFile2,
-        //setValidacionBody
-      } = props;
+        setValidacionBody,
+    } = props;
+
+    const [isValidTituloPrincipal, setIsValidTituloPrincipal] = useState(true);
+    const [isValidDescripcion, setIsValidDescripcion] = useState(true);
+    const [isValidTexto1, setIsValidTexto1] = useState(true);
+    const [isValidTexto2, setIsValidTexto2] = useState(true);
+    const [isValidTexto3, setIsValidTexto3] = useState(true);
+
+    const [isValidInfoTitulo1, setIsValidInfoTitulo1] = useState(true);
+    const [isValidInfoDescripcion1, setIsValidInfoDescripcion1] = useState(true);
+
+    const [isValidInfoTitulo2, setIsValidInfoTitulo2] = useState(true);
+    const [isValidInfoDescripcion2, setIsValidInfoDescripcion2] = useState(true);
+
+    const [isValidInfoTitulo3, setIsValidInfoTitulo3] = useState(true);
+    const [isValidInfoDescripcion3, setIsValidInfoDescripcion3] = useState(true);
+
+    const [isValidInfoTitulo4, setIsValidInfoTitulo4] = useState(true);
+    const [isValidInfoDescripcion4, setIsValidInfoDescripcion4] = useState(true);
+
+    const [errors, setErrors] = useState({
+        titulo: { message: 'Debe tener entre 10 y 50 caracteres', isValid: null },
+        texto1: { message: 'Debe tener entre 10 y 150 caracteres', isValid: null },
+        texto2: { message: 'Debe tener entre 10 y 150 caracteres', isValid: null },
+        texto3: { message: 'Debe tener entre 10 y 150 caracteres', isValid: null },
+        descripcion: { message: 'Debe tener entre 10 y 400 caracteres', isValid: null },
+    });
 
     const [uploading, setUploading] = useState(false);
 
     const handleChange = (setter) => (e) => {
         const { name, value } = e.target;
+        let isValid = true;
+
+        switch (name) {
+            case 'titulo':
+                isValid = value.trim().length >= 10 && value.length <= 50;
+                setIsValidTituloPrincipal(isValid);
+                setErrors(prev => ({
+                    ...prev,
+                    [name]: {
+                        ...prev[name],
+                        isValid: isValid
+                    }
+                }));
+                break;
+            case 'descripcion':
+                isValid = value.trim().length >= 10 && value.length <= 400;
+                setIsValidDescripcion(isValid);
+                setErrors(prev => ({
+                    ...prev,
+                    [name]: {
+                        ...prev[name],
+                        isValid: isValid
+                    }
+                }));
+                break;
+            case 'texto1':
+                isValid = value.trim().length >= 10 && value.length <= 150;
+                setIsValidTexto1(isValid);
+                setErrors(prev => ({
+                    ...prev,
+                    [name]: {
+                        ...prev[name],
+                        isValid: isValid
+                    }
+                }));
+                break;
+            case 'texto2':
+                isValid = value.trim().length >= 10 && value.length <= 150;
+                setIsValidTexto2(isValid);
+                setErrors(prev => ({
+                    ...prev,
+                    [name]: {
+                        ...prev[name],
+                        isValid: isValid
+                    }
+                }));
+                break;
+            case 'texto3':
+                isValid = value.trim().length >= 10 && value.length <= 150;
+                setIsValidTexto3(isValid);
+                setErrors(prev => ({
+                    ...prev,
+                    [name]: {
+                        ...prev[name],
+                        isValid: isValid
+                    }
+                }));
+                break;
+            default:
+                break;
+        }
+
+        if (isValidTituloPrincipal && isValidDescripcion && isValidTexto1 && isValidTexto2 && isValidTexto3
+            && isValidInfoTitulo1 && isValidInfoDescripcion1 && isValidInfoTitulo2 && isValidInfoDescripcion2 && isValidInfoTitulo3 && isValidInfoDescripcion3 && isValidInfoTitulo4 && isValidInfoDescripcion4
+        ) {
+            setValidacionBody(true)
+        } else {
+            setValidacionBody(false)
+        }
+
         setter((prev) => ({
             ...prev,
             [name]: value,
         }));
     };
 
+    const ValidationMessage = ({ error }) => (
+        <p className={`text-xs mt-1 ml-3 ${error.isValid === null ? 'text-gray-400' :
+            error.isValid ? 'text-green-400' : 'text-red-500'}`}>
+            {error.message}
+        </p>
+    );
+
+
+    const [errorsInfoBody, setErrorsInfoBody] = useState(
+        formInfoBody.map(() => ({
+            titulo: { message: 'Debe tener entre 10 y 50 caracteres', isValid: null },
+            descripcion: { message: 'Debe tener entre 10 y 400 caracteres', isValid: null },
+        }))
+    );
+
     const handleChangeMap = (e, index, field) => {
         const { value } = e.target;
-        setFormInfoBody(prevState => {
-            const updatedState = [...prevState];
-            updatedState[index] = { ...updatedState[index], [field]: value };
-            return updatedState;
+        const name = field;
+        let isValid = true;
+
+        switch (name) {
+            case 'titulo':
+                isValid = value.trim().length >= 10 && value.length <= 50;
+
+                if (index === 0) {
+                    setIsValidInfoTitulo1(isValid);
+                } else if (index === 1) {
+                    setIsValidInfoTitulo2(isValid);
+                } else if (index === 2) {
+                    setIsValidInfoTitulo3(isValid);
+                } else if (index === 3) {
+                    setIsValidInfoTitulo4(isValid);
+                }
+
+                break;
+            case 'descripcion':
+                isValid = value.trim().length >= 10 && value.length <= 400;
+
+                if (index === 0) {
+                    setIsValidInfoDescripcion1(isValid);
+                } else if (index === 1) {
+                    setIsValidInfoDescripcion2(isValid);
+                } else if (index === 2) {
+                    setIsValidInfoDescripcion3(isValid);
+                } else if (index === 3) {
+                    setIsValidInfoDescripcion4(isValid);
+                }
+
+                break;
+            default:
+                break;
+        }
+
+        if (isValidTituloPrincipal && isValidDescripcion && isValidTexto1 && isValidTexto2 && isValidTexto3
+            && isValidInfoTitulo1 && isValidInfoDescripcion1 && isValidInfoTitulo2 && isValidInfoDescripcion2 && isValidInfoTitulo3 && isValidInfoDescripcion3 && isValidInfoTitulo4 && isValidInfoDescripcion4) {
+            setValidacionBody(true)
+        } else {
+            setValidacionBody(false)
+        }
+
+        setFormInfoBody(prev => {
+            const updated = [...prev];
+            updated[index] = { ...updated[index], [field]: value };
+            return updated;
+        });
+
+        setErrorsInfoBody(prev => {
+            const updatedErrors = [...prev];
+            updatedErrors[index] = {
+                ...updatedErrors[index],
+                [field]: {
+                    ...updatedErrors[index][field],
+                    isValid: isValid
+                }
+            };
+            return updatedErrors;
         });
     };
+
 
     const handleImageHeader = async (e) => {
         const file = e.target.files[0];
@@ -90,13 +258,14 @@ export default function FormBody1(props) {
             Swal.fire({
                 icon: "error",
                 title: "Error",
-                text: "Ocurrió un error al subir la imagen",    
+                text: "Ocurrió un error al subir la imagen",
                 confirmButtonColor: "#8c52ff",
             });
         } finally {
             setUploading(false);
         }
     }
+
 
     return (
         <div className="relative p-0 text-black rounded-lg shadow-[0px_10px_25px_rgba(0,0,0,0.25)] overflow-hidden flex flex-row my-5 justify-center">
@@ -118,6 +287,7 @@ export default function FormBody1(props) {
                     <div className="relative mb-16 bg-white p-6 rounded-lg shadow-md -mt-12">
                         <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-red-500 via-purple-500 to-blue-500"></div>
                         <p className="text-lg leading-relaxed text-gray-700">{formEncabezadoBody.descripcion}</p>
+
                     </div>
 
                     <div className="mb-[100px]  p-10 px-6 bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg shadow-[0px_10px_25px_rgba(0,0,0,0.25)] text-center text-gray-100">
@@ -149,7 +319,7 @@ export default function FormBody1(props) {
                             <div key={index} className="group relative overflow-hidden rounded-xl shadow-xl">
                                 <div className="absolute inset-0 bg-gradient-to-t from-purple-900/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
                                 <img
-                                    src={src.startsWith("http") ? src : `${src}`}
+                                    src={src}
                                     alt={`Imagen ${index + 1} del artículo`}
                                     className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-105"
                                 />
@@ -200,12 +370,12 @@ export default function FormBody1(props) {
                         <div>
                             <label className="flex items-center text-white text-sm font-medium mb-2">
                                 <Type className="w-5 h-5 mr-2 text-purple-400" /> Título
-                                <h1 className="ml-3 mt-1 text-xs">Máximo 30 caracteres</h1>
+                                <ValidationMessage error={errors.titulo} />
                             </label>
                             <input
                                 type="text"
                                 name="titulo"
-                                maxLength={30}
+                                maxLength={50}
                                 value={formEncabezadoBody.titulo}
                                 onChange={handleChange(setFormEncabezadoBody)}
                                 className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
@@ -214,7 +384,7 @@ export default function FormBody1(props) {
                         </div>
                         <div>
                             <label className="flex items-center text-white text-sm font-medium mb-2">
-                                <Quote className="w-5 h-5 mr-2 text-purple-400" /> Fecha
+                                <Clock1 className="w-4 h-4 mr-1.5 text-blue-400" /> Fecha
                             </label>
                             <input
                                 type="date"
@@ -222,10 +392,9 @@ export default function FormBody1(props) {
                                 value={formEncabezadoBody.fecha}
                                 onChange={handleChange(setFormEncabezadoBody)}
                                 className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
-                                placeholder="Fecha"
                             />
                         </div>
-                        <div className="relative">
+                        <div className="relative flex flex-column justify-center">
                             <label
                                 className={`flex items-center justify-center w-full p-3 border-2 border-dashed rounded-lg text-white transition-all cursor-pointer ${uploading
                                     ? "border-gray-700 bg-gray-900 opacity-50 cursor-not-allowed"
@@ -258,11 +427,19 @@ export default function FormBody1(props) {
                                     disabled={uploading}
                                 />
                             </label>
+                            <button
+                                type="button"
+                                onClick={props.onDeleteBodyHeaderImage}    //  Aca se puede Eliminar 
+                                className=" flex ml-2 p-2 rounded-full hover:bg-red-100"
+                                title="Eliminar imagen principal"
+                            >
+                                <Trash2 className="w-5 h-5 text-red-500" />
+                            </button>
                         </div>
                         <div>
                             <label className="flex items-center text-white text-sm font-medium mb-2">
                                 <AlignLeft className="w-5 h-5 mr-2 text-purple-400" /> Descripcion
-                                <h1 className="ml-3 mt-1 text-xs">Máximo 400 caracteres</h1>
+                                <ValidationMessage error={errors.descripcion} />
                             </label>
                             <input
                                 name="descripcion"
@@ -281,7 +458,7 @@ export default function FormBody1(props) {
                         <div>
                             <label className="flex items-center text-white text-sm font-medium mb-2">
                                 <Type className="w-5 h-5 mr-2 text-purple-400" /> Título
-                                <h1 className="ml-3 mt-1 text-xs">Máximo 50 caracteres</h1>
+                                <ValidationMessage error={errors.titulo} />
                             </label>
                             <input
                                 type="text"
@@ -297,12 +474,12 @@ export default function FormBody1(props) {
                         <div>
                             <label className="flex items-center text-white text-sm font-medium mb-2">
                                 <Quote className="w-5 h-5 mr-2 text-purple-400" /> Texto1
-                                <h2 className="ml-3 mt-1 text-xs">Máximo 100 caracteres</h2>
+                                <ValidationMessage error={errors.texto1} />
                             </label>
                             <input
                                 type="text"
                                 name="texto1"
-                                maxLength={100}
+                                maxLength={150}
                                 value={formCommendBody.texto1}
                                 onChange={handleChange(setFormCommendBody)}
                                 className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
@@ -313,12 +490,12 @@ export default function FormBody1(props) {
                         <div>
                             <label className="flex items-center text-white text-sm font-medium mb-2">
                                 <Quote className="w-5 h-5 mr-2 text-purple-400" /> Texto2
-                                <h2 className="ml-3 mt-1 text-xs">Máximo 100 caracteres</h2>
+                                <ValidationMessage error={errors.texto2} />
                             </label>
                             <input
                                 type="text"
                                 name="texto2"
-                                maxLength={100}
+                                maxLength={150}
                                 value={formCommendBody.texto2}
                                 onChange={handleChange(setFormCommendBody)}
                                 className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
@@ -329,12 +506,12 @@ export default function FormBody1(props) {
                         <div>
                             <label className="flex items-center text-white text-sm font-medium mb-2">
                                 <Quote className="w-5 h-5 mr-2 text-purple-400" /> Texto3
-                                <h2 className="ml-3 mt-1 text-xs">Máximo 100 caracteres</h2>
+                                <ValidationMessage error={errors.texto3} />
                             </label>
                             <input
                                 type="text"
                                 name="texto3"
-                                maxLength={100}
+                                maxLength={150}
                                 value={formCommendBody.texto3}
                                 onChange={handleChange(setFormCommendBody)}
                                 className="w-full bg-gray-900 text-white border border-gray-700 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
@@ -352,7 +529,7 @@ export default function FormBody1(props) {
                                 <h1 className="ml-3 mt-1 text-xs">250x310 píxeles</h1>
                             </label>
 
-                            <div className="relative">
+                            <div className="relative flex flex-column justify-center">
                                 <label
                                     className={`flex items-center justify-center w-full p-3 border-2 border-dashed rounded-lg text-white transition-all cursor-pointer ${uploading
                                         ? "border-gray-700 bg-gray-900 opacity-50 cursor-not-allowed"
@@ -385,6 +562,14 @@ export default function FormBody1(props) {
                                         disabled={uploading}
                                     />
                                 </label>
+                                <button
+                                    type="button"
+                                    onClick={props.onDeleteBodyFile1}         //  Aca se puede Eliminar 
+                                    className="ml-2 p-2 rounded-full hover:bg-red-100"
+                                    title="Eliminar imagen galería 1"
+                                >
+                                    <Trash2 className="w-5 h-5 text-red-500" />
+                                </button>
                             </div>
                         </div>
 
@@ -394,7 +579,7 @@ export default function FormBody1(props) {
                                 <h1 className="ml-3 mt-1 text-xs">250x310 píxeles</h1>
                             </label>
 
-                            <div className="relative">
+                            <div className="relative flex flex-column justify-center">
                                 <label
                                     className={`flex items-center justify-center w-full p-3 border-2 border-dashed rounded-lg text-white transition-all cursor-pointer ${uploading
                                         ? "border-gray-700 bg-gray-900 opacity-50 cursor-not-allowed"
@@ -427,6 +612,14 @@ export default function FormBody1(props) {
                                         disabled={uploading}
                                     />
                                 </label>
+                                <button
+                                    type="button"
+                                    onClick={props.onDeleteBodyFile2}         //  Aca se puede Eliminar 
+                                    className="ml-2 p-2 rounded-full hover:bg-red-100"
+                                    title="Eliminar imagen galería 2"
+                                >
+                                    <Trash2 className="w-5 h-5 text-red-500" />
+                                </button>
                             </div>
                         </div>
                     </form>
@@ -440,7 +633,7 @@ export default function FormBody1(props) {
                                     <div className="pb-4">
                                         <label className="flex items-center text-white text-sm font-medium mb-2">
                                             <Type className="w-5 h-5 mr-2 text-purple-400" /> Título
-                                            <h1 className="ml-3 mt-1 text-xs">Máximo 50 caracteres</h1>
+                                            <ValidationMessage error={errorsInfoBody[index]?.titulo || { isValid: null, message: '' }} />
                                         </label>
                                         <input
                                             type="text"
@@ -456,12 +649,12 @@ export default function FormBody1(props) {
                                     <div>
                                         <label className="flex items-center text-white text-sm font-medium mb-2">
                                             <Quote className="w-5 h-5 mr-2 text-purple-400" /> Descripción
-                                            <h1 className="ml-3 mt-1 text-xs">Máximo 350 caracteres</h1>
+                                            <ValidationMessage error={errorsInfoBody[index]?.descripcion || { isValid: null, message: '' }} />
                                         </label>
                                         <textarea
                                             name="descripcion"
                                             value={item.descripcion}
-                                            maxLength={350}
+                                            maxLength={400}
                                             onChange={(e) => handleChangeMap(e, index, 'descripcion')}
                                             className="w-full resize-none h-[100px] bg-gray-800 text-white border border-gray-700 rounded-lg p-2 text-sm"
                                             placeholder="Descripción"

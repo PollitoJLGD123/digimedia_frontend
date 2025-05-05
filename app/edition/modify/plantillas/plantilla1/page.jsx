@@ -33,7 +33,6 @@ const PageContent = () => {
   const [FileFooterFile3, setFileFooterFile3] = useState(null);
 
   //data blog
-
   const [dataBlog, setDataBlog] = useState(null);
 
   // header
@@ -50,7 +49,7 @@ const PageContent = () => {
     texto5: ''
   });
   const [formInfoBody, setFormInfoBody] = useState([
-    { titulo: '', descripcion: '' }  
+    { titulo: '', descripcion: '' }
   ]);
   const [formGaleryBody, setFormGaleryBody] = useState({});
   const [formEncabezadoBody, setFormEncabezadoBody] = useState({});
@@ -64,38 +63,37 @@ const PageContent = () => {
   const [error, setError] = useState(null)
   const id_empleado = getCookie("empleado") ? JSON.parse(getCookie("empleado")).id_empleado : -1;
 
-
   //desactivar boton
 
   const [validacionHeader, setValidacionHeader] = useState(true);
   const [validacionBody, setValidacionBody] = useState(true);
   const [validacionFooter, setValidacionFooter] = useState(true);
-
   const [isDisabled, setIsDisabled] = useState(true);
 
   useEffect(() => {
-      setIsDisabled((validacionHeader && validacionFooter && validacionBody));
+    setIsDisabled((validacionHeader && validacionFooter && validacionBody));
   }, [validacionHeader, validacionFooter, validacionBody]);
 
   useEffect(() => {
     fetchDataTotal()
   }, [id_blog])
 
-  async function fetchDataTotal(){
-    try{
+  {/* Aqui se obtiene toda la información del blog creado segun su id */ }
+  async function fetchDataTotal() {
+    try {
       setIsLoading(true)
       const response = await Fetch.fetchBlogById(id_blog);
 
-      if (response){
+      if (response) {
         setDataBlog(response);
 
-        {/*Obtiene el header */}
+        {/*Obtiene el header */ }
         const responseHeader = await Fetch.fetchBlogHead(response.id_blog_head);
-        if(responseHeader){
+        if (responseHeader) {
           setImageHeaderBefore(responseHeader.public_image);
           setDataHeader(responseHeader);
         }
-        else{
+        else {
           setError("No se pudo cargar la informacion del encabezado");
           await Swal.fire({
             title: "Error",
@@ -106,56 +104,59 @@ const PageContent = () => {
           return;
         }
 
-        {/*Obtiene el body */}
+        {/*Obtiene el body */ }
         const responseBody = await Fetch.fetchBlogBodyById(response.id_blog_body);
         if (responseBody) {
-            setImageBodyHeaderBefore(responseBody.public_image1);
-            setImageBodyFile1Before(responseBody.public_image2);
-            setImageBodyFile2Before(responseBody.public_image3);
-            setDataBody(responseBody);
+          setImageBodyHeaderBefore(responseBody.public_image1);
+          setImageBodyFile1Before(responseBody.public_image2);
+          setImageBodyFile2Before(responseBody.public_image3);
+          setDataBody(responseBody);
 
-            setFormEncabezadoBody({
-              titulo: dataBody.titulo,
-              descripcion: dataBody.descripcion,
-              public_image1: dataBody.public_image1,
-              url_image1: dataBody.url_image1,
-            });
+          setFormEncabezadoBody({
+            titulo: responseBody.titulo,
+            descripcion: responseBody.descripcion,
+            public_image1: responseBody.public_image1,
+            url_image1: responseBody.url_image1,
+          });
 
-            // Cargar la información en los formularios
-            setFormInfoBody(Array.isArray(responseBody.tarjetas) ? responseBody.tarjetas : []);
+          // Cargar la información en los formularios
+          setFormInfoBody(Array.isArray(responseBody.tarjetas) ? responseBody.tarjetas : []);
 
-            setFormCommendBody({
-                titulo: responseBody.commend_tarjeta.titulo || '',
-                texto1: responseBody.commend_tarjeta.texto1 || '',
-                texto2: responseBody.commend_tarjeta.texto2 || '',
-                texto3: responseBody.commend_tarjeta.texto3 || '',
-                texto4: responseBody.commend_tarjeta.texto4 || '',
-                texto5: responseBody.commend_tarjeta.texto5 || ''
-            });
+          setFormCommendBody({
+            titulo: responseBody.commend_tarjeta.titulo || '',
+            texto1: responseBody.commend_tarjeta.texto1 || '',
+            texto2: responseBody.commend_tarjeta.texto2 || '',
+            texto3: responseBody.commend_tarjeta.texto3 || '',
+            texto4: responseBody.commend_tarjeta.texto4 || '',
+            texto5: responseBody.commend_tarjeta.texto5 || ''
+          });
 
-            setFormGaleryBody({
-              public_image2: dataBody.public_image2,
-              public_image3: dataBody.public_image3,
-            });
+          setFormGaleryBody({
+            public_image2: responseBody.public_image2,
+            public_image3: responseBody.public_image3,
+          });
         } else {
-            setError("No se pudo cargar la informacion del body");
-            await Swal.fire({
-                title: "Error",
-                text: "No se pudo cargar la informacion del body",
-                icon: "error",
-                confirmButtonText: "OK",
-            });
-            return;
+          setError("No se pudo cargar la informacion del body");
+          await Swal.fire({
+            title: "Error",
+            text: "No se pudo cargar la informacion del body",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+          return;
         }
-        {/*Obtiene el footer */}
+        {/*Obtiene el footer */ }
         const responseFooter = await Fetch.fetchBlogFooter(response.id_blog_footer);
-        if(responseFooter){
+        if (responseFooter) {
           setImageFooterFile1Before(responseFooter.public_image1);
           setImageFooterFile2Before(responseFooter.public_image2);
           setImageFooterFile3Before(responseFooter.public_image3);
           setDataFooter(responseFooter);
+
+          console.log("Footer: ", responseFooter);
+          console.log("Data: ", dataFooter);
         }
-        else{
+        else {
           setError("No se pudo cargar la informacion del footer");
           await Swal.fire({
             title: "Error",
@@ -166,8 +167,9 @@ const PageContent = () => {
           return;
         }
 
-      }else{
+      } else {
         setError("No se pudo cargar el contenido principal del blog");
+        console.log("No hay contenido en nada :v")
         await Swal.fire({
           title: "Error",
           text: "Ocurrió un error inesperado.",
@@ -177,14 +179,15 @@ const PageContent = () => {
         return
       }
 
-    }catch(error){
+    } catch (error) {
+      console.log("Error al guardar: ", error);
       Swal.fire({
         title: "Error",
         text: "Ocurrió un error inesperado.",
         icon: "error",
         confirmButtonText: "OK",
       })
-    }finally{
+    } finally {
       setIsLoading(false)
     }
   }
@@ -249,7 +252,6 @@ const PageContent = () => {
       url_image3: ""
     }));
   };
-
 
   useEffect(() => {
     const sections = document.querySelectorAll("#header, #body, #footer");

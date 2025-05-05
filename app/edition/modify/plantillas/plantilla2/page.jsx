@@ -114,10 +114,10 @@ const PageContent= () => {
             setDataBody(responseBody);
 
             setFormEncabezadoBody({
-              titulo: dataBody.titulo,
-              descripcion: dataBody.descripcion,
-              public_image1: dataBody.public_image1,
-              url_image1: dataBody.url_image1,
+              titulo: responseBody.titulo,
+              descripcion: responseBody.descripcion,
+              public_image1: responseBody.public_image1,
+              url_image1: responseBody.url_image1,
             });
 
             // Cargar la información en los formularios
@@ -133,8 +133,8 @@ const PageContent= () => {
             });
 
             setFormGaleryBody({
-              public_image2: dataBody.public_image2,
-              public_image3: dataBody.public_image3,
+              public_image2: responseBody.public_image2,
+              public_image3: responseBody.public_image3,
             });
         } else {
             setError("No se pudo cargar la informacion del body");
@@ -153,6 +153,9 @@ const PageContent= () => {
           setImageFooterFile2Before(responseFooter.public_image2);
           setImageFooterFile3Before(responseFooter.public_image3);
           setDataFooter(responseFooter);
+
+          console.log("Footer: ", responseFooter);
+          console.log("Data: ", dataFooter);
         }
         else{
           setError("No se pudo cargar la informacion del footer");
@@ -167,6 +170,7 @@ const PageContent= () => {
 
       }else{
         setError("No se pudo cargar el contenido principal del blog");
+        console.log("No hay contenido en nada :v")
         await Swal.fire({
           title: "Error",
           text: "Ocurrió un error inesperado.",
@@ -177,6 +181,7 @@ const PageContent= () => {
       }
 
     }catch(error){
+      console.log("Error al guardar: ", error);
       Swal.fire({
         title: "Error",
         text: "Ocurrió un error inesperado.",
@@ -323,12 +328,12 @@ const PageContent= () => {
   async function guardarCommendTarjeta() {
 
     const formCommendBody = {
-      titulo: dataBody.titulo,
-      texto1: dataBody.texto1,
-      texto2: dataBody.texto2,
-      texto3: dataBody.texto3,
-      texto4: dataBody.texto4,
-      texto5: dataBody.texto5,
+      titulo: dataBody.commend_tarjeta.titulo,
+      texto1: dataBody.commend_tarjeta.texto1,
+      texto2: dataBody.commend_tarjeta.texto2,
+      texto3: dataBody.commend_tarjeta.texto3,
+      texto4: dataBody.commend_tarjeta.texto4,
+      texto5: dataBody.commend_tarjeta.texto5,
     }
 
     const id = await Fetch.updateCommendTarjeta(dataBody.id_commend_tarjeta, formCommendBody);
@@ -375,7 +380,7 @@ const PageContent= () => {
       descripcion: dataHeader.descripcion,
       public_image: dataHeader.public_image,
       url_image: dataHeader.url_image,
-      id_plantilla: 1,
+      id_plantilla: 2,
       id_empleado: id_empleado,
     }
 
