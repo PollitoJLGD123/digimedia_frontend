@@ -113,16 +113,28 @@ const PageContent= () => {
             setImageBodyFile2Before(responseBody.public_image3);
             setDataBody(responseBody);
 
+            setFormEncabezadoBody({
+              titulo: dataBody.titulo,
+              descripcion: dataBody.descripcion,
+              public_image1: dataBody.public_image1,
+              url_image1: dataBody.url_image1,
+            });
+
             // Cargar la información en los formularios
             setFormInfoBody(Array.isArray(responseBody.tarjetas) ? responseBody.tarjetas : []);
 
             setFormCommendBody({
-                titulo: responseBody.titulo || '',
-                texto1: responseBody.texto1 || '',
-                texto2: responseBody.texto2 || '',
-                texto3: responseBody.texto3 || '',
-                texto4: responseBody.texto4 || '',
-                texto5: responseBody.texto5 || ''
+                titulo: responseBody.commend_tarjeta.titulo || '',
+                texto1: responseBody.commend_tarjeta.texto1 || '',
+                texto2: responseBody.commend_tarjeta.texto2 || '',
+                texto3: responseBody.commend_tarjeta.texto3 || '',
+                texto4: responseBody.commend_tarjeta.texto4 || '',
+                texto5: responseBody.commend_tarjeta.texto5 || ''
+            });
+
+            setFormGaleryBody({
+              public_image2: dataBody.public_image2,
+              public_image3: dataBody.public_image3,
             });
         } else {
             setError("No se pudo cargar la informacion del body");
@@ -176,31 +188,6 @@ const PageContent= () => {
     }
   }
 
-  useEffect(() => {
-    if (dataBody) {
-        setFormEncabezadoBody({
-            titulo: dataBody.titulo,
-            descripcion: dataBody.descripcion,
-            public_image1: dataBody.public_image1,
-            url_image1: dataBody.url_image1,
-        });
-
-        setFormCommendBody({
-          titulo: dataBody.titulo || '',
-          texto1: dataBody.texto1 || '',
-          texto2: dataBody.texto2 || '',
-          texto3: dataBody.texto3 || '',
-          texto4: dataBody.texto4 || '',
-          texto5: dataBody.texto5 || ''
-        });
-
-        setFormGaleryBody({
-            public_image2: dataBody.public_image2,
-            public_image3: dataBody.public_image3,
-        });
-    }
-}, [dataBody]);
-
   const deleteFooterFile1 = () => {
     setFileFooterFile1(null);
     setDataFooter(prev => ({
@@ -237,7 +224,7 @@ const PageContent= () => {
 
   const deleteBodyHeaderImage = () => {
     setFileBodyHeader(null);
-    setDataBody(prev => ({
+    setFormGaleryBody(prev => ({
       ...prev,
       public_image1: imageBodyHeaderBefore,
       url_image1: ""
@@ -246,7 +233,7 @@ const PageContent= () => {
 
   const deleteBodyFile1 = () => {
     setFileBodyFile1(null);
-    setDataBody(prev => ({
+    setFormGaleryBody(prev => ({
       ...prev,
       public_image2: imageBodyFile1Before,
       url_image2: ""
@@ -255,7 +242,7 @@ const PageContent= () => {
 
   const deleteBodyFile2 = () => {
     setFileBodyFile2(null);
-    setDataBody(prev => ({
+    setFormGaleryBody(prev => ({
       ...prev,
       public_image3: imageBodyFile2Before,
       url_image3: ""
