@@ -1,5 +1,5 @@
-'use client'
-import FormBody2 from '../../components/FormBody2'
+"use client";
+import FormBody1 from '../../components/FormBody1';
 import FormFooter from '../../components/FormFooter'
 import FormHeader from '../../components/FormHeader'
 import { useState, useEffect } from 'react';
@@ -10,91 +10,91 @@ import { getCookie } from 'cookies-next';
 import { useSearchParams } from "next/navigation"
 import Fetch from "../../services/fetch"
 import { Loader2 } from "lucide-react"
+import FormBody3 from '../../components/FormBody3';
 
+const PageContent = () => {
 
-const PageContent= () => {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
-    const router = useRouter();
-    const [loading, setLoading] = useState(false);
-  
-    const [imageHeaderBefore, setImageHeaderBefore] = useState("");
-    const [imageBodyHeaderBefore, setImageBodyHeaderBefore] = useState("");
-    const [imageBodyFile1Before, setImageBodyFile1Before] = useState("");
-    const [imageBodyFile2Before, setImageBodyFile2Before] = useState("");
-    const [imageFooterFile1Before, setImageFooterFile1Before] = useState("");
-    const [imageFooterFile2Before, setImageFooterFile2Before] = useState("");
-    const [imageFooterFile3Before, setImageFooterFile3Before] = useState("");
-  
-    const [fileHeader, setFileHeader] = useState(null);
-    const [FileBodyHeader, setFileBodyHeader] = useState(null);
-    const [FileBodyFile1, setFileBodyFile1] = useState(null);
-    const [FileBodyFile2, setFileBodyFile2] = useState(null);
-    const [FileFooterFile1, setFileFooterFile1] = useState(null);
-    const [FileFooterFile2, setFileFooterFile2] = useState(null);
-    const [FileFooterFile3, setFileFooterFile3] = useState(null);
+  const [imageHeaderBefore, setImageHeaderBefore] = useState("");
+  const [imageBodyHeaderBefore, setImageBodyHeaderBefore] = useState("");
+  const [imageBodyFile1Before, setImageBodyFile1Before] = useState("");
+  const [imageBodyFile2Before, setImageBodyFile2Before] = useState("");
+  const [imageFooterFile1Before, setImageFooterFile1Before] = useState("");
+  const [imageFooterFile2Before, setImageFooterFile2Before] = useState("");
+  const [imageFooterFile3Before, setImageFooterFile3Before] = useState("");
 
-    //data blog
-    const [dataBlog, setDataBlog] = useState(null);
-  
-    // header
-    const [dataHeader, setDataHeader] = useState(null);
-  
-    // body
-    const [dataBody, setDataBody] = useState(null);
-    const [formCommendBody, setFormCommendBody] = useState({
-      titulo: '',
-      texto1: '',
-      texto2: '',
-      texto3: '',
-      texto4: '',
-      texto5: ''
-    });
-    const [formInfoBody, setFormInfoBody] = useState([
-      { titulo: '', descripcion: '' }  
-    ]);
-    const [formGaleryBody, setFormGaleryBody] = useState({});
-    const [formEncabezadoBody, setFormEncabezadoBody] = useState({});
-  
-    // footer
-    const [dataFooter, setDataFooter] = useState(null);
+  const [fileHeader, setFileHeader] = useState(null);
+  const [FileBodyHeader, setFileBodyHeader] = useState(null);
+  const [FileBodyFile1, setFileBodyFile1] = useState(null);
+  const [FileBodyFile2, setFileBodyFile2] = useState(null);
+  const [FileFooterFile1, setFileFooterFile1] = useState(null);
+  const [FileFooterFile2, setFileFooterFile2] = useState(null);
+  const [FileFooterFile3, setFileFooterFile3] = useState(null);
 
-    const searchParams = useSearchParams()
-    const id_blog = searchParams.get("id_blog")
-    const [isLoading, setIsLoading] = useState(true)
-    const [error, setError] = useState(null)
-    const id_empleado = getCookie("empleado") ? JSON.parse(getCookie("empleado")).id_empleado : -1;
+  //data blog
+  const [dataBlog, setDataBlog] = useState(null);
+
+  // header
+  const [dataHeader, setDataHeader] = useState(null);
+
+  // body
+  const [dataBody, setDataBody] = useState(null);
+  const [formCommendBody, setFormCommendBody] = useState({
+    titulo: '',
+    texto1: '',
+    texto2: '',
+    texto3: '',
+    texto4: '',
+    texto5: ''
+  });
+  const [formInfoBody, setFormInfoBody] = useState([
+    { titulo: '', descripcion: '' }
+  ]);
+  const [formGaleryBody, setFormGaleryBody] = useState({});
+  const [formEncabezadoBody, setFormEncabezadoBody] = useState({});
+
+  // footer
+  const [dataFooter, setDataFooter] = useState(null);
+
+  const searchParams = useSearchParams()
+  const id_blog = searchParams.get("id_blog")
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const id_empleado = getCookie("empleado") ? JSON.parse(getCookie("empleado")).id_empleado : -1;
 
   //desactivar boton
 
-    const [validacionHeader, setValidacionHeader] = useState(true);
-    const [validacionBody, setValidacionBody] = useState(true);
-    const [validacionFooter, setValidacionFooter] = useState(true);
-    const [isDisabled, setIsDisabled] = useState(true);
+  const [validacionHeader, setValidacionHeader] = useState(true);
+  const [validacionBody, setValidacionBody] = useState(true);
+  const [validacionFooter, setValidacionFooter] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(true);
 
   useEffect(() => {
-      setIsDisabled((validacionHeader && validacionFooter && validacionBody));
+    setIsDisabled((validacionHeader && validacionFooter && validacionBody));
   }, [validacionHeader, validacionFooter, validacionBody]);
 
   useEffect(() => {
     fetchDataTotal()
   }, [id_blog])
 
-  {/* Aqui se obtiene toda la información del blog creado segun su id */}
-  async function fetchDataTotal(){
-    try{
+  {/* Aqui se obtiene toda la información del blog creado segun su id */ }
+  async function fetchDataTotal() {
+    try {
       setIsLoading(true)
       const response = await Fetch.fetchBlogById(id_blog);
 
-      if (response){
+      if (response) {
         setDataBlog(response);
 
-        {/*Obtiene el header */}
+        {/*Obtiene el header */ }
         const responseHeader = await Fetch.fetchBlogHead(response.id_blog_head);
-        if(responseHeader){
+        if (responseHeader) {
           setImageHeaderBefore(responseHeader.public_image);
           setDataHeader(responseHeader);
         }
-        else{
+        else {
           setError("No se pudo cargar la informacion del encabezado");
           await Swal.fire({
             title: "Error",
@@ -105,44 +105,59 @@ const PageContent= () => {
           return;
         }
 
-        {/*Obtiene el body */}
+        {/*Obtiene el body */ }
         const responseBody = await Fetch.fetchBlogBodyById(response.id_blog_body);
         if (responseBody) {
-            setImageBodyHeaderBefore(responseBody.public_image1);
-            setImageBodyFile1Before(responseBody.public_image2);
-            setImageBodyFile2Before(responseBody.public_image3);
-            setDataBody(responseBody);
+          setImageBodyHeaderBefore(responseBody.public_image1);
+          setImageBodyFile1Before(responseBody.public_image2);
+          setImageBodyFile2Before(responseBody.public_image3);
+          setDataBody(responseBody);
 
-            // Cargar la información en los formularios
-            setFormInfoBody(Array.isArray(responseBody.tarjetas) ? responseBody.tarjetas : []);
+          setFormEncabezadoBody({
+            titulo: responseBody.titulo,
+            descripcion: responseBody.descripcion,
+            public_image1: responseBody.public_image1,
+            url_image1: responseBody.url_image1,
+          });
 
-            setFormCommendBody({
-                titulo: responseBody.titulo || '',
-                texto1: responseBody.texto1 || '',
-                texto2: responseBody.texto2 || '',
-                texto3: responseBody.texto3 || '',
-                texto4: responseBody.texto4 || '',
-                texto5: responseBody.texto5 || ''
-            });
+          // Cargar la información en los formularios
+          setFormInfoBody(Array.isArray(responseBody.tarjetas) ? responseBody.tarjetas : []);
+
+          setFormCommendBody({
+            titulo: responseBody.commend_tarjeta.titulo || '',
+            texto1: responseBody.commend_tarjeta.texto1 || '',
+            texto2: responseBody.commend_tarjeta.texto2 || '',
+            texto3: responseBody.commend_tarjeta.texto3 || '',
+            texto4: responseBody.commend_tarjeta.texto4 || '',
+            texto5: responseBody.commend_tarjeta.texto5 || ''
+          });
+
+          setFormGaleryBody({
+            public_image2: responseBody.public_image2,
+            public_image3: responseBody.public_image3,
+          });
         } else {
-            setError("No se pudo cargar la informacion del body");
-            await Swal.fire({
-                title: "Error",
-                text: "No se pudo cargar la informacion del body",
-                icon: "error",
-                confirmButtonText: "OK",
-            });
-            return;
+          setError("No se pudo cargar la informacion del body");
+          await Swal.fire({
+            title: "Error",
+            text: "No se pudo cargar la informacion del body",
+            icon: "error",
+            confirmButtonText: "OK",
+          });
+          return;
         }
-        {/*Obtiene el footer */}
+        {/*Obtiene el footer */ }
         const responseFooter = await Fetch.fetchBlogFooter(response.id_blog_footer);
-        if(responseFooter){
+        if (responseFooter) {
           setImageFooterFile1Before(responseFooter.public_image1);
           setImageFooterFile2Before(responseFooter.public_image2);
           setImageFooterFile3Before(responseFooter.public_image3);
           setDataFooter(responseFooter);
+
+          console.log("Footer: ", responseFooter);
+          console.log("Data: ", dataFooter);
         }
-        else{
+        else {
           setError("No se pudo cargar la informacion del footer");
           await Swal.fire({
             title: "Error",
@@ -153,8 +168,9 @@ const PageContent= () => {
           return;
         }
 
-      }else{
+      } else {
         setError("No se pudo cargar el contenido principal del blog");
+        console.log("No hay contenido en nada :v")
         await Swal.fire({
           title: "Error",
           text: "Ocurrió un error inesperado.",
@@ -164,42 +180,18 @@ const PageContent= () => {
         return
       }
 
-    }catch(error){
+    } catch (error) {
+      console.log("Error al guardar: ", error);
       Swal.fire({
         title: "Error",
         text: "Ocurrió un error inesperado.",
         icon: "error",
         confirmButtonText: "OK",
       })
-    }finally{
+    } finally {
       setIsLoading(false)
     }
   }
-
-  useEffect(() => {
-    if (dataBody) {
-        setFormEncabezadoBody({
-            titulo: dataBody.titulo,
-            descripcion: dataBody.descripcion,
-            public_image1: dataBody.public_image1,
-            url_image1: dataBody.url_image1,
-        });
-
-        setFormCommendBody({
-          titulo: dataBody.titulo || '',
-          texto1: dataBody.texto1 || '',
-          texto2: dataBody.texto2 || '',
-          texto3: dataBody.texto3 || '',
-          texto4: dataBody.texto4 || '',
-          texto5: dataBody.texto5 || ''
-        });
-
-        setFormGaleryBody({
-            public_image2: dataBody.public_image2,
-            public_image3: dataBody.public_image3,
-        });
-    }
-}, [dataBody]);
 
   const deleteFooterFile1 = () => {
     setFileFooterFile1(null);
@@ -237,7 +229,7 @@ const PageContent= () => {
 
   const deleteBodyHeaderImage = () => {
     setFileBodyHeader(null);
-    setDataBody(prev => ({
+    setFormGaleryBody(prev => ({
       ...prev,
       public_image1: imageBodyHeaderBefore,
       url_image1: ""
@@ -246,7 +238,7 @@ const PageContent= () => {
 
   const deleteBodyFile1 = () => {
     setFileBodyFile1(null);
-    setDataBody(prev => ({
+    setFormGaleryBody(prev => ({
       ...prev,
       public_image2: imageBodyFile1Before,
       url_image2: ""
@@ -255,13 +247,12 @@ const PageContent= () => {
 
   const deleteBodyFile2 = () => {
     setFileBodyFile2(null);
-    setDataBody(prev => ({
+    setFormGaleryBody(prev => ({
       ...prev,
       public_image3: imageBodyFile2Before,
       url_image3: ""
     }));
   };
-
 
   useEffect(() => {
     const sections = document.querySelectorAll("#header, #body, #footer");
@@ -307,15 +298,15 @@ const PageContent= () => {
 
   async function guardarBody() {
     const formBody = {
-      titulo: dataBody.titulo,
-      descripcion: dataBody.descripcion,
+      titulo: formEncabezadoBody.titulo,
+      descripcion: formEncabezadoBody.descripcion,
       id_commend_tarjeta: dataBody.id_commend_tarjeta,
-      public_image1: dataBody.public_image1,
-      url_image1: dataBody.url_image1,
-      public_image2: dataBody.public_image2,
-      url_image2: dataBody.url_image2,
-      public_image3: dataBody.public_image3,
-      url_image3: dataBody.url_image3,
+      public_image1: formEncabezadoBody.public_image1,
+      url_image1: formEncabezadoBody.url_image1,
+      public_image2: formGaleryBody.public_image2,
+      url_image2: formGaleryBody.url_image2,
+      public_image3: formGaleryBody.public_image3,
+      url_image3: formGaleryBody.url_image3,
     }
 
     const id = await Fetch.updateBody(dataBody.id_blog_body, formBody);
@@ -411,7 +402,7 @@ const PageContent= () => {
   async function guardarTarjetas() {
     try {
       await Promise.all(
-        dataBody.tarjetas.map(async (section) => {
+        formInfoBody.map(async (section) => {
           const formTarjeta = {
             id_blog_body: dataBody.id_blog_body,
             titulo: section.titulo,
@@ -601,7 +592,32 @@ const PageContent= () => {
           />
         </div>
       
-        
+        <div id="body" className="section-container my-8 bg-gradient-to-r text-black w-full">
+            <FormBody3
+              formCommendBody={formCommendBody}
+              setFormCommendBody={setFormCommendBody}
+    
+              formInfoBody={formInfoBody}
+              setFormInfoBody={setFormInfoBody}
+    
+              formGaleryBody={formGaleryBody}
+              setFormGaleryBody={setFormGaleryBody}
+    
+              setFileBodyHeader={setFileBodyHeader}
+              onDeleteBodyHeaderImage={deleteBodyHeaderImage}
+    
+              setFileBodyFile1={setFileBodyFile1}
+              onDeleteBodyFile1={deleteBodyFile1}
+    
+              setFileBodyFile2={setFileBodyFile2}
+              onDeleteBodyFile2={deleteBodyFile2}
+    
+              formEncabezadoBody={formEncabezadoBody}
+              setFormEncabezadoBody={setFormEncabezadoBody}
+    
+              setValidacionBody={setValidacionBody}
+            />
+          </div>
 
       <div id="footer" className="section-container mt-8">
         <FormFooter

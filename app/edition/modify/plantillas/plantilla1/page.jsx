@@ -297,15 +297,15 @@ const PageContent = () => {
 
   async function guardarBody() {
     const formBody = {
-      titulo: dataBody.titulo,
-      descripcion: dataBody.descripcion,
+      titulo: formEncabezadoBody.titulo,
+      descripcion: formEncabezadoBody.descripcion,
       id_commend_tarjeta: dataBody.id_commend_tarjeta,
-      public_image1: dataBody.public_image1,
-      url_image1: dataBody.url_image1,
-      public_image2: dataBody.public_image2,
-      url_image2: dataBody.url_image2,
-      public_image3: dataBody.public_image3,
-      url_image3: dataBody.url_image3,
+      public_image1: formEncabezadoBody.public_image1,
+      url_image1: formEncabezadoBody.url_image1,
+      public_image2: formGaleryBody.public_image2,
+      url_image2: formGaleryBody.url_image2,
+      public_image3: formGaleryBody.public_image3,
+      url_image3: formGaleryBody.url_image3,
     }
 
     const id = await Fetch.updateBody(dataBody.id_blog_body, formBody);
@@ -401,7 +401,7 @@ const PageContent = () => {
   async function guardarTarjetas() {
     try {
       await Promise.all(
-        dataBody.tarjetas.map(async (section) => {
+        formInfoBody.map(async (section) => {
           const formTarjeta = {
             id_blog_body: dataBody.id_blog_body,
             titulo: section.titulo,
