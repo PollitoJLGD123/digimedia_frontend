@@ -326,12 +326,12 @@ const PageContent = () => {
   async function guardarCommendTarjeta() {
 
     const formCommendBody = {
-      titulo: dataBody.titulo,
-      texto1: dataBody.texto1,
-      texto2: dataBody.texto2,
-      texto3: dataBody.texto3,
-      texto4: dataBody.texto4,
-      texto5: dataBody.texto5,
+      titulo: formCommendBody.titulo,
+      texto1: formCommendBody.texto1,
+      texto2: formCommendBody.texto2,
+      texto3: formCommendBody.texto3,
+      texto4: formCommendBody.texto4,
+      texto5: formCommendBody.texto5,
     }
 
     const id = await Fetch.updateCommendTarjeta(dataBody.id_commend_tarjeta, formCommendBody);
