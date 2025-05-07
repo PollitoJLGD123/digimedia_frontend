@@ -241,6 +241,16 @@ export default function FormBody3(props) {
         }
     }
 
+    const handleDeleteHeaderImage = () => {
+        
+        setFormEncabezadoBody((prev) => ({
+          ...prev,
+          public_image1: "/blog/blog-4.jpg", 
+        }));
+      
+        setFileBodyHeader(null);
+      };
+
     const handleImageBody = async (e) => {
         const file = e.target.files[0];
         const name = e.target.name;
@@ -477,7 +487,7 @@ export default function FormBody3(props) {
                             />
                         </div>
 
-                        <div className="relative">
+                        <div className="relative flex flex-column justify-center">
                             <label
                                 className={`flex items-center justify-center w-full p-3 border-2 border-dashed rounded-lg text-white transition-all cursor-pointer ${uploading
                                     ? "border-gray-700 bg-gray-900 opacity-50 cursor-not-allowed"
@@ -510,16 +520,14 @@ export default function FormBody3(props) {
                                     disabled={uploading}
                                 />
                             </label>
-                            <div className="flex justify-center mt-2">
                                 <button
                                     type="button"
-                                    onClick={props.onDeleteBodyHeaderImage}
+                                    onClick={handleDeleteHeaderImage}
                                     className="ml-2 p-2 rounded-full hover:bg-red-100"
                                     title="Eliminar imagen principal"
                                 >
                                     <Trash2 className="w-5 h-5 text-red-500" />
                                 </button>
-                            </div>
                         </div>
                         <div>
                             <label className="flex items-center text-white text-sm font-medium mb-2">
@@ -548,7 +556,7 @@ export default function FormBody3(props) {
                                 <h1 className="ml-3 mt-1 text-xs">250x310 píxeles</h1>
                             </label>
 
-                            <div className="relative">
+                            <div className="relative flex flex-column justify-center">
                                 <label
                                     className={`flex items-center justify-center w-full p-3 border-2 border-dashed rounded-lg text-white transition-all cursor-pointer ${uploading
                                         ? "border-gray-700 bg-gray-900 opacity-50 cursor-not-allowed"
@@ -581,7 +589,6 @@ export default function FormBody3(props) {
                                         disabled={uploading}
                                     />
                                 </label>
-                                <div className="flex justify-center mt-2">
                                     <button
                                         type="button"
                                         onClick={props.onDeleteBodyFile1}    //  Aca se puede Eliminar 
@@ -590,7 +597,6 @@ export default function FormBody3(props) {
                                     >
                                         <Trash2 className="w-5 h-5 text-red-500" />
                                     </button>
-                                </div>
                             </div>
                         </div>
 
@@ -600,7 +606,7 @@ export default function FormBody3(props) {
                                 <h1 className="ml-3 mt-1 text-xs">250x310 píxeles</h1>
                             </label>
 
-                            <div className="relative">
+                            <div className="relative flex flex-column justify-center">
                                 <label
                                     className={`flex items-center justify-center w-full p-3 border-2 border-dashed rounded-lg text-white transition-all cursor-pointer ${uploading
                                         ? "border-gray-700 bg-gray-900 opacity-50 cursor-not-allowed"
@@ -633,7 +639,6 @@ export default function FormBody3(props) {
                                         disabled={uploading}
                                     />
                                 </label>
-                                <div className="flex justify-center mt-2">
                                     <button
                                         type="button"
                                         onClick={props.onDeleteBodyFile2}    //  Aca se puede Eliminar 
@@ -642,7 +647,6 @@ export default function FormBody3(props) {
                                     >
                                         <Trash2 className="w-5 h-5 text-red-500" />
                                     </button>
-                                </div>
                             </div>
                         </div>
 
