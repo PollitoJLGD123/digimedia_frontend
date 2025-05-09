@@ -108,6 +108,14 @@ export default function FormHeader({ dataHeader, setFormData, setFile, onDeleteI
     }
 
     useEffect(() => {
+        if (dataHeader && dataHeader.public_image) {
+            console.log("Imagen de encabezado cargada:", dataHeader.public_image);
+        } else {
+            console.log("No se ha cargado public_image correctamente.");
+        }
+    }, [dataHeader]);
+
+    useEffect(() => {
         const allValid = Object.values(errors).every(error => error.isValid === true);
         setIsDisabled && setIsDisabled(!allValid);
     }, [errors]);
@@ -116,22 +124,24 @@ export default function FormHeader({ dataHeader, setFormData, setFile, onDeleteI
         <div
             className="w-full h-screen md:h-[80vh] relative flex items-center justify-center text-center px-6 sm:px-12 bg-cover bg-center bg-no-repeat" id="file-name"
             style={{
-                backgroundImage: `url(${dataHeader.public_image})`,
-                backgroundSize: "cover",
+                backgroundImage: dataHeader && dataHeader.public_image 
+                ? `url(${dataHeader.public_image})` 
+                : `url(/blog/fondo_blog_extend.png)`, // Aquí la imagen por defecto
+              backgroundSize: "cover",
             }}
         >
             <div className="absolute inset-0 bg-black/60"></div>
 
             <div className="relative max-w-7xl text-white flex flex-col md:flex-row items-center justify-between gap-6">
                 <div className="text-center max-w-xl">
-                    <h1 className="text-5xl md:text-6xl font-extrabold mb-4 neon-textov4">
-                        {dataHeader.titulo || "Título del Blog"}
+                <h1 className="text-5xl md:text-6xl font-extrabold mb-4 neon-textov4">
+                    {dataHeader && dataHeader.titulo ? dataHeader.titulo : "Título del Blog"}
                     </h1>
                     <h2 className="text-2xl md:text-xl font-bold mb-4">
-                        {dataHeader.texto_frase || "Frase destacada"}
+                    {dataHeader && dataHeader.texto_frase ? dataHeader.texto_frase : "Frase destacada"}
                     </h2>
                     <p className="text-lg text-gray-300 font-light">
-                        {dataHeader.texto_descripcion || "Descripción del blog"}
+                    {dataHeader && dataHeader.texto_descripcion ? dataHeader.texto_descripcion : "Descripción del blog"}
                     </p>
                 </div>
 
@@ -211,7 +221,9 @@ export default function FormHeader({ dataHeader, setFormData, setFile, onDeleteI
                                             <Loader2 className="w-5 h-5 animate-spin text-purple-400 mr-2" />
                                         ) : (
                                             <>
-                                                {dataHeader.public_image !== "/blog/fondo_blog_extend.png" ? (
+                                                {dataHeader.public_image !== "/blog/fondo_blog_extend.png" ?
+                                                
+                                                (
                                                     <>
                                                         <IconImage className="w-5 h-5 mr-2 text-purple-400" />
                                                         <span className="text-sm">Cambiar imagen</span>

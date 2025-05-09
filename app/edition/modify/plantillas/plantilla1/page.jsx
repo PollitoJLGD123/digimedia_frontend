@@ -36,7 +36,13 @@ const PageContent = () => {
   const [dataBlog, setDataBlog] = useState(null);
 
   // header
-  const [dataHeader, setDataHeader] = useState(null);
+  const [dataHeader, setDataHeader] = useState({
+    titulo: "",
+    texto_frase: "",
+    texto_descripcion: "",
+    public_image: "",  
+    url_image: "",
+  });
 
   // body
   const [dataBody, setDataBody] = useState(null);
@@ -71,7 +77,8 @@ const PageContent = () => {
   const [isDisabled, setIsDisabled] = useState(true);
 
   useEffect(() => {
-    setIsDisabled((validacionHeader && validacionFooter && validacionBody));
+    console.log("validacionHeader:", validacionHeader, "validacionBody:", validacionBody, "validacionFooter:", validacionFooter);
+    setIsDisabled(!(validacionHeader && validacionFooter && validacionBody));
   }, [validacionHeader, validacionFooter, validacionBody]);
 
   useEffect(() => {
@@ -264,10 +271,9 @@ const PageContent = () => {
   }, []);
 
   async function guardarHeader() {
-    const id = await Fetch.updateHeader(dataHeader.id_blog_head, dataHeader);
-    if (id && id > 0) {
-      return id;
-    }
+    const result = await Fetch.updateGeneric("blog_head", dataHeader.id_blog_head, dataHeader);
+    if (result && result.id > 0) return result.id;
+    
     else {
       Swal.fire({
         title: "Error",
@@ -280,10 +286,8 @@ const PageContent = () => {
   }
 
   async function guardarFooter() {
-    const id = await Fetch.updateFooter(dataFooter.id_blog_footer, dataFooter);
-    if (id && id > 0) {
-      return id;
-    }
+    const result = await Fetch.updateGeneric("blog_footer", dataFooter.id_blog_footer, dataFooter);
+    if (result && result.id > 0) return result.id;
     else {
       Swal.fire({
         title: "Error",
@@ -308,10 +312,9 @@ const PageContent = () => {
       url_image3: formGaleryBody.url_image3,
     }
 
-    const id = await Fetch.updateBody(dataBody.id_blog_body, formBody);
-    if (id && id > 0) {
-      return id;
-    }
+    const result = await Fetch.updateGeneric("blog_body", dataBody.id_blog_body, formBody);
+    if (result && result.id > 0) return result.id;
+    
     else {
       Swal.fire({
         title: "Error",
@@ -324,29 +327,25 @@ const PageContent = () => {
   }
 
   async function guardarCommendTarjeta() {
-
-    const formCommendBody = {
+    const payload = {
       titulo: formCommendBody.titulo,
       texto1: formCommendBody.texto1,
       texto2: formCommendBody.texto2,
       texto3: formCommendBody.texto3,
       texto4: formCommendBody.texto4,
       texto5: formCommendBody.texto5,
-    }
-
-    const id = await Fetch.updateCommendTarjeta(dataBody.id_commend_tarjeta, formCommendBody);
-    if (id && id > 0) {
-      return id;
-    }
-    else {
-      Swal.fire({
-        title: "Error",
-        text: "No se pudo guardar la tarjeta de comentarios",
-        icon: "error",
-        confirmButtonText: "OK",
-      });
-      return "error";
-    }
+    };
+  
+    const result = await Fetch.updateGeneric("commend_tarjeta", dataBody.id_commend_tarjeta, payload);
+    if (result && result.id > 0) return result.id;
+  
+    await Swal.fire({
+      title: "Error",
+      text: "No se pudo guardar la tarjeta de comentarios",
+      icon: "error",
+      confirmButtonText: "OK",
+    });
+    return "error";
   }
 
   async function guardarBlog() {
@@ -354,12 +353,12 @@ const PageContent = () => {
       id_blog_head: dataBlog.id_blog_head,
       id_blog_footer: dataBlog.id_blog_footer,
       id_blog_body: dataBlog.id_blog_body,
-      fecha: dataBody.fecha,
+      fecha: dataBlog.fecha ?? new Date().toISOString().split('T')[0], // <--- aquí está el fix
     }
-    const id = await Fetch.updateBlog(dataBlog.id_blog, formBlog);
-    if (id && id > 0) {
-      return id;
-    }
+    console.log("Datos enviados al update del blog:", formBlog);
+    const result = await Fetch.updateGeneric("blog", dataBlog.id_blog, formBlog);
+    if (result && result.id > 0) return result.id;
+  
     else {
       Swal.fire({
         title: "Error",
@@ -374,19 +373,18 @@ const PageContent = () => {
   async function guardarCard(id_empleado) {
     const formCard = {
       id_blog: dataBlog.id_blog,
-      titulo: dataHeader.titulo,
-      descripcion: dataHeader.descripcion,
-      public_image: dataHeader.public_image,
+      titulo: dataHeader.titulo || "",// Si no tiene un título, asignamos un valor por defecto
+      descripcion: dataHeader.descripcion || "Descripción no disponible", // Valor predeterminado en caso de undefined
+      public_image: dataHeader.public_image || "/blog/fondo_blog_extend.png",
       url_image: dataHeader.url_image,
       id_plantilla: 1,
       id_empleado: id_empleado,
     }
 
-    const id = await Fetch.updateCard(dataBlog.card.id_card, formCard);
-    if (id && id > 0) {
-      console.log("Id del card:", id);
-      return id;
-    }
+    console.log("Datos enviados al update de la card:", formCard);
+    const result = await Fetch.updateGeneric("card", dataBlog.card.id_card, formCard);
+    if (result && result.id > 0) return result.id;
+    
     else {
       Swal.fire({
         title: "Error",
@@ -407,9 +405,9 @@ const PageContent = () => {
             titulo: section.titulo,
             descripcion: section.descripcion,
           };
-          const id = await Fetch.updateTarjeta(section.id_tarjeta, formTarjeta);
-          if (!id || id <= 0) throw new Error("Error al guardar tarjeta");
-          return id;
+          const result = await Fetch.updateGeneric("tarjeta", section.id_tarjeta, formTarjeta);
+          if (!result || result.id <= 0) throw new Error("Error al guardar tarjeta");
+          return result.id;
         })
       );
       return "succes";
@@ -470,21 +468,39 @@ const PageContent = () => {
   }
 
   async function HandleSave() {
+    console.log("HandleSave se ejecutó");
+  
     try {
-
       setLoading(true);
-
+      console.log("Cargando...");
+  
       await executionFunction(guardarCommendTarjeta, "No se pudo guardar la tarjeta de comentarios");
-
+  
+      console.log("Guardada la tarjeta de comentarios");
+  
       await executionFunction(guardarBody, "No se pudo guardar el contenido del blog");
-
+  
+      console.log("Guardado el contenido del blog");
+  
       await executionFunction(guardarTarjetas, "No se pudo guardar las tarjetas informativas");
-
+  
+      console.log("Guardadas las tarjetas informativas");
+  
       await executionFunction(guardarHeader, "No se pudo guardar el encabezado");
+  
+      console.log("Guardado el encabezado");
+  
       await executionFunction(guardarFooter, "No se pudo guardar el pie de página");
-
+  
+      console.log("Guardado el pie de página");
+  
       await executionFunction(guardarBlog, "No se pudo guardar el blog");
+  
+      console.log("Guardado el blog");
+  
       await executionFunction(() => guardarCard(id_empleado), "No se pudo guardar la card");
+  
+      console.log("Guardada la card");
 
       if (fileHeader) {
         await executionFunction(() => SaveImage(fileHeader, `card/blog/image_head/${dataBlog.card.id_card}`), "No se pudo guardar la imagen");
@@ -523,7 +539,6 @@ const PageContent = () => {
 
       setImageBodyFile1Before("");
       setImageBodyFile2Before("");
-      setImageBodyFile3Before("");
       setImageFooterFile1Before("");
       setImageFooterFile2Before("");
       setImageFooterFile3Before("");
@@ -541,6 +556,15 @@ const PageContent = () => {
       setFileFooterFile1(null);
       setFileFooterFile2(null);
       setFileFooterFile3(null);
+
+      setFormCommendBody({
+        titulo: '',
+        texto1: '',
+        texto2: '',
+        texto3: '',
+        texto4: '',
+        texto5: ''
+      });
 
       router.push("/dashboard/blogs/")
 
@@ -637,7 +661,11 @@ const PageContent = () => {
 
       <div className="bottom-0 left-0 fixed p-6 border-t border-slate-700/50 bg-slate-900/50 backdrop-blur-sm">
         <button
-          onClick={HandleSave}
+          type='button'
+          onClick={() => {
+            console.log("Botón Guardar presionado");
+            HandleSave();
+          }}
           disabled={loading || isDisabled}
           className={`text-white rounded-xl flex items-center justify-center w-full transition-all duration-300 px-5 py-3 shadow-lg shadow-emerald-900/20 ${loading ? "bg-emerald-400 cursor-not-allowed" : "bg-emerald-600 hover:bg-emerald-500"
             }`}
