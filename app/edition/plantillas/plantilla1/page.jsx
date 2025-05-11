@@ -37,7 +37,7 @@ const PageContent = () => {
     setFormFooter(prev => ({ 
       ...prev, 
       public_image1: "/blog/blog-10.jpg", 
-      url_image1: "" 
+      url_image1: ""
     }));
   };
   const deleteFooterFile2 = () => {

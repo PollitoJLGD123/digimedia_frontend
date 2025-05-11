@@ -48,9 +48,7 @@ const PageContent = () => {
     texto4: '',
     texto5: ''
   });
-  const [formInfoBody, setFormInfoBody] = useState([
-    { titulo: '', descripcion: '' }
-  ]);
+  const [formInfoBody, setFormInfoBody] = useState([]);
   const [formGaleryBody, setFormGaleryBody] = useState({});
   const [formEncabezadoBody, setFormEncabezadoBody] = useState({});
 
@@ -166,6 +164,13 @@ const PageContent = () => {
           });
           return;
         }
+
+        console.log("DataFooter: ", dataFooter);
+        console.log("Header: ", dataHeader);
+        console.log("Body: ", dataBody);
+        console.log("Commend Tarjeta: ", formCommendBody)
+        console.log("Info Body: ", formInfoBody)
+        console.log("Encabezado Body: ", formEncabezadoBody)
 
       } else {
         setError("No se pudo cargar el contenido principal del blog");
