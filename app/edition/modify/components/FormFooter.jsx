@@ -92,6 +92,14 @@ export default function FormFooter({ formFooter, setFormData, setFileFooterFile1
         }
     }
 
+    if (!formFooter) {
+        return (
+            <div className="w-full h-screen md:h-[80vh] flex items-center justify-center text-center">
+                <h1 className="text-2xl font-bold text-gray-500">Cargando...</h1>
+            </div>
+        );
+    }
+
 
     return (
         <div className="relative mt-12 flex flex-col md:flex-row justify-center items-stretch max-w-5xl mx-auto bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-lg shadow-lg overflow-hidden p-6 gap-6">

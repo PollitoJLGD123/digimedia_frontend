@@ -63,10 +63,10 @@ const PageContent = () => {
 
   //desactivar boton
 
-  const [validacionHeader, setValidacionHeader] = useState(true);
-  const [validacionBody, setValidacionBody] = useState(true);
-  const [validacionFooter, setValidacionFooter] = useState(true);
-  const [isDisabled, setIsDisabled] = useState(true);
+  const [validacionHeader, setValidacionHeader] = useState(false);
+  const [validacionBody, setValidacionBody] = useState(false);
+  const [validacionFooter, setValidacionFooter] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
 
   useEffect(() => {
     setIsDisabled((validacionHeader && validacionFooter && validacionBody));
@@ -301,7 +301,7 @@ const PageContent = () => {
   }
 
   async function guardarBody() {
-    const formBody = {
+    const form = {
       titulo: formEncabezadoBody.titulo,
       descripcion: formEncabezadoBody.descripcion,
       id_commend_tarjeta: dataBody.id_commend_tarjeta,
@@ -313,7 +313,7 @@ const PageContent = () => {
       url_image3: formGaleryBody.url_image3,
     }
 
-    const id = await Fetch.updateBody(dataBody.id_blog_body, formBody);
+    const id = await Fetch.updateBody(dataBody.id_blog_body, form);
     if (id && id > 0) {
       return id;
     }
@@ -330,7 +330,7 @@ const PageContent = () => {
 
   async function guardarCommendTarjeta() {
 
-    const formCommendBody = {
+    const form = {
       titulo: formCommendBody.titulo,
       texto1: formCommendBody.texto1,
       texto2: formCommendBody.texto2,
@@ -339,7 +339,7 @@ const PageContent = () => {
       texto5: formCommendBody.texto5,
     }
 
-    const id = await Fetch.updateCommendTarjeta(dataBody.id_commend_tarjeta, formCommendBody);
+    const id = await Fetch.updateCommendTarjeta(dataBody.id_commend_tarjeta, form);
     if (id && id > 0) {
       return id;
     }
@@ -355,13 +355,13 @@ const PageContent = () => {
   }
 
   async function guardarBlog() {
-    const formBlog = {
+    const form = {
       id_blog_head: dataBlog.id_blog_head,
       id_blog_footer: dataBlog.id_blog_footer,
       id_blog_body: dataBlog.id_blog_body,
-      fecha: dataBody.fecha,
+      fecha: dataBlog.fecha,
     }
-    const id = await Fetch.updateBlog(dataBlog.id_blog, formBlog);
+    const id = await Fetch.updateBlog(dataBlog.id_blog, form);
     if (id && id > 0) {
       return id;
     }
@@ -377,17 +377,19 @@ const PageContent = () => {
   }
 
   async function guardarCard(id_empleado) {
-    const formCard = {
+    const form = {
       id_blog: dataBlog.id_blog,
       titulo: dataHeader.titulo,
-      descripcion: dataHeader.descripcion,
+      descripcion: dataHeader.texto_descripcion,
       public_image: dataHeader.public_image,
       url_image: dataHeader.url_image,
       id_plantilla: 1,
       id_empleado: id_empleado,
     }
 
-    const id = await Fetch.updateCard(dataBlog.card.id_card, formCard);
+    console.log("Form Card: ", form);
+
+    const id = await Fetch.updateCard(dataBlog.card.id_card, form);
     if (id && id > 0) {
       console.log("Id del card:", id);
       return id;
@@ -407,12 +409,12 @@ const PageContent = () => {
     try {
       await Promise.all(
         formInfoBody.map(async (section) => {
-          const formTarjeta = {
+          const form = {
             id_blog_body: dataBody.id_blog_body,
             titulo: section.titulo,
             descripcion: section.descripcion,
           };
-          const id = await Fetch.updateTarjeta(section.id_tarjeta, formTarjeta);
+          const id = await Fetch.updateTarjeta(section.id_tarjeta, form);
           if (!id || id <= 0) throw new Error("Error al guardar tarjeta");
           return id;
         })
@@ -428,6 +430,21 @@ const PageContent = () => {
       return "error";
     }
   }
+
+  /*async function deleteCarpetImages(){
+    try {
+      const response = await Fetch.deleteImagesCarpet(dataBlog.card.id_card);
+      return response;
+    } catch (error) {
+      Swal.fire({
+        title: "Error",
+        text: "No se pudo guardar una o más tarjetas",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+      return "error";
+    }
+  }*/
 
   async function executionFunction(functionSave, mensajeError) {
     const resultado = await functionSave();
@@ -491,6 +508,8 @@ const PageContent = () => {
       await executionFunction(guardarBlog, "No se pudo guardar el blog");
       await executionFunction(() => guardarCard(id_empleado), "No se pudo guardar la card");
 
+      //await executionFunction(deleteCarpetImages, "No se logro eliminar la carpeta de imagenes antigua");
+
       if (fileHeader) {
         await executionFunction(() => SaveImage(fileHeader, `card/blog/image_head/${dataBlog.card.id_card}`), "No se pudo guardar la imagen");
       }
@@ -519,20 +538,22 @@ const PageContent = () => {
         await executionFunction(() => SaveImage(FileFooterFile3, `card/blog/images_footer/${dataBlog.card.id_card}`, "image3"), "No se pudo guardar la imagen");
       }
 
-      await Swal.fire({
+      Swal.fire({
         title: "Actualizado Correctamente",
         text: "¡Podrás ver tu blog en la sección de blogs de la página principal!",
-        icon: "success",
-        confirmButtonText: "OK",
+        icon: "success"
       });
+
+      router.push("/dashboard/blogs/")
 
       setImageBodyFile1Before("");
       setImageBodyFile2Before("");
-      setImageBodyFile3Before("");
       setImageFooterFile1Before("");
       setImageFooterFile2Before("");
       setImageFooterFile3Before("");
       setImageHeaderBefore("");
+      setImageBodyHeaderBefore("");
+      
 
       setDataBody(null);
       setDataFooter(null);
@@ -546,8 +567,6 @@ const PageContent = () => {
       setFileFooterFile1(null);
       setFileFooterFile2(null);
       setFileFooterFile3(null);
-
-      router.push("/dashboard/blogs/")
 
     } catch (error) {
       console.error("Error al guardar:", error.message);

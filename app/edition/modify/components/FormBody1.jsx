@@ -266,6 +266,14 @@ export default function FormBody1(props) {
         }
     }
 
+    if (!formEncabezadoBody || !formCommendBody || !formGaleryBody || !formInfoBody) {
+        return (
+            <div className="w-full h-screen md:h-[80vh] flex items-center justify-center text-center">
+                <h1 className="text-2xl font-bold text-gray-500">Cargando...</h1>
+            </div>
+        );
+    }
+
 
     return (
         <div className="relative p-0 text-black rounded-lg shadow-[0px_10px_25px_rgba(0,0,0,0.25)] overflow-hidden flex flex-row my-5 justify-center">
