@@ -29,6 +29,8 @@ const PageContent = () => {
     const [FileFooterFile1, setFileFooterFile1] = useState(null);
     const [FileFooterFile2, setFileFooterFile2] = useState(null);
     const [FileFooterFile3, setFileFooterFile3] = useState(null);
+
+    const [serviceRedirectUrl, setServiceRedirectUrl] = useState("");
   
     const deleteFooterFile1 = () => {
       setFileFooterFile1(null);
@@ -560,6 +562,9 @@ const PageContent = () => {
           setFormEncabezadoBody={setFormEncabezadoBody}
 
           setValidacionBody={setValidacionBody}
+
+          serviceRedirectUrl={serviceRedirectUrl}
+          setServiceRedirectUrl={setServiceRedirectUrl}
         />
       </div>
 

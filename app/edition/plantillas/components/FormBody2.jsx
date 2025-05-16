@@ -40,7 +40,9 @@ export default function FormBody2(props) {
     setFileBodyHeader,
     setFileBodyFile1,
     setFileBodyFile2,
-    setValidacionBody
+    setValidacionBody,
+    serviceRedirectUrl,
+    setServiceRedirectUrl
   } = props;
 
   const [commendErrors, setCommendErrors] = useState({
@@ -55,6 +57,18 @@ export default function FormBody2(props) {
     }))
   );
 
+    const servicios = [
+    { label: "Diseño y Desarrollo Web", url: "/servicios/desing-desarrollo/" },
+    { label: "Gestión de Redes Sociales", url: "/servicios/gestion-redes/" },
+    { label: "Marketing de Gestión Digital", url: "/servicios/marketing-gestion/" },
+    { label: "Branding y Diseño", url: "/servicios/branding-desing/" },
+  ];
+
+  const handleServiceChange = (e) => {
+    const url = e.target.value;
+    setServiceRedirectUrl(url);
+
+  };
   const handleChange = (setter) => (e) => {
     const { name, value } = e.target;
     let isValid = true;
@@ -409,7 +423,7 @@ export default function FormBody2(props) {
   return (
     <div className="relative bg-white text-black rounded-2xl shadow-[0px_10px_25px_rgba(0,0,0,0.15)] overflow-hidden">
       <div className='flex gap-4'>
-        <div>
+        <div className='w-[600px]'>
           <div className="top-0 z-30 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
             <div className="flex items-center space-x-2 text-gray-500 text-sm">
               <Clock className="w-4 h-4" />
@@ -425,7 +439,7 @@ export default function FormBody2(props) {
             </div>
           </div>
           
-          <div className="relative w-[850px] h-[300px] md:h-[400px] overflow-hidden">
+          <div className="relative w-[600px] h-[300px] md:h-[400px] overflow-hidden">
             <img
               src={formEncabezadoBody.public_image1}
               alt={formEncabezadoBody.titulo}
@@ -689,7 +703,6 @@ export default function FormBody2(props) {
     </div>
   </div>
 
-
   <div className="space-y-4">
     <label className="block text-sm font-medium text-slate-700">Consejos</label>
     {[1, 2, 3, 4, 5].map((num, index) => (
@@ -796,7 +809,42 @@ export default function FormBody2(props) {
             </div>
           )}
         </div>
+        <div className='flex flex-row justify-between'>
+          <div className="display flex justify-center items-center my-8">
+            {serviceRedirectUrl && (
+              <a
+                href={serviceRedirectUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold rounded-lg shadow-lg transform transition duration-300 hover:scale-105 hover:from-blue-600 hover:to-blue-800 hover:shadow-xl"
+              >
+                Conoce nuestro servicio
+              </a>
+            )}
       </div>
+      {/* NUEVO SELECT para elegir servicio */}
+          <div className="bg-black/5 backdrop-blur-md rounded-2xl p-8 shadow-lg w-[400px] max-w-lg overflow-auto bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+
+            <label className="block mb-2 font-semibold text-white">Selecciona servicio para el botón</label>
+            <select
+              className="w-full p-3 rounded text-white bg-gray-900 border border-gray-700 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+              value={serviceRedirectUrl}
+              onChange={handleServiceChange}
+            >
+              <option value="">-- Ninguno --</option>
+              {servicios.map((serv) => (
+                <option key={serv.url} value={serv.url}>
+                  {serv.label}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+      </div>
+
+          
+
       <div className="bg-gradient-to-r from-teal-600 to-teal-800 text-white p-6 text-center">
         <p className="text-sm">© {new Date().getFullYear()} - Todos los derechos reservados</p>
       </div>

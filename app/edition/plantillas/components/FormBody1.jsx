@@ -393,8 +393,7 @@ export default function FormBody1(props) {
               Conoce nuestro servicio
             </a>
           )}
-
-          </div>
+     </div>
           
         </div>
       </div>
