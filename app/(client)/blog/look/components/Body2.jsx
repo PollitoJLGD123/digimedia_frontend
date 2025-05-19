@@ -2,6 +2,8 @@
 
 import { CheckCircle, Clock, Bookmark, Share2, Eye } from "lucide-react"
 import { useState } from "react"
+import Link from "next/link"
+
 
 export default function Body2() {
 
@@ -151,7 +153,18 @@ export default function Body2() {
             <div className="bg-gradient-to-r from-teal-600 to-teal-800 text-white p-6 text-center">
                 <p className="text-sm">© {new Date().getFullYear()} - Todos los derechos reservados</p>
             </div>
-        </div>
+
+            
+            <div className="flex justify-center mt-6 mb-10">
+                    <Link
+                        href="/servicios/desing-desarrollo"
+                        className="inline-block bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-full shadow-md transition-colors"
+                    >
+                        Ver más información
+                    </Link>
+                </div>
+            </div>
     )
 }
-
+              
+    

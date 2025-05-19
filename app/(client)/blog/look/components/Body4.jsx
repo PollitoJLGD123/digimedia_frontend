@@ -2,6 +2,7 @@
 
 import React from "react";
 import { ArrowRight, CheckCircle } from "lucide-react";
+import Link from "next/link"
 
 const HeaderSection = () => (
   <div className="relative h-[400px] overflow-hidden">
@@ -169,6 +170,16 @@ export default function Body4() {
 
         <BenefitCards cards={cards} borderColors={borderColors} />
       </div>
+      
+            <div className="flex justify-center mt-6 mb-10">
+                    <Link
+                        href="/servicios/branding-desing"
+                        className="inline-block bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-full shadow-md transition-colors"
+                    >
+                        Ver más información
+                    </Link>
+                </div>
     </div>
+    
   );
 }

@@ -1,6 +1,7 @@
 
 import axios from 'axios'
 import url from '../../../../api/url'
+import { getCookie } from 'cookies-next';
 
 const Fetch = {
     fetchBlogs: async function fetchBlogs(){
@@ -99,7 +100,10 @@ const Fetch = {
 
     updateHeader : async function updateHeader(id, formData) {
         try{
-            const response = await axios.put(`${URL_API}/blog_head/${id}`, formData ,{
+
+            console.log(formData);
+
+            const response = await axios.put(`${url}/api/blog_head/${id}`, formData ,{
                 headers: {
                     Authorization: `Bearer ${getCookie('token')}`,
                     'Accept': 'application/json',
@@ -120,7 +124,7 @@ const Fetch = {
 
     updateFooter : async function updateFooter(id, formData) {
         try{
-            const response = await axios.put(`${URL_API}/blog_footer/${id}`, formData ,{
+            const response = await axios.put(`${url}/api/blog_footer/${id}`, formData ,{
                 headers: {
                     Authorization: `Bearer ${getCookie('token')}`,
                     'Accept': 'application/json',
@@ -141,7 +145,7 @@ const Fetch = {
 
     updateBody : async function updateBody(id, formData) {
         try{
-            const response = await axios.put(`${URL_API}/blog_body/${id}`, formData ,{
+            const response = await axios.put(`${url}/api/blog_body/${id}`, formData ,{
                 headers: {
                     Authorization: `Bearer ${getCookie('token')}`,
                     'Accept': 'application/json',
@@ -162,7 +166,7 @@ const Fetch = {
 
     updateCommendTarjeta : async function updateCommendTarjeta(id, formData) {
         try{
-            const response = await axios.put(`${URL_API}/commend_tarjeta/${id}`, formData ,{
+            const response = await axios.put(`${url}/api/commend_tarjeta/${id}`, formData ,{
                 headers: {
                     Authorization: `Bearer ${getCookie('token')}`,
                     'Accept': 'application/json',
@@ -170,6 +174,7 @@ const Fetch = {
                 },
             });
             if(response.status === 200){
+                console.log(response.data);
                 return response.data.id;
             }
             else{
@@ -183,7 +188,7 @@ const Fetch = {
 
     updateTarjeta : async function updateTarjeta(id, formData) {
         try{
-            const response = await axios.put(`${URL_API}/tarjeta/${id}`, formData ,{
+            const response = await axios.put(`${url}/api/tarjeta/${id}`, formData ,{
                 headers: {
                     Authorization: `Bearer ${getCookie('token')}`,
                     'Accept': 'application/json',
@@ -204,7 +209,7 @@ const Fetch = {
 
     updateBlog : async function updateBlog(id, formData) {
         try{
-            const response = await axios.put(`${URL_API}/blog/${id}`, formData ,{
+            const response = await axios.put(`${url}/api/blog/${id}`, formData ,{
                 headers: {
                     Authorization: `Bearer ${getCookie('token')}`,
                     'Accept': 'application/json',
@@ -225,7 +230,7 @@ const Fetch = {
 
     updateCard : async function updateCard(id, formData) {
         try{
-            const response = await axios.put(`${URL_API}/card/${id}`, formData ,{
+            const response = await axios.put(`${url}/api/card/${id}`, formData ,{
                 headers: {
                     Authorization: `Bearer ${getCookie('token')}`,
                     'Accept': 'application/json',
@@ -251,7 +256,7 @@ const Fetch = {
                 console.log(pair[0] + ':', pair[1]);
             }
 
-            const response = await axios.post(`${URL_API}/${ruta}`, formData, {
+            const response = await axios.post(`${url}/api/${ruta}`, formData, {
                 headers: {
                     Authorization: `Bearer ${getCookie('token')}`,
                     'Content-Type': 'multipart/form-data'
@@ -261,6 +266,25 @@ const Fetch = {
                 return response.data;
             } else if(response.status === 400){
                 return response.data;
+            }
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    },
+
+    deleteImagesCarpet: async function deleteImagesCarpet(id) {
+        try {
+
+            const response = await axios.delete(`${url}/api/delete_carpet/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${getCookie('token')}`
+                },
+            });
+            if (response.status === 200) {
+                return response.data;
+            } else {
+                return null;
             }
         } catch (error) {
             console.log(error);

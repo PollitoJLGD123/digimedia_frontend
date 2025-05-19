@@ -19,6 +19,9 @@ export default function FormBody1(props) {
     setFileBodyFile1,
     setFileBodyFile2,
     setValidacionBody,
+    serviceRedirectUrl,
+    setServiceRedirectUrl,
+    
   } = props;
 
   const [isValidTituloPrincipal, setIsValidTituloPrincipal] = useState(true);
@@ -48,6 +51,21 @@ export default function FormBody1(props) {
   });
 
   const [uploading, setUploading] = useState(false);
+
+  const servicios = [
+    { label: "Diseño y Desarrollo Web", url: "/servicios/desing-desarrollo/" },
+    { label: "Gestión de Redes Sociales", url: "/servicios/gestion-redes/" },
+    { label: "Marketing de Gestión Digital", url: "/servicios/marketing-gestion/" },
+    { label: "Branding y Diseño", url: "/servicios/branding-desing/" },
+  ];
+
+
+  // Manejar cambio del select
+  const handleServiceChange = (e) => {
+    const url = e.target.value;
+    setServiceRedirectUrl(url);
+
+  };
 
   const handleChange = (setter) => (e) => {
     const { name, value } = e.target;
@@ -361,6 +379,22 @@ export default function FormBody1(props) {
               })}
             </div>
           </div>
+
+
+
+      <div className="display flex justify-center items-center my-8">
+          {serviceRedirectUrl && (
+            <a
+              href={serviceRedirectUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold rounded-lg shadow-lg transform transition duration-300 hover:scale-105 hover:from-blue-600 hover:to-blue-800 hover:shadow-xl"
+            >
+              Conoce nuestro servicio
+            </a>
+          )}
+     </div>
+          
         </div>
       </div>
 
@@ -665,6 +699,25 @@ export default function FormBody1(props) {
             }
           </form>
         </div>
+
+ {/* NUEVO SELECT para elegir servicio */}
+        <div className="bg-black/5 backdrop-blur-md rounded-2xl p-8 shadow-lg w-full max-w-lg overflow-auto bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+
+          <label className="block mb-2 font-semibold text-white">Selecciona servicio para el botón</label>
+          <select
+            className="w-full p-3 rounded text-white bg-gray-900 border border-gray-700 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            value={serviceRedirectUrl}
+            onChange={handleServiceChange}
+          >
+            <option value="">-- Ninguno --</option>
+            {servicios.map((serv) => (
+              <option key={serv.url} value={serv.url}>
+                {serv.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
       </div>
     </div>
 

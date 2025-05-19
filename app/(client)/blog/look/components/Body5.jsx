@@ -1,6 +1,7 @@
 "use client"
 
 import { CheckCircle, Calendar, ArrowDownCircle, ExternalLink } from "lucide-react"
+import Link from "next/link"
 
 const tarjetas = [
   {
@@ -176,6 +177,15 @@ export default function Body5() {
                       
                                   <div className="h-3 bg-gradient-to-r from-indigo-500 via-purple-500 to-indigo-500"></div>
                               </div>
+                              
+            <div className="flex justify-center mt-6 mb-10">
+                    <Link
+                        href="/servicios/marketing-gestion"
+                        className="inline-block bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-6 rounded-full shadow-md transition-colors"
+                    >
+                        Ver más información
+                    </Link>
+                </div>
     </div>
   )
 }

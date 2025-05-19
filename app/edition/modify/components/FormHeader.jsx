@@ -112,6 +112,14 @@ export default function FormHeader({ dataHeader, setFormData, setFile, onDeleteI
         setIsDisabled && setIsDisabled(!allValid);
     }, [errors]);
 
+    if (!dataHeader) {
+        return (
+            <div className="w-full h-screen md:h-[80vh] flex items-center justify-center text-center">
+                <h1 className="text-2xl font-bold text-gray-500">Cargando...</h1>
+            </div>
+        );
+    }
+
     return (
         <div
             className="w-full h-screen md:h-[80vh] relative flex items-center justify-center text-center px-6 sm:px-12 bg-cover bg-center bg-no-repeat" id="file-name"

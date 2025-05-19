@@ -32,12 +32,14 @@ const PageContent = () => {
   const [FileFooterFile2, setFileFooterFile2] = useState(null);
   const [FileFooterFile3, setFileFooterFile3] = useState(null);
 
+  const [serviceRedirectUrl, setServiceRedirectUrl] = useState("");
+
   const deleteFooterFile1 = () => {
     setFileFooterFile1(null);
     setFormFooter(prev => ({ 
       ...prev, 
       public_image1: "/blog/blog-10.jpg", 
-      url_image1: "" 
+      url_image1: ""
     }));
   };
   const deleteFooterFile2 = () => {
@@ -562,6 +564,9 @@ const PageContent = () => {
           formEncabezadoBody={formEncabezadoBody}
           setFormEncabezadoBody={setFormEncabezadoBody}
           setValidacionBody={setValidacionBody}
+
+          serviceRedirectUrl={serviceRedirectUrl}
+          setServiceRedirectUrl={setServiceRedirectUrl}
         />
       </div>
 
