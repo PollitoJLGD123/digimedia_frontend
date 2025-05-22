@@ -10,19 +10,19 @@ export default function Page() {
   const servicios = [
     {
       title: 'DISEÑOS UX Y UI',
-      text: 'Creamos experiencias digitales atractivas, intuitivas y centradas en tus usuarios.',
+      text: 'Ccreamos experiencias digitales que atrapan, CAUTIVAN y convierten visitantes en clientes fieles.',
       icon: '/servicios/desarrollo/icon1.svg',
       ruta: '/servicios/ui'
     },
     {
       title: 'DESARROLLO WEB',
-      text: 'Construimos sitios web funcionales, modernos y a la medida de tus necesidades.',
+      text: 'MAS modernos, funcionales y personalizados que impulsEn tu negocio y destaQUE frente a la competencia.',
       icon: '/servicios/desarrollo/icon2.svg',
       ruta: '/servicios/desarrollo-webs/'
     },
     {
       title: 'DOMINIO Y HOSTING',
-      text: 'Aseguramos tu presencia en línea con dominios y hosting confiables.',
+      text: 'mejoramos tu posición en NAVEGADORES con UNA  estrategia que aumentE tu visibilidad.',
       icon: '/servicios/desarrollo/icon3.svg',
     },
     {
@@ -50,14 +50,14 @@ export default function Page() {
 
       <Main
         title="DISEÑO Y DESARROLLO WEB"
-        subtitle="¡Transforma tu presencia online!"
-        text="Ofrecemos diseño y desarrollo web para ayudar a tu negocio a destacar en línea. Creamos sitios atractivos y funcionales que reflejan tu marca y mejoran la experiencia del usuario."
+        subtitle="¡Convierte clics en clientes con un sitio web que impacta!"
+        text="Diseñamos y desarrollamos sitios web que capturan la atención desde el primer clic. Modernos, rápidos y visualmente impactantes, pensados para que tu marca destaque y FIDELIZAR A TUS clientes."
         image="/servicios/desarrollo/img-main.png"
       />
 
       <Description
-        title="Diseño y Desarrollo Web"
-        text="Consiste en la habilidad de presentar contenido de manera organizada en una página web con el objetivo de brindar una experiencia óptima al usuario. El diseño se centra en la estética visual, mientras que el desarrollo se dedica a la construcción y programación del sitio web. Ambos aspectos colaboran estrecha- mente para asegurar el éxito del sitio web."
+        title="¿QUE ES?"
+        text="Es crear páginas que impresionan a primera vista y que funcionen sin fallas. el diseño cautiva con lo visual y que hace el desarrollo posible. juntos convertiremos tu sitio en una herramienta poderosa que distribuirá, comunicará y  posicionará tu marca donde debe estar: en lo mas alto."
       />
 
       <Servicios servicios={servicios} />

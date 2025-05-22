@@ -10,24 +10,24 @@ export default function Page() {
   const servicios = [
     {
       title: 'DESARROLLO DE BRIEF',
-      text: 'El briefing nos permite entender tu empresa para crear y definir tu marca.',
+      text: 'El brief nos permite entender tu empresa para crear y definir tu marca.',
       icon: '/servicios/branding/icon1.svg',
       ruta: '/servicios/desarrollo-briefs/'
     },
     {
       title: 'IDENTIDAD VISUAL CORPORATIVA',
-      text: 'Creemos identidades visuales únicas que reflejan tu esencia y destacan en el mercado.',
+      text: 'Creamos identidades visuales únicas que reflejan tu esencia que destacan en el mercado.',
       icon: '/servicios/branding/icon2.svg',
       ruta: '/servicios/identidad-visual/'
     },
     {
       title: 'NAMING, LOGO Y SLOGAN',
-      text: 'Creamos elementos clave que representen tu marca y conecten con tu audiencia.',
+      text: 'Creamos elementos clave que representen tu marca y conecten con tu audencia.',
       icon: '/servicios/branding/icon3.svg',
     },
     {
       title: 'MANUAL DE MARCA',
-      text: 'Definimos las reglas que guiarán todas las estrategias de tu marca.',
+      text: 'Definimos las reglas que guiarán todas las estrategias para tu marca.',
       icon: '/servicios/branding/icon4.svg',
     },
   ];

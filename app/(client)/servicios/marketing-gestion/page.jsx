@@ -10,24 +10,24 @@ export default function Page() {
   const servicios = [
     {
       title: 'ANÁLISIS Y BENCHMARKING',
-      text: 'Evaluamos tu marca frente a la competencia para identificar oportunidades de mejora y crear estrategias más efectivas.',
+      text: 'evaluamos y mejoramos el rendimiento de tu marca frente a la competencia con las mejores estrategias.',
       icon: '/servicios/marketing/icon1.svg',
       ruta: '/servicios/analisis-y-benchmarking/'
     },
     {
       title: 'PLANIFICACIÓN ESTRATÉGICA',
-      text: 'Aquí se diseñan estrategias personalizadas con objetivos claros, segmentación precisa y tácticas eficaces para alcanzar tus metas de negocio.',
+      text: 'definimos las  estrategias, con objetivos claros, segmetación precisa y tácticas eficaces para alcanzar tus metas de negocio.',
       icon: '/servicios/marketing/icon2.svg',
       ruta: '/servicios/planificacion-estrategica/'
     },
     {
       title: 'PUBLICIDAD DIGITAL',
-      text: 'Desarrollamos campañas digitales de alto impacto para aumentar la visibilidad, captar audiencias y maximizar conversiones.',
+      text: 'Desarrollamos campañas digitales de alto impacto para aumentar la visibilidad, captar audencias y maximizar conversiones .',
       icon: '/servicios/marketing/icon3.svg',
     },
     {
       title: 'MONITOREO Y REPORTING',
-      text: 'Implementamos un monitoreo continuo de tus campañas, recopilando y analizando métricas clave. Presentamos informes detallados que facilitan la toma de decisiones basadas en datos.',
+      text: 'Hacemos seguimiento continuo del avance,  gestionando los proyectos,  programas y actividades  de forma efectiva',
       icon: '/servicios/marketing/icon4.svg',
     },
   ];

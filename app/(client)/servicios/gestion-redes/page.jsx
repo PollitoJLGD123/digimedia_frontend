@@ -10,24 +10,24 @@ export default function Page() {
   const servicios = [
     {
       title: 'PLANIFICACIÓN Y CRONOGRAMA',
-      text: 'Creamos estrategias de redes sociales alineadas con tus objetivos para maximizar el impacto de tu marca.',
+      text: 'Planificamos tu estrategia en redes para mantenerte activo, relevante y siempre presente ante tu audiencia',
       icon: '/servicios/gestion/icon1.svg',
       ruta: '/servicios/planificacion-cronograma/'
     },
     {
       title: 'DISEÑO DE PAUTAS',
-      text: 'Creamos documentos visuales que definen la identidad, voz y tono de tu marca en redes sociales.',
+      text: 'Traducimos tu esencia de marca en pautas claras, creativas y listas para cautivar en redes',
       icon: '/servicios/gestion/icon3.svg',
       ruta: '/servicios/diseno-pautas/'
     },
     {
       title: 'PRODUCCIÓN DE PAUTAS',
-      text: 'Desarrollamos pautas claras para el contenido y la interacción en redes sociales, alineadas con tu marca.',
+      text: 'Creamos PAUTAS estratégicAS que habla el idioma de tu audiencia y fortalece tu marca',
       icon: '/servicios/gestion/icon2.svg',
     },
     {
       title: 'DISEÑO UX Y UI',
-      text: 'Diseñamos experiencias digitales centradas en el usuario, combinando estrategias de UX  con interfaces visualmente atractivas y funcionales (UI).',
+      text: 'Combinamos  (UI) y  (UX) para crear plataformas intuitivas, fáciles de usar y optimizadas para generar conversiones',
       icon: '/servicios/gestion/icon4.svg',
       ruta: '/servicios/ui/'
     },

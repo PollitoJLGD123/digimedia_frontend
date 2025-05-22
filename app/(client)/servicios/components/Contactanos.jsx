@@ -1,7 +1,7 @@
 export default function Contactanos({ text, iconLeft, iconRight }) {
   return (
-    <section className="bg-[#7b22b3] text-white font-bold text-3xl text-center p-12 relative w-full left-1/2 -translate-x-1/2">
-      <p className="mb-8 z-10 relative">{text}</p>
+    <section className="bg-[#523194] text-white font-bold text-2xl uppercase text-center p-12 relative w-full left-1/2 -translate-x-1/2 ">
+      <p className="mb-4 z-10 relative max-w-[600px] mx-auto">{text}</p>
       <button
         id="modal-button"
         className="bg-[#ff037f] p-4 inline-block rounded-2xl z-10 relative hover:bg-[#d0026e] hover:scale-105 transition-all"

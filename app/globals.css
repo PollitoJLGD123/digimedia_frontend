@@ -18,6 +18,46 @@ h1, h2, h3, title {
 }
 
 
+/* Estilos personalizados para la barra de desplazamiento */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollbar-thumb-\[\#FF037F\]::-webkit-scrollbar-thumb {
+  background-color: #ff037f;
+  border-radius: 9999px;
+}
+
+.scrollbar-track-transparent::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* Animación de rebote lenta */
+@keyframes bounce-slow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 3s infinite;
+}
+
+/* Clase para limitar líneas de texto */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+
+
 @layer base {
   :root {
     --background: 0 0% 100%;
