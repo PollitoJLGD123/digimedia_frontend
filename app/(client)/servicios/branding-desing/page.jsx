@@ -64,8 +64,8 @@ export default function Page() {
 
       <Contactanos
         text="Conecta de manera creativa e innovadora con tu audiencia"
-        iconLeft="/servicios/branding/icon-left.png"
-        iconRight="/servicios/branding/icon-right.png"
+        iconLeft="/servicios/desarrollo/icon-left.svg"
+        iconRight="/servicios/desarrollo/icon-right.svg"
       />
     </>
   );
